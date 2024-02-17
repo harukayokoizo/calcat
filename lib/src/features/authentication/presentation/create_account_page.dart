@@ -1,15 +1,25 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class CreateAccountPage extends StatefulWidget{
+import '../application/mail_auth.dart';
+import '../application/user_provider.dart';
+
+class CreateAccountPage extends ConsumerStatefulWidget{
   const CreateAccountPage({super.key});
 
   @override
-  State<CreateAccountPage> createState() => _CreateAccountPageState();
+  CreateAccountPageState createState() => CreateAccountPageState();
 }
 
-class _CreateAccountPageState extends State<CreateAccountPage>{
+class CreateAccountPageState extends ConsumerState<CreateAccountPage>{
+  final passTextController = TextEditingController();
+  final mailTextController = TextEditingController();
+  late String mailAddress;
+  late String password;
+  late String errorMessage = '';
   @override
 
   Widget build(BuildContext context){
@@ -24,54 +34,92 @@ class _CreateAccountPageState extends State<CreateAccountPage>{
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Spacer(flex: 1,),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 20.0),
-              child: SizedBox(
-                width: deviceWidth * 0.8,
-                child: TextFormField(
-                  decoration: const InputDecoration(
-                    hintText: 'メールアドレス',
-                    border: OutlineInputBorder(),
+            if(errorMessage == '')
+              const Spacer(flex: 1,),
+            if(errorMessage != '')
+              Padding(
+                padding: const EdgeInsets.only(bottom: 20.0),
+                child: Container(
+                  width: deviceWidth * 0.8,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.red,
                   ),
+                  child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Text(
+                          errorMessage,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500
+                          ),
+                        ),
+                      )
+                  )
                 ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 20.0),
-              child: SizedBox(
-                width: deviceWidth * 0.8,
-                child: TextFormField(
-                  decoration: const InputDecoration(
-                    hintText: 'パスワード',
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-              ),
-            ),
-            const Spacer(flex: 5,),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 20.0),
-              child: SizedBox(
-                width: deviceWidth * 0.8,
-                height: 50,
-                child: ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
-                    //side: BorderSide(color: Colors.black)
-                  ),
-                  child: const Text(
-                    "アカウント作成",
-                    style: TextStyle(
-                        fontSize: 20
+              Padding(
+                padding: const EdgeInsets.only(bottom: 20.0),
+                child: SizedBox(
+                  width: deviceWidth * 0.8,
+                  child: TextFormField(
+                    controller: mailTextController,
+                    decoration: const InputDecoration(
+                      hintText: 'メールアドレス',
+                      border: OutlineInputBorder(),
                     ),
                   ),
-
                 ),
               ),
-            ),
-            const Spacer(flex: 1,),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 20.0),
+                child: SizedBox(
+                  width: deviceWidth * 0.8,
+                  child: TextFormField(
+                    controller: passTextController,
+                    decoration: const InputDecoration(
+                      hintText: 'パスワード',
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                ),
+              ),
+              const Spacer(flex: 6,),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 20.0),
+                child: SizedBox(
+                  width: deviceWidth * 0.8,
+                  height: 50,
+                  child: ElevatedButton(
+                    onPressed: () async{
+                      String message = await ref.read(authenticateProvider).createAccount(mailTextController.text, passTextController.text);
+                      if(message == 'success'){
+                        ref.read(userControllerProvider.notifier).changeTopPage();
+                      }else{
+                        passTextController.clear();
+                        mailTextController.clear();
+                        setState(() {
+                          errorMessage = message;
+                        });
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
+                      //side: BorderSide(color: Colors.black)
+                    ),
+                    child: const Text(
+                      "アカウント作成",
+                      style: TextStyle(
+                          fontSize: 20
+                      ),
+                    ),
+
+                  ),
+                ),
+              ),
+              const Spacer(flex: 1,),
           ],
         ),
       ),

@@ -1,18 +1,25 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:share_calendar/src/features/authentication/presentation/mail_send_page.dart';
 
+import '../../../common_widgets/application/common_provider.dart';
+import '../application/mail_auth.dart';
+import '../application/user_provider.dart';
 import 'create_account_page.dart';
 
-class LoginPage extends StatefulWidget{
+class LoginPage extends ConsumerStatefulWidget{
   const LoginPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  LoginPageState createState() => LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage>{
+class LoginPageState extends ConsumerState<LoginPage>{
+  late String mailAddress;
+  late String password;
   @override
 
   Widget build(BuildContext context){
@@ -36,6 +43,11 @@ class _LoginPageState extends State<LoginPage>{
                     hintText: 'メールアドレス',
                     border: OutlineInputBorder(),
                   ),
+                  onChanged: (value){
+                    setState(() {
+                      mailAddress = value;
+                    });
+                  },
                 ),
               ),
             ),
@@ -48,6 +60,11 @@ class _LoginPageState extends State<LoginPage>{
                     hintText: 'パスワード',
                     border: OutlineInputBorder(),
                   ),
+                  onChanged: (value){
+                    setState(() {
+                      password = value;
+                    });
+                  },
                 ),
               ),
             ),
@@ -57,7 +74,13 @@ class _LoginPageState extends State<LoginPage>{
                 width: deviceWidth * 0.8,
                 height: 50,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () async{
+                    User? user = await ref.read(authenticateProvider).signInAccount(mailAddress, password);
+                    print(user);
+                    if(user != null){
+                      ref.read(userControllerProvider.notifier).changeTopPage();
+                    }
+                  },
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
                     //side: BorderSide(color: Colors.black)

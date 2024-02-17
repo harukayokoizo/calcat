@@ -1,15 +1,19 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class MailSendPage extends StatefulWidget{
+import '../application/mail_auth.dart';
+
+class MailSendPage extends ConsumerStatefulWidget{
   const MailSendPage({super.key});
 
   @override
-  State<MailSendPage> createState() => _MailSendPageState();
+  MailSendPageState createState() => MailSendPageState();
 }
 
-class _MailSendPageState extends State<MailSendPage>{
+class MailSendPageState extends ConsumerState{
+  late String mailAddress;
   @override
 
   Widget build(BuildContext context){
@@ -34,6 +38,11 @@ class _MailSendPageState extends State<MailSendPage>{
                     hintText: 'メールアドレス',
                     border: OutlineInputBorder(),
                   ),
+                  onChanged: (value){
+                    setState(() {
+                      mailAddress = value;
+                    });
+                  },
                 ),
               ),
             ),
@@ -56,7 +65,9 @@ class _MailSendPageState extends State<MailSendPage>{
                 width: deviceWidth * 0.8,
                 height: 50,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () async{
+                    await ref.read(authenticateProvider).sendPasswordResetEmail(mailAddress);
+                  },
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
                     //side: BorderSide(color: Colors.black)
