@@ -4,6 +4,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../common_widgets/presentation/error_message_widget.dart';
 import '../application/mail_auth.dart';
 import '../application/user_provider.dart';
 
@@ -39,26 +40,7 @@ class CreateAccountPageState extends ConsumerState<CreateAccountPage>{
             if(errorMessage != '')
               Padding(
                 padding: const EdgeInsets.only(bottom: 20.0),
-                child: Container(
-                  width: deviceWidth * 0.8,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Colors.red,
-                  ),
-                  child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Text(
-                          errorMessage,
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w500
-                          ),
-                        ),
-                      )
-                  )
-                ),
+                child: ErrorMessageWidget(errorMessage)
               ),
               Padding(
                 padding: const EdgeInsets.only(bottom: 20.0),

@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:share_calendar/src/features/authentication/presentation/mail_send_page.dart';
 
 import '../../../common_widgets/application/common_provider.dart';
+import '../../../common_widgets/presentation/error_message_widget.dart';
 import '../application/mail_auth.dart';
 import '../application/user_provider.dart';
 import 'create_account_page.dart';
@@ -18,8 +19,11 @@ class LoginPage extends ConsumerStatefulWidget{
 }
 
 class LoginPageState extends ConsumerState<LoginPage>{
+  final passTextController = TextEditingController();
+  final mailTextController = TextEditingController();
   late String mailAddress;
   late String password;
+  late String errorMessage = '';
   @override
 
   Widget build(BuildContext context){
@@ -34,11 +38,17 @@ class LoginPageState extends ConsumerState<LoginPage>{
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Spacer(flex: 3,),
+            if(errorMessage != '')
+              Padding(
+                padding: const EdgeInsets.only(bottom: 20.0),
+                child: ErrorMessageWidget(errorMessage)
+              ),
             Padding(
               padding: const EdgeInsets.only(bottom: 20.0),
               child: SizedBox(
                 width: deviceWidth * 0.8,
                 child: TextFormField(
+                  controller: mailTextController,
                   decoration: const InputDecoration(
                     hintText: 'メールアドレス',
                     border: OutlineInputBorder(),
@@ -56,15 +66,16 @@ class LoginPageState extends ConsumerState<LoginPage>{
               child: SizedBox(
                 width: deviceWidth * 0.8,
                 child: TextFormField(
+                  controller: passTextController,
                   decoration: const InputDecoration(
                     hintText: 'パスワード',
                     border: OutlineInputBorder(),
                   ),
-                  onChanged: (value){
-                    setState(() {
-                      password = value;
-                    });
-                  },
+                  // onChanged: (value){
+                  //   setState(() {
+                  //     password = value;
+                  //   });
+                  // },
                 ),
               ),
             ),
@@ -75,10 +86,15 @@ class LoginPageState extends ConsumerState<LoginPage>{
                 height: 50,
                 child: ElevatedButton(
                   onPressed: () async{
-                    User? user = await ref.read(authenticateProvider).signInAccount(mailAddress, password);
-                    print(user);
-                    if(user != null){
+                    String message = await ref.read(authenticateProvider).signInAccount(mailTextController.text, passTextController.text);
+                    if(message == 'success'){
                       ref.read(userControllerProvider.notifier).changeTopPage();
+                    }else{
+                      passTextController.clear();
+                      mailTextController.clear();
+                      setState(() {
+                        errorMessage = message;
+                      });
                     }
                   },
                   style: ElevatedButton.styleFrom(
@@ -96,13 +112,17 @@ class LoginPageState extends ConsumerState<LoginPage>{
               ),
             ),
             SizedBox(
+              width: deviceWidth * 0.8,
               child: GestureDetector(
-                onTap: () {
-                  Navigator.push(
+                onTap: () async{
+                  await Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => const MailSendPage(),
                     ),
                   );
+                  setState(() {
+                    errorMessage = '';
+                  });
                 },
                 child: const Text(
                   'パスワードはお忘れですか？',
@@ -122,12 +142,15 @@ class LoginPageState extends ConsumerState<LoginPage>{
                 TextSpan(
                   text: 'こちら',
                   style: const TextStyle(color: Colors.blue),
-                  recognizer: TapGestureRecognizer()..onTap =(){
-                    Navigator.push(
+                  recognizer: TapGestureRecognizer()..onTap =()async{
+                    await Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => const CreateAccountPage(),
                       ),
                     );
+                    setState(() {
+                      errorMessage = '';
+                    });
                   }
                 )
               ]

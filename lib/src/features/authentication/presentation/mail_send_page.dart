@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../application/mail_auth.dart';
+import '../application/user_provider.dart';
 
 class MailSendPage extends ConsumerStatefulWidget{
   const MailSendPage({super.key});
@@ -46,18 +47,6 @@ class MailSendPageState extends ConsumerState{
                 ),
               ),
             ),
-            // Padding(
-            //   padding: const EdgeInsets.only(bottom: 20.0),
-            //   child: SizedBox(
-            //     width: deviceWidth * 0.8,
-            //     child: TextFormField(
-            //       decoration: const InputDecoration(
-            //         hintText: 'パスワード',
-            //         border: OutlineInputBorder(),
-            //       ),
-            //     ),
-            //   ),
-            // ),
             const Spacer(flex: 5,),
             Padding(
               padding: const EdgeInsets.only(bottom: 20.0),

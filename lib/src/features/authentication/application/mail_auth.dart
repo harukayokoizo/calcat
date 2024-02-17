@@ -30,20 +30,17 @@ class MailAuth{
   }
 
   //サインイン
-  Future<User?> signInAccount(String emailAddress, String password) async{
+  Future<String> signInAccount(String emailAddress, String password) async{
+    String error = '';
     try {
       final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: emailAddress,
           password: password
       );
-      print(credential);
-      return credential.user;
+      return 'success';
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
-        print('No user found for that email.');
-      } else if (e.code == 'wrong-password') {
-        print('Wrong password provided for that user.');
-      }
+      error = 'ログインに失敗しました。';
+      return error;
     }
   }
 
