@@ -8,6 +8,8 @@ import 'package:share_calendar/src/features/authentication/application/mail_auth
 import 'package:share_calendar/src/features/authentication/application/user_provider.dart';
 import 'package:share_calendar/src/features/authentication/presentation/login_page.dart';
 
+import 'src/features/personal_event/presentation/personal_calendar.dart';
+
 // void main() {
 //   runApp(const MyApp());
 // }
@@ -55,6 +57,59 @@ class MyApp extends ConsumerWidget {
   }
 }
 
+class TopPage extends StatefulWidget{
+  const TopPage({super.key});
+
+  @override
+  State<TopPage> createState() => TopPageState();
+}
+
+class TopPageState extends State<TopPage>{
+  int number = 0;
+  final List<Widget> _pageList = <Widget>[
+    const PersonalCalendarPage()
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    final tabItems = [
+      const BottomNavigationBarItem(
+        icon: Icon(Icons.swipe),
+        label: 'Calendar',
+      ),
+      const BottomNavigationBarItem(
+        icon: Icon(Icons.star),
+        label: 'favorite',
+      ),
+      const BottomNavigationBarItem(
+        icon: Icon(Icons.people),
+        label: 'Profile',
+      ),
+    ];
+
+    return Scaffold(
+      //appBar: AppBar(),
+      // ignore: invalid_use_of_protected_member
+      body: IndexedStack(
+        index: number,
+        children: _pageList,
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        // ignore: invalid_use_of_protected_member
+        currentIndex: number,
+        onTap: (index) {
+          setState(() {
+            number = index;
+          });
+        },
+        items: tabItems,
+      ),
+    );
+  }
+
+}
+
+/*
 class TopPage extends ConsumerWidget{
   const TopPage({super.key});
 
@@ -82,3 +137,4 @@ class TopPage extends ConsumerWidget{
     );
   }
 }
+*/
