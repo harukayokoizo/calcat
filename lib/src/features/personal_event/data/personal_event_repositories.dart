@@ -12,7 +12,7 @@ class PersonalEventRepositories{
   PersonalEventRepositories(this.ref);
 
   //personal_eventコレクションからイベントを取得する
-  Stream<List<PersonalEvent>> getEvent(String uid) async*{
+  Stream<List<PersonalEvent>> getEvent() async*{
     final currentUser = ref.read(currentUserProvider);
     var events = FirebaseFirestore.instance
         .collection('personal_events')
@@ -20,7 +20,6 @@ class PersonalEventRepositories{
         .snapshots().map(
             (snapshots) => snapshots.docs.map(
                     (e){
-                      Map<String, dynamic> movieData = e.data();
                       var event = PersonalEvent.fromJson(e.data());
                       return event;
                     }).toList());
