@@ -18,23 +18,26 @@ class PersonalCalendarPage2 extends ConsumerStatefulWidget{
 class PersonalCalendarPage2State extends ConsumerState{
   @override
   Widget build(BuildContext context) {
-    DateTime _focusedDay = DateTime.now();
-    DateTime? _selectedDay;
+    final events = ref.watch(personalEventList);
+    print(events);
+    // final sampleMap = {
+    //   DateTime.utc(2024, 2, 22): ['bbb'],
+    //   DateTime.utc(2024, 2, 22): ['firstEvent', 'secondEvent'],
+    //   DateTime.utc(2024, 2, 23): ['thirdEvent', 'fourthEvent']
+    // };
     return TableCalendar(
       firstDay: DateTime.utc(2024,01,01),
       lastDay: DateTime.utc(2050,12,31),
       focusedDay: DateTime.now(),
       rowHeight: 90,
       availableGestures: AvailableGestures.horizontalSwipe,
-      selectedDayPredicate: (day) {
-        return isSameDay(_selectedDay, day);
+      locale: 'ja_JP',
+      eventLoader: (date){
+        return events[date] ?? [];
       },
       //カレンダーがタップするたびにコールされる
       onDaySelected: (selectedDay, focusedDay) {
-        setState(() {
-          _selectedDay = selectedDay;
-          _focusedDay = focusedDay; // update `_focusedDay` here as well
-        });
+
       },
     );
   }

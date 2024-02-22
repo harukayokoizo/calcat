@@ -71,7 +71,7 @@ class _TableMultiExampleState extends State<TableMultiExample> {
             lastDay: kLastDay,
             focusedDay: _focusedDay,
             calendarFormat: _calendarFormat,
-            eventLoader: _getEventsForDay,
+            //eventLoader: _getEventsForDay,
             startingDayOfWeek: StartingDayOfWeek.monday,
             selectedDayPredicate: (day) {
               // Use values from Set to mark multiple days as selected

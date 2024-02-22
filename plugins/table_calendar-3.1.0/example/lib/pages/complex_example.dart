@@ -146,7 +146,7 @@ class _TableComplexExampleState extends State<TableComplexExample> {
             rangeEndDay: _rangeEnd,
             calendarFormat: _calendarFormat,
             rangeSelectionMode: _rangeSelectionMode,
-            eventLoader: _getEventsForDay,
+            //eventLoader: _getEventsForDay,
             holidayPredicate: (day) {
               // Every 20th day of the month will be treated as a holiday
               return day.day == 20;
