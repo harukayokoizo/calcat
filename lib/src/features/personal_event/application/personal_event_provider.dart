@@ -30,11 +30,37 @@ class PersonalEventListController extends StateNotifier<Map<dynamic, dynamic>>{
   }
 
   Map changeFormat(List<PersonalEvent> events){
+    // final sampleMap = {
+    //   DateTime.utc(2024, 2, 22): ['firstEvent', 'secondEvent'],
+    //   DateTime.utc(2024, 2, 23): ['thirdEvent', 'fourthEvent']
+    // };
     final Map eventList = {};
-    for(int i = 0; i < events.length; i++){
-      DateTime? from = events[i].from;
-      var date = DateTime.utc(from!.year, from.month, from.day);
-      eventList.addAll({date : [events[i]]});
+    for(final PersonalEvent event in events){
+      List keyDate = [];
+      DateTime? from = event.from;
+      DateTime? to = event.to;
+      from = DateTime.utc(from!.year, from.month, from.day);
+      to = DateTime.utc(to!.year, to.month, to.day);
+      if(from == to){
+        //イベントの開始日と終了日が同じの場合
+        keyDate = [from];
+      }else{
+        do{
+          keyDate.add(from);
+          from.add(const Duration(days: 1));
+        } while(from == to);
+      }
+
+      //eventListにMap<DateTime, List<PersonalEvent>>を追加する
+      for(var date in keyDate){
+        //eventListにdateのkeyが存在するかチェックする
+        var containDate = eventList.containsKey(date);
+        if(containDate){
+          eventList[date].add([event]);
+        }else{
+          eventList.addAll({from : [event]});
+        }
+      }
     }
     return eventList;
   }

@@ -16,29 +16,73 @@ class PersonalCalendarPage2 extends ConsumerStatefulWidget{
 }
 
 class PersonalCalendarPage2State extends ConsumerState{
+  late final ValueNotifier<DateTime> _focusedDay;
+
+  @override
+  void initState() {
+    super.initState();
+    _focusedDay = ValueNotifier(DateTime.now());
+  }
+
   @override
   Widget build(BuildContext context) {
+    final double deviceWidth = MediaQuery.of(context).size.width;
+    final double deviceHeight = MediaQuery.of(context).size.height;
     final events = ref.watch(personalEventList);
     print(events);
-    // final sampleMap = {
-    //   DateTime.utc(2024, 2, 22): ['bbb'],
-    //   DateTime.utc(2024, 2, 22): ['firstEvent', 'secondEvent'],
-    //   DateTime.utc(2024, 2, 23): ['thirdEvent', 'fourthEvent']
-    // };
-    return TableCalendar(
-      firstDay: DateTime.utc(2024,01,01),
-      lastDay: DateTime.utc(2050,12,31),
-      focusedDay: DateTime.now(),
-      rowHeight: 90,
-      availableGestures: AvailableGestures.horizontalSwipe,
-      locale: 'ja_JP',
-      eventLoader: (date){
-        return events[date] ?? [];
-      },
-      //カレンダーがタップするたびにコールされる
-      onDaySelected: (selectedDay, focusedDay) {
+    const week = ['日', '月', '火', '水', '木', '金', '土'];
+    return Scaffold(
+      appBar: AppBar(
+        elevation: 2.0,
+        centerTitle: true,
+        title: ValueListenableBuilder<DateTime>(
+        valueListenable: _focusedDay,
+        builder: (context, value, _) {
+          String title = '${value.year}年${value.month}月';
+          return Text(title);
+        }),
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(30.0),
+          child: Row(
+            children: [
+              for(int i=0; i<7; i++)
+              Expanded(
+                child: Align(
+                    alignment: Alignment.center,
+                    child: Text(week[i])),
+              ),
+            ],
+          ),
+        ),
+      ),
+      body: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        child: Column(
+          children: [
+            TableCalendar(
+              firstDay: DateTime.utc(2024,01,01),
+              lastDay: DateTime.utc(2050,12,31),
+              focusedDay: DateTime.now(),
+              headerVisible: false,
+              rowHeight: 90,
+              //availableGestures: AvailableGestures.verticalSwipe,
+              locale: 'ja_JP',
+              eventLoader: (date){
+                return events[date] ?? [];
+              },
+              //カレンダーがタップするたびにコールされる
+              onDaySelected: (selectedDay, focusedDay) {
 
-      },
+              },
+              onPageChanged: (value){
+                _focusedDay.value = value;
+              }
+            ),
+            Container(height: 100,),
+            Container(height: 100,)
+          ],
+        ),
+      ),
     );
   }
 }

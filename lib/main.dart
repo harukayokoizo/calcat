@@ -90,7 +90,7 @@ class TopPageState extends State<TopPage>{
     ];
 
     return Scaffold(
-      appBar: AppBar(),
+      //appBar: AppBar(),
       // ignore: invalid_use_of_protected_member
       body: IndexedStack(
         index: number,
