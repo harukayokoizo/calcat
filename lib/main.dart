@@ -68,7 +68,7 @@ class TopPage extends StatefulWidget{
 class TopPageState extends State<TopPage>{
   int number = 0;
   final List<Widget> _pageList = <Widget>[
-    const PersonalCalendarPage(),
+    //const PersonalCalendarPage(),
     const PersonalCalendarPage2()
   ];
 

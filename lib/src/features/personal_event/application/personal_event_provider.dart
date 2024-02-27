@@ -4,6 +4,21 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../data/personal_event_repositories.dart';
 import '../domain/personal_event.dart';
 
+//final focusedDayState = StateProvider<DateTime>((ref) => DateTime.now());
+
+final focusedDayProvider = StateNotifierProvider<FocusedDayState, DateTime>(
+        (ref) {
+          return FocusedDayState();
+        }
+);
+class FocusedDayState extends StateNotifier<DateTime>{
+  FocusedDayState() : super(DateTime.now());
+
+  void saveState({required DateTime focusedDay}){
+    state = focusedDay;
+  }
+
+}
 final personalEvents = StreamProvider<List<PersonalEvent>>(
         (ref) {
           var personalEvents = ref.read(personalEventRepositories).getEvent();

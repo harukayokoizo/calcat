@@ -16,31 +16,37 @@ class PersonalCalendarPage2 extends ConsumerStatefulWidget{
 }
 
 class PersonalCalendarPage2State extends ConsumerState{
-  late final ValueNotifier<DateTime> _focusedDay;
+  GlobalKey itemKey = GlobalKey();
+  late final ValueNotifier<DateTime> _focusedDayValue;
+  late CalendarFormat _calendarFormat;
 
   @override
   void initState() {
     super.initState();
-    _focusedDay = ValueNotifier(DateTime.now());
+    _calendarFormat = CalendarFormat.month;
+    _focusedDayValue = ValueNotifier(DateTime.now());
   }
 
   @override
   Widget build(BuildContext context) {
+    var focusedDay = ref.watch(focusedDayProvider);
+    const week = ['日', '月', '火', '水', '木', '金', '土'];
+    late Offset itemPosition = const Offset(0, 0);
     final double deviceWidth = MediaQuery.of(context).size.width;
     final double deviceHeight = MediaQuery.of(context).size.height;
     final events = ref.watch(personalEventList);
-    print(events);
-    const week = ['日', '月', '火', '水', '木', '金', '土'];
+
     return Scaffold(
+      key: itemKey,
       appBar: AppBar(
         elevation: 2.0,
         centerTitle: true,
         title: ValueListenableBuilder<DateTime>(
-        valueListenable: _focusedDay,
-        builder: (context, value, _) {
-          String title = '${value.year}年${value.month}月';
-          return Text(title);
-        }),
+          valueListenable: _focusedDayValue,
+          builder: (context, value, _) {
+            String title = '${value.year}年${value.month}月';
+            return Text(title);
+          }),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(30.0),
           child: Row(
@@ -55,33 +61,46 @@ class PersonalCalendarPage2State extends ConsumerState{
           ),
         ),
       ),
-      body: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        child: Column(
-          children: [
-            TableCalendar(
-              firstDay: DateTime.utc(2024,01,01),
-              lastDay: DateTime.utc(2050,12,31),
-              focusedDay: DateTime.now(),
-              headerVisible: false,
-              rowHeight: 90,
-              //availableGestures: AvailableGestures.verticalSwipe,
-              locale: 'ja_JP',
-              eventLoader: (date){
-                return events[date] ?? [];
-              },
-              //カレンダーがタップするたびにコールされる
-              onDaySelected: (selectedDay, focusedDay) {
-
-              },
-              onPageChanged: (value){
-                _focusedDay.value = value;
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          return TableCalendar(
+            firstDay: DateTime.utc(2024,01,01),
+            lastDay: DateTime.utc(2050,12,31),
+            focusedDay: focusedDay,
+            headerVisible: false,
+            //shouldFillViewport: true,
+            rowHeight: constraints.maxHeight / 6.0,
+            //availableGestures: AvailableGestures.verticalSwipe,
+            //locale: 'ja_JP',
+            calendarFormat: _calendarFormat,
+            eventLoader: (date){
+              return events[date] ?? [];
+            },
+            //カレンダーがタップするたびにコールされる
+            onDaySelected: (selectedDay, focusedDay) {
+              if(_calendarFormat == CalendarFormat.month){
+                setState(() {
+                  _calendarFormat = CalendarFormat.twoWeeks;
+                  //focusedDay = selectedDay;
+                });
+                ref.read(focusedDayProvider.notifier).saveState(focusedDay: selectedDay);
+              }else{
+                setState(() {
+                  _calendarFormat = CalendarFormat.month;
+                  //focusedDay = DateTime.now();
+                });
+                ref.read(focusedDayProvider.notifier).saveState(focusedDay: selectedDay);
               }
-            ),
-            Container(height: 100,),
-            Container(height: 100,)
-          ],
-        ),
+            },
+            onPageChanged: (value){
+              _focusedDayValue.value = value;
+              ref.read(focusedDayProvider.notifier).saveState(focusedDay: value);
+            },
+            onFormatChanged: (format){
+
+            },
+          );
+        }
       ),
     );
   }
