@@ -46,7 +46,7 @@ class PersonalEventList extends ConsumerWidget{
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(20),
                       child: Container(
-                        height: 100,
+                        height: 80,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
                           color: Colors.white,
@@ -59,7 +59,7 @@ class PersonalEventList extends ConsumerWidget{
             ),
           )
         else
-          const Center(child: Text('予定はありません。')),
+          const Center(child: Text('予定はありません。', style: TextStyle(fontWeight: FontWeight.bold),)),
 
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -69,14 +69,23 @@ class PersonalEventList extends ConsumerWidget{
                   final previousDate = focusedDay.subtract(const Duration(days: 1));
                   ref.read(focusedDayProvider.notifier).saveState(focusedDay: previousDate);
                 },
-                icon: Icon(Icons.arrow_back_ios_new)
+                icon: const Icon(Icons.arrow_back_ios_new)
+            ),
+            IconButton(
+              onPressed: (){
+
+              },
+              icon: const Icon(Icons.add,color: Colors.white,),
+              style: IconButton.styleFrom(
+                backgroundColor: Colors.deepPurple,
+              ),
             ),
             IconButton(
                 onPressed: (){
                   final nextDate = focusedDay.add(const Duration(days: 1));
                   ref.read(focusedDayProvider.notifier).saveState(focusedDay: nextDate);
                 },
-                icon: Icon(Icons.arrow_forward_ios)
+                icon: const Icon(Icons.arrow_forward_ios)
             ),
           ],
         )

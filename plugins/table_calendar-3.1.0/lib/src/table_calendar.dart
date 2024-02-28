@@ -453,6 +453,7 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
     var taskViewHeight = widget.rowHeight * 4;
     //print(taskViewHeight);
     return ListView(
+      physics: const NeverScrollableScrollPhysics(),
       children: [
         if (widget.headerVisible)
           ValueListenableBuilder<DateTime>(

@@ -116,7 +116,10 @@ class CalendarCore extends StatelessWidget {
             return Container(
               height: constrainedRowHeight ?? rowHeight,
               decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey, width: 1.0),
+                border: Border.all(
+                    color: day == focusedDay ? Colors.deepPurple : Colors.grey,
+                    width: day == focusedDay ? 2.0 : 1.0,
+                ),
               ),
               child: dayBuilder(context, day, baseDay),
             );

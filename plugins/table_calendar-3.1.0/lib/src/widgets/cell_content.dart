@@ -216,6 +216,7 @@ class CellContent extends StatelessWidget {
   }
 }
 
+/*
 class CellContent2 extends StatelessWidget {
   final DateTime day;
   final DateTime focusedDay;
@@ -390,4 +391,4 @@ class CellContent2 extends StatelessWidget {
       child: cell,
     );
   }
-}
+}*/

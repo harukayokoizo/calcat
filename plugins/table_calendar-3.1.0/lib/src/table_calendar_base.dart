@@ -192,8 +192,12 @@ class _TableCalendarBaseState extends State<TableCalendarBase> {
           child: ValueListenableBuilder<double>(
             valueListenable: _pageHeight,
             builder: (context, value, child) {
-              final height =
-                  constraints.hasBoundedHeight ? constraints.maxHeight : value;
+              double height;
+              height = constraints.hasBoundedHeight ? constraints.maxHeight : value;
+
+              if(widget.calendarFormat == CalendarFormat.twoWeeks){
+                height = widget.rowHeight * 2;
+              }
 
               return AnimatedSize(
                 duration: widget.formatAnimationDuration,
