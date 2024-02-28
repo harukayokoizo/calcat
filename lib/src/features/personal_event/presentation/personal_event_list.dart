@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:share_calendar/src/features/personal_event/presentation/personal_event_registraiton.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 import '../application/datetime_format.dart';
 import '../application/personal_event_provider.dart';
@@ -16,21 +18,31 @@ class PersonalEventList extends ConsumerWidget{
     String date = dateFormat.dateJaFormat();
     Map eventList = ref.read(personalEventList.notifier).state;
     List eventOnDate = eventList[focusedDay] ?? [];
-    print(eventOnDate);
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Padding(
           padding: const EdgeInsets.only(top: 10.0, left: 20.0),
-          child: Align(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              date,
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                date,
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
+              IconButton(
+                  onPressed: (){
+                    ref.read(calendarFormatState.notifier).state = CalendarFormat.month;
+                  },
+                  icon: const Icon(
+                      Icons.clear
+                  ),
+              ),
+            ],
           ),
         ),
         if(eventOnDate.isNotEmpty)
@@ -40,7 +52,7 @@ class PersonalEventList extends ConsumerWidget{
                 children: [
                   for(PersonalEvent event in eventOnDate)
                   Padding(
-                    padding: const EdgeInsets.all(20.0),
+                    padding: const EdgeInsets.all(15.0),
                     child: PhysicalModel(
                       elevation: 5,
                       color: Colors.white,
@@ -73,7 +85,11 @@ class PersonalEventList extends ConsumerWidget{
             ),
             IconButton(
               onPressed: (){
-
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => PersonalEventRegistration(focusedDay),
+                  ),
+                );
               },
               icon: const Icon(Icons.add,color: Colors.white,),
               style: IconButton.styleFrom(

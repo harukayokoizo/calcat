@@ -7,7 +7,11 @@ final dateTimeFormatClass = Provider.autoDispose.family<DateTimeFormat, DateTime
 
 class DateTimeFormat{
   DateTime date;
-  Map<int, String> weekday = {
+  final int year;
+  final int month;
+  final int day;
+  final int weekdayNum;
+  final Map<int, String> weekday = {
     1:'月',
     2:'火',
     3:'水',
@@ -17,13 +21,18 @@ class DateTimeFormat{
     7:'日',
   };
 
-  DateTimeFormat(this.date);
+  DateTimeFormat(this.date) :
+        year = date.year,
+        month = date.month,
+        day = date.day,
+        weekdayNum = date.weekday;
+
 
   String dateJaFormat(){
-    final year = date.year;
-    final month = date.month;
-    final day = date.day;
-    final weekdayNum = date.weekday;
+    final year = this.year;
+    final month = this.month;
+    final day = this.day;
+    final weekdayNum = this.weekdayNum;
 
     return '$year年$month月$day日(${weekday[weekdayNum]})';
   }

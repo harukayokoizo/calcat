@@ -7,7 +7,7 @@ import 'package:share_calendar/src/common_widgets/application/common_provider.da
 import 'package:share_calendar/src/features/authentication/application/mail_auth.dart';
 import 'package:share_calendar/src/features/authentication/application/user_provider.dart';
 import 'package:share_calendar/src/features/authentication/presentation/login_page.dart';
-import 'package:share_calendar/src/features/personal_event/presentation/personal_calendar2.dart';
+import 'package:share_calendar/src/features/personal_event/presentation/personal_calendar.dart';
 
 import 'src/features/personal_event/presentation/personal_calendar.dart';
 
@@ -69,7 +69,7 @@ class TopPageState extends State<TopPage>{
   int number = 0;
   final List<Widget> _pageList = <Widget>[
     //const PersonalCalendarPage(),
-    const PersonalCalendarPage2()
+    const PersonalCalendarPage()
   ];
 
   @override

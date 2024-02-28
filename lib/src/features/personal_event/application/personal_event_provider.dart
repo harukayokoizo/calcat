@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 import '../data/personal_event_repositories.dart';
 import '../domain/personal_event.dart';
 
-//final focusedDayState = StateProvider<DateTime>((ref) => DateTime.now());
+final calendarFormatState = StateProvider<CalendarFormat>((ref) => CalendarFormat.month);
 
 final focusedDayProvider = StateNotifierProvider<FocusedDayState, DateTime>(
         (ref) {

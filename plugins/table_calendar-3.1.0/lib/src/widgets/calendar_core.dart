@@ -105,6 +105,7 @@ class CalendarCore extends StatelessWidget {
           },
           dayBuilder: (context, day) {
             DateTime baseDay;
+            final isToday = isSameDay(day, DateTime.now());
             final previousFocusedDay = focusedDay;
             if (previousFocusedDay == null || previousIndex == null) {
               baseDay = _getBaseDay(calendarFormat, index);
@@ -116,6 +117,7 @@ class CalendarCore extends StatelessWidget {
             return Container(
               height: constrainedRowHeight ?? rowHeight,
               decoration: BoxDecoration(
+                color: isToday ? Colors.grey : Colors.white,
                 border: Border.all(
                     color: day == focusedDay ? Colors.deepPurple : Colors.grey,
                     width: day == focusedDay ? 2.0 : 1.0,
