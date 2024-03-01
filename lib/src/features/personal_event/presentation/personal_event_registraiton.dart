@@ -3,19 +3,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:share_calendar/src/features/personal_event/presentation/repeat_form.dart';
 
+import '../application/personal_event_provider.dart';
+import '../domain/personal_event.dart';
 import 'color_form.dart';
-import 'date_format.dart';
+import 'date_form.dart';
 import 'notification_form.dart';
 
-class PersonalEventRegistration extends StatelessWidget{
+class PersonalEventRegistration extends ConsumerWidget{
   final DateTime focusedDay;
   const PersonalEventRegistration(this.focusedDay, {super.key});
 
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context, WidgetRef ref){
+    final personalEvent = ref.watch(personalEventFormStateProvider);
     final double deviceWidth = MediaQuery.of(context).size.width;
     final double deviceHeight = MediaQuery.of(context).size.height;
     final titleController = TextEditingController();
+    print(personalEvent);
 
     return Scaffold(
       appBar: AppBar(
@@ -40,15 +44,17 @@ class PersonalEventRegistration extends StatelessWidget{
               child: Padding(
                 padding: const EdgeInsets.only(left: 10.0),
                 child: TextFormField(
-                  controller: titleController,
+                  //controller: titleController,
                   decoration: const InputDecoration(
                     hintText: 'イベント名',
                     border: InputBorder.none
                   ),
                   onChanged: (value){
-                    // setState(() {
-                    //   mailAddress = value;
-                    // });
+
+                  },
+                  onFieldSubmitted: (value){
+                    PersonalEvent event = personalEvent.copyWith(title: value);
+                    ref.read(personalEventFormStateProvider.notifier).saveState(event);
                   },
                 ),
               ),
@@ -63,15 +69,14 @@ class PersonalEventRegistration extends StatelessWidget{
               child: Padding(
                 padding: const EdgeInsets.only(left: 10.0),
                 child: TextFormField(
-                  controller: titleController,
+                  //controller: titleController,
                   decoration: const InputDecoration(
                       hintText: 'イベント内容',
                       border: InputBorder.none
                   ),
-                  onChanged: (value){
-                    // setState(() {
-                    //   mailAddress = value;
-                    // });
+                  onFieldSubmitted: (value){
+                    PersonalEvent event = personalEvent.copyWith(event: value);
+                    ref.read(personalEventFormStateProvider.notifier).saveState(event);
                   },
                 ),
               ),

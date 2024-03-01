@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'notification_settings_page.dart';
+
 class NotificationForm extends StatelessWidget{
   const NotificationForm({super.key});
 
@@ -11,7 +13,11 @@ class NotificationForm extends StatelessWidget{
     final double deviceHeight = MediaQuery.of(context).size.height;
     return InkWell(
       onTap: (){
-
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => NotificationSettingsPage(),
+          ),
+        );
       },
       child: Container(
         width: deviceWidth,

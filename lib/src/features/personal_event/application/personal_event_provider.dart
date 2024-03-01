@@ -1,85 +1,102 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:table_calendar/table_calendar.dart';
+import 'package:share_calendar/src/features/personal_event/application/personal_eventlist_provider.dart';
 
-import '../data/personal_event_repositories.dart';
 import '../domain/personal_event.dart';
 
-final calendarFormatState = StateProvider<CalendarFormat>((ref) => CalendarFormat.month);
-
-final focusedDayProvider = StateNotifierProvider<FocusedDayState, DateTime>(
-        (ref) {
-          return FocusedDayState();
-        }
-);
-class FocusedDayState extends StateNotifier<DateTime>{
-  FocusedDayState() : super(DateTime.now());
-
-  void saveState({required DateTime focusedDay}){
-    state = focusedDay;
-  }
-
-}
-final personalEvents = StreamProvider<List<PersonalEvent>>(
-        (ref) {
-          var personalEvents = ref.read(personalEventRepositories).getEvent();
-          return personalEvents;
-        });
-
-final personalEventList = StateNotifierProvider.autoDispose<PersonalEventListController, Map<dynamic, dynamic>>(
-        (ref) {
-          //List<PersonalEvent> events = ref.watch(personalEvents);
-          return PersonalEventListController(ref);
+final personalEventFormStateProvider = StateNotifierProvider.autoDispose<PersonalEventFormState, PersonalEvent>(
+        (ref){
+          final DateTime focusedDay = ref.read(focusedDayProvider);
+          return PersonalEventFormState(focusedDay);
         }
 );
 
-class PersonalEventListController extends StateNotifier<Map<dynamic, dynamic>>{
-  Ref ref;
-  //List<PersonalEvent> personalEvents;
-  PersonalEventListController(this.ref) : super({}){
-    Map eventsDisplay = {};
-    final events = ref.watch(personalEvents);
-    events.whenData((value){
-      eventsDisplay = changeFormat(value);
-      state = eventsDisplay;
-    });
+class PersonalEventFormState extends StateNotifier<PersonalEvent>{
+  DateTime focusedDay;
+  PersonalEventFormState(this.focusedDay) : super(
+      PersonalEvent(
+        uid: null,
+        title: null,
+        event: null,
+        image: null,
+        color: null,
+        isAllDay: true,
+        from: focusedDay,
+        to: focusedDay,
+        sameEventId: null,
+        number: null
+      )
+  );
+
+  void saveState(PersonalEvent event){
+    state = event;
   }
 
-  Map changeFormat(List<PersonalEvent> events){
-    // final sampleMap = {
-    //   DateTime.utc(2024, 2, 22): ['firstEvent', 'secondEvent'],
-    //   DateTime.utc(2024, 2, 23): ['thirdEvent', 'fourthEvent']
-    // };
-    final Map eventList = {};
-    for(final PersonalEvent event in events){
-      List keyDate = [];
-      DateTime? from = event.from;
-      DateTime? to = event.to;
-      from = DateTime.utc(from!.year, from.month, from.day);
-      to = DateTime.utc(to!.year, to.month, to.day);
-      if(from == to){
-        //イベントの開始日と終了日が同じの場合
-        keyDate = [from];
-      }else{
-        do{
-          keyDate.add(from);
-          from.add(const Duration(days: 1));
-        } while(from == to);
-      }
+  void saveFromDate(DateTime selectedDate){
+    PersonalEvent event;
+    final DateTime onlyDate = DateTime(selectedDate.year, selectedDate.month, selectedDate.day);
 
-      //eventListにMap<DateTime, List<PersonalEvent>>を追加する
-      for(var date in keyDate){
-        //eventListにdateのkeyが存在するかチェックする
-        var containDate = eventList.containsKey(date);
-        if(containDate){
-          eventList[date].add([event]);
-        }else{
-          eventList.addAll({from : [event]});
-        }
-      }
+    if (state.to!.isAfter(selectedDate) || state.to!.isAtSameMomentAs(onlyDate)) {
+      event = state.copyWith(from: selectedDate);
+    }else{
+      event = state.copyWith(from: selectedDate, to: selectedDate);
     }
-    return eventList;
+
+    state = event;
   }
 
+  void saveToDate(DateTime selectedDate){
+    final DateTime onlyDate = DateTime(selectedDate.year, selectedDate.month, selectedDate.day);
+
+    if (state.from!.isBefore(selectedDate) || state.from!.isAtSameMomentAs(onlyDate)) {
+      PersonalEvent event = state.copyWith(to: selectedDate);
+      state = event;
+    }
+  }
+
+  void changeOnlyFromDate(DateTime selectedDate){
+    PersonalEvent event;
+    final DateTime selectedDateTime = DateTime(selectedDate.year, selectedDate.month, selectedDate.day, selectedDate.hour, selectedDate.minute);
+    final DateTime saveFromDate = DateTime(selectedDate.year, selectedDate.month, selectedDate.day, state.from!.hour, state.from!.minute);
+
+    if (state.to!.isAfter(selectedDate) || state.to!.isAtSameMomentAs(selectedDateTime)) {
+      event = state.copyWith(from: saveFromDate);
+    }else{
+      event = state.copyWith(from: saveFromDate, to: saveFromDate);
+    }
+
+    state = event;
+  }
+
+  void changeOnlyToDate(DateTime selectedDate){
+    final DateTime selectedDateTime = DateTime(selectedDate.year, selectedDate.month, selectedDate.day, selectedDate.hour, selectedDate.minute);
+    final DateTime saveToDate = DateTime(selectedDate.year, selectedDate.month, selectedDate.day, state.to!.hour, state.to!.minute);
+
+    if(state.from!.isBefore(selectedDate) || state.from!.isAtSameMomentAs(selectedDateTime)) {
+      PersonalEvent event = state.copyWith(to: saveToDate);
+      state = event;
+    }
+  }
+
+  void changeFromDate(DateTime selectedDate){
+    PersonalEvent event;
+    final DateTime dateTime = DateTime(selectedDate.year, selectedDate.month, selectedDate.day, selectedDate.hour, selectedDate.minute);
+
+    if (state.to!.isAfter(selectedDate) || state.to!.isAtSameMomentAs(dateTime)) {
+      event = state.copyWith(from: selectedDate);
+    }else{
+      event = state.copyWith(from: selectedDate, to: selectedDate);
+    }
+
+    state = event;
+  }
+
+  void changeToDate(DateTime selectedDate){
+    final DateTime dateTime = DateTime(selectedDate.year, selectedDate.month, selectedDate.day, selectedDate.hour, selectedDate.minute);
+
+    if (state.from!.isBefore(selectedDate) || state.from!.isAtSameMomentAs(dateTime)) {
+      PersonalEvent event = state.copyWith(to: selectedDate);
+      state = event;
+    }
+  }
 
 }

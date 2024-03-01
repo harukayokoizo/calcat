@@ -11,6 +11,8 @@ class DateTimeFormat{
   final int month;
   final int day;
   final int weekdayNum;
+  final int hour;
+  final int minute;
   final Map<int, String> weekday = {
     1:'月',
     2:'火',
@@ -25,7 +27,9 @@ class DateTimeFormat{
         year = date.year,
         month = date.month,
         day = date.day,
-        weekdayNum = date.weekday;
+        weekdayNum = date.weekday,
+        hour = date.hour,
+        minute = date.minute;
 
 
   String dateJaFormat(){

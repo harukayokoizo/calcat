@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 import 'package:share_calendar/firebase_options.dart';
 import 'package:share_calendar/src/common_widgets/application/common_provider.dart';
 import 'package:share_calendar/src/features/authentication/application/mail_auth.dart';
@@ -19,6 +20,8 @@ Future<void> main() async {
   // main()の中で非同期処理を行う際には、下記を実行しなければいけないらしい
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  //Intl.defaultLocale = 'ja_JP';
 
   // iOS,androidともに縦向き固定
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])

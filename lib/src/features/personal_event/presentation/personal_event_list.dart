@@ -5,7 +5,7 @@ import 'package:share_calendar/src/features/personal_event/presentation/personal
 import 'package:table_calendar/table_calendar.dart';
 
 import '../application/datetime_format.dart';
-import '../application/personal_event_provider.dart';
+import '../application/personal_eventlist_provider.dart';
 import '../domain/personal_event.dart';
 
 class PersonalEventList extends ConsumerWidget{

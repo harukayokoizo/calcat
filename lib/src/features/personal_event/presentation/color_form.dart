@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'color_settings_page.dart';
+
 class ColorForm extends StatelessWidget{
   const ColorForm({super.key});
 
@@ -11,7 +13,11 @@ class ColorForm extends StatelessWidget{
 
     return InkWell(
       onTap: (){
-
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => ColorSettingsPage(),
+          ),
+        );
       },
       child: Container(
         width: deviceWidth,
