@@ -114,7 +114,7 @@ Widget dateFormFormat(BuildContext context, WidgetRef ref, PersonalEvent persona
           context: context,
           initialDate: focusedDay,
           firstDate: DateTime(2024,1,1),
-          lastDate: DateTime(2025,1,1),
+          lastDate: DateTime(2050,1,1),
           //locale: const Locale('ja', 'JP'),
         );
 
@@ -141,7 +141,7 @@ Widget dateFormFormat(BuildContext context, WidgetRef ref, PersonalEvent persona
           Text(
             '${dateFormat.month}月${dateFormat.day}日',
             style: const TextStyle(
-              fontSize: 18,
+              fontSize: 22,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -159,7 +159,7 @@ Widget dateFormFormat(BuildContext context, WidgetRef ref, PersonalEvent persona
               context: context,
               initialDate: focusedDay,
               firstDate: DateTime(2024,1,1),
-              lastDate: DateTime(2025,1,1),
+              lastDate: DateTime(2050,1,1),
               //locale: const Locale('jp', 'JA'),
             );
             if(picked != null) {
@@ -174,7 +174,7 @@ Widget dateFormFormat(BuildContext context, WidgetRef ref, PersonalEvent persona
             '${dateFormat.month}月${dateFormat.day}日($weekday曜日)',
             style: const TextStyle(
                 fontWeight: FontWeight.bold,
-                fontSize: 12
+                fontSize: 13
             ),
           ),
         ),
