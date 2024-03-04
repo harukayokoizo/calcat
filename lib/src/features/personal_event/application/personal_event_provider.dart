@@ -18,16 +18,33 @@ class PersonalEventFormState extends StateNotifier<PersonalEvent>{
         title: null,
         event: null,
         image: null,
-        color: null,
+        color: 0xFFA9A9A9,
         isAllDay: true,
         from: focusedDay,
         to: focusedDay,
+        repeat: 0,
+        endDate: null,
         sameEventId: null,
         number: null
       )
   );
 
   void saveState(PersonalEvent event){
+    state = event;
+  }
+
+  void changeColor(int color){
+    final event = state.copyWith(color: color);
+    state = event;
+  }
+
+  void changeRepeatEndDate(DateTime endDate){
+    final event = state.copyWith(endDate: endDate);
+    state = event;
+  }
+
+  void changeRepeat(int repeat){
+    final event = state.copyWith(repeat: repeat);
     state = event;
   }
 

@@ -14,10 +14,12 @@ abstract class PersonalEvent with _$PersonalEvent{
     String? title,
     String? event,
     String? image,
-    String? color,
+    int? color,
     bool? isAllDay,
     @TimestampConverter() DateTime? from,
     @TimestampConverter() DateTime? to,
+    int? repeat,
+    @TimestampConverter() DateTime? endDate,
     String? sameEventId,
     int? number,
   }) = _PersonalEvent;

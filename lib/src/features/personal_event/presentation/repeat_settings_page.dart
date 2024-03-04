@@ -11,17 +11,20 @@ class RepeatSettingsPage extends ConsumerWidget{
 
   @override
   Widget build(BuildContext context, WidgetRef ref){
-    //final personalEvent = ref.read(personalEventFormStateProvider);
+    final personalEvent = ref.read(personalEventFormStateProvider);
     final endDate = ref.watch(repeatEndDate);
     final repeat = ref.read(repeatList);
-    print(endDate);
+    final check = ref.watch(repeatCheck);
     return Scaffold(
       appBar: AppBar(
+        elevation: 5,
         title: Text('繰り返し設定'),
         centerTitle: true,
         actions: [
           TextButton(
             onPressed: () {
+              ref.read(personalEventFormStateProvider.notifier).changeRepeatEndDate(endDate);
+              ref.read(personalEventFormStateProvider.notifier).changeRepeat(check);
               Navigator.of(context).pop();
             },
             child: const Padding(
@@ -56,9 +59,9 @@ class RepeatSettingsPage extends ConsumerWidget{
             shrinkWrap: true,
             itemCount: 4,
             itemBuilder: (BuildContext context, int index){
-              //bool check = checkList.contains(index) ? true : false;
+              bool value = index == check ? true : false;
               return Container(
-                height: 60,
+                //height: 60,
                 decoration: const BoxDecoration(
                   border: Border(
                       top: BorderSide(color: Colors.grey, width: 1.0),
@@ -72,23 +75,17 @@ class RepeatSettingsPage extends ConsumerWidget{
                       Text(
                         repeat[index],
                         style: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold
+                            fontSize: 16,
+                            //fontWeight: FontWeight.bold
                         ),
                       ),
                       const Expanded(
                         child: SizedBox(),
                       ),
                       Checkbox(
-                        value: false,
+                        value: value,
                         onChanged: (value){
-                          // if(checkList.contains(index)){
-                          //   checkList.remove(index);
-                          //   ref.read(notificationCheckList.notifier).state = [...checkList];
-                          // }else{
-                          //   checkList.add(index);
-                          //   ref.read(notificationCheckList.notifier).state = [...checkList];
-                          // }
+                          ref.read(repeatCheck.notifier).state = index;
                         },
                         shape: const RoundedRectangleBorder(
                             borderRadius: BorderRadius.all(Radius.circular(10))
@@ -111,26 +108,28 @@ class RepeatSettingsPage extends ConsumerWidget{
               ),
             ),
           ),
-          TextButton(
-            onPressed: () {
-              DatePicker.showDatePicker(context,
-                  showTitleActions: true,
-                  minTime: DateTime(2024, 1, 1),
-                  maxTime: DateTime(2050, 12, 31),
-                  onChanged: (date) {
-                    print('change $date');
-                  },
-                  onConfirm: (date) {
-                    print('confirm $date');
-                    ref.read(repeatEndDate.notifier).state = date;
-                  },
-                  currentTime: endDate,
-                  locale: LocaleType.jp
-              );
-            },
-            child: Text(
-              '${endDate.year}年${endDate.month}月${endDate.day}日',
-              style: TextStyle(color: Colors.blue),
+          Align(
+            alignment: Alignment.center,
+            child: TextButton(
+              onPressed: () {
+                DatePicker.showDatePicker(context,
+                    showTitleActions: true,
+                    minTime: personalEvent.from!,
+                    maxTime: DateTime(2050, 12, 31),
+                    onConfirm: (date) {
+                      ref.read(repeatEndDate.notifier).state = date;
+                    },
+                    currentTime: endDate,
+                    locale: LocaleType.jp
+                );
+              },
+              child: Text(
+                '${endDate.year}年${endDate.month}月${endDate.day}日',
+                style: TextStyle(
+                  color: Colors.blue,
+                  fontSize: 30,
+                ),
+              ),
             ),
           ),
         ],

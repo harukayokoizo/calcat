@@ -24,12 +24,15 @@ mixin _$PersonalEvent {
   String? get title => throw _privateConstructorUsedError;
   String? get event => throw _privateConstructorUsedError;
   String? get image => throw _privateConstructorUsedError;
-  String? get color => throw _privateConstructorUsedError;
+  int? get color => throw _privateConstructorUsedError;
   bool? get isAllDay => throw _privateConstructorUsedError;
   @TimestampConverter()
   DateTime? get from => throw _privateConstructorUsedError;
   @TimestampConverter()
   DateTime? get to => throw _privateConstructorUsedError;
+  int? get repeat => throw _privateConstructorUsedError;
+  @TimestampConverter()
+  DateTime? get endDate => throw _privateConstructorUsedError;
   String? get sameEventId => throw _privateConstructorUsedError;
   int? get number => throw _privateConstructorUsedError;
 
@@ -50,10 +53,12 @@ abstract class $PersonalEventCopyWith<$Res> {
       String? title,
       String? event,
       String? image,
-      String? color,
+      int? color,
       bool? isAllDay,
       @TimestampConverter() DateTime? from,
       @TimestampConverter() DateTime? to,
+      int? repeat,
+      @TimestampConverter() DateTime? endDate,
       String? sameEventId,
       int? number});
 }
@@ -79,6 +84,8 @@ class _$PersonalEventCopyWithImpl<$Res, $Val extends PersonalEvent>
     Object? isAllDay = freezed,
     Object? from = freezed,
     Object? to = freezed,
+    Object? repeat = freezed,
+    Object? endDate = freezed,
     Object? sameEventId = freezed,
     Object? number = freezed,
   }) {
@@ -102,7 +109,7 @@ class _$PersonalEventCopyWithImpl<$Res, $Val extends PersonalEvent>
       color: freezed == color
           ? _value.color
           : color // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as int?,
       isAllDay: freezed == isAllDay
           ? _value.isAllDay
           : isAllDay // ignore: cast_nullable_to_non_nullable
@@ -114,6 +121,14 @@ class _$PersonalEventCopyWithImpl<$Res, $Val extends PersonalEvent>
       to: freezed == to
           ? _value.to
           : to // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      repeat: freezed == repeat
+          ? _value.repeat
+          : repeat // ignore: cast_nullable_to_non_nullable
+              as int?,
+      endDate: freezed == endDate
+          ? _value.endDate
+          : endDate // ignore: cast_nullable_to_non_nullable
               as DateTime?,
       sameEventId: freezed == sameEventId
           ? _value.sameEventId
@@ -140,10 +155,12 @@ abstract class _$$PersonalEventImplCopyWith<$Res>
       String? title,
       String? event,
       String? image,
-      String? color,
+      int? color,
       bool? isAllDay,
       @TimestampConverter() DateTime? from,
       @TimestampConverter() DateTime? to,
+      int? repeat,
+      @TimestampConverter() DateTime? endDate,
       String? sameEventId,
       int? number});
 }
@@ -167,6 +184,8 @@ class __$$PersonalEventImplCopyWithImpl<$Res>
     Object? isAllDay = freezed,
     Object? from = freezed,
     Object? to = freezed,
+    Object? repeat = freezed,
+    Object? endDate = freezed,
     Object? sameEventId = freezed,
     Object? number = freezed,
   }) {
@@ -190,7 +209,7 @@ class __$$PersonalEventImplCopyWithImpl<$Res>
       color: freezed == color
           ? _value.color
           : color // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as int?,
       isAllDay: freezed == isAllDay
           ? _value.isAllDay
           : isAllDay // ignore: cast_nullable_to_non_nullable
@@ -202,6 +221,14 @@ class __$$PersonalEventImplCopyWithImpl<$Res>
       to: freezed == to
           ? _value.to
           : to // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      repeat: freezed == repeat
+          ? _value.repeat
+          : repeat // ignore: cast_nullable_to_non_nullable
+              as int?,
+      endDate: freezed == endDate
+          ? _value.endDate
+          : endDate // ignore: cast_nullable_to_non_nullable
               as DateTime?,
       sameEventId: freezed == sameEventId
           ? _value.sameEventId
@@ -227,6 +254,8 @@ class _$PersonalEventImpl implements _PersonalEvent {
       this.isAllDay,
       @TimestampConverter() this.from,
       @TimestampConverter() this.to,
+      this.repeat,
+      @TimestampConverter() this.endDate,
       this.sameEventId,
       this.number});
 
@@ -242,7 +271,7 @@ class _$PersonalEventImpl implements _PersonalEvent {
   @override
   final String? image;
   @override
-  final String? color;
+  final int? color;
   @override
   final bool? isAllDay;
   @override
@@ -252,13 +281,18 @@ class _$PersonalEventImpl implements _PersonalEvent {
   @TimestampConverter()
   final DateTime? to;
   @override
+  final int? repeat;
+  @override
+  @TimestampConverter()
+  final DateTime? endDate;
+  @override
   final String? sameEventId;
   @override
   final int? number;
 
   @override
   String toString() {
-    return 'PersonalEvent(uid: $uid, title: $title, event: $event, image: $image, color: $color, isAllDay: $isAllDay, from: $from, to: $to, sameEventId: $sameEventId, number: $number)';
+    return 'PersonalEvent(uid: $uid, title: $title, event: $event, image: $image, color: $color, isAllDay: $isAllDay, from: $from, to: $to, repeat: $repeat, endDate: $endDate, sameEventId: $sameEventId, number: $number)';
   }
 
   @override
@@ -275,6 +309,8 @@ class _$PersonalEventImpl implements _PersonalEvent {
                 other.isAllDay == isAllDay) &&
             (identical(other.from, from) || other.from == from) &&
             (identical(other.to, to) || other.to == to) &&
+            (identical(other.repeat, repeat) || other.repeat == repeat) &&
+            (identical(other.endDate, endDate) || other.endDate == endDate) &&
             (identical(other.sameEventId, sameEventId) ||
                 other.sameEventId == sameEventId) &&
             (identical(other.number, number) || other.number == number));
@@ -283,7 +319,7 @@ class _$PersonalEventImpl implements _PersonalEvent {
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, uid, title, event, image, color,
-      isAllDay, from, to, sameEventId, number);
+      isAllDay, from, to, repeat, endDate, sameEventId, number);
 
   @JsonKey(ignore: true)
   @override
@@ -305,10 +341,12 @@ abstract class _PersonalEvent implements PersonalEvent {
       final String? title,
       final String? event,
       final String? image,
-      final String? color,
+      final int? color,
       final bool? isAllDay,
       @TimestampConverter() final DateTime? from,
       @TimestampConverter() final DateTime? to,
+      final int? repeat,
+      @TimestampConverter() final DateTime? endDate,
       final String? sameEventId,
       final int? number}) = _$PersonalEventImpl;
 
@@ -324,7 +362,7 @@ abstract class _PersonalEvent implements PersonalEvent {
   @override
   String? get image;
   @override
-  String? get color;
+  int? get color;
   @override
   bool? get isAllDay;
   @override
@@ -333,6 +371,11 @@ abstract class _PersonalEvent implements PersonalEvent {
   @override
   @TimestampConverter()
   DateTime? get to;
+  @override
+  int? get repeat;
+  @override
+  @TimestampConverter()
+  DateTime? get endDate;
   @override
   String? get sameEventId;
   @override

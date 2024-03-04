@@ -13,6 +13,14 @@ final repeatList = StateProvider<List<dynamic>>(
 final repeatEndDate = StateProvider.autoDispose<DateTime>(
         (ref){
           final personalEvent = ref.read(personalEventFormStateProvider);
-          return personalEvent.from!;
+          DateTime date = personalEvent.endDate ?? personalEvent.from!.add(const Duration(days: 31));
+          return date;
+        }
+);
+
+final repeatCheck = StateProvider.autoDispose<int>(
+        (ref){
+          final personalEvent = ref.read(personalEventFormStateProvider);
+          return personalEvent.repeat!;
         }
 );

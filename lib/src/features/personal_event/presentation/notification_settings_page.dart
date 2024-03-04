@@ -13,6 +13,7 @@ class NotificationSettingsPage extends ConsumerWidget{
     final checkList = ref.watch(notificationCheckList);
     return Scaffold(
       appBar: AppBar(
+        elevation: 5,
         title: Text('通知設定'),
         centerTitle: true,
         actions: [
@@ -37,10 +38,8 @@ class NotificationSettingsPage extends ConsumerWidget{
       body: ListView.builder(
           itemCount: 10,
           itemBuilder: (BuildContext context, int index){
-            print(checkList);
             bool check = checkList.contains(index) ? true : false;
             return Container(
-              height: 60,
               decoration: const BoxDecoration(
                 border: Border(
                     top: BorderSide(color: Colors.grey, width: 1.0),
@@ -55,7 +54,7 @@ class NotificationSettingsPage extends ConsumerWidget{
                       notification[index],
                       style: const TextStyle(
                         fontSize: 18,
-                        fontWeight: FontWeight.bold
+                        //fontWeight: FontWeight.bold
                       ),
                     ),
                     const Expanded(

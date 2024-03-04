@@ -12,12 +12,15 @@ _$PersonalEventImpl _$$PersonalEventImplFromJson(Map<String, dynamic> json) =>
       title: json['title'] as String?,
       event: json['event'] as String?,
       image: json['image'] as String?,
-      color: json['color'] as String?,
+      color: json['color'] as int?,
       isAllDay: json['isAllDay'] as bool?,
       from: _$JsonConverterFromJson<Timestamp, DateTime>(
           json['from'], const TimestampConverter().fromJson),
       to: _$JsonConverterFromJson<Timestamp, DateTime>(
           json['to'], const TimestampConverter().fromJson),
+      repeat: json['repeat'] as int?,
+      endDate: _$JsonConverterFromJson<Timestamp, DateTime>(
+          json['endDate'], const TimestampConverter().fromJson),
       sameEventId: json['sameEventId'] as String?,
       number: json['number'] as int?,
     );
@@ -34,6 +37,9 @@ Map<String, dynamic> _$$PersonalEventImplToJson(_$PersonalEventImpl instance) =>
           instance.from, const TimestampConverter().toJson),
       'to': _$JsonConverterToJson<Timestamp, DateTime>(
           instance.to, const TimestampConverter().toJson),
+      'repeat': instance.repeat,
+      'endDate': _$JsonConverterToJson<Timestamp, DateTime>(
+          instance.endDate, const TimestampConverter().toJson),
       'sameEventId': instance.sameEventId,
       'number': instance.number,
     };
