@@ -28,26 +28,14 @@ class PersonalEventRepositories{
     yield* events;
   }
 
-  Future<void> createEvent() async{
-    final personalEvent = ref.read(personalEventFormStateProvider);
-    var event = await FirebaseFirestore.instance
-        .collection('personal_events')
-        .add(
-        {
-          'uid': personalEvent.uid,
-          'title': personalEvent.title,
-          'event': personalEvent.event,
-          'image': personalEvent.image,
-          'color': personalEvent.color,
-          'isAllDay': personalEvent.isAllDay,
-          'from': personalEvent.from,
-          'to': personalEvent.to,
-          'notification': personalEvent.notification,
-          'repeat': personalEvent.repeat,
-          'endDate': personalEvent.endDate,
-          'sameEventId': personalEvent.sameEventId,
-          'number': personalEvent.number,
-        }
-        );
+  Future<void> createEvent(List events) async{
+    WriteBatch batch = FirebaseFirestore.instance.batch();
+    final db = FirebaseFirestore.instance.collection('personal_events');
+
+    for(var data in events){
+      batch.set(db.doc(), data);
+    }
+
+    await batch.commit();
   }
 }

@@ -2,20 +2,22 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:share_calendar/src/features/personal_event/application/personal_eventlist_provider.dart';
 
 import '../../../common_widgets/application/common_provider.dart';
+import '../data/personal_event_repositories.dart';
 import '../domain/personal_event.dart';
 
 final personalEventFormStateProvider = StateNotifierProvider.autoDispose<PersonalEventFormState, PersonalEvent>(
         (ref){
           final user = ref.read(currentUser);
           final DateTime focusedDay = ref.read(focusedDayProvider);
-          return PersonalEventFormState(user!.uid, focusedDay);
+          return PersonalEventFormState(ref, user!.uid, focusedDay);
         }
 );
 
 class PersonalEventFormState extends StateNotifier<PersonalEvent>{
+  Ref ref;
   String uid;
   DateTime focusedDay;
-  PersonalEventFormState(this.uid, this.focusedDay) : super(
+  PersonalEventFormState(this.ref, this.uid, this.focusedDay) : super(
       PersonalEvent(
         uid: uid,
         title: null,
@@ -140,6 +142,43 @@ class PersonalEventFormState extends StateNotifier<PersonalEvent>{
       PersonalEvent event = state.copyWith(to: selectedDate);
       state = event;
     }
+  }
+
+  void createEvent(){
+    DateTime from = DateTime.utc(state.from!.year, state.from!.month, state.from!.day);
+    DateTime to = DateTime.utc(state.to!.year, state.to!.month, state.to!.day);
+    Map<String, dynamic> data = {
+      'uid': state.uid,
+      'title': state.title,
+      'event': state.event,
+      'image': state.image,
+      'color': state.color,
+      'isAllDay': state.isAllDay,
+      'from': state.from,
+      'to': state.to,
+      'notification': state.notification,
+      'repeat': state.repeat,
+      'endDate': state.endDate,
+      'sameEventId': state.sameEventId,
+      'number': state.number,
+    };
+
+    List events = [data];
+    int days = state.repeat == 1 ? 1 : state.repeat == 2 ? 7 : 0;
+
+    while(from.isBefore(state.endDate!)){
+      Map<String, dynamic> newData = Map.of(data);
+      DateTime newFrom = from.add(Duration(days: days));
+      DateTime newTo = to.add(Duration(days: days));
+      newData['from'] = newFrom;
+      newData['to'] = newTo;
+      events.add(newData);
+      from = from.add(Duration(days: days));
+      to = to.add(Duration(days: days));
+    }
+
+    print(events);
+    ref.read(personalEventRepositories).createEvent(events);
   }
 
 }

@@ -57,7 +57,7 @@ class RepeatSettingsPage extends ConsumerWidget{
           ),
           ListView.builder(
             shrinkWrap: true,
-            itemCount: 4,
+            itemCount: 3,
             itemBuilder: (BuildContext context, int index){
               bool value = index == check ? true : false;
               return Container(

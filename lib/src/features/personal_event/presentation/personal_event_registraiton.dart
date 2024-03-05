@@ -102,7 +102,7 @@ class SaveEventButton extends ConsumerWidget{
     final personalEvent = ref.watch(personalEventFormStateProvider);
     return ElevatedButton(
       onPressed: personalEvent.title == null || personalEvent.title!.isEmpty ? null : (){
-        ref.read(personalEventRepositories).createEvent();
+        ref.read(personalEventFormStateProvider.notifier).createEvent();
         Navigator.of(context).pop();
       },
       style: ElevatedButton.styleFrom(

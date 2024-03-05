@@ -61,10 +61,11 @@ class PersonalEventListController extends StateNotifier<Map<dynamic, dynamic>>{
         //イベントの開始日と終了日が同じの場合
         keyDate = [from];
       }else{
-        do{
-          keyDate.add(from);
-          from.add(const Duration(days: 1));
-        } while(from == to);
+        for(int i = 0;i <= to.difference(from).inDays;i++){
+          keyDate.add(from.add(Duration(days: i)));
+        }
+        // do{
+        // } while(to.difference(from).inDays == i);
       }
 
       //eventListにMap<DateTime, List<PersonalEvent>>を追加する
@@ -76,7 +77,7 @@ class PersonalEventListController extends StateNotifier<Map<dynamic, dynamic>>{
           value.add(event);
           eventList[date] = value;
         }else{
-          eventList.addAll({from : [event]});
+          eventList.addAll({date : [event]});
         }
       }
     }

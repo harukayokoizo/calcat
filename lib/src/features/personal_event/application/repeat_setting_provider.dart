@@ -6,14 +6,14 @@ final repeatList = StateProvider<List<dynamic>>(
           'なし',
           '毎日',
           '毎週',
-          '毎月'
+          //'毎月'
         ]
 );
 
 final repeatEndDate = StateProvider.autoDispose<DateTime>(
         (ref){
           final personalEvent = ref.read(personalEventFormStateProvider);
-          DateTime date = personalEvent.endDate ?? personalEvent.from!.add(const Duration(days: 31));
+          DateTime date = personalEvent.endDate ?? personalEvent.from!.add(const Duration(days: 7));
           return date;
         }
 );
