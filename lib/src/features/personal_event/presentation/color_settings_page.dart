@@ -12,8 +12,6 @@ class ColorSettingsPage extends ConsumerWidget{
   Widget build(BuildContext context, WidgetRef ref){
     final colors = ref.read(colorList);
     final colorCode = ref.watch(colorCheck);
-    print(colors);
-    print(colorCode);
     return Scaffold(
       appBar: AppBar(
         elevation: 5,

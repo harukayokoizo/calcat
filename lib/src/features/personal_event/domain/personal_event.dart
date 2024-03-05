@@ -18,6 +18,7 @@ abstract class PersonalEvent with _$PersonalEvent{
     bool? isAllDay,
     @TimestampConverter() DateTime? from,
     @TimestampConverter() DateTime? to,
+    List<int>? notification,
     int? repeat,
     @TimestampConverter() DateTime? endDate,
     String? sameEventId,

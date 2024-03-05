@@ -37,6 +37,7 @@ class PersonalCalendarPageState extends ConsumerState{
     final double deviceWidth = MediaQuery.of(context).size.width;
     final double deviceHeight = MediaQuery.of(context).size.height;
     final events = ref.watch(personalEventList);
+    print(events);
 
     return Scaffold(
       key: itemKey,
@@ -73,7 +74,7 @@ class PersonalCalendarPageState extends ConsumerState{
             rowHeight: constraints.maxHeight / 6.0,
             //shouldFillViewport: true,
             //availableGestures: AvailableGestures.verticalSwipe,
-            //locale: 'ja_JP',
+            locale: 'ja_JP',
             calendarFormat: calendarFormat,
             eventLoader: (date){
               return events[date] ?? [];

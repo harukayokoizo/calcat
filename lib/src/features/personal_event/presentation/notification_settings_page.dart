@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../application/notification_setting_provider.dart';
+import '../application/personal_event_provider.dart';
 
 class NotificationSettingsPage extends ConsumerWidget{
   const NotificationSettingsPage({super.key});
@@ -19,6 +20,9 @@ class NotificationSettingsPage extends ConsumerWidget{
         actions: [
           TextButton(
             onPressed: () {
+              if(checkList.isNotEmpty){
+                ref.read(personalEventFormStateProvider.notifier).changeNotification(checkList);
+              }
               Navigator.of(context).pop();
             },
             child: const Padding(
@@ -63,12 +67,13 @@ class NotificationSettingsPage extends ConsumerWidget{
                     Checkbox(
                       value: check,
                       onChanged: (value){
+                        final newList = checkList.toList();
                         if(checkList.contains(index)){
-                          checkList.remove(index);
-                          ref.read(notificationCheckList.notifier).state = [...checkList];
+                          newList.remove(index);
+                          ref.read(notificationCheckList.notifier).state = [...newList];
                         }else{
-                          checkList.add(index);
-                          ref.read(notificationCheckList.notifier).state = [...checkList];
+                          newList.add(index);
+                          ref.read(notificationCheckList.notifier).state = [...newList];
                         }
                       },
                       shape: const RoundedRectangleBorder(

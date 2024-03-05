@@ -18,6 +18,9 @@ _$PersonalEventImpl _$$PersonalEventImplFromJson(Map<String, dynamic> json) =>
           json['from'], const TimestampConverter().fromJson),
       to: _$JsonConverterFromJson<Timestamp, DateTime>(
           json['to'], const TimestampConverter().fromJson),
+      notification: (json['notification'] as List<dynamic>?)
+          ?.map((e) => e as int)
+          .toList(),
       repeat: json['repeat'] as int?,
       endDate: _$JsonConverterFromJson<Timestamp, DateTime>(
           json['endDate'], const TimestampConverter().fromJson),
@@ -37,6 +40,7 @@ Map<String, dynamic> _$$PersonalEventImplToJson(_$PersonalEventImpl instance) =>
           instance.from, const TimestampConverter().toJson),
       'to': _$JsonConverterToJson<Timestamp, DateTime>(
           instance.to, const TimestampConverter().toJson),
+      'notification': instance.notification,
       'repeat': instance.repeat,
       'endDate': _$JsonConverterToJson<Timestamp, DateTime>(
           instance.endDate, const TimestampConverter().toJson),

@@ -30,6 +30,7 @@ mixin _$PersonalEvent {
   DateTime? get from => throw _privateConstructorUsedError;
   @TimestampConverter()
   DateTime? get to => throw _privateConstructorUsedError;
+  List<int>? get notification => throw _privateConstructorUsedError;
   int? get repeat => throw _privateConstructorUsedError;
   @TimestampConverter()
   DateTime? get endDate => throw _privateConstructorUsedError;
@@ -57,6 +58,7 @@ abstract class $PersonalEventCopyWith<$Res> {
       bool? isAllDay,
       @TimestampConverter() DateTime? from,
       @TimestampConverter() DateTime? to,
+      List<int>? notification,
       int? repeat,
       @TimestampConverter() DateTime? endDate,
       String? sameEventId,
@@ -84,6 +86,7 @@ class _$PersonalEventCopyWithImpl<$Res, $Val extends PersonalEvent>
     Object? isAllDay = freezed,
     Object? from = freezed,
     Object? to = freezed,
+    Object? notification = freezed,
     Object? repeat = freezed,
     Object? endDate = freezed,
     Object? sameEventId = freezed,
@@ -122,6 +125,10 @@ class _$PersonalEventCopyWithImpl<$Res, $Val extends PersonalEvent>
           ? _value.to
           : to // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      notification: freezed == notification
+          ? _value.notification
+          : notification // ignore: cast_nullable_to_non_nullable
+              as List<int>?,
       repeat: freezed == repeat
           ? _value.repeat
           : repeat // ignore: cast_nullable_to_non_nullable
@@ -159,6 +166,7 @@ abstract class _$$PersonalEventImplCopyWith<$Res>
       bool? isAllDay,
       @TimestampConverter() DateTime? from,
       @TimestampConverter() DateTime? to,
+      List<int>? notification,
       int? repeat,
       @TimestampConverter() DateTime? endDate,
       String? sameEventId,
@@ -184,6 +192,7 @@ class __$$PersonalEventImplCopyWithImpl<$Res>
     Object? isAllDay = freezed,
     Object? from = freezed,
     Object? to = freezed,
+    Object? notification = freezed,
     Object? repeat = freezed,
     Object? endDate = freezed,
     Object? sameEventId = freezed,
@@ -222,6 +231,10 @@ class __$$PersonalEventImplCopyWithImpl<$Res>
           ? _value.to
           : to // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      notification: freezed == notification
+          ? _value._notification
+          : notification // ignore: cast_nullable_to_non_nullable
+              as List<int>?,
       repeat: freezed == repeat
           ? _value.repeat
           : repeat // ignore: cast_nullable_to_non_nullable
@@ -254,10 +267,12 @@ class _$PersonalEventImpl implements _PersonalEvent {
       this.isAllDay,
       @TimestampConverter() this.from,
       @TimestampConverter() this.to,
+      final List<int>? notification,
       this.repeat,
       @TimestampConverter() this.endDate,
       this.sameEventId,
-      this.number});
+      this.number})
+      : _notification = notification;
 
   factory _$PersonalEventImpl.fromJson(Map<String, dynamic> json) =>
       _$$PersonalEventImplFromJson(json);
@@ -280,6 +295,16 @@ class _$PersonalEventImpl implements _PersonalEvent {
   @override
   @TimestampConverter()
   final DateTime? to;
+  final List<int>? _notification;
+  @override
+  List<int>? get notification {
+    final value = _notification;
+    if (value == null) return null;
+    if (_notification is EqualUnmodifiableListView) return _notification;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
   @override
   final int? repeat;
   @override
@@ -292,7 +317,7 @@ class _$PersonalEventImpl implements _PersonalEvent {
 
   @override
   String toString() {
-    return 'PersonalEvent(uid: $uid, title: $title, event: $event, image: $image, color: $color, isAllDay: $isAllDay, from: $from, to: $to, repeat: $repeat, endDate: $endDate, sameEventId: $sameEventId, number: $number)';
+    return 'PersonalEvent(uid: $uid, title: $title, event: $event, image: $image, color: $color, isAllDay: $isAllDay, from: $from, to: $to, notification: $notification, repeat: $repeat, endDate: $endDate, sameEventId: $sameEventId, number: $number)';
   }
 
   @override
@@ -309,6 +334,8 @@ class _$PersonalEventImpl implements _PersonalEvent {
                 other.isAllDay == isAllDay) &&
             (identical(other.from, from) || other.from == from) &&
             (identical(other.to, to) || other.to == to) &&
+            const DeepCollectionEquality()
+                .equals(other._notification, _notification) &&
             (identical(other.repeat, repeat) || other.repeat == repeat) &&
             (identical(other.endDate, endDate) || other.endDate == endDate) &&
             (identical(other.sameEventId, sameEventId) ||
@@ -318,8 +345,21 @@ class _$PersonalEventImpl implements _PersonalEvent {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, uid, title, event, image, color,
-      isAllDay, from, to, repeat, endDate, sameEventId, number);
+  int get hashCode => Object.hash(
+      runtimeType,
+      uid,
+      title,
+      event,
+      image,
+      color,
+      isAllDay,
+      from,
+      to,
+      const DeepCollectionEquality().hash(_notification),
+      repeat,
+      endDate,
+      sameEventId,
+      number);
 
   @JsonKey(ignore: true)
   @override
@@ -345,6 +385,7 @@ abstract class _PersonalEvent implements PersonalEvent {
       final bool? isAllDay,
       @TimestampConverter() final DateTime? from,
       @TimestampConverter() final DateTime? to,
+      final List<int>? notification,
       final int? repeat,
       @TimestampConverter() final DateTime? endDate,
       final String? sameEventId,
@@ -371,6 +412,8 @@ abstract class _PersonalEvent implements PersonalEvent {
   @override
   @TimestampConverter()
   DateTime? get to;
+  @override
+  List<int>? get notification;
   @override
   int? get repeat;
   @override

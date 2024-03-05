@@ -61,12 +61,7 @@ class DateSettingFormat extends ConsumerWidget{
                     value: personalEvent.isAllDay!,
                     activeColor: CupertinoColors.activeBlue,
                     onChanged: (bool? value) {
-                      DateTime from = personalEvent.from!;
-                      DateTime to = personalEvent.to!;
-                      final newFrom = DateTime(from.year,from.month,from.day);
-                      final newTo = DateTime(to.year,to.month,to.day);
-                      PersonalEvent event = personalEvent.copyWith(isAllDay: value, from: newFrom, to: newTo);
-                      ref.read(personalEventFormStateProvider.notifier).saveState(event);
+                      ref.read(personalEventFormStateProvider.notifier).changeAllDay(value!);
                     },
                   ),
                   const Text(

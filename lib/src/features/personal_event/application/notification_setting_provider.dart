@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:share_calendar/src/features/personal_event/application/personal_event_provider.dart';
 
 final notificationList = StateProvider<List<dynamic>>(
         (ref) => [
@@ -15,6 +16,9 @@ final notificationList = StateProvider<List<dynamic>>(
     ]
 );
 
-final notificationCheckList = StateProvider.autoDispose<List<dynamic>>(
-    (ref) => []
+final notificationCheckList = StateProvider.autoDispose<List<int>>(
+    (ref){
+          final personalEvent = ref.read(personalEventFormStateProvider);
+          return personalEvent.notification!;
+    }
 );

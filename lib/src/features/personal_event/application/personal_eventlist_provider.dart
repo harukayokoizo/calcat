@@ -72,7 +72,9 @@ class PersonalEventListController extends StateNotifier<Map<dynamic, dynamic>>{
         //eventListにdateのkeyが存在するかチェックする
         var containDate = eventList.containsKey(date);
         if(containDate){
-          eventList[date].add([event]);
+          List value = eventList[date];
+          value.add(event);
+          eventList[date] = value;
         }else{
           eventList.addAll({from : [event]});
         }

@@ -1,20 +1,23 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:share_calendar/src/features/personal_event/application/personal_eventlist_provider.dart';
 
+import '../../../common_widgets/application/common_provider.dart';
 import '../domain/personal_event.dart';
 
 final personalEventFormStateProvider = StateNotifierProvider.autoDispose<PersonalEventFormState, PersonalEvent>(
         (ref){
+          final user = ref.read(currentUser);
           final DateTime focusedDay = ref.read(focusedDayProvider);
-          return PersonalEventFormState(focusedDay);
+          return PersonalEventFormState(user!.uid, focusedDay);
         }
 );
 
 class PersonalEventFormState extends StateNotifier<PersonalEvent>{
+  String uid;
   DateTime focusedDay;
-  PersonalEventFormState(this.focusedDay) : super(
+  PersonalEventFormState(this.uid, this.focusedDay) : super(
       PersonalEvent(
-        uid: null,
+        uid: uid,
         title: null,
         event: null,
         image: null,
@@ -22,6 +25,7 @@ class PersonalEventFormState extends StateNotifier<PersonalEvent>{
         isAllDay: true,
         from: focusedDay,
         to: focusedDay,
+        notification: [],
         repeat: 0,
         endDate: null,
         sameEventId: null,
@@ -29,12 +33,27 @@ class PersonalEventFormState extends StateNotifier<PersonalEvent>{
       )
   );
 
-  void saveState(PersonalEvent event){
+  // void saveState(PersonalEvent event){
+  //   state = event;
+  // }
+
+  void changeTitle(String title){
+    final event = state.copyWith(title: title);
+    state = event;
+  }
+
+  void changeEvent(String overview){
+    final event = state.copyWith(event: overview);
     state = event;
   }
 
   void changeColor(int color){
     final event = state.copyWith(color: color);
+    state = event;
+  }
+
+  void changeNotification(List<int> notification){
+    final event = state.copyWith(notification: notification);
     state = event;
   }
 
@@ -45,6 +64,13 @@ class PersonalEventFormState extends StateNotifier<PersonalEvent>{
 
   void changeRepeat(int repeat){
     final event = state.copyWith(repeat: repeat);
+    state = event;
+  }
+
+  void changeAllDay(bool isAllDay){
+    final newFrom = DateTime(state.from!.year,state.from!.month,state.from!.day);
+    final newTo = DateTime(state.to!.year,state.to!.month,state.to!.day);
+    PersonalEvent event = state.copyWith(isAllDay: isAllDay, from: newFrom, to: newTo);
     state = event;
   }
 
