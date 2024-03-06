@@ -5,7 +5,9 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:share_calendar/src/features/personal_event/application/color_setting_provider.dart';
 import 'package:share_calendar/src/features/personal_event/domain/personal_event.dart';
 import 'package:share_calendar/src/features/personal_event/presentation/personal_event_list.dart';
 import 'package:simple_gesture_detector/simple_gesture_detector.dart';
@@ -690,32 +692,39 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
             //   ),
             // );
             int count = events.length > 3 ? 3 : events.length;
-            markerWidget = Column(
-              children: [
-                for(final PersonalEvent event in events)
-                  Padding(
-                    padding: const EdgeInsets.all(1.0),
-                    child: SizedBox(
-                      height: 15,
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          '${event.title}',
-                          style: const TextStyle(
-                            fontSize: 10,
+            markerWidget = Consumer(
+              builder: (context, ref, _) {
+                final colors = ref.read(colorList);
+                return Column(
+                  children: [
+                    for(final PersonalEvent event in events)
+                      Padding(
+                        padding: const EdgeInsets.all(1.0),
+                        child: SizedBox(
+                          height: 16,
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              '${event.title}',
+                              style: TextStyle(
+                                fontSize: 13,
+                                color: Color(colors[event.color!]),
+                                fontWeight: FontWeight.bold
+                              ),
+                            ),
                           ),
                         ),
-                      ),
-                    ),
-                  )
-                // Container(
-                //   height: 20,
-                //   decoration: BoxDecoration(
-                //     color: Colors.red,
-                //   ),
-                //   child: Text(events[i] as String),
-                // )
-              ],
+                      )
+                    // Container(
+                    //   height: 20,
+                    //   decoration: BoxDecoration(
+                    //     color: Colors.red,
+                    //   ),
+                    //   child: Text(events[i] as String),
+                    // )
+                  ],
+                );
+              }
             );
           }
 

@@ -23,7 +23,7 @@ class PersonalEventFormState extends StateNotifier<PersonalEvent>{
         title: null,
         event: null,
         image: null,
-        color: 0xFFA9A9A9,
+        color: 8,
         isAllDay: true,
         from: focusedDay,
         to: focusedDay,
@@ -166,15 +166,19 @@ class PersonalEventFormState extends StateNotifier<PersonalEvent>{
     List events = [data];
     int days = state.repeat == 1 ? 1 : state.repeat == 2 ? 7 : 0;
 
-    while(from.isBefore(state.endDate!)){
-      Map<String, dynamic> newData = Map.of(data);
-      DateTime newFrom = from.add(Duration(days: days));
-      DateTime newTo = to.add(Duration(days: days));
-      newData['from'] = newFrom;
-      newData['to'] = newTo;
-      events.add(newData);
+    if(state.repeat != 0){
+      DateTime endDate = state.endDate!.add(const Duration(days: 1));
       from = from.add(Duration(days: days));
       to = to.add(Duration(days: days));
+
+      while(from.isBefore(endDate)){
+        Map<String, dynamic> newData = Map.of(data);
+        newData['from'] = from;
+        newData['to'] = to;
+        events.add(newData);
+        from = from.add(Duration(days: days));
+        to = to.add(Duration(days: days));
+      }
     }
 
     print(events);

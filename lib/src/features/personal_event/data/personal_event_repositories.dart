@@ -30,9 +30,11 @@ class PersonalEventRepositories{
 
   Future<void> createEvent(List events) async{
     WriteBatch batch = FirebaseFirestore.instance.batch();
+    final docId = FirebaseFirestore.instance.collection('personal_events').doc().id;
     final db = FirebaseFirestore.instance.collection('personal_events');
 
     for(var data in events){
+      data['sameEventId'] = docId;
       batch.set(db.doc(), data);
     }
 

@@ -51,7 +51,7 @@ class ColorSettingsPage extends ConsumerWidget{
               padding: const EdgeInsets.all(10.0),
               child: GestureDetector(
                 onTap: (){
-                  ref.read(colorCheck.notifier).state = colors[index];
+                  ref.read(colorCheck.notifier).state = index;
                 },
                 child: Stack(
                   alignment: Alignment.center,
@@ -62,7 +62,7 @@ class ColorSettingsPage extends ConsumerWidget{
                         color: Color(colors[index]),
                       ),
                     ),
-                    if(colors[index] == colorCode)
+                    if(index == colorCode)
                       const Icon(
                         Icons.check,
                         size: 30,

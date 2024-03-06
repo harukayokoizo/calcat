@@ -100,6 +100,7 @@ class SaveEventButton extends ConsumerWidget{
   @override
   Widget build(BuildContext context, WidgetRef ref){
     final personalEvent = ref.watch(personalEventFormStateProvider);
+    print(personalEvent);
     return ElevatedButton(
       onPressed: personalEvent.title == null || personalEvent.title!.isEmpty ? null : (){
         ref.read(personalEventFormStateProvider.notifier).createEvent();

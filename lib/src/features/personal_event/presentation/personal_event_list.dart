@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
+import 'package:share_calendar/src/features/personal_event/application/color_setting_provider.dart';
 import 'package:share_calendar/src/features/personal_event/presentation/personal_event_registraiton.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -51,21 +53,7 @@ class PersonalEventList extends ConsumerWidget{
               child: Column(
                 children: [
                   for(PersonalEvent event in eventOnDate)
-                  Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: PhysicalModel(
-                      elevation: 5,
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(20),
-                      child: Container(
-                        height: 80,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  )
+                    EventTile(event)
                 ],
               ),
             ),
@@ -108,6 +96,129 @@ class PersonalEventList extends ConsumerWidget{
       ],
     );
   }
+}
 
+class EventTile extends ConsumerWidget{
+  PersonalEvent event;
+  EventTile(this.event, {super.key});
 
+  @override
+
+  Widget build(BuildContext context, WidgetRef ref){
+    return Padding(
+      padding: const EdgeInsets.all(15.0),
+      child: PhysicalModel(
+        elevation: 5,
+        color: Colors.white,
+        //borderRadius: BorderRadius.circular(20),
+        child: Container(
+          height: 100,
+          decoration: const BoxDecoration(
+            //borderRadius: BorderRadius.circular(20),
+            color: Colors.white,
+          ),
+          child: Row(
+            children: [
+              eventTime(event.isAllDay!, event.from!, event.to!),
+              eventColor(event.color!),
+              eventSummary(event.title!, event.event),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+Widget eventTime(bool isAllDay, DateTime from, DateTime to){
+  DateFormat displayFormat = DateFormat("HH:mm");
+
+  if(isAllDay){
+    return const Padding(
+      padding: EdgeInsets.all(8.0),
+      child: Center(
+        child: Text(
+          '終日',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 18
+          ),
+        ),
+      ),
+    );
+  }else{
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(displayFormat.format(from),
+            style: const TextStyle(
+              color: Colors.black,
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          Text(displayFormat.format(to),
+            style: const TextStyle(
+              color: Colors.black,
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+Widget eventColor(int color){
+  return Padding(
+    padding: const EdgeInsets.all(8.0),
+    child: Consumer(
+      builder: (context, ref, _){
+        final colors = ref.read(colorList);
+        return Container(
+          height: 20,
+          width: 20,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: Color(colors[color]),
+          ),
+        );
+      },
+    ),
+  );
+}
+
+Widget eventSummary(String title, String? overview){
+  return Expanded(
+    child: Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: SizedBox(
+        height: 100,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(title,
+              style: const TextStyle(
+                color: Colors.black,
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            if(overview != null)
+              Text(overview,
+                style: const TextStyle(
+                  color: Colors.black,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+          ],
+        ),
+      ),
+    ),
+  );
 }
