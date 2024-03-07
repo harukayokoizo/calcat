@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../domain/personal_event.dart';
 import 'notification_settings_page.dart';
 
 class NotificationForm extends StatelessWidget{
-  const NotificationForm({super.key});
+  PersonalEvent? event;
+  NotificationForm(this.event, {super.key});
 
   @override
 
@@ -15,7 +17,7 @@ class NotificationForm extends StatelessWidget{
       onTap: (){
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => NotificationSettingsPage(),
+          MaterialPageRoute(builder: (context) => NotificationSettingsPage(event),
           ),
         );
       },

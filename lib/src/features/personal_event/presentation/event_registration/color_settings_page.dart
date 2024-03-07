@@ -4,14 +4,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../application/color_setting_provider.dart';
 import '../../application/personal_event_provider.dart';
+import '../../domain/personal_event.dart';
 
 class ColorSettingsPage extends ConsumerWidget{
-  const ColorSettingsPage({super.key});
+  PersonalEvent? event;
+  ColorSettingsPage(this.event, {super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref){
     final colors = ref.read(colorList);
-    final colorCode = ref.watch(colorCheck);
+    final colorCode = ref.watch(colorCheck(event));
     return Scaffold(
       appBar: AppBar(
         elevation: 5,
@@ -20,7 +22,7 @@ class ColorSettingsPage extends ConsumerWidget{
         actions: [
           TextButton(
             onPressed: () {
-              ref.read(personalEventFormStateProvider.notifier).changeColor(colorCode);
+              ref.read(personalEventFormStateProvider(event).notifier).changeColor(colorCode);
               Navigator.of(context).pop();
             },
             child: const Padding(
@@ -51,7 +53,7 @@ class ColorSettingsPage extends ConsumerWidget{
               padding: const EdgeInsets.all(10.0),
               child: GestureDetector(
                 onTap: (){
-                  ref.read(colorCheck.notifier).state = index;
+                  ref.read(colorCheck(event).notifier).state = index;
                 },
                 child: Stack(
                   alignment: Alignment.center,

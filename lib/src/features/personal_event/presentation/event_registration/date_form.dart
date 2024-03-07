@@ -13,17 +13,16 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 
 
 class DateSettingFormat extends ConsumerWidget{
-  //final DateTime focusedDay;
-  const DateSettingFormat({super.key});
+  PersonalEvent? event;
+  DateSettingFormat(this.event, {super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final personalEvent = ref.watch(personalEventFormStateProvider);
+    final personalEvent = ref.watch(personalEventFormStateProvider(event));
     // print(personalEvent.to);
     // print(personalEvent.from);
 
     final double deviceWidth = MediaQuery.of(context).size.width;
-    final double deviceHeight = MediaQuery.of(context).size.height;
 
     return Container(
         width: deviceWidth,
@@ -37,7 +36,7 @@ class DateSettingFormat extends ConsumerWidget{
           children: [
             Padding(
               padding: const EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0, bottom: 10.0),
-              child: dateFormFormat(context, ref, personalEvent, 0),
+              child: dateFormFormat(context, ref, personalEvent, 0, event),
             ),
             const Padding(
               padding: EdgeInsets.only(top: 20.0),
@@ -48,7 +47,7 @@ class DateSettingFormat extends ConsumerWidget{
             ),
             Padding(
               padding: const EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0, bottom: 10.0),
-              child: dateFormFormat(context, ref, personalEvent, 1),
+              child: dateFormFormat(context, ref, personalEvent, 1, event),
             ),
             const Expanded(child: SizedBox(),),
             Padding(
@@ -61,7 +60,7 @@ class DateSettingFormat extends ConsumerWidget{
                     value: personalEvent.isAllDay!,
                     activeColor: CupertinoColors.activeBlue,
                     onChanged: (bool? value) {
-                      ref.read(personalEventFormStateProvider.notifier).changeAllDay(value!);
+                      ref.read(personalEventFormStateProvider(event).notifier).changeAllDay(value!);
                     },
                   ),
                   const Text(
@@ -81,7 +80,8 @@ class DateSettingFormat extends ConsumerWidget{
   }
 }
 
-Widget dateFormFormat(BuildContext context, WidgetRef ref, PersonalEvent personalEvent, int fromOrTo){
+Widget dateFormFormat(BuildContext context, WidgetRef ref, PersonalEvent personalEvent, int fromOrTo, PersonalEvent? parameter){
+  print(parameter);
   // final DateTime from = DateTime(personalEvent.from!.year, personalEvent.from!.month, personalEvent.from!.day);
   // final DateTime to = DateTime(personalEvent.to!.year, personalEvent.to!.month, personalEvent.to!.day);
   // final DateTime fromDateTime = DateTime(personalEvent.from!.year, personalEvent.from!.month, personalEvent.from!.day, personalEvent.from!.hour, personalEvent.from!.minute);
@@ -115,9 +115,9 @@ Widget dateFormFormat(BuildContext context, WidgetRef ref, PersonalEvent persona
 
         if(picked != null) {
           if(fromOrTo == 0){
-            ref.read(personalEventFormStateProvider.notifier).saveFromDate(picked);
+            ref.read(personalEventFormStateProvider(parameter).notifier).saveFromDate(picked);
           }else {
-            ref.read(personalEventFormStateProvider.notifier).saveToDate(picked);
+            ref.read(personalEventFormStateProvider(parameter).notifier).saveToDate(picked);
           }
         }
 
@@ -159,9 +159,9 @@ Widget dateFormFormat(BuildContext context, WidgetRef ref, PersonalEvent persona
             );
             if(picked != null) {
               if(fromOrTo == 0){
-                ref.read(personalEventFormStateProvider.notifier).changeOnlyFromDate(picked);
+                ref.read(personalEventFormStateProvider(parameter).notifier).changeOnlyFromDate(picked);
               }else {
-                ref.read(personalEventFormStateProvider.notifier).changeOnlyToDate(picked);
+                ref.read(personalEventFormStateProvider(parameter).notifier).changeOnlyToDate(picked);
               }
             }
           },
@@ -188,9 +188,9 @@ Widget dateFormFormat(BuildContext context, WidgetRef ref, PersonalEvent persona
             );
             if(picked != null) {
               if(fromOrTo == 0){
-                ref.read(personalEventFormStateProvider.notifier).changeFromDate(picked);
+                ref.read(personalEventFormStateProvider(parameter).notifier).changeFromDate(picked);
               }else {
-                ref.read(personalEventFormStateProvider.notifier).changeToDate(picked);
+                ref.read(personalEventFormStateProvider(parameter).notifier).changeToDate(picked);
               }
             }
           },

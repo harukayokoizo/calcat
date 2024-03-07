@@ -65,7 +65,7 @@ class PersonalEventList extends ConsumerWidget{
                                 onTap: (){
                                   Navigator.push(
                                     context,
-                                    MaterialPageRoute(builder: (context) => EventDetail(event),
+                                    MaterialPageRoute(builder: (context) => EventContent(event),
                                     ),
                                   );
                                 },

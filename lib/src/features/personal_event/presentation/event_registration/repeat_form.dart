@@ -2,8 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:share_calendar/src/features/personal_event/presentation/event_registration/repeat_settings_page.dart';
 
+import '../../domain/personal_event.dart';
+
 class RepeatForm extends StatelessWidget{
-  const RepeatForm({super.key});
+  PersonalEvent? event;
+  RepeatForm(this.event, {super.key});
 
   @override
   Widget build(BuildContext context){
@@ -13,7 +16,7 @@ class RepeatForm extends StatelessWidget{
       onTap: (){
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => RepeatSettingsPage(),
+          MaterialPageRoute(builder: (context) => RepeatSettingsPage(event),
           ),
         );
       },

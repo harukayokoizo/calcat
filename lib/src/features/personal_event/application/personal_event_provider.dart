@@ -5,39 +5,47 @@ import '../../../common_widgets/application/common_provider.dart';
 import '../data/personal_event_repositories.dart';
 import '../domain/personal_event.dart';
 
-final personalEventFormStateProvider = StateNotifierProvider.autoDispose<PersonalEventFormState, PersonalEvent>(
-        (ref){
-          final user = ref.read(currentUser);
-          final DateTime focusedDay = ref.read(focusedDayProvider);
-          return PersonalEventFormState(ref, user!.uid, focusedDay);
+final personalEventFormStateProvider = StateNotifierProvider.autoDispose.family<PersonalEventFormState, PersonalEvent, PersonalEvent?>(
+        (ref, event){
+          if(event == null) {
+            final user = ref.read(currentUser);
+            final DateTime focusedDay = ref.read(focusedDayProvider);
+            event = PersonalEvent(
+                uid: user!.uid,
+                title: null,
+                event: null,
+                image: null,
+                color: 8,
+                isAllDay: true,
+                from: focusedDay,
+                to: focusedDay,
+                notification: [],
+                repeat: 0,
+                endDate: null,
+                sameEventId: null,
+                number: null
+            );
+          }
+          return PersonalEventFormState(ref, event);
         }
 );
 
+// final personalEventEditFormStateProvider = StateNotifierProvider.autoDispose.family<PersonalEventFormState, PersonalEvent, PersonalEvent>(
+//         (ref, event){
+//           return PersonalEventFormState(ref, event);
+//         }
+// );
+
 class PersonalEventFormState extends StateNotifier<PersonalEvent>{
   Ref ref;
-  String uid;
-  DateTime focusedDay;
-  PersonalEventFormState(this.ref, this.uid, this.focusedDay) : super(
-      PersonalEvent(
-        uid: uid,
-        title: null,
-        event: null,
-        image: null,
-        color: 8,
-        isAllDay: true,
-        from: focusedDay,
-        to: focusedDay,
-        notification: [],
-        repeat: 0,
-        endDate: null,
-        sameEventId: null,
-        number: null
-      )
-  );
+  // String uid;
+  // DateTime focusedDay;
+  PersonalEvent eventDate;
+  PersonalEventFormState(this.ref, this.eventDate) : super(eventDate);
 
-  // void saveState(PersonalEvent event){
-  //   state = event;
-  // }
+  void saveEvent(PersonalEvent event){
+    state = event;
+  }
 
   void changeTitle(String title){
     final event = state.copyWith(title: title);

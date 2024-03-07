@@ -5,16 +5,18 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../application/personal_event_provider.dart';
 import '../../application/repeat_setting_provider.dart';
+import '../../domain/personal_event.dart';
 
 class RepeatSettingsPage extends ConsumerWidget{
-  const RepeatSettingsPage({super.key});
+  PersonalEvent? event;
+  RepeatSettingsPage(this.event, {super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref){
-    final personalEvent = ref.read(personalEventFormStateProvider);
-    final endDate = ref.watch(repeatEndDate);
+    final personalEvent = ref.read(personalEventFormStateProvider(event));
+    final endDate = ref.watch(repeatEndDate(event));
     final repeat = ref.read(repeatList);
-    final check = ref.watch(repeatCheck);
+    final check = ref.watch(repeatCheck(event));
     return Scaffold(
       appBar: AppBar(
         elevation: 5,
@@ -23,8 +25,8 @@ class RepeatSettingsPage extends ConsumerWidget{
         actions: [
           TextButton(
             onPressed: () {
-              ref.read(personalEventFormStateProvider.notifier).changeRepeatEndDate(endDate);
-              ref.read(personalEventFormStateProvider.notifier).changeRepeat(check);
+              ref.read(personalEventFormStateProvider(event).notifier).changeRepeatEndDate(endDate);
+              ref.read(personalEventFormStateProvider(event).notifier).changeRepeat(check);
               Navigator.of(context).pop();
             },
             child: const Padding(
@@ -85,7 +87,7 @@ class RepeatSettingsPage extends ConsumerWidget{
                       Checkbox(
                         value: value,
                         onChanged: (value){
-                          ref.read(repeatCheck.notifier).state = index;
+                          ref.read(repeatCheck(event).notifier).state = index;
                         },
                         shape: const RoundedRectangleBorder(
                             borderRadius: BorderRadius.all(Radius.circular(10))
@@ -117,7 +119,7 @@ class RepeatSettingsPage extends ConsumerWidget{
                     minTime: personalEvent.from!,
                     maxTime: DateTime(2050, 12, 31),
                     onConfirm: (date) {
-                      ref.read(repeatEndDate.notifier).state = date;
+                      ref.read(repeatEndDate(event).notifier).state = date;
                     },
                     currentTime: endDate,
                     locale: LocaleType.jp

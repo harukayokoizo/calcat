@@ -16,9 +16,7 @@ class PersonalEventRegistration extends ConsumerWidget{
 
   @override
   Widget build(BuildContext context, WidgetRef ref){
-    final double deviceWidth = MediaQuery.of(context).size.width;
-    final double deviceHeight = MediaQuery.of(context).size.height;
-
+    final personalEvent = ref.watch(personalEventFormStateProvider(null));
     return Scaffold(
       appBar: AppBar(
         elevation: 5,
@@ -48,7 +46,7 @@ class PersonalEventRegistration extends ConsumerWidget{
                   border: InputBorder.none
                 ),
                 onChanged: (value){
-                  ref.read(personalEventFormStateProvider.notifier).changeTitle(value);
+                  ref.read(personalEventFormStateProvider(null).notifier).changeTitle(value);
                 },
               ),
             ),
@@ -69,15 +67,15 @@ class PersonalEventRegistration extends ConsumerWidget{
                     border: InputBorder.none
                 ),
                 onChanged: (value){
-                  ref.read(personalEventFormStateProvider.notifier).changeEvent(value);
+                  ref.read(personalEventFormStateProvider(null).notifier).changeEvent(value);
                 },
               ),
             ),
           ),
-          const DateSettingFormat(),
-          const ColorForm(),
-          const NotificationForm(),
-          const RepeatForm(),
+          DateSettingFormat(null),
+          ColorForm(null),
+          NotificationForm(null),
+          RepeatForm(null),
           const Expanded(
             child: SizedBox(),
           ),
@@ -99,11 +97,11 @@ class SaveEventButton extends ConsumerWidget{
 
   @override
   Widget build(BuildContext context, WidgetRef ref){
-    final personalEvent = ref.watch(personalEventFormStateProvider);
+    final personalEvent = ref.watch(personalEventFormStateProvider(null));
     print(personalEvent);
     return ElevatedButton(
       onPressed: personalEvent.title == null || personalEvent.title!.isEmpty ? null : (){
-        ref.read(personalEventFormStateProvider.notifier).createEvent();
+        ref.read(personalEventFormStateProvider(null).notifier).createEvent();
         Navigator.of(context).pop();
       },
       style: ElevatedButton.styleFrom(

@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../domain/personal_event.dart';
 import 'color_settings_page.dart';
 
 class ColorForm extends StatelessWidget{
-  const ColorForm({super.key});
+  PersonalEvent? event;
+  ColorForm(this.event, {super.key});
 
   @override
   Widget build(BuildContext context){
@@ -15,7 +17,7 @@ class ColorForm extends StatelessWidget{
       onTap: (){
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => ColorSettingsPage(),
+          MaterialPageRoute(builder: (context) => ColorSettingsPage(event),
           ),
         );
       },
