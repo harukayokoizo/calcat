@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:share_calendar/src/features/personal_event/presentation/repeat_form.dart';
+import 'package:share_calendar/src/features/personal_event/presentation/event_registration/repeat_form.dart';
 
-import '../application/personal_event_provider.dart';
-import '../data/personal_event_repositories.dart';
-import '../domain/personal_event.dart';
+import '../../application/personal_event_provider.dart';
+import '../../data/personal_event_repositories.dart';
+import '../../domain/personal_event.dart';
 import 'color_form.dart';
 import 'date_form.dart';
 import 'notification_form.dart';
@@ -74,7 +74,7 @@ class PersonalEventRegistration extends ConsumerWidget{
               ),
             ),
           ),
-          DateSettingFormat(focusedDay),
+          const DateSettingFormat(),
           const ColorForm(),
           const NotificationForm(),
           const RepeatForm(),

@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../application/notification_setting_provider.dart';
-import '../application/personal_event_provider.dart';
+import '../../application/notification_setting_provider.dart';
+import '../../application/personal_event_provider.dart';
 
 class NotificationSettingsPage extends ConsumerWidget{
   const NotificationSettingsPage({super.key});

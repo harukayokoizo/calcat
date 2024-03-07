@@ -6,15 +6,15 @@ import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
-import '../application/datetime_format.dart';
-import '../application/personal_event_provider.dart';
-import '../domain/personal_event.dart';
+import '../../application/datetime_format.dart';
+import '../../application/personal_event_provider.dart';
+import '../../domain/personal_event.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 
 class DateSettingFormat extends ConsumerWidget{
-  final DateTime focusedDay;
-  const DateSettingFormat(this.focusedDay, {super.key});
+  //final DateTime focusedDay;
+  const DateSettingFormat({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

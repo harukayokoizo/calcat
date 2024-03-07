@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../application/color_setting_provider.dart';
-import '../application/personal_event_provider.dart';
+import '../../application/color_setting_provider.dart';
+import '../../application/personal_event_provider.dart';
 
 class ColorSettingsPage extends ConsumerWidget{
   const ColorSettingsPage({super.key});

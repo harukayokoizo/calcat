@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:share_calendar/src/features/personal_event/presentation/repeat_settings_page.dart';
+import 'package:share_calendar/src/features/personal_event/presentation/event_registration/repeat_settings_page.dart';
 
 class RepeatForm extends StatelessWidget{
   const RepeatForm({super.key});
