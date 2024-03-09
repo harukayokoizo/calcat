@@ -1,18 +1,31 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../application/notification_setting_provider.dart';
+import '../../application/personal_event_provider.dart';
 import '../../domain/personal_event.dart';
 import 'notification_settings_page.dart';
 
-class NotificationForm extends StatelessWidget{
+class NotificationForm extends ConsumerWidget{
   PersonalEvent? event;
   NotificationForm(this.event, {super.key});
 
   @override
 
-  Widget build(BuildContext context){
+  Widget build(BuildContext context, WidgetRef ref){
+    final notification = ref.read(notificationList);
+    final ev = ref.read(personalEventFormStateProvider(event));
     final double deviceWidth = MediaQuery.of(context).size.width;
-    final double deviceHeight = MediaQuery.of(context).size.height;
+    String time = '';
+    for(int num in ev.notification!){
+      time = '$time${notification[num]}, ';
+    }
+
+    if(time.isNotEmpty){
+      time = time.substring(0, time.length - 2);
+    }
+
     return InkWell(
       onTap: (){
         Navigator.push(
@@ -28,12 +41,12 @@ class NotificationForm extends StatelessWidget{
               bottom: BorderSide(color: Colors.grey, width: 1.0)
           ),
         ),
-        child: const Padding(
-          padding: EdgeInsets.all(10.0),
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
           child: Row(
             children: [
-              Icon(Icons.notifications_none),
-              Padding(
+              const Icon(Icons.notifications_none),
+              const Padding(
                 padding: EdgeInsets.only(left: 4.0),
                 child: Text(
                   '通知',
@@ -43,10 +56,25 @@ class NotificationForm extends StatelessWidget{
                   ),
                 ),
               ),
-              Expanded(
-                child: SizedBox(),
-              ),
-              Icon(Icons.arrow_forward_ios)
+              if(time.isNotEmpty)
+                Expanded(
+                  child: Align(
+                    alignment: Alignment.centerRight,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 15.0),
+                      child: Text(time,
+                        style: const TextStyle(
+                          fontSize: 18,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              if(time.isEmpty)
+                const Expanded(
+                  child: SizedBox(),
+                ),
+              const Icon(Icons.arrow_forward_ios)
             ],
           ),
         ),

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../data/personal_event_repositories.dart';
+import '../domain/event_document.dart';
 import '../domain/personal_event.dart';
 
 final calendarFormatState = StateProvider<CalendarFormat>((ref) => CalendarFormat.month);
@@ -20,7 +21,7 @@ class FocusedDayState extends StateNotifier<DateTime>{
   }
 
 }
-final personalEvents = StreamProvider<List<PersonalEvent>>(
+final personalEvents = StreamProvider<List<EventDocument>>(
         (ref) {
           var personalEvents = ref.read(personalEventRepositories).getEvent();
           return personalEvents;
@@ -45,13 +46,14 @@ class PersonalEventListController extends StateNotifier<Map<dynamic, dynamic>>{
     });
   }
 
-  Map changeFormat(List<PersonalEvent> events){
+  Map changeFormat(List<EventDocument> events){
     // final sampleMap = {
     //   DateTime.utc(2024, 2, 22): ['firstEvent', 'secondEvent'],
     //   DateTime.utc(2024, 2, 23): ['thirdEvent', 'fourthEvent']
     // };
     final Map eventList = {};
-    for(final PersonalEvent event in events){
+    for(final EventDocument eventDoc in events){
+      PersonalEvent event = eventDoc.event!;
       List keyDate = [];
       DateTime? from = event.from;
       DateTime? to = event.to;
@@ -74,13 +76,14 @@ class PersonalEventListController extends StateNotifier<Map<dynamic, dynamic>>{
         var containDate = eventList.containsKey(date);
         if(containDate){
           List value = eventList[date];
-          value.add(event);
+          value.add(eventDoc);
           eventList[date] = value;
         }else{
-          eventList.addAll({date : [event]});
+          eventList.addAll({date : [eventDoc]});
         }
       }
     }
+    print(eventList);
     return eventList;
   }
 

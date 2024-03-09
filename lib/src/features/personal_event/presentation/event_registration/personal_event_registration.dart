@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:share_calendar/src/features/personal_event/presentation/event_registration/repeat_form.dart';
+import 'package:share_calendar/src/features/personal_event/presentation/event_registration/title_form.dart';
 
 import '../../application/personal_event_provider.dart';
 import '../../data/personal_event_repositories.dart';
@@ -9,6 +10,7 @@ import '../../domain/personal_event.dart';
 import 'color_form.dart';
 import 'date_form.dart';
 import 'notification_form.dart';
+import 'overview_form.dart';
 
 class PersonalEventRegistration extends ConsumerWidget{
   final DateTime focusedDay;
@@ -16,7 +18,7 @@ class PersonalEventRegistration extends ConsumerWidget{
 
   @override
   Widget build(BuildContext context, WidgetRef ref){
-    final personalEvent = ref.watch(personalEventFormStateProvider(null));
+    final event = ref.watch(personalEventFormStateProvider(null));
     return Scaffold(
       appBar: AppBar(
         elevation: 5,
@@ -30,48 +32,8 @@ class PersonalEventRegistration extends ConsumerWidget{
       ),
       body: Column(
         children: [
-          Container(
-            decoration: const BoxDecoration(
-              border: Border(
-                  top: BorderSide(color: Colors.grey, width: 1.0),
-                  bottom: BorderSide(color: Colors.grey, width: 1.0)
-              ),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.only(left: 10.0),
-              child: TextFormField(
-                //controller: titleController,
-                decoration: const InputDecoration(
-                  hintText: 'イベント名',
-                  border: InputBorder.none
-                ),
-                onChanged: (value){
-                  ref.read(personalEventFormStateProvider(null).notifier).changeTitle(value);
-                },
-              ),
-            ),
-          ),
-          Container(
-            decoration: const BoxDecoration(
-              border: Border(
-                  //top: BorderSide(color: Colors.grey, width: 1.0),
-                  bottom: BorderSide(color: Colors.grey, width: 1.0)
-              ),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.only(left: 10.0),
-              child: TextFormField(
-                //controller: titleController,
-                decoration: const InputDecoration(
-                    hintText: 'イベント内容',
-                    border: InputBorder.none
-                ),
-                onChanged: (value){
-                  ref.read(personalEventFormStateProvider(null).notifier).changeEvent(value);
-                },
-              ),
-            ),
-          ),
+          TitleForm(null),
+          OverViewForm(null),
           DateSettingFormat(null),
           ColorForm(null),
           NotificationForm(null),

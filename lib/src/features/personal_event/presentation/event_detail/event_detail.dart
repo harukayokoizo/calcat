@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../application/personal_event_provider.dart';
+import '../../domain/event_document.dart';
 import '../../domain/personal_event.dart';
 import '../event_edit/event_edit_page.dart';
 import '../event_registration/date_form.dart';
@@ -10,21 +11,22 @@ import 'event_color_detail.dart';
 import 'event_date_detail.dart';
 import 'event_notification_detail.dart';
 import 'event_repeat_detail.dart';
+import 'modal_bottom_sheet.dart';
 
 final eventDisplay = StateProvider.autoDispose<bool>(
         (ref) => true
 );
 
 class EventContent extends ConsumerWidget{
-  PersonalEvent event;
-  EventContent(this.event, {super.key});
+  EventDocument eventDoc;
+  EventContent(this.eventDoc, {super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     bool display = ref.watch(eventDisplay);
     if(display){
-      return EventDetail(event);
+      return EventDetail(eventDoc.event!);
     }else{
-      return PersonalEventEdit(event);
+      return PersonalEventEdit(eventDoc);
     }
   }
 }
@@ -100,6 +102,15 @@ class EventDetail extends ConsumerWidget{
             child: Icon(Icons.delete),
             backgroundColor: Colors.blue[200],
             onPressed: () async {
+              if(event.repeat != 0) {
+                final result = await showModalBottomSheet(
+                  backgroundColor: const Color.fromRGBO(0, 0, 0, 0.0),
+                  context: context,
+                  builder: (BuildContext context) {
+                    return const ModalBottomSheet();
+                  },
+                );
+              }
             },
           ),
           Padding(
@@ -108,8 +119,15 @@ class EventDetail extends ConsumerWidget{
               heroTag: "edit",
               child: Icon(Icons.edit),
               backgroundColor: Colors.blue[200],
-              onPressed: () {
-                ref.watch(eventDisplay.notifier).state = false;
+              onPressed: () async{
+                final result = await showModalBottomSheet(
+                  backgroundColor: const Color.fromRGBO(0, 0, 0, 0.0),
+                  context: context,
+                  builder: (BuildContext context) {
+                    return const ModalBottomSheet();
+                  },
+                );
+                //ref.watch(eventDisplay.notifier).state = false;
               },
             ),
           ),
@@ -117,5 +135,4 @@ class EventDetail extends ConsumerWidget{
       ),
     );
   }
-
 }

@@ -8,6 +8,7 @@ import 'package:table_calendar/table_calendar.dart';
 
 import '../application/datetime_format.dart';
 import '../application/personal_eventlist_provider.dart';
+import '../domain/event_document.dart';
 import '../domain/personal_event.dart';
 import 'event_detail/event_detail.dart';
 
@@ -60,16 +61,16 @@ class PersonalEventList extends ConsumerWidget{
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          for(PersonalEvent event in eventOnDate)
+                          for(EventDocument eventDoc in eventOnDate)
                             InkWell(
                                 onTap: (){
                                   Navigator.push(
                                     context,
-                                    MaterialPageRoute(builder: (context) => EventContent(event),
+                                    MaterialPageRoute(builder: (context) => EventContent(eventDoc),
                                     ),
                                   );
                                 },
-                                child: EventTile(event, focusedDay)
+                                child: EventTile(eventDoc.event!, focusedDay)
                             )
                         ],
                       ),

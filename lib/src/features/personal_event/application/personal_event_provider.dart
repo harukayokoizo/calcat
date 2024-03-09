@@ -63,6 +63,7 @@ class PersonalEventFormState extends StateNotifier<PersonalEvent>{
   }
 
   void changeNotification(List<int> notification){
+    notification.sort((a,b)=> a.compareTo(b));
     final event = state.copyWith(notification: notification);
     state = event;
   }
@@ -153,6 +154,56 @@ class PersonalEventFormState extends StateNotifier<PersonalEvent>{
   }
 
   void createEvent(){
+    DateTime from = DateTime.utc(state.from!.year, state.from!.month, state.from!.day);
+    DateTime to = DateTime.utc(state.to!.year, state.to!.month, state.to!.day);
+    Map<String, dynamic> data = {
+      'uid': state.uid,
+      'title': state.title,
+      'event': state.event,
+      'image': state.image,
+      'color': state.color,
+      'isAllDay': state.isAllDay,
+      'from': state.from,
+      'to': state.to,
+      'notification': state.notification,
+      'repeat': state.repeat,
+      'endDate': state.endDate,
+      'sameEventId': state.sameEventId,
+      'number': state.number,
+    };
+
+    List events = [data];
+    int days = state.repeat == 1 ? 1 : state.repeat == 2 ? 7 : 0;
+
+    if(state.repeat != 0){
+      DateTime endDate = state.endDate!.add(const Duration(days: 1));
+      from = from.add(Duration(days: days));
+      to = to.add(Duration(days: days));
+
+      while(from.isBefore(endDate)){
+        Map<String, dynamic> newData = Map.of(data);
+        newData['from'] = from;
+        newData['to'] = to;
+        events.add(newData);
+        from = from.add(Duration(days: days));
+        to = to.add(Duration(days: days));
+      }
+    }
+
+    print(events);
+    ref.read(personalEventRepositories).createEvent(events);
+  }
+
+  void updateEvent() async{
+    //同じイベントを取得する。
+    List eventList = await ref.read(personalEventRepositories).getSameEvent(state.sameEventId!);
+    if(eventList.isNotEmpty) {
+      for (var event in eventList) {
+
+      }
+    }else{
+
+    }
     DateTime from = DateTime.utc(state.from!.year, state.from!.month, state.from!.day);
     DateTime to = DateTime.utc(state.to!.year, state.to!.month, state.to!.day);
     Map<String, dynamic> data = {

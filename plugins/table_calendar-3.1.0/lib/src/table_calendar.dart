@@ -8,6 +8,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:share_calendar/src/features/personal_event/application/color_setting_provider.dart';
+import 'package:share_calendar/src/features/personal_event/domain/event_document.dart';
 import 'package:share_calendar/src/features/personal_event/domain/personal_event.dart';
 import 'package:share_calendar/src/features/personal_event/presentation/personal_event_list.dart';
 import 'package:simple_gesture_detector/simple_gesture_detector.dart';
@@ -167,7 +168,7 @@ class TableCalendar<T> extends StatefulWidget {
   final RangeSelectionMode rangeSelectionMode;
 
   /// Function that assigns a list of events to a specified day.
-  final List<PersonalEvent> Function(DateTime day)? eventLoader;
+  final List<EventDocument> Function(DateTime day)? eventLoader;
 
   /// Function deciding whether given day should be enabled or not.
   /// If `false` is returned, this day will be disabled.
@@ -697,7 +698,7 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
                 final colors = ref.read(colorList);
                 return Column(
                   children: [
-                    for(final PersonalEvent event in events)
+                    for(var i = 0; i < count; i++)
                       Padding(
                         padding: const EdgeInsets.all(1.0),
                         child: SizedBox(
@@ -705,10 +706,10 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
                           child: Align(
                             alignment: Alignment.centerLeft,
                             child: Text(
-                              '${event.title}',
+                              '${events[i].event!.title}',
                               style: TextStyle(
                                 fontSize: 13,
-                                color: Color(colors[event.color!]),
+                                color: Color(colors[events[i].event!.color!]),
                                 fontWeight: FontWeight.bold
                               ),
                             ),

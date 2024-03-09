@@ -1,17 +1,23 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../application/color_setting_provider.dart';
+import '../../application/personal_event_provider.dart';
 import '../../domain/personal_event.dart';
 import 'color_settings_page.dart';
 
-class ColorForm extends StatelessWidget{
+class ColorForm extends ConsumerWidget{
   PersonalEvent? event;
   ColorForm(this.event, {super.key});
 
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context, WidgetRef ref){
+    final ev = ref.read(personalEventFormStateProvider(event));
+    final colors = ref.read(colorList);
     final double deviceWidth = MediaQuery.of(context).size.width;
-    final double deviceHeight = MediaQuery.of(context).size.height;
+    int color= 8;
+    color = ev.color != null ? ev.color! : 8;
 
     return InkWell(
       onTap: (){
@@ -28,12 +34,12 @@ class ColorForm extends StatelessWidget{
               bottom: BorderSide(color: Colors.grey, width: 1.0)
           ),
         ),
-        child: const Padding(
-          padding: EdgeInsets.all(10.0),
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
           child: Row(
             children: [
-              Icon(Icons.color_lens_outlined),
-              Padding(
+              const Icon(Icons.color_lens_outlined),
+              const Padding(
                 padding: EdgeInsets.only(left: 4.0),
                 child: Text(
                   '色',
@@ -43,10 +49,18 @@ class ColorForm extends StatelessWidget{
                   ),
                 ),
               ),
-              Expanded(
+              const Expanded(
                 child: SizedBox(),
               ),
-              Icon(Icons.arrow_forward_ios)
+              Container(
+                height: 20,
+                width: 20,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Color(colors[color]),
+                ),
+              ),
+              const Icon(Icons.arrow_forward_ios)
             ],
           ),
         ),
