@@ -14,42 +14,51 @@ import '../event_registration/title_form.dart';
 
 class PersonalEventEdit extends ConsumerWidget{
   EventDocument eventDoc;
-  PersonalEventEdit(this.eventDoc, {super.key});
+  int value;
+  PersonalEventEdit(this.eventDoc, this.value, {super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref){
+    final double deviceHeight = MediaQuery.of(context).size.height;
+    bool visible = value == 1 ? false : true;
     PersonalEvent event = eventDoc.event!;
     ref.watch(personalEventFormStateProvider(event));
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 5,
-        titleTextStyle: const TextStyle(
-          color: Colors.black,
-          fontSize: 20,
-          //fontWeight: FontWeight.bold,
-        ),
-        title: const Text('予定編集'),
-        centerTitle: true,
-      ),
-      body: Column(
-        children: [
-          TitleForm(event),
-          OverViewForm(event),
-          DateSettingFormat(event),
-          ColorForm(event),
-          NotificationForm(event),
-          RepeatForm(event),
-          const Expanded(
-            child: SizedBox(),
+    return SizedBox(
+      height: deviceHeight,
+      child: Scaffold(
+        appBar: AppBar(
+          elevation: 5,
+          titleTextStyle: const TextStyle(
+            color: Colors.black,
+            fontSize: 20,
+            //fontWeight: FontWeight.bold,
           ),
-          Padding(
-            padding: const EdgeInsets.only(bottom: 10.0, right: 20.0),
-            child: Align(
-              alignment: Alignment.centerRight,
-              child: SaveEventButton(event),
+          title: const Text('予定編集'),
+          centerTitle: true,
+        ),
+        body: Column(
+          children: [
+            TitleForm(event),
+            OverViewForm(event),
+            DateSettingFormat(event),
+            ColorForm(event),
+            NotificationForm(event),
+            Visibility(
+              visible: visible,
+                child: RepeatForm(event)
             ),
-          )
-        ],
+            const Expanded(
+              child: SizedBox(),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 10.0, right: 20.0),
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: SaveEventButton(event),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
