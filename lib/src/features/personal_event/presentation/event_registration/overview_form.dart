@@ -23,6 +23,8 @@ class OverViewForm extends ConsumerWidget{
         padding: const EdgeInsets.only(left: 10.0),
         child: TextFormField(
           initialValue: initialOverView,
+          minLines: 1,
+          maxLines: 3,
           decoration: const InputDecoration(
               hintText: 'イベント内容',
               border: InputBorder.none

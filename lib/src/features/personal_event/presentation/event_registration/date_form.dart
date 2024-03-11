@@ -81,11 +81,8 @@ class DateSettingFormat extends ConsumerWidget{
 }
 
 Widget dateFormFormat(BuildContext context, WidgetRef ref, PersonalEvent personalEvent, int fromOrTo, PersonalEvent? parameter){
-  print(parameter);
-  // final DateTime from = DateTime(personalEvent.from!.year, personalEvent.from!.month, personalEvent.from!.day);
-  // final DateTime to = DateTime(personalEvent.to!.year, personalEvent.to!.month, personalEvent.to!.day);
-  // final DateTime fromDateTime = DateTime(personalEvent.from!.year, personalEvent.from!.month, personalEvent.from!.day, personalEvent.from!.hour, personalEvent.from!.minute);
-  // final DateTime toDateTime = DateTime(personalEvent.to!.year, personalEvent.to!.month, personalEvent.to!.day, personalEvent.to!.hour, personalEvent.to!.minute);
+  final DateTime from = DateTime(personalEvent.from!.year, personalEvent.from!.month, personalEvent.from!.day);
+  final DateTime to = DateTime(personalEvent.to!.year, personalEvent.to!.month, personalEvent.to!.day);
 
   //from(開始日時)
   final DateTimeFormat fromDate = ref.read(dateTimeFormatClass(personalEvent.from!));
@@ -104,23 +101,54 @@ Widget dateFormFormat(BuildContext context, WidgetRef ref, PersonalEvent persona
 
   if(personalEvent.isAllDay!){
     return InkWell(
-      onTap: ()async{
-        final DateTime? picked = await showDatePicker(
+      onTap: (){
+        showDatePicker(
           context: context,
           initialDate: focusedDay,
           firstDate: DateTime(2024,1,1),
           lastDate: DateTime(2050,1,1),
           //locale: const Locale('ja', 'JP'),
-        );
-
-        if(picked != null) {
-          if(fromOrTo == 0){
-            ref.read(personalEventFormStateProvider(parameter).notifier).saveFromDate(picked);
-          }else {
-            ref.read(personalEventFormStateProvider(parameter).notifier).saveToDate(picked);
+        ).then((picked){
+          if(picked != null) {
+            if(fromOrTo == 0){
+              //fromのカレンダー
+              if(picked.isAtSameMomentAs(to)){
+                ref.read(personalEventFormStateProvider(parameter).notifier).saveFromDate(picked);
+              }else{
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    backgroundColor: Colors.red,
+                    content: Text(
+                      '日付をまたぐ行動を繰り返すことはできません。',
+                      style: TextStyle(
+                        fontSize: 15,
+                        //fontWeight: FontWeight.bold
+                      ),
+                    ),
+                  ),
+                );
+              }
+            }else {
+              //toのカレンダー
+              if(picked.isAtSameMomentAs(from)){
+                ref.read(personalEventFormStateProvider(parameter).notifier).saveToDate(picked);
+              }else{
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    backgroundColor: Colors.red,
+                    content: Text(
+                      '日付をまたぐ行動を繰り返すことはできません。',
+                      style: TextStyle(
+                        fontSize: 15,
+                        //fontWeight: FontWeight.bold
+                      ),
+                    ),
+                  ),
+                );
+              }
+            }
           }
-        }
-
+        });
       },
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -149,21 +177,52 @@ Widget dateFormFormat(BuildContext context, WidgetRef ref, PersonalEvent persona
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         InkWell(
-          onTap: ()async{
-            final DateTime? picked = await showDatePicker(
+          onTap: (){
+            showDatePicker(
               context: context,
               initialDate: focusedDay,
               firstDate: DateTime(2024,1,1),
               lastDate: DateTime(2050,1,1),
               //locale: const Locale('jp', 'JA'),
-            );
-            if(picked != null) {
-              if(fromOrTo == 0){
-                ref.read(personalEventFormStateProvider(parameter).notifier).changeOnlyFromDate(picked);
-              }else {
-                ref.read(personalEventFormStateProvider(parameter).notifier).changeOnlyToDate(picked);
+            ).then((picked){
+              if(picked != null) {
+                if(fromOrTo == 0){
+                  if(picked.isAtSameMomentAs(to)){
+                    ref.read(personalEventFormStateProvider(parameter).notifier).changeOnlyFromDate(picked);
+                  }else{
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        backgroundColor: Colors.red,
+                        content: Text(
+                          '日付をまたぐ行動を繰り返すことはできません。',
+                          style: TextStyle(
+                            fontSize: 15,
+                            //fontWeight: FontWeight.bold
+                          ),
+                        ),
+                      ),
+                    );
+                  }
+                }else {
+                  if(picked.isAtSameMomentAs(from)){
+                    ref.read(personalEventFormStateProvider(parameter).notifier).changeOnlyToDate(picked);
+                  }else{
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        backgroundColor: Colors.red,
+                        content: Text(
+                          '日付をまたぐ行動を繰り返すことはできません。',
+                          style: TextStyle(
+                            fontSize: 15,
+                            //fontWeight: FontWeight.bold
+                          ),
+                        ),
+                      ),
+                    );
+                  }
+                }
               }
-            }
+            });
           },
           child: Text(
             '${dateFormat.month}月${dateFormat.day}日($weekday曜日)',
@@ -175,7 +234,7 @@ Widget dateFormFormat(BuildContext context, WidgetRef ref, PersonalEvent persona
         ),
         InkWell(
           onTap: ()async{
-            final DateTime? picked = await DatePicker.showTimePicker(
+            DatePicker.showTimePicker(
                 context,
                 showTitleActions: true,
                 showSecondsColumn: false,
@@ -185,14 +244,15 @@ Widget dateFormFormat(BuildContext context, WidgetRef ref, PersonalEvent persona
                 },
                 currentTime: focusedDay,
                 locale: LocaleType.jp
-            );
-            if(picked != null) {
-              if(fromOrTo == 0){
-                ref.read(personalEventFormStateProvider(parameter).notifier).changeFromDate(picked);
-              }else {
-                ref.read(personalEventFormStateProvider(parameter).notifier).changeToDate(picked);
+            ).then((picked){
+              if(picked != null) {
+                if(fromOrTo == 0){
+                  ref.read(personalEventFormStateProvider(parameter).notifier).changeFromDate(picked);
+                }else {
+                  ref.read(personalEventFormStateProvider(parameter).notifier).changeToDate(picked);
+                }
               }
-            }
+            });
           },
           child: Text(
             '${hourFormat.format(dateFormat.date)}:${minutesFormat.format(dateFormat.date)}',

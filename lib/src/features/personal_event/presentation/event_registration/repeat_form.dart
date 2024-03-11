@@ -22,14 +22,31 @@ class RepeatForm extends ConsumerWidget{
     if(ev.repeat != 0){
       text = '${repeat[ev.repeat!]}, ${endDateFormat.format(ev.endDate!)}まで';
     }
+    DateTime from = DateTime(ev.from!.year,ev.from!.month,ev.from!.day);
+    DateTime to = DateTime(ev.to!.year,ev.to!.month,ev.to!.day);
 
     return InkWell(
       onTap: (){
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => RepeatSettingsPage(event),
-          ),
-        );
+        if(from.isAtSameMomentAs(to)){
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => RepeatSettingsPage(event),
+            ),
+          );
+        }else{
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              backgroundColor: Colors.red,
+              content: Text(
+                '日付をまたぐ行動を繰り返すことはできません。',
+                style: TextStyle(
+                  fontSize: 15,
+                  //fontWeight: FontWeight.bold
+                ),
+              ),
+            ),
+          );
+        }
       },
       child: Container(
         width: deviceWidth,

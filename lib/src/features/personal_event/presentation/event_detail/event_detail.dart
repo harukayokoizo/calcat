@@ -34,50 +34,53 @@ class EventDetail extends ConsumerWidget{
         title: const Text('詳細'),
         centerTitle: true,
       ),
-      body: Column(
-        children: [
-          Container(
-            width: deviceWidth,
-            decoration: const BoxDecoration(
-              border: Border(
-                  top: BorderSide(color: Colors.grey, width: 1.0),
-                  bottom: BorderSide(color: Colors.grey, width: 1.0)
-              ),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Text(
-                  event.title!,
-                style: const TextStyle(
-                  fontSize: 18
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              width: deviceWidth,
+              decoration: const BoxDecoration(
+                border: Border(
+                    top: BorderSide(color: Colors.grey, width: 1.0),
+                    bottom: BorderSide(color: Colors.grey, width: 1.0)
                 ),
               ),
-            ),
-          ),
-          if(event.event != null)
-          Container(
-            width: deviceWidth,
-            decoration: const BoxDecoration(
-              border: Border(
-                //top: BorderSide(color: Colors.grey, width: 1.0),
-                  bottom: BorderSide(color: Colors.grey, width: 1.0)
-              ),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Text(
-                event.event!,
-                style: const TextStyle(
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Text(
+                    event.title!,
+                  style: const TextStyle(
                     fontSize: 18
+                  ),
                 ),
               ),
             ),
-          ),
-          EventDateDetail(event),
-          EventColorDetail(event),
-          EventNotificationDetail(event),
-          EventRepeatDetail(event)
-        ],
+            if(event.event != null)
+            Container(
+              width: deviceWidth,
+              decoration: const BoxDecoration(
+                border: Border(
+                  //top: BorderSide(color: Colors.grey, width: 1.0),
+                    bottom: BorderSide(color: Colors.grey, width: 1.0)
+                ),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Text(
+                  event.event!,
+                  style: const TextStyle(
+                      fontSize: 18
+                  ),
+                ),
+              ),
+            ),
+            EventDateDetail(event),
+            EventColorDetail(event),
+            EventNotificationDetail(event),
+            EventRepeatDetail(event),
+            const SizedBox(height: 100,)
+          ],
+        ),
       ),
       floatingActionButton: Row(
         mainAxisAlignment: MainAxisAlignment.end,
