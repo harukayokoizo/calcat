@@ -3,6 +3,7 @@ import 'package:share_calendar/src/features/personal_event/application/personal_
 
 import '../../../common_widgets/application/common_provider.dart';
 import '../data/personal_event_repositories.dart';
+import '../domain/event_document.dart';
 import '../domain/personal_event.dart';
 
 final personalEventFormStateProvider = StateNotifierProvider.autoDispose.family<PersonalEventFormState, PersonalEvent, PersonalEvent?>(
@@ -75,6 +76,11 @@ class PersonalEventFormState extends StateNotifier<PersonalEvent>{
 
   void changeRepeat(int repeat){
     final event = state.copyWith(repeat: repeat);
+    state = event;
+  }
+
+  void resetRepeat(){
+    final event = state.copyWith(repeat: 0, endDate: null);
     state = event;
   }
 
@@ -154,56 +160,44 @@ class PersonalEventFormState extends StateNotifier<PersonalEvent>{
   }
 
   void createEvent(){
-    DateTime from = DateTime.utc(state.from!.year, state.from!.month, state.from!.day);
-    DateTime to = DateTime.utc(state.to!.year, state.to!.month, state.to!.day);
-    Map<String, dynamic> data = {
-      'uid': state.uid,
-      'title': state.title,
-      'event': state.event,
-      'image': state.image,
-      'color': state.color,
-      'isAllDay': state.isAllDay,
-      'from': state.from,
-      'to': state.to,
-      'notification': state.notification,
-      'repeat': state.repeat,
-      'endDate': state.endDate,
-      'sameEventId': state.sameEventId,
-      'number': state.number,
-    };
-
-    List events = [data];
-    int days = state.repeat == 1 ? 1 : state.repeat == 2 ? 7 : 0;
-
-    if(state.repeat != 0){
-      DateTime endDate = state.endDate!.add(const Duration(days: 1));
-      from = from.add(Duration(days: days));
-      to = to.add(Duration(days: days));
-
-      while(from.isBefore(endDate)){
-        Map<String, dynamic> newData = Map.of(data);
-        newData['from'] = from;
-        newData['to'] = to;
-        events.add(newData);
-        from = from.add(Duration(days: days));
-        to = to.add(Duration(days: days));
-      }
-    }
-
-    print(events);
+    List<Map<String, dynamic>> events = saveDataList();
     ref.read(personalEventRepositories).createEvent(events);
   }
 
-  void updateEvent() async{
-    //同じイベントを取得する。
-    List eventList = await ref.read(personalEventRepositories).getSameEvent(state.sameEventId!);
-    if(eventList.isNotEmpty) {
-      for (var event in eventList) {
-
+  void updateEvent(int value, EventDocument eventDoc) async{
+    List<Map<String, dynamic>> events = saveDataList();
+    if(value == 0){
+      //繰り返しがないイベント
+      if(state.repeat == 0){
+        ref.read(personalEventRepositories).updateEvent(events.first, eventDoc.docId!);
+      }else{
+        ref.read(personalEventRepositories).deleteAndUpdateEvent([eventDoc.docId!], events);
       }
-    }else{
-
+    }else if(value == 1){
+      //繰り返しはあるが、特定の予定のみを更新する場合
+      ref.read(personalEventRepositories).updateEvent(events.first, eventDoc.docId!);
+    }else if(value == 2){
+      //繰り返しがあり、かつ定期的な予定を更新する場合
+      //sameEventIdが同じのイベントをすべて取得する
+      List deleteEvents = await ref.read(personalEventRepositories).getSameEvent(state.sameEventId!);
+      ref.read(personalEventRepositories).deleteAndUpdateEvent(deleteEvents, events);
     }
+
+  }
+
+  // void deleteEvent(int value, EventDocument eventDoc) async{
+  //   if(value == 0 || value == 1){
+  //     //繰り返しがないイベント
+  //     ref.read(personalEventRepositories).deleteEvent([eventDoc.docId!]);
+  //   }else if(value == 2){
+  //     //繰り返しがあり、かつ定期的な予定を更新する場合
+  //     //sameEventIdが同じのイベントをすべて取得する
+  //     List deleteEvents = await ref.read(personalEventRepositories).getSameEvent(state.sameEventId!);
+  //     ref.read(personalEventRepositories).deleteEvent(deleteEvents);
+  //   }
+  // }
+
+  List<Map<String, dynamic>> saveDataList(){
     DateTime from = DateTime.utc(state.from!.year, state.from!.month, state.from!.day);
     DateTime to = DateTime.utc(state.to!.year, state.to!.month, state.to!.day);
     Map<String, dynamic> data = {
@@ -222,7 +216,7 @@ class PersonalEventFormState extends StateNotifier<PersonalEvent>{
       'number': state.number,
     };
 
-    List events = [data];
+    List<Map<String, dynamic>> events = [data];
     int days = state.repeat == 1 ? 1 : state.repeat == 2 ? 7 : 0;
 
     if(state.repeat != 0){
@@ -240,8 +234,7 @@ class PersonalEventFormState extends StateNotifier<PersonalEvent>{
       }
     }
 
-    print(events);
-    ref.read(personalEventRepositories).createEvent(events);
+    return events;
   }
 
 }

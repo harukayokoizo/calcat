@@ -20,9 +20,13 @@ class PersonalEventEdit extends ConsumerWidget{
   @override
   Widget build(BuildContext context, WidgetRef ref){
     final double deviceHeight = MediaQuery.of(context).size.height;
-    bool visible = value == 1 ? false : true;
+    bool visible = true;
     PersonalEvent event = eventDoc.event!;
     ref.watch(personalEventFormStateProvider(event));
+    if(value == 1){
+      visible = false;
+      ref.read(personalEventFormStateProvider(event).notifier).resetRepeat();
+    }
     return SizedBox(
       height: deviceHeight,
       child: Scaffold(
@@ -54,7 +58,7 @@ class PersonalEventEdit extends ConsumerWidget{
               padding: const EdgeInsets.only(bottom: 10.0, right: 20.0),
               child: Align(
                 alignment: Alignment.centerRight,
-                child: SaveEventButton(event),
+                child: SaveEventButton(eventDoc, value),
               ),
             )
           ],
@@ -65,15 +69,17 @@ class PersonalEventEdit extends ConsumerWidget{
 }
 
 class SaveEventButton extends ConsumerWidget{
-  PersonalEvent event;
-  SaveEventButton(this.event, {super.key});
+  EventDocument eventDoc;
+  int value;
+  SaveEventButton(this.eventDoc, this.value, {super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref){
+    PersonalEvent event = eventDoc.event!;
     final personalEvent = ref.watch(personalEventFormStateProvider(event));
     return ElevatedButton(
       onPressed: personalEvent.title == null || personalEvent.title!.isEmpty ? null : (){
-        // ref.read(personalEventFormStateProvider.notifier).createEvent();
+        ref.read(personalEventFormStateProvider(event).notifier).updateEvent(value, eventDoc);
         Navigator.of(context).pop();
       },
       style: ElevatedButton.styleFrom(

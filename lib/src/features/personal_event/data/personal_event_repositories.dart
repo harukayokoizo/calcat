@@ -41,8 +41,8 @@ class PersonalEventRepositories{
         .asStream()
         .forEach((element) {
           for(var event in element.docs){
-            PersonalEvent personalEvent = PersonalEvent.fromJson(event.data());
-            events.add(personalEvent);
+            //PersonalEvent personalEvent = PersonalEvent.fromJson(event.data());
+            events.add(event.id);
           }
         });
 
@@ -62,14 +62,45 @@ class PersonalEventRepositories{
     await batch.commit();
   }
 
-  Future<void> updateEvent(List events) async{
-    WriteBatch batch = FirebaseFirestore.instance.batch();
-    final docId = FirebaseFirestore.instance.collection('personal_events').doc().id;
-    final db = FirebaseFirestore.instance.collection('personal_events');
+  Future<void> updateEvent(Map<String, dynamic> event, String docId) async{
+    print(event);
+    await FirebaseFirestore.instance
+        .collection('personal_events')
+        .doc(docId)
+        .update(event);
+  }
 
-    for(var data in events){
+  Future<void> deleteAndUpdateEvent(List deleteEvents, List createEvents) async{
+    WriteBatch batch = FirebaseFirestore.instance.batch();
+    final db = FirebaseFirestore.instance.collection('personal_events');
+    final docId = FirebaseFirestore.instance.collection('personal_events').doc().id;
+
+    for(var data in deleteEvents){
+      batch.delete(db.doc(data));
+    }
+
+    for(var data in createEvents){
       data['sameEventId'] = docId;
       batch.set(db.doc(), data);
+    }
+
+    await batch.commit();
+  }
+
+  Future<void> deleteEvent(String docId) async{
+    await FirebaseFirestore.instance
+        .collection('personal_events')
+        .doc(docId)
+        .delete();
+  }
+
+  Future<void> deleteSameEvents(EventDocument eventDoc) async{
+    List deleteEvents = await getSameEvent(eventDoc.event!.sameEventId!);
+    WriteBatch batch = FirebaseFirestore.instance.batch();
+    final db = FirebaseFirestore.instance.collection('personal_events');
+
+    for(var data in deleteEvents){
+      batch.delete(db.doc(data));
     }
 
     await batch.commit();

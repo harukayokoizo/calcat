@@ -15,24 +15,6 @@ import 'event_notification_detail.dart';
 import 'event_repeat_detail.dart';
 import 'modal_bottom_sheet.dart';
 
-// final eventDisplay = StateProvider.autoDispose<bool>(
-//         (ref) => true
-// );
-
-// class EventContent extends ConsumerWidget{
-//   EventDocument eventDoc;
-//   EventContent(this.eventDoc, {super.key});
-//   @override
-//   Widget build(BuildContext context, WidgetRef ref) {
-//     bool display = ref.watch(eventDisplay);
-//     if(display){
-//       return EventDetail(eventDoc);
-//     }else{
-//       return PersonalEventEdit(eventDoc);
-//     }
-//   }
-// }
-
 class EventDetail extends ConsumerWidget{
   EventDocument eventDoc;
   EventDetail(this.eventDoc, {super.key});
@@ -114,18 +96,26 @@ class EventDetail extends ConsumerWidget{
                     showDialog(
                       context: context,
                       builder: (BuildContext context) {
-                        return const DeleteDialog();
+                        return DeleteDialog(value, eventDoc);
                       },
-                    );
+                    ).then((value){
+                      if(value){
+                        Navigator.pop(context);
+                      }
+                    });
                   }
                 });
               }else{
-                showDialog(
+                showCupertinoDialog(
                   context: context,
                   builder: (BuildContext context) {
-                    return const DeleteDialog();
+                    return DeleteDialog(0, eventDoc);
                   },
-                );
+                ).then((value){
+                  if(value){
+                    Navigator.pop(context);
+                  }
+                });
               }
             },
           ),

@@ -1,54 +1,49 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:share_calendar/src/features/personal_event/domain/event_document.dart';
 
-class DeleteDialog extends StatelessWidget{
-  const DeleteDialog({super.key});
+import '../../data/personal_event_repositories.dart';
+
+class DeleteDialog extends ConsumerWidget{
+  int value;
+  EventDocument eventDoc;
+  DeleteDialog(this.value, this.eventDoc, {super.key});
 
   @override
 
-  Widget build(BuildContext context) {
-    int count = 0;
-    return AlertDialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10),
+  Widget build(BuildContext context, WidgetRef ref) {
+    return CupertinoAlertDialog(
+      title: const Text('予定の削除'),
+      content: const Padding(
+        padding: EdgeInsets.only(top: 8.0),
+        child: Text('本当にこの予定を削除しますか？',),
       ),
-      elevation: 10,
-      backgroundColor: const Color.fromRGBO(85, 85, 85, 1),
-      content: const Text(
-        "本当に削除してもよろしいでしょうか",
-        style: TextStyle(
-            fontSize: 20,
-            color: Colors.white
-        ),
-      ),
-      actionsAlignment: MainAxisAlignment.spaceAround,
-      //actionsPadding: EdgeInsets.all(1.0),
       actions: <Widget>[
-        // ボタン領域
         TextButton(
             child: const Text(
-              "削除",
-              style: TextStyle(
-                  fontSize: 20,
-                  color: Colors.red
-              ),
+              "キャンセル",
             ),
-            onPressed: ()async{
-              //await ref.read(roomRepositoriesProvider).deleteRoom(room.roomId!);
-              // ignore: use_build_context_synchronously
-              Navigator.pop(context);
+            onPressed: (){
+              Navigator.pop(context, false);
             }
         ),
         TextButton(
             child: const Text(
-              "キャンセル",
-              style: TextStyle(
-                fontSize: 20,
-              ),
+              "削除",
             ),
-            onPressed: (){
-              Navigator.pop(context);
-              //ref.read(deleteDialogFlag.notifier).state = false;
+            onPressed: ()async{
+              if(value == 0 || value == 1){
+                ref.read(personalEventRepositories).deleteEvent(eventDoc.docId!)
+                    .then((value){
+                      Navigator.pop(context, true);
+                    });
+              }else if(value == 2){
+                ref.read(personalEventRepositories).deleteSameEvents(eventDoc).then((value){
+                  Navigator.pop(context, true);
+                });
+              }
+
             }
         ),
       ],
