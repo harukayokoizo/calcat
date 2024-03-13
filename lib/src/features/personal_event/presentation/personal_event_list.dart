@@ -55,27 +55,29 @@ class PersonalEventList extends ConsumerWidget{
             if(eventOnDate.isNotEmpty)
               Flexible(
                 flex: 5,
-                child: LayoutBuilder(
-                  builder: (context, constraint) {
-                    return SingleChildScrollView(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          for(EventDocument eventDoc in eventOnDate)
-                            InkWell(
-                                onTap: (){
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(builder: (context) => EventDetail(eventDoc),
-                                    ),
-                                  );
-                                },
-                                child: EventTile(eventDoc.event!, focusedDay)
-                            )
-                        ],
-                      ),
-                    );
-                  }
+                child: Align(
+                  alignment: Alignment.topCenter,
+                  child: LayoutBuilder(
+                    builder: (context, constraint) {
+                      return SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            for(EventDocument eventDoc in eventOnDate)
+                              InkWell(
+                                  onTap: (){
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(builder: (context) => EventDetail(eventDoc),
+                                      ),
+                                    );
+                                  },
+                                  child: EventTile(eventDoc.event!, focusedDay)
+                              )
+                          ],
+                        ),
+                      );
+                    }
+                  ),
                 ),
               )
             else

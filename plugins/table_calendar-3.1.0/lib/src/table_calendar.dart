@@ -658,40 +658,9 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
           // print(day);
           // print(events);
           Widget? markerWidget;
-              //widget.calendarBuilders.markerBuilder?.call(context, day, events);
 
           if (events.isNotEmpty) {
-            // final center = constraints.maxHeight / 2;
-            //
-            // final markerSize = widget.calendarStyle.markerSize ??
-            //     (shorterSide - widget.calendarStyle.cellMargin.vertical) *
-            //         widget.calendarStyle.markerSizeScale;
-            //
-            // final markerAutoAlignmentTop = center +
-            //     (shorterSide - widget.calendarStyle.cellMargin.vertical) / 2 -
-            //     (markerSize * widget.calendarStyle.markersAnchor);
-
-            // markerWidget = PositionedDirectional(
-            //   top: widget.calendarStyle.markersAutoAligned
-            //       ? markerAutoAlignmentTop
-            //       : widget.calendarStyle.markersOffset.top,
-            //   bottom: widget.calendarStyle.markersAutoAligned
-            //       ? null
-            //       : widget.calendarStyle.markersOffset.bottom,
-            //   start: widget.calendarStyle.markersAutoAligned
-            //       ? null
-            //       : widget.calendarStyle.markersOffset.start,
-            //   end: widget.calendarStyle.markersAutoAligned
-            //       ? null
-            //       : widget.calendarStyle.markersOffset.end,
-            //   child: Row(
-            //     mainAxisSize: MainAxisSize.min,
-            //     children: events
-            //         .take(widget.calendarStyle.markersMaxCount)
-            //         .map((event) => _buildSingleMarker(day, event, markerSize))
-            //         .toList(),
-            //   ),
-            // );
+            // events.sort((a,b) => a.event!.from!.compareTo(b.event!.from!));
             int count = events.length > 3 ? 3 : events.length;
             markerWidget = Consumer(
               builder: (context, ref, _) {

@@ -17,7 +17,8 @@ class FocusedDayState extends StateNotifier<DateTime>{
   FocusedDayState() : super(DateTime.now());
 
   void saveState({required DateTime focusedDay}){
-    state = focusedDay;
+    DateTime day = DateTime(focusedDay.year,focusedDay.month,focusedDay.day);
+    state = day;
   }
 
 }
@@ -38,20 +39,21 @@ class PersonalEventListController extends StateNotifier<Map<dynamic, dynamic>>{
   Ref ref;
   //List<PersonalEvent> personalEvents;
   PersonalEventListController(this.ref) : super({}){
-    Map eventsDisplay = {};
+    Map<DateTime, List<EventDocument>> eventsDisplay = {};
     final events = ref.watch(personalEvents);
     events.whenData((value){
       eventsDisplay = changeFormat(value);
+      eventsDisplay = sortEventList(eventsDisplay);
       state = eventsDisplay;
     });
   }
 
-  Map changeFormat(List<EventDocument> events){
+  Map<DateTime, List<EventDocument>> changeFormat(List<EventDocument> events){
     // final sampleMap = {
     //   DateTime.utc(2024, 2, 22): ['firstEvent', 'secondEvent'],
     //   DateTime.utc(2024, 2, 23): ['thirdEvent', 'fourthEvent']
     // };
-    final Map eventList = {};
+    final Map<DateTime, List<EventDocument>> eventList = {};
     for(final EventDocument eventDoc in events){
       PersonalEvent event = eventDoc.event!;
       List keyDate = [];
@@ -75,7 +77,7 @@ class PersonalEventListController extends StateNotifier<Map<dynamic, dynamic>>{
         //eventListにdateのkeyが存在するかチェックする
         var containDate = eventList.containsKey(date);
         if(containDate){
-          List value = eventList[date];
+          List<EventDocument> value = eventList[date]!;
           value.add(eventDoc);
           eventList[date] = value;
         }else{
@@ -83,9 +85,17 @@ class PersonalEventListController extends StateNotifier<Map<dynamic, dynamic>>{
         }
       }
     }
-    print(eventList);
     return eventList;
   }
 
+  Map<DateTime, List<EventDocument>> sortEventList(Map<DateTime, List<EventDocument>> eventMap){
+    final Map<DateTime, List<EventDocument>> sortEventMap = {};
+    eventMap.forEach((date, events) {
+      events.sort((a, b) => a.event!.from!.compareTo(b.event!.from!));
+      sortEventMap.addAll({date : events});
+    });
+
+    return sortEventMap;
+  }
 
 }
