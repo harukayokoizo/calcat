@@ -112,9 +112,7 @@ Widget dateFormFormat(BuildContext context, WidgetRef ref, PersonalEvent persona
           if(picked != null) {
             if(fromOrTo == 0){
               //fromのカレンダー
-              if(picked.isAtSameMomentAs(to)){
-                ref.read(personalEventFormStateProvider(parameter).notifier).saveFromDate(picked);
-              }else{
+              if(personalEvent.repeat != 0 && !picked.isAtSameMomentAs(to)){
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
                     backgroundColor: Colors.red,
@@ -127,12 +125,12 @@ Widget dateFormFormat(BuildContext context, WidgetRef ref, PersonalEvent persona
                     ),
                   ),
                 );
+              }else{
+                ref.read(personalEventFormStateProvider(parameter).notifier).saveFromDate(picked);
               }
             }else {
               //toのカレンダー
-              if(picked.isAtSameMomentAs(from)){
-                ref.read(personalEventFormStateProvider(parameter).notifier).saveToDate(picked);
-              }else{
+              if(personalEvent.repeat != 0 && !picked.isAtSameMomentAs(from)){
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
                     backgroundColor: Colors.red,
@@ -145,6 +143,8 @@ Widget dateFormFormat(BuildContext context, WidgetRef ref, PersonalEvent persona
                     ),
                   ),
                 );
+              }else{
+                ref.read(personalEventFormStateProvider(parameter).notifier).saveToDate(picked);
               }
             }
           }
@@ -187,7 +187,7 @@ Widget dateFormFormat(BuildContext context, WidgetRef ref, PersonalEvent persona
             ).then((picked){
               if(picked != null) {
                 if(fromOrTo == 0){
-                  if(picked.isAtSameMomentAs(to)){
+                  if(personalEvent.repeat != 0 && !picked.isAtSameMomentAs(to)){
                     ref.read(personalEventFormStateProvider(parameter).notifier).changeOnlyFromDate(picked);
                   }else{
                     ScaffoldMessenger.of(context).showSnackBar(
@@ -204,9 +204,7 @@ Widget dateFormFormat(BuildContext context, WidgetRef ref, PersonalEvent persona
                     );
                   }
                 }else {
-                  if(picked.isAtSameMomentAs(from)){
-                    ref.read(personalEventFormStateProvider(parameter).notifier).changeOnlyToDate(picked);
-                  }else{
+                  if(personalEvent.repeat != 0 && !picked.isAtSameMomentAs(from)){
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                         backgroundColor: Colors.red,
@@ -219,6 +217,8 @@ Widget dateFormFormat(BuildContext context, WidgetRef ref, PersonalEvent persona
                         ),
                       ),
                     );
+                  }else{
+                    ref.read(personalEventFormStateProvider(parameter).notifier).changeOnlyToDate(picked);
                   }
                 }
               }

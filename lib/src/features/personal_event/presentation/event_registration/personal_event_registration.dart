@@ -30,25 +30,31 @@ class PersonalEventRegistration extends ConsumerWidget{
         title: const Text('予定作成'),
         centerTitle: true,
       ),
-      body: Column(
-        children: [
-          TitleForm(null),
-          OverViewForm(null),
-          DateSettingFormat(null),
-          ColorForm(null),
-          NotificationForm(null),
-          RepeatForm(null),
-          const Expanded(
-            child: SizedBox(),
-          ),
-          const Padding(
-            padding: EdgeInsets.only(bottom: 10.0, right: 20.0),
-            child: Align(
-                alignment: Alignment.centerRight,
-                child: SaveEventButton(),
+      body: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: (){
+          FocusScope.of(context).unfocus();
+        },
+        child: Column(
+          children: [
+            TitleForm(null),
+            OverViewForm(null),
+            DateSettingFormat(null),
+            ColorForm(null),
+            NotificationForm(null),
+            RepeatForm(null),
+            const Expanded(
+              child: SizedBox(),
             ),
-          )
-        ],
+            const Padding(
+              padding: EdgeInsets.only(bottom: 10.0, right: 20.0),
+              child: Align(
+                  alignment: Alignment.centerRight,
+                  child: SaveEventButton(),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

@@ -22,15 +22,25 @@ class PersonalEventEdit extends ConsumerWidget{
     final double deviceHeight = MediaQuery.of(context).size.height;
     bool visible = true;
     PersonalEvent event = eventDoc.event!;
-    ref.watch(personalEventFormStateProvider(event));
     if(value == 1){
       visible = false;
-      ref.read(personalEventFormStateProvider(event).notifier).resetRepeat();
+      event = event.copyWith(repeat: 0, endDate: null);
+      ref.watch(personalEventFormStateProvider(event));
+    }else{
+      ref.watch(personalEventFormStateProvider(event));
     }
+
     return SizedBox(
-      height: deviceHeight,
+      height: deviceHeight - 30,
       child: Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
+          leading: IconButton(
+            onPressed: () {
+              Navigator.of(context).pop(false);
+            },
+            icon: Icon(Icons.close),
+          ),
           elevation: 5,
           titleTextStyle: const TextStyle(
             color: Colors.black,
@@ -40,28 +50,34 @@ class PersonalEventEdit extends ConsumerWidget{
           title: const Text('予定編集'),
           centerTitle: true,
         ),
-        body: Column(
-          children: [
-            TitleForm(event),
-            OverViewForm(event),
-            DateSettingFormat(event),
-            ColorForm(event),
-            NotificationForm(event),
-            Visibility(
-              visible: visible,
-                child: RepeatForm(event)
-            ),
-            const Expanded(
-              child: SizedBox(),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 10.0, right: 20.0),
-              child: Align(
-                alignment: Alignment.centerRight,
-                child: SaveEventButton(eventDoc, value),
+        body: GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: (){
+            FocusScope.of(context).unfocus();
+          },
+          child: Column(
+            children: [
+              TitleForm(event),
+              OverViewForm(event),
+              DateSettingFormat(event),
+              ColorForm(event),
+              NotificationForm(event),
+              Visibility(
+                visible: visible,
+                  child: RepeatForm(event)
               ),
-            )
-          ],
+              const Expanded(
+                child: SizedBox(),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 10.0, right: 20.0),
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: SaveEventButton(eventDoc, event, value),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -70,17 +86,18 @@ class PersonalEventEdit extends ConsumerWidget{
 
 class SaveEventButton extends ConsumerWidget{
   EventDocument eventDoc;
+  PersonalEvent event;
   int value;
-  SaveEventButton(this.eventDoc, this.value, {super.key});
+  SaveEventButton(this.eventDoc, this.event, this.value, {super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref){
-    PersonalEvent event = eventDoc.event!;
+    //PersonalEvent event = eventDoc.event!;
     final personalEvent = ref.watch(personalEventFormStateProvider(event));
     return ElevatedButton(
       onPressed: personalEvent.title == null || personalEvent.title!.isEmpty ? null : (){
         ref.read(personalEventFormStateProvider(event).notifier).updateEvent(value, eventDoc);
-        Navigator.of(context).pop();
+        Navigator.of(context).pop(true);
       },
       style: ElevatedButton.styleFrom(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),

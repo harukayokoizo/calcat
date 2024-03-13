@@ -185,21 +185,9 @@ class PersonalEventFormState extends StateNotifier<PersonalEvent>{
 
   }
 
-  // void deleteEvent(int value, EventDocument eventDoc) async{
-  //   if(value == 0 || value == 1){
-  //     //繰り返しがないイベント
-  //     ref.read(personalEventRepositories).deleteEvent([eventDoc.docId!]);
-  //   }else if(value == 2){
-  //     //繰り返しがあり、かつ定期的な予定を更新する場合
-  //     //sameEventIdが同じのイベントをすべて取得する
-  //     List deleteEvents = await ref.read(personalEventRepositories).getSameEvent(state.sameEventId!);
-  //     ref.read(personalEventRepositories).deleteEvent(deleteEvents);
-  //   }
-  // }
-
   List<Map<String, dynamic>> saveDataList(){
-    DateTime from = DateTime.utc(state.from!.year, state.from!.month, state.from!.day);
-    DateTime to = DateTime.utc(state.to!.year, state.to!.month, state.to!.day);
+    DateTime from = DateTime(state.from!.year, state.from!.month, state.from!.day, state.from!.hour, state.from!.minute);
+    DateTime to = DateTime(state.to!.year, state.to!.month, state.to!.day, state.to!.hour, state.to!.minute);
     Map<String, dynamic> data = {
       'uid': state.uid,
       'title': state.title,

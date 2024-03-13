@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:share_calendar/src/features/personal_event/presentation/event_detail/overview_detail.dart';
+import 'package:share_calendar/src/features/personal_event/presentation/event_detail/title_detail.dart';
 
 import '../../application/personal_event_provider.dart';
 import '../../domain/event_document.dart';
@@ -9,10 +11,10 @@ import '../event_edit/delete_dialog.dart';
 import '../event_edit/event_edit_page.dart';
 import '../event_registration/date_form.dart';
 import 'action_sheet.dart';
-import 'event_color_detail.dart';
-import 'event_date_detail.dart';
-import 'event_notification_detail.dart';
-import 'event_repeat_detail.dart';
+import 'color_detail.dart';
+import 'date_detail.dart';
+import 'notification_detail.dart';
+import 'repeat_detail.dart';
 import 'modal_bottom_sheet.dart';
 
 class EventDetail extends ConsumerWidget{
@@ -37,43 +39,9 @@ class EventDetail extends ConsumerWidget{
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Container(
-              width: deviceWidth,
-              decoration: const BoxDecoration(
-                border: Border(
-                    top: BorderSide(color: Colors.grey, width: 1.0),
-                    bottom: BorderSide(color: Colors.grey, width: 1.0)
-                ),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Text(
-                    event.title!,
-                  style: const TextStyle(
-                    fontSize: 18
-                  ),
-                ),
-              ),
-            ),
+            TitleDetail(event),
             if(event.event != null)
-            Container(
-              width: deviceWidth,
-              decoration: const BoxDecoration(
-                border: Border(
-                  //top: BorderSide(color: Colors.grey, width: 1.0),
-                    bottom: BorderSide(color: Colors.grey, width: 1.0)
-                ),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Text(
-                  event.event!,
-                  style: const TextStyle(
-                      fontSize: 18
-                  ),
-                ),
-              ),
-            ),
+              OverViewDetail(event),
             EventDateDetail(event),
             EventColorDetail(event),
             EventNotificationDetail(event),
@@ -142,7 +110,11 @@ class EventDetail extends ConsumerWidget{
                         builder: (BuildContext context) {
                           return PersonalEventEdit(eventDoc, value);
                         },
-                      );
+                      ).then((value){
+                        if(value){
+                          Navigator.pop(context);
+                        }
+                      });
                     }
                   });
                 }else{
@@ -153,7 +125,11 @@ class EventDetail extends ConsumerWidget{
                     builder: (BuildContext context) {
                       return PersonalEventEdit(eventDoc, 0);
                     },
-                  );
+                  ).then((value){
+                    if(value){
+                      Navigator.pop(context);
+                    }
+                  });
                 }
               }
             ),

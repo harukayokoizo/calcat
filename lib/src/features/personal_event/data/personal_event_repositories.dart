@@ -63,7 +63,8 @@ class PersonalEventRepositories{
   }
 
   Future<void> updateEvent(Map<String, dynamic> event, String docId) async{
-    print(event);
+    final newId = FirebaseFirestore.instance.collection('personal_events').doc().id;
+    event['sameEventId'] = newId;
     await FirebaseFirestore.instance
         .collection('personal_events')
         .doc(docId)
