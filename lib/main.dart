@@ -9,6 +9,7 @@ import 'package:share_calendar/src/common_widgets/application/common_provider.da
 import 'package:share_calendar/src/features/authentication/application/mail_auth.dart';
 import 'package:share_calendar/src/features/authentication/application/user_provider.dart';
 import 'package:share_calendar/src/features/authentication/presentation/login_page.dart';
+import 'package:share_calendar/src/features/calendar/presentation/calendar_list.dart';
 import 'package:share_calendar/src/features/personal_event/presentation/personal_calendar.dart';
 
 import 'src/features/personal_event/presentation/personal_calendar.dart';
@@ -72,7 +73,7 @@ class TopPage extends StatefulWidget{
 class TopPageState extends State<TopPage>{
   int number = 0;
   final List<Widget> _pageList = <Widget>[
-    //const PersonalCalendarPage(),
+    const CalendarList(),
     const PersonalCalendarPage()
   ];
 
@@ -80,11 +81,11 @@ class TopPageState extends State<TopPage>{
   Widget build(BuildContext context) {
     final tabItems = [
       const BottomNavigationBarItem(
-        icon: Icon(Icons.swipe),
+        icon: Icon(Icons.star),
         label: 'Calendar',
       ),
       const BottomNavigationBarItem(
-        icon: Icon(Icons.star),
+        icon: Icon(Icons.calendar_month),
         label: 'favorite',
       ),
       const BottomNavigationBarItem(

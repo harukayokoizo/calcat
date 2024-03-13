@@ -55,8 +55,8 @@ class EventDetail extends ConsumerWidget{
         children: [
           FloatingActionButton(
             heroTag: "delete",
-            child: Icon(Icons.delete),
-            backgroundColor: Colors.blue[200],
+            child: const Icon(Icons.delete),
+            //backgroundColor: Colors.blue[200],
             onPressed: () async {
               if (event.repeat != 0) {
                 showCupertinoModalPopup(
@@ -94,8 +94,8 @@ class EventDetail extends ConsumerWidget{
             padding: const EdgeInsets.only(left: 8.0),
             child: FloatingActionButton(
               heroTag: "edit",
-              child: Icon(Icons.edit),
-              backgroundColor: Colors.blue[200],
+              child: const Icon(Icons.edit),
+              //backgroundColor: Colors.blue[200],
               onPressed: () async {
                 if (event.repeat != 0) {
                   showCupertinoModalPopup(
