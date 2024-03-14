@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../application/color_setting_provider.dart';
-import '../../domain/personal_event.dart';
+import '../../domain/event.dart';
 
 class EventColorDetail extends ConsumerWidget{
-  PersonalEvent personalEvent;
+  Event personalEvent;
   EventColorDetail(this.personalEvent, {super.key});
 
   @override

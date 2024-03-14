@@ -1,13 +1,12 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'personal_event.dart';
+part of 'event.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$PersonalEventImpl _$$PersonalEventImplFromJson(Map<String, dynamic> json) =>
-    _$PersonalEventImpl(
+_$EventImpl _$$EventImplFromJson(Map<String, dynamic> json) => _$EventImpl(
       uid: json['uid'] as String?,
       title: json['title'] as String?,
       event: json['event'] as String?,
@@ -28,7 +27,7 @@ _$PersonalEventImpl _$$PersonalEventImplFromJson(Map<String, dynamic> json) =>
       number: json['number'] as int?,
     );
 
-Map<String, dynamic> _$$PersonalEventImplToJson(_$PersonalEventImpl instance) =>
+Map<String, dynamic> _$$EventImplToJson(_$EventImpl instance) =>
     <String, dynamic>{
       'uid': instance.uid,
       'title': instance.title,

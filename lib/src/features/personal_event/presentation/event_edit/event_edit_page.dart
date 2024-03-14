@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:share_calendar/src/features/personal_event/presentation/event_registration/repeat_form.dart';
 
-import '../../application/personal_event_provider.dart';
+import '../../application/event_provider.dart';
 import '../../domain/event_document.dart';
-import '../../domain/personal_event.dart';
+import '../../domain/event.dart';
 import '../event_registration/color_form.dart';
 import '../event_registration/date_form.dart';
 import '../event_registration/notification_form.dart';
@@ -21,13 +21,13 @@ class PersonalEventEdit extends ConsumerWidget{
   Widget build(BuildContext context, WidgetRef ref){
     final double deviceHeight = MediaQuery.of(context).size.height;
     bool visible = true;
-    PersonalEvent event = eventDoc.event!;
+    Event event = eventDoc.event!;
     if(value == 1){
       visible = false;
       event = event.copyWith(repeat: 0, endDate: null);
-      ref.watch(personalEventFormStateProvider(event));
+      ref.watch(eventFormStateProvider(event));
     }else{
-      ref.watch(personalEventFormStateProvider(event));
+      ref.watch(eventFormStateProvider(event));
     }
 
     return SizedBox(
@@ -86,17 +86,17 @@ class PersonalEventEdit extends ConsumerWidget{
 
 class SaveEventButton extends ConsumerWidget{
   EventDocument eventDoc;
-  PersonalEvent event;
+  Event event;
   int value;
   SaveEventButton(this.eventDoc, this.event, this.value, {super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref){
     //PersonalEvent event = eventDoc.event!;
-    final personalEvent = ref.watch(personalEventFormStateProvider(event));
+    final personalEvent = ref.watch(eventFormStateProvider(event));
     return ElevatedButton(
       onPressed: personalEvent.title == null || personalEvent.title!.isEmpty ? null : (){
-        ref.read(personalEventFormStateProvider(event).notifier).updateEvent(value, eventDoc);
+        ref.read(eventFormStateProvider(event).notifier).updateEvent(value, eventDoc);
         Navigator.of(context).pop(true);
       },
       style: ElevatedButton.styleFrom(

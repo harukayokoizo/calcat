@@ -2,11 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../application/personal_event_provider.dart';
-import '../../domain/personal_event.dart';
+import '../../application/event_provider.dart';
+import '../../domain/event.dart';
 
 class TitleForm extends ConsumerWidget{
-  PersonalEvent? event;
+  Event? event;
   TitleForm(this.event, {super.key});
 
   @override
@@ -29,7 +29,7 @@ class TitleForm extends ConsumerWidget{
               border: InputBorder.none
           ),
           onChanged: (value){
-            ref.read(personalEventFormStateProvider(event).notifier).changeTitle(value);
+            ref.read(eventFormStateProvider(event).notifier).changeTitle(value);
           },
         ),
       ),

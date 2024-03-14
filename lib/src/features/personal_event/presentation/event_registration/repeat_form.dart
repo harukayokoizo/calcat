@@ -4,19 +4,19 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:share_calendar/src/features/personal_event/presentation/event_registration/repeat_settings_page.dart';
 
-import '../../application/personal_event_provider.dart';
+import '../../application/event_provider.dart';
 import '../../application/repeat_setting_provider.dart';
-import '../../domain/personal_event.dart';
+import '../../domain/event.dart';
 
 class RepeatForm extends ConsumerWidget{
-  PersonalEvent? event;
+  Event? event;
   RepeatForm(this.event, {super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref){
     DateFormat endDateFormat = DateFormat("MM/dd");
     final repeat = ref.read(repeatList);
-    final ev = ref.read(personalEventFormStateProvider(event));
+    final ev = ref.read(eventFormStateProvider(event));
     final double deviceWidth = MediaQuery.of(context).size.width;
     String text = '';
     if(ev.repeat != 0){

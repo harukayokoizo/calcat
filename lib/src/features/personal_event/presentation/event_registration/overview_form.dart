@@ -2,11 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../application/personal_event_provider.dart';
-import '../../domain/personal_event.dart';
+import '../../application/event_provider.dart';
+import '../../domain/event.dart';
 
 class OverViewForm extends ConsumerWidget{
-  PersonalEvent? event;
+  Event? event;
   OverViewForm(this.event, {super.key});
 
   @override
@@ -30,7 +30,7 @@ class OverViewForm extends ConsumerWidget{
               border: InputBorder.none
           ),
           onChanged: (value){
-            ref.read(personalEventFormStateProvider(event).notifier).changeEvent(value);
+            ref.read(eventFormStateProvider(event).notifier).changeEvent(value);
           },
         ),
       ),

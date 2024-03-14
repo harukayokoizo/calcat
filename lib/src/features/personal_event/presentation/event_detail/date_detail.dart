@@ -7,13 +7,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
 import '../../application/datetime_format.dart';
-import '../../application/personal_event_provider.dart';
-import '../../domain/personal_event.dart';
+import '../../application/event_provider.dart';
+import '../../domain/event.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 
 class EventDateDetail extends ConsumerWidget{
-  PersonalEvent personalEvent;
+  Event personalEvent;
   EventDateDetail(this.personalEvent,{super.key});
 
   @override
@@ -51,13 +51,13 @@ class EventDateDetail extends ConsumerWidget{
   }
 }
 
-Widget dateFormFormat(BuildContext context, WidgetRef ref, PersonalEvent personalEvent, int fromOrTo){
+Widget dateFormFormat(BuildContext context, WidgetRef ref, Event event, int fromOrTo){
   //from(開始日時)
-  final DateTimeFormat fromDate = ref.read(dateTimeFormatClass(personalEvent.from!));
+  final DateTimeFormat fromDate = ref.read(dateTimeFormatClass(event.from!));
   final String fromWeekday = fromDate.weekday[fromDate.weekdayNum]!;
 
   //to(終了日時)
-  final DateTimeFormat toDate = ref.read(dateTimeFormatClass(personalEvent.to!));
+  final DateTimeFormat toDate = ref.read(dateTimeFormatClass(event.to!));
   final String toWeekday = toDate.weekday[toDate.weekdayNum]!;
 
   DateTimeFormat dateFormat = fromOrTo == 0 ? fromDate : toDate;
@@ -66,7 +66,7 @@ Widget dateFormFormat(BuildContext context, WidgetRef ref, PersonalEvent persona
   DateFormat hourFormat = DateFormat("HH");
   DateFormat minutesFormat = DateFormat("mm");
 
-  if(personalEvent.isAllDay!){
+  if(event.isAllDay!){
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,

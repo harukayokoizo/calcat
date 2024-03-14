@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'personal_event.dart';
+part of 'event.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -14,12 +14,12 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
-PersonalEvent _$PersonalEventFromJson(Map<String, dynamic> json) {
-  return _PersonalEvent.fromJson(json);
+Event _$EventFromJson(Map<String, dynamic> json) {
+  return _Event.fromJson(json);
 }
 
 /// @nodoc
-mixin _$PersonalEvent {
+mixin _$Event {
   String? get uid => throw _privateConstructorUsedError;
   String? get title => throw _privateConstructorUsedError;
   String? get event => throw _privateConstructorUsedError;
@@ -39,15 +39,13 @@ mixin _$PersonalEvent {
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $PersonalEventCopyWith<PersonalEvent> get copyWith =>
-      throw _privateConstructorUsedError;
+  $EventCopyWith<Event> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $PersonalEventCopyWith<$Res> {
-  factory $PersonalEventCopyWith(
-          PersonalEvent value, $Res Function(PersonalEvent) then) =
-      _$PersonalEventCopyWithImpl<$Res, PersonalEvent>;
+abstract class $EventCopyWith<$Res> {
+  factory $EventCopyWith(Event value, $Res Function(Event) then) =
+      _$EventCopyWithImpl<$Res, Event>;
   @useResult
   $Res call(
       {String? uid,
@@ -66,9 +64,9 @@ abstract class $PersonalEventCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$PersonalEventCopyWithImpl<$Res, $Val extends PersonalEvent>
-    implements $PersonalEventCopyWith<$Res> {
-  _$PersonalEventCopyWithImpl(this._value, this._then);
+class _$EventCopyWithImpl<$Res, $Val extends Event>
+    implements $EventCopyWith<$Res> {
+  _$EventCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -150,11 +148,10 @@ class _$PersonalEventCopyWithImpl<$Res, $Val extends PersonalEvent>
 }
 
 /// @nodoc
-abstract class _$$PersonalEventImplCopyWith<$Res>
-    implements $PersonalEventCopyWith<$Res> {
-  factory _$$PersonalEventImplCopyWith(
-          _$PersonalEventImpl value, $Res Function(_$PersonalEventImpl) then) =
-      __$$PersonalEventImplCopyWithImpl<$Res>;
+abstract class _$$EventImplCopyWith<$Res> implements $EventCopyWith<$Res> {
+  factory _$$EventImplCopyWith(
+          _$EventImpl value, $Res Function(_$EventImpl) then) =
+      __$$EventImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -174,11 +171,11 @@ abstract class _$$PersonalEventImplCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$PersonalEventImplCopyWithImpl<$Res>
-    extends _$PersonalEventCopyWithImpl<$Res, _$PersonalEventImpl>
-    implements _$$PersonalEventImplCopyWith<$Res> {
-  __$$PersonalEventImplCopyWithImpl(
-      _$PersonalEventImpl _value, $Res Function(_$PersonalEventImpl) _then)
+class __$$EventImplCopyWithImpl<$Res>
+    extends _$EventCopyWithImpl<$Res, _$EventImpl>
+    implements _$$EventImplCopyWith<$Res> {
+  __$$EventImplCopyWithImpl(
+      _$EventImpl _value, $Res Function(_$EventImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -198,7 +195,7 @@ class __$$PersonalEventImplCopyWithImpl<$Res>
     Object? sameEventId = freezed,
     Object? number = freezed,
   }) {
-    return _then(_$PersonalEventImpl(
+    return _then(_$EventImpl(
       uid: freezed == uid
           ? _value.uid
           : uid // ignore: cast_nullable_to_non_nullable
@@ -257,8 +254,8 @@ class __$$PersonalEventImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$PersonalEventImpl implements _PersonalEvent {
-  const _$PersonalEventImpl(
+class _$EventImpl implements _Event {
+  const _$EventImpl(
       {this.uid,
       this.title,
       this.event,
@@ -274,8 +271,8 @@ class _$PersonalEventImpl implements _PersonalEvent {
       this.number})
       : _notification = notification;
 
-  factory _$PersonalEventImpl.fromJson(Map<String, dynamic> json) =>
-      _$$PersonalEventImplFromJson(json);
+  factory _$EventImpl.fromJson(Map<String, dynamic> json) =>
+      _$$EventImplFromJson(json);
 
   @override
   final String? uid;
@@ -317,14 +314,14 @@ class _$PersonalEventImpl implements _PersonalEvent {
 
   @override
   String toString() {
-    return 'PersonalEvent(uid: $uid, title: $title, event: $event, image: $image, color: $color, isAllDay: $isAllDay, from: $from, to: $to, notification: $notification, repeat: $repeat, endDate: $endDate, sameEventId: $sameEventId, number: $number)';
+    return 'Event(uid: $uid, title: $title, event: $event, image: $image, color: $color, isAllDay: $isAllDay, from: $from, to: $to, notification: $notification, repeat: $repeat, endDate: $endDate, sameEventId: $sameEventId, number: $number)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$PersonalEventImpl &&
+            other is _$EventImpl &&
             (identical(other.uid, uid) || other.uid == uid) &&
             (identical(other.title, title) || other.title == title) &&
             (identical(other.event, event) || other.event == event) &&
@@ -364,19 +361,19 @@ class _$PersonalEventImpl implements _PersonalEvent {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$PersonalEventImplCopyWith<_$PersonalEventImpl> get copyWith =>
-      __$$PersonalEventImplCopyWithImpl<_$PersonalEventImpl>(this, _$identity);
+  _$$EventImplCopyWith<_$EventImpl> get copyWith =>
+      __$$EventImplCopyWithImpl<_$EventImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$PersonalEventImplToJson(
+    return _$$EventImplToJson(
       this,
     );
   }
 }
 
-abstract class _PersonalEvent implements PersonalEvent {
-  const factory _PersonalEvent(
+abstract class _Event implements Event {
+  const factory _Event(
       {final String? uid,
       final String? title,
       final String? event,
@@ -389,10 +386,9 @@ abstract class _PersonalEvent implements PersonalEvent {
       final int? repeat,
       @TimestampConverter() final DateTime? endDate,
       final String? sameEventId,
-      final int? number}) = _$PersonalEventImpl;
+      final int? number}) = _$EventImpl;
 
-  factory _PersonalEvent.fromJson(Map<String, dynamic> json) =
-      _$PersonalEventImpl.fromJson;
+  factory _Event.fromJson(Map<String, dynamic> json) = _$EventImpl.fromJson;
 
   @override
   String? get uid;
@@ -425,6 +421,6 @@ abstract class _PersonalEvent implements PersonalEvent {
   int? get number;
   @override
   @JsonKey(ignore: true)
-  _$$PersonalEventImplCopyWith<_$PersonalEventImpl> get copyWith =>
+  _$$EventImplCopyWith<_$EventImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

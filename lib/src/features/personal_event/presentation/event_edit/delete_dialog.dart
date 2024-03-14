@@ -34,12 +34,12 @@ class DeleteDialog extends ConsumerWidget{
             ),
             onPressed: ()async{
               if(value == 0 || value == 1){
-                ref.read(personalEventRepositories).deleteEvent(eventDoc.docId!)
+                ref.read(eventRepositories).deleteEvent(eventDoc.docId!)
                     .then((value){
                       Navigator.pop(context, true);
                     });
               }else if(value == 2){
-                ref.read(personalEventRepositories).deleteSameEvents(eventDoc).then((value){
+                ref.read(eventRepositories).deleteSameEvents(eventDoc).then((value){
                   Navigator.pop(context, true);
                 });
               }

@@ -7,18 +7,18 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
 import '../../application/datetime_format.dart';
-import '../../application/personal_event_provider.dart';
-import '../../domain/personal_event.dart';
+import '../../application/event_provider.dart';
+import '../../domain/event.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 
 class DateSettingFormat extends ConsumerWidget{
-  PersonalEvent? event;
+  Event? event;
   DateSettingFormat(this.event, {super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final personalEvent = ref.watch(personalEventFormStateProvider(event));
+    final personalEvent = ref.watch(eventFormStateProvider(event));
     // print(personalEvent.to);
     // print(personalEvent.from);
 
@@ -60,7 +60,7 @@ class DateSettingFormat extends ConsumerWidget{
                     value: personalEvent.isAllDay!,
                     activeColor: CupertinoColors.activeBlue,
                     onChanged: (bool? value) {
-                      ref.read(personalEventFormStateProvider(event).notifier).changeAllDay(value!);
+                      ref.read(eventFormStateProvider(event).notifier).changeAllDay(value!);
                     },
                   ),
                   const Text(
@@ -80,26 +80,26 @@ class DateSettingFormat extends ConsumerWidget{
   }
 }
 
-Widget dateFormFormat(BuildContext context, WidgetRef ref, PersonalEvent personalEvent, int fromOrTo, PersonalEvent? parameter){
-  final DateTime from = DateTime(personalEvent.from!.year, personalEvent.from!.month, personalEvent.from!.day);
-  final DateTime to = DateTime(personalEvent.to!.year, personalEvent.to!.month, personalEvent.to!.day);
+Widget dateFormFormat(BuildContext context, WidgetRef ref, Event event, int fromOrTo, Event? parameter){
+  final DateTime from = DateTime(event.from!.year, event.from!.month, event.from!.day);
+  final DateTime to = DateTime(event.to!.year, event.to!.month, event.to!.day);
 
   //from(開始日時)
-  final DateTimeFormat fromDate = ref.read(dateTimeFormatClass(personalEvent.from!));
+  final DateTimeFormat fromDate = ref.read(dateTimeFormatClass(event.from!));
   final String fromWeekday = fromDate.weekday[fromDate.weekdayNum]!;
 
   //to(終了日時)
-  final DateTimeFormat toDate = ref.read(dateTimeFormatClass(personalEvent.to!));
+  final DateTimeFormat toDate = ref.read(dateTimeFormatClass(event.to!));
   final String toWeekday = toDate.weekday[toDate.weekdayNum]!;
 
-  DateTime focusedDay = fromOrTo == 0 ? personalEvent.from! : personalEvent.to!;
+  DateTime focusedDay = fromOrTo == 0 ? event.from! : event.to!;
   DateTimeFormat dateFormat = fromOrTo == 0 ? fromDate : toDate;
   String weekday = fromOrTo == 0 ? fromWeekday : toWeekday;
 
   DateFormat hourFormat = DateFormat("HH");
   DateFormat minutesFormat = DateFormat("mm");
 
-  if(personalEvent.isAllDay!){
+  if(event.isAllDay!){
     return InkWell(
       onTap: (){
         showDatePicker(
@@ -112,7 +112,7 @@ Widget dateFormFormat(BuildContext context, WidgetRef ref, PersonalEvent persona
           if(picked != null) {
             if(fromOrTo == 0){
               //fromのカレンダー
-              if(personalEvent.repeat != 0 && !picked.isAtSameMomentAs(to)){
+              if(event.repeat != 0 && !picked.isAtSameMomentAs(to)){
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
                     backgroundColor: Colors.red,
@@ -126,11 +126,11 @@ Widget dateFormFormat(BuildContext context, WidgetRef ref, PersonalEvent persona
                   ),
                 );
               }else{
-                ref.read(personalEventFormStateProvider(parameter).notifier).saveFromDate(picked);
+                ref.read(eventFormStateProvider(parameter).notifier).saveFromDate(picked);
               }
             }else {
               //toのカレンダー
-              if(personalEvent.repeat != 0 && !picked.isAtSameMomentAs(from)){
+              if(event.repeat != 0 && !picked.isAtSameMomentAs(from)){
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
                     backgroundColor: Colors.red,
@@ -144,7 +144,7 @@ Widget dateFormFormat(BuildContext context, WidgetRef ref, PersonalEvent persona
                   ),
                 );
               }else{
-                ref.read(personalEventFormStateProvider(parameter).notifier).saveToDate(picked);
+                ref.read(eventFormStateProvider(parameter).notifier).saveToDate(picked);
               }
             }
           }
@@ -187,8 +187,8 @@ Widget dateFormFormat(BuildContext context, WidgetRef ref, PersonalEvent persona
             ).then((picked){
               if(picked != null) {
                 if(fromOrTo == 0){
-                  if(personalEvent.repeat != 0 && !picked.isAtSameMomentAs(to)){
-                    ref.read(personalEventFormStateProvider(parameter).notifier).changeOnlyFromDate(picked);
+                  if(event.repeat != 0 && !picked.isAtSameMomentAs(to)){
+                    ref.read(eventFormStateProvider(parameter).notifier).changeOnlyFromDate(picked);
                   }else{
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
@@ -204,7 +204,7 @@ Widget dateFormFormat(BuildContext context, WidgetRef ref, PersonalEvent persona
                     );
                   }
                 }else {
-                  if(personalEvent.repeat != 0 && !picked.isAtSameMomentAs(from)){
+                  if(event.repeat != 0 && !picked.isAtSameMomentAs(from)){
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                         backgroundColor: Colors.red,
@@ -218,7 +218,7 @@ Widget dateFormFormat(BuildContext context, WidgetRef ref, PersonalEvent persona
                       ),
                     );
                   }else{
-                    ref.read(personalEventFormStateProvider(parameter).notifier).changeOnlyToDate(picked);
+                    ref.read(eventFormStateProvider(parameter).notifier).changeOnlyToDate(picked);
                   }
                 }
               }
@@ -247,9 +247,9 @@ Widget dateFormFormat(BuildContext context, WidgetRef ref, PersonalEvent persona
             ).then((picked){
               if(picked != null) {
                 if(fromOrTo == 0){
-                  ref.read(personalEventFormStateProvider(parameter).notifier).changeFromDate(picked);
+                  ref.read(eventFormStateProvider(parameter).notifier).changeFromDate(picked);
                 }else {
-                  ref.read(personalEventFormStateProvider(parameter).notifier).changeToDate(picked);
+                  ref.read(eventFormStateProvider(parameter).notifier).changeToDate(picked);
                 }
               }
             });

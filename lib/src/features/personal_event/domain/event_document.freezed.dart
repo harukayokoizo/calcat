@@ -20,7 +20,7 @@ EventDocument _$EventDocumentFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$EventDocument {
-  PersonalEvent? get event => throw _privateConstructorUsedError;
+  Event? get event => throw _privateConstructorUsedError;
   String? get docId => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -35,9 +35,9 @@ abstract class $EventDocumentCopyWith<$Res> {
           EventDocument value, $Res Function(EventDocument) then) =
       _$EventDocumentCopyWithImpl<$Res, EventDocument>;
   @useResult
-  $Res call({PersonalEvent? event, String? docId});
+  $Res call({Event? event, String? docId});
 
-  $PersonalEventCopyWith<$Res>? get event;
+  $EventCopyWith<$Res>? get event;
 }
 
 /// @nodoc
@@ -60,7 +60,7 @@ class _$EventDocumentCopyWithImpl<$Res, $Val extends EventDocument>
       event: freezed == event
           ? _value.event
           : event // ignore: cast_nullable_to_non_nullable
-              as PersonalEvent?,
+              as Event?,
       docId: freezed == docId
           ? _value.docId
           : docId // ignore: cast_nullable_to_non_nullable
@@ -70,12 +70,12 @@ class _$EventDocumentCopyWithImpl<$Res, $Val extends EventDocument>
 
   @override
   @pragma('vm:prefer-inline')
-  $PersonalEventCopyWith<$Res>? get event {
+  $EventCopyWith<$Res>? get event {
     if (_value.event == null) {
       return null;
     }
 
-    return $PersonalEventCopyWith<$Res>(_value.event!, (value) {
+    return $EventCopyWith<$Res>(_value.event!, (value) {
       return _then(_value.copyWith(event: value) as $Val);
     });
   }
@@ -89,10 +89,10 @@ abstract class _$$EventDocumentImplCopyWith<$Res>
       __$$EventDocumentImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({PersonalEvent? event, String? docId});
+  $Res call({Event? event, String? docId});
 
   @override
-  $PersonalEventCopyWith<$Res>? get event;
+  $EventCopyWith<$Res>? get event;
 }
 
 /// @nodoc
@@ -113,7 +113,7 @@ class __$$EventDocumentImplCopyWithImpl<$Res>
       event: freezed == event
           ? _value.event
           : event // ignore: cast_nullable_to_non_nullable
-              as PersonalEvent?,
+              as Event?,
       docId: freezed == docId
           ? _value.docId
           : docId // ignore: cast_nullable_to_non_nullable
@@ -131,7 +131,7 @@ class _$EventDocumentImpl implements _EventDocument {
       _$$EventDocumentImplFromJson(json);
 
   @override
-  final PersonalEvent? event;
+  final Event? event;
   @override
   final String? docId;
 
@@ -168,14 +168,14 @@ class _$EventDocumentImpl implements _EventDocument {
 }
 
 abstract class _EventDocument implements EventDocument {
-  const factory _EventDocument(
-      {final PersonalEvent? event, final String? docId}) = _$EventDocumentImpl;
+  const factory _EventDocument({final Event? event, final String? docId}) =
+      _$EventDocumentImpl;
 
   factory _EventDocument.fromJson(Map<String, dynamic> json) =
       _$EventDocumentImpl.fromJson;
 
   @override
-  PersonalEvent? get event;
+  Event? get event;
   @override
   String? get docId;
   @override

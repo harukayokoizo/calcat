@@ -1,17 +1,17 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:share_calendar/src/features/personal_event/application/personal_eventlist_provider.dart';
+import 'package:share_calendar/src/features/personal_event/application/eventlist_provider.dart';
 
 import '../../../common_widgets/application/common_provider.dart';
 import '../data/personal_event_repositories.dart';
 import '../domain/event_document.dart';
-import '../domain/personal_event.dart';
+import '../domain/event.dart';
 
-final personalEventFormStateProvider = StateNotifierProvider.autoDispose.family<PersonalEventFormState, PersonalEvent, PersonalEvent?>(
+final eventFormStateProvider = StateNotifierProvider.autoDispose.family<EventFormState, Event, Event?>(
         (ref, event){
           if(event == null) {
             final user = ref.read(currentUser);
             final DateTime focusedDay = ref.read(focusedDayProvider);
-            event = PersonalEvent(
+            event = Event(
                 uid: user!.uid,
                 title: null,
                 event: null,
@@ -27,7 +27,7 @@ final personalEventFormStateProvider = StateNotifierProvider.autoDispose.family<
                 number: null
             );
           }
-          return PersonalEventFormState(ref, event);
+          return EventFormState(ref, event);
         }
 );
 
@@ -37,14 +37,14 @@ final personalEventFormStateProvider = StateNotifierProvider.autoDispose.family<
 //         }
 // );
 
-class PersonalEventFormState extends StateNotifier<PersonalEvent>{
+class EventFormState extends StateNotifier<Event>{
   Ref ref;
   // String uid;
   // DateTime focusedDay;
-  PersonalEvent eventDate;
-  PersonalEventFormState(this.ref, this.eventDate) : super(eventDate);
+  Event eventDate;
+  EventFormState(this.ref, this.eventDate) : super(eventDate);
 
-  void saveEvent(PersonalEvent event){
+  void saveEvent(Event event){
     state = event;
   }
 
@@ -87,12 +87,12 @@ class PersonalEventFormState extends StateNotifier<PersonalEvent>{
   void changeAllDay(bool isAllDay){
     final newFrom = DateTime(state.from!.year,state.from!.month,state.from!.day);
     final newTo = DateTime(state.to!.year,state.to!.month,state.to!.day);
-    PersonalEvent event = state.copyWith(isAllDay: isAllDay, from: newFrom, to: newTo);
+    Event event = state.copyWith(isAllDay: isAllDay, from: newFrom, to: newTo);
     state = event;
   }
 
   void saveFromDate(DateTime selectedDate){
-    PersonalEvent event;
+    Event event;
     final DateTime onlyDate = DateTime(selectedDate.year, selectedDate.month, selectedDate.day);
 
     if (state.to!.isAfter(selectedDate) || state.to!.isAtSameMomentAs(onlyDate)) {
@@ -108,13 +108,13 @@ class PersonalEventFormState extends StateNotifier<PersonalEvent>{
     final DateTime onlyDate = DateTime(selectedDate.year, selectedDate.month, selectedDate.day);
 
     if (state.from!.isBefore(selectedDate) || state.from!.isAtSameMomentAs(onlyDate)) {
-      PersonalEvent event = state.copyWith(to: selectedDate);
+      Event event = state.copyWith(to: selectedDate);
       state = event;
     }
   }
 
   void changeOnlyFromDate(DateTime selectedDate){
-    PersonalEvent event;
+    Event event;
     final DateTime selectedDateTime = DateTime(selectedDate.year, selectedDate.month, selectedDate.day, selectedDate.hour, selectedDate.minute);
     final DateTime saveFromDate = DateTime(selectedDate.year, selectedDate.month, selectedDate.day, state.from!.hour, state.from!.minute);
 
@@ -132,13 +132,13 @@ class PersonalEventFormState extends StateNotifier<PersonalEvent>{
     final DateTime saveToDate = DateTime(selectedDate.year, selectedDate.month, selectedDate.day, state.to!.hour, state.to!.minute);
 
     if(state.from!.isBefore(selectedDate) || state.from!.isAtSameMomentAs(selectedDateTime)) {
-      PersonalEvent event = state.copyWith(to: saveToDate);
+      Event event = state.copyWith(to: saveToDate);
       state = event;
     }
   }
 
   void changeFromDate(DateTime selectedDate){
-    PersonalEvent event;
+    Event event;
     final DateTime dateTime = DateTime(selectedDate.year, selectedDate.month, selectedDate.day, selectedDate.hour, selectedDate.minute);
 
     if (state.to!.isAfter(selectedDate) || state.to!.isAtSameMomentAs(dateTime)) {
@@ -154,14 +154,14 @@ class PersonalEventFormState extends StateNotifier<PersonalEvent>{
     final DateTime dateTime = DateTime(selectedDate.year, selectedDate.month, selectedDate.day, selectedDate.hour, selectedDate.minute);
 
     if (state.from!.isBefore(selectedDate) || state.from!.isAtSameMomentAs(dateTime)) {
-      PersonalEvent event = state.copyWith(to: selectedDate);
+      Event event = state.copyWith(to: selectedDate);
       state = event;
     }
   }
 
   void createEvent(){
     List<Map<String, dynamic>> events = saveDataList();
-    ref.read(personalEventRepositories).createEvent(events);
+    ref.read(eventRepositories).createEvent(events);
   }
 
   void updateEvent(int value, EventDocument eventDoc) async{
@@ -169,18 +169,18 @@ class PersonalEventFormState extends StateNotifier<PersonalEvent>{
     if(value == 0){
       //繰り返しがないイベント
       if(state.repeat == 0){
-        ref.read(personalEventRepositories).updateEvent(events.first, eventDoc.docId!);
+        ref.read(eventRepositories).updateEvent(events.first, eventDoc.docId!);
       }else{
-        ref.read(personalEventRepositories).deleteAndUpdateEvent([eventDoc.docId!], events);
+        ref.read(eventRepositories).deleteAndUpdateEvent([eventDoc.docId!], events);
       }
     }else if(value == 1){
       //繰り返しはあるが、特定の予定のみを更新する場合
-      ref.read(personalEventRepositories).updateEvent(events.first, eventDoc.docId!);
+      ref.read(eventRepositories).updateEvent(events.first, eventDoc.docId!);
     }else if(value == 2){
       //繰り返しがあり、かつ定期的な予定を更新する場合
       //sameEventIdが同じのイベントをすべて取得する
-      List deleteEvents = await ref.read(personalEventRepositories).getSameEvent(state.sameEventId!);
-      ref.read(personalEventRepositories).deleteAndUpdateEvent(deleteEvents, events);
+      List deleteEvents = await ref.read(eventRepositories).getSameEvent(state.sameEventId!);
+      ref.read(eventRepositories).deleteAndUpdateEvent(deleteEvents, events);
     }
 
   }

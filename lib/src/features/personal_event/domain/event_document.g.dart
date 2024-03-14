@@ -10,7 +10,7 @@ _$EventDocumentImpl _$$EventDocumentImplFromJson(Map<String, dynamic> json) =>
     _$EventDocumentImpl(
       event: json['event'] == null
           ? null
-          : PersonalEvent.fromJson(json['event'] as Map<String, dynamic>),
+          : Event.fromJson(json['event'] as Map<String, dynamic>),
       docId: json['docId'] as String?,
     );
 

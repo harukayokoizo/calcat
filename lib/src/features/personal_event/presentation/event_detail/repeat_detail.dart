@@ -6,11 +6,11 @@ import 'package:share_calendar/src/features/personal_event/presentation/event_re
 
 import '../../application/notification_setting_provider.dart';
 import '../../application/repeat_setting_provider.dart';
-import '../../domain/personal_event.dart';
+import '../../domain/event.dart';
 
 class EventRepeatDetail extends ConsumerWidget{
-  PersonalEvent personalEvent;
-  EventRepeatDetail(this.personalEvent, {super.key});
+  Event event;
+  EventRepeatDetail(this.event, {super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref){
@@ -18,8 +18,8 @@ class EventRepeatDetail extends ConsumerWidget{
     final repeat = ref.read(repeatList);
     final double deviceWidth = MediaQuery.of(context).size.width;
     String text = '';
-    if(personalEvent.repeat != 0){
-      text = '${repeat[personalEvent.repeat!]}, ${endDateFormat.format(personalEvent.endDate!)}まで';
+    if(event.repeat != 0){
+      text = '${repeat[event.repeat!]}, ${endDateFormat.format(event.endDate!)}まで';
     }
 
     return Container(

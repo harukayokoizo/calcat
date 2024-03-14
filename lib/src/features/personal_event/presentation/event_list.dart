@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:share_calendar/src/features/personal_event/application/color_setting_provider.dart';
-import 'package:share_calendar/src/features/personal_event/presentation/event_registration/personal_event_registration.dart';
+import 'package:share_calendar/src/features/personal_event/presentation/event_registration/event_registration.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../application/datetime_format.dart';
-import '../application/personal_eventlist_provider.dart';
+import '../application/eventlist_provider.dart';
 import '../domain/event_document.dart';
-import '../domain/personal_event.dart';
+import '../domain/event.dart';
 import 'event_detail/event_detail.dart';
 
 class PersonalEventList extends ConsumerWidget{
@@ -124,7 +124,7 @@ class PersonalEventList extends ConsumerWidget{
 }
 
 class EventTile extends ConsumerWidget{
-  PersonalEvent event;
+  Event event;
   DateTime focusedDay;
   EventTile(this.event, this.focusedDay, {super.key});
 

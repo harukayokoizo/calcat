@@ -3,17 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../application/personal_event_provider.dart';
+import '../../application/event_provider.dart';
 import '../../application/repeat_setting_provider.dart';
-import '../../domain/personal_event.dart';
+import '../../domain/event.dart';
 
 class RepeatSettingsPage extends ConsumerWidget{
-  PersonalEvent? event;
+  Event? event;
   RepeatSettingsPage(this.event, {super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref){
-    final personalEvent = ref.read(personalEventFormStateProvider(event));
+    final personalEvent = ref.read(eventFormStateProvider(event));
     final endDate = ref.watch(repeatEndDate(event));
     final repeat = ref.read(repeatList);
     final check = ref.watch(repeatCheck(event));
@@ -25,8 +25,8 @@ class RepeatSettingsPage extends ConsumerWidget{
         actions: [
           TextButton(
             onPressed: () {
-              ref.read(personalEventFormStateProvider(event).notifier).changeRepeatEndDate(endDate);
-              ref.read(personalEventFormStateProvider(event).notifier).changeRepeat(check);
+              ref.read(eventFormStateProvider(event).notifier).changeRepeatEndDate(endDate);
+              ref.read(eventFormStateProvider(event).notifier).changeRepeat(check);
               Navigator.of(context).pop();
             },
             child: const Padding(

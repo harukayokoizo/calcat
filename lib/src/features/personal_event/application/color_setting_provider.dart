@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:share_calendar/src/features/personal_event/application/personal_event_provider.dart';
+import 'package:share_calendar/src/features/personal_event/application/event_provider.dart';
 
-import '../domain/personal_event.dart';
+import '../domain/event.dart';
 
 final colorList = StateProvider<List<int>>(
         (ref) => [
@@ -17,9 +17,9 @@ final colorList = StateProvider<List<int>>(
         ]
 );
 
-final colorCheck = StateProvider.autoDispose.family<int,PersonalEvent?>(
+final colorCheck = StateProvider.autoDispose.family<int,Event?>(
         (ref, event){
-          final personalEvent = ref.read(personalEventFormStateProvider(event));
+          final personalEvent = ref.read(eventFormStateProvider(event));
           return personalEvent.color!;
         }
 );

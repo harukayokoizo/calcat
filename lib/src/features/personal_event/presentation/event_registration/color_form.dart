@@ -3,17 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../application/color_setting_provider.dart';
-import '../../application/personal_event_provider.dart';
-import '../../domain/personal_event.dart';
+import '../../application/event_provider.dart';
+import '../../domain/event.dart';
 import 'color_settings_page.dart';
 
 class ColorForm extends ConsumerWidget{
-  PersonalEvent? event;
+  Event? event;
   ColorForm(this.event, {super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref){
-    final ev = ref.read(personalEventFormStateProvider(event));
+    final ev = ref.read(eventFormStateProvider(event));
     final colors = ref.read(colorList);
     final double deviceWidth = MediaQuery.of(context).size.width;
     int color= 8;

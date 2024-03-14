@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../application/notification_setting_provider.dart';
-import '../../domain/personal_event.dart';
+import '../../domain/event.dart';
 
 class EventNotificationDetail extends ConsumerWidget{
-  PersonalEvent personalEvent;
-  EventNotificationDetail(this.personalEvent, {super.key});
+  Event event;
+  EventNotificationDetail(this.event, {super.key});
 
   @override
 
@@ -15,7 +15,7 @@ class EventNotificationDetail extends ConsumerWidget{
     final notification = ref.read(notificationList);
     final double deviceWidth = MediaQuery.of(context).size.width;
     String time = '';
-    for(int num in personalEvent.notification!){
+    for(int num in event.notification!){
       time = '$time${notification[num]}, ';
     }
 

@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:share_calendar/src/features/personal_event/domain/personal_event.dart';
+import 'package:share_calendar/src/features/personal_event/domain/event.dart';
 
 import '../../../common_widgets/application/timestamp_converter.dart';
 import 'calendar.dart';

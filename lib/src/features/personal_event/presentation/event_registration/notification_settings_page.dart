@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../application/notification_setting_provider.dart';
-import '../../application/personal_event_provider.dart';
-import '../../domain/personal_event.dart';
+import '../../application/event_provider.dart';
+import '../../domain/event.dart';
 
 class NotificationSettingsPage extends ConsumerWidget{
-  PersonalEvent? event;
+ Event? event;
   NotificationSettingsPage(this.event, {super.key});
 
   @override
@@ -23,7 +23,7 @@ class NotificationSettingsPage extends ConsumerWidget{
           TextButton(
             onPressed: () {
               if(checkList.isNotEmpty){
-                ref.read(personalEventFormStateProvider(event).notifier).changeNotification(checkList);
+                ref.read(eventFormStateProvider(event).notifier).changeNotification(checkList);
               }
               Navigator.of(context).pop();
             },

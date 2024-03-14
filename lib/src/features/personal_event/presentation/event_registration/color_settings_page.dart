@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../application/color_setting_provider.dart';
-import '../../application/personal_event_provider.dart';
-import '../../domain/personal_event.dart';
+import '../../application/event_provider.dart';
+import '../../domain/event.dart';
 
 class ColorSettingsPage extends ConsumerWidget{
-  PersonalEvent? event;
+  Event? event;
   ColorSettingsPage(this.event, {super.key});
 
   @override
@@ -22,7 +22,7 @@ class ColorSettingsPage extends ConsumerWidget{
         actions: [
           TextButton(
             onPressed: () {
-              ref.read(personalEventFormStateProvider(event).notifier).changeColor(colorCode);
+              ref.read(eventFormStateProvider(event).notifier).changeColor(colorCode);
               Navigator.of(context).pop();
             },
             child: const Padding(

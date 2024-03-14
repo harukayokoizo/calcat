@@ -4,12 +4,12 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../../common_widgets/application/timestamp_converter.dart';
 
-part 'personal_event.freezed.dart';
-part 'personal_event.g.dart';
+part 'event.freezed.dart';
+part 'event.g.dart';
 
 @freezed
-abstract class PersonalEvent with _$PersonalEvent{
-  const factory PersonalEvent({
+abstract class Event with _$Event{
+  const factory Event({
     String? uid,
     String? title,
     String? event,
@@ -23,7 +23,7 @@ abstract class PersonalEvent with _$PersonalEvent{
     @TimestampConverter() DateTime? endDate,
     String? sameEventId,
     int? number,
-  }) = _PersonalEvent;
+  }) = _Event;
 
-  factory PersonalEvent.fromJson(Map<String,dynamic> json) => _$PersonalEventFromJson(json);
+  factory Event.fromJson(Map<String,dynamic> json) => _$EventFromJson(json);
 }

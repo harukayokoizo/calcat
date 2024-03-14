@@ -1,17 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:share_calendar/src/features/personal_event/application/personal_event_provider.dart';
+import 'package:share_calendar/src/features/personal_event/application/event_provider.dart';
 
 import '../../../common_widgets/application/common_provider.dart';
 import '../domain/event_document.dart';
-import '../domain/personal_event.dart';
+import '../domain/event.dart';
 
-final personalEventRepositories = Provider.autoDispose((ref) => PersonalEventRepositories(ref));
+final eventRepositories = Provider.autoDispose((ref) => EventRepositories(ref));
 
-class PersonalEventRepositories{
+class EventRepositories{
   Ref ref;
 
-  PersonalEventRepositories(this.ref);
+  EventRepositories(this.ref);
 
   //personal_eventコレクションからイベントを取得する
   Stream<List<EventDocument>> getEvent() async*{
@@ -22,7 +22,7 @@ class PersonalEventRepositories{
         .snapshots().map(
             (snapshots) => snapshots.docs.map(
                     (e){
-                      var personalEvent = PersonalEvent.fromJson(e.data());
+                      var personalEvent = Event.fromJson(e.data());
                       var event = EventDocument(event:personalEvent, docId: e.id);
                       return event;
                     }).toList());

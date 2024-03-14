@@ -2,12 +2,12 @@
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
-import '../domain/personal_event.dart';
+import '../domain/event.dart';
 
 class EventDataSource extends CalendarDataSource {
   /// Creates a meeting data source, which used to set the appointment
   /// collection to the calendar
-  EventDataSource(List<PersonalEvent> source) {
+  EventDataSource(List<Event> source) {
     appointments = source;
   }
 
@@ -36,10 +36,10 @@ class EventDataSource extends CalendarDataSource {
     return _getMeetingData(index).isAllDay!;
   }
 
-  PersonalEvent _getMeetingData(int index) {
+  Event _getMeetingData(int index) {
     final dynamic event = appointments![index];
-    late final PersonalEvent eventData;
-    if (event is PersonalEvent) {
+    late final Event eventData;
+    if (event is Event) {
       eventData = event;
     }
 

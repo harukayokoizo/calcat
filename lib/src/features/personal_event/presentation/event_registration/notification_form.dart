@@ -3,19 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../application/notification_setting_provider.dart';
-import '../../application/personal_event_provider.dart';
-import '../../domain/personal_event.dart';
+import '../../application/event_provider.dart';
+import '../../domain/event.dart';
 import 'notification_settings_page.dart';
 
 class NotificationForm extends ConsumerWidget{
-  PersonalEvent? event;
+  Event? event;
   NotificationForm(this.event, {super.key});
 
   @override
 
   Widget build(BuildContext context, WidgetRef ref){
     final notification = ref.read(notificationList);
-    final ev = ref.read(personalEventFormStateProvider(event));
+    final ev = ref.read(eventFormStateProvider(event));
     final double deviceWidth = MediaQuery.of(context).size.width;
     String time = '';
     for(int num in ev.notification!){

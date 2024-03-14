@@ -4,9 +4,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:share_calendar/src/features/personal_event/presentation/event_detail/overview_detail.dart';
 import 'package:share_calendar/src/features/personal_event/presentation/event_detail/title_detail.dart';
 
-import '../../application/personal_event_provider.dart';
+import '../../application/event_provider.dart';
 import '../../domain/event_document.dart';
-import '../../domain/personal_event.dart';
+import '../../domain/event.dart';
 import '../event_edit/delete_dialog.dart';
 import '../event_edit/event_edit_page.dart';
 import '../event_registration/date_form.dart';
@@ -23,7 +23,7 @@ class EventDetail extends ConsumerWidget{
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    PersonalEvent event = eventDoc.event!;
+    Event event = eventDoc.event!;
     final double deviceWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(

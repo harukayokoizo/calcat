@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../application/notification_setting_provider.dart';
-import '../../domain/personal_event.dart';
+import '../../domain/event.dart';
 
 class TitleDetail extends StatelessWidget{
-  PersonalEvent event;
+  Event event;
   TitleDetail(this.event, {super.key});
 
   @override

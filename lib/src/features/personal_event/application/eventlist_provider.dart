@@ -4,7 +4,7 @@ import 'package:table_calendar/table_calendar.dart';
 
 import '../data/personal_event_repositories.dart';
 import '../domain/event_document.dart';
-import '../domain/personal_event.dart';
+import '../domain/event.dart';
 
 final calendarFormatState = StateProvider<CalendarFormat>((ref) => CalendarFormat.month);
 
@@ -24,7 +24,7 @@ class FocusedDayState extends StateNotifier<DateTime>{
 }
 final personalEvents = StreamProvider<List<EventDocument>>(
         (ref) {
-          var personalEvents = ref.read(personalEventRepositories).getEvent();
+          var personalEvents = ref.read(eventRepositories).getEvent();
           return personalEvents;
         });
 
@@ -55,7 +55,7 @@ class PersonalEventListController extends StateNotifier<Map<dynamic, dynamic>>{
     // };
     final Map<DateTime, List<EventDocument>> eventList = {};
     for(final EventDocument eventDoc in events){
-      PersonalEvent event = eventDoc.event!;
+      Event event = eventDoc.event!;
       List keyDate = [];
       DateTime? from = event.from;
       DateTime? to = event.to;
