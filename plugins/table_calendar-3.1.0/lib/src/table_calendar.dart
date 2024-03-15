@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:share_calendar/src/features/calendar/presentation/event/event_list.dart';
 import 'package:share_calendar/src/features/personal_event/application/color_setting_provider.dart';
 import 'package:share_calendar/src/features/personal_event/domain/event_document.dart';
 import 'package:share_calendar/src/features/personal_event/domain/event.dart';
@@ -74,6 +75,8 @@ class TableCalendar<T> extends StatefulWidget {
   /// Specifies `TableCalendar`'s current format.
   final CalendarFormat calendarFormat;
 
+  final String? calendarDocId;
+
   /// `Map` of `CalendarFormat`s and `String` names associated with them.
   /// Those `CalendarFormat`s will be used by internal logic to manage displayed format.
   ///
@@ -111,6 +114,9 @@ class TableCalendar<T> extends StatefulWidget {
 
   /// Whether to display week numbers on calendar.
   final bool weekNumbersVisible;
+
+  ///公開用カレンダーの場合、true
+  final bool publicCalendar;
 
   /// Used for setting the height of `TableCalendar`'s rows.
   final double rowHeight;
@@ -222,6 +228,7 @@ class TableCalendar<T> extends StatefulWidget {
     this.rangeEndDay,
     this.weekendDays = const [DateTime.saturday, DateTime.sunday],
     this.calendarFormat = CalendarFormat.month,
+    this.calendarDocId,
     this.availableCalendarFormats = const {
       CalendarFormat.month: 'Month',
       CalendarFormat.twoWeeks: '2 weeks',
@@ -234,6 +241,7 @@ class TableCalendar<T> extends StatefulWidget {
     this.sixWeekMonthsEnforced = false,
     this.shouldFillViewport = false,
     this.weekNumbersVisible = false,
+    this.publicCalendar = false,
     this.rowHeight = 52.0,
     this.daysOfWeekHeight = 16.0,
     this.formatAnimationDuration = const Duration(milliseconds: 200),
@@ -569,13 +577,22 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
             );
           },
         ),
-        if(widget.calendarFormat == CalendarFormat.twoWeeks)
+        if(widget.calendarFormat == CalendarFormat.twoWeeks && !widget.publicCalendar)
           PhysicalModel(
             color: Colors.white,
             elevation: 30.0,
             child: SizedBox(
               height: taskViewHeight,
               child: PersonalEventList(widget.focusedDay)
+            ),
+          ),
+        if(widget.calendarFormat == CalendarFormat.twoWeeks && widget.publicCalendar)
+          PhysicalModel(
+            color: Colors.white,
+            elevation: 30.0,
+            child: SizedBox(
+                height: taskViewHeight,
+                child: PublicEventList(widget.focusedDay, widget.calendarDocId!)
             ),
           )
       ],
