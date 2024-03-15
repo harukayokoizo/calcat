@@ -12,10 +12,10 @@ import '../event_registration/notification_form.dart';
 import '../event_registration/overview_form.dart';
 import '../event_registration/title_form.dart';
 
-class PersonalEventEdit extends ConsumerWidget{
+class EventEdit extends ConsumerWidget{
   EventDocument eventDoc;
   int value;
-  PersonalEventEdit(this.eventDoc, this.value, {super.key});
+  EventEdit(this.eventDoc, this.value, {super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref){

@@ -108,7 +108,7 @@ class EventDetail extends ConsumerWidget{
                         backgroundColor: const Color.fromRGBO(0, 0, 0, 0.0),
                         context: context,
                         builder: (BuildContext context) {
-                          return PersonalEventEdit(eventDoc, value);
+                          return EventEdit(eventDoc, value);
                         },
                       ).then((value){
                         if(value){
@@ -123,7 +123,7 @@ class EventDetail extends ConsumerWidget{
                     backgroundColor: const Color.fromRGBO(0, 0, 0, 0.0),
                     context: context,
                     builder: (BuildContext context) {
-                      return PersonalEventEdit(eventDoc, 0);
+                      return EventEdit(eventDoc, 0);
                     },
                   ).then((value){
                     if(value){

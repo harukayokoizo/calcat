@@ -5,16 +5,14 @@ import 'package:share_calendar/src/features/personal_event/presentation/event_re
 import 'package:share_calendar/src/features/personal_event/presentation/event_registration/title_form.dart';
 
 import '../../application/event_provider.dart';
-import '../../data/personal_event_repositories.dart';
-import '../../domain/event.dart';
 import 'color_form.dart';
 import 'date_form.dart';
 import 'notification_form.dart';
 import 'overview_form.dart';
 
-class PersonalEventRegistration extends ConsumerWidget{
+class EventRegistration extends ConsumerWidget{
   final DateTime focusedDay;
-  const PersonalEventRegistration(this.focusedDay, {super.key});
+  const EventRegistration(this.focusedDay, {super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref){
