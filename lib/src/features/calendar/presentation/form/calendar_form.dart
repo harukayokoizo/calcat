@@ -5,7 +5,7 @@ import 'package:share_calendar/src/features/calendar/presentation/form/password_
 import 'package:share_calendar/src/features/calendar/presentation/form/public_preference_form.dart';
 import 'package:share_calendar/src/features/calendar/presentation/form/title_form.dart';
 
-import '../../application/calendar_state_provider.dart';
+import '../../application/calendar_provider.dart';
 import 'description_form.dart';
 import 'icon_form.dart';
 
@@ -22,17 +22,20 @@ class CalendarForm extends ConsumerWidget{
         title: const Text('カレンダー作成'),
         centerTitle: true,
         actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            child: const Padding(
-              padding: EdgeInsets.only(right: 16.0),
+          Padding(
+            padding: const EdgeInsets.only(right: 20.0),
+            child: GestureDetector(
+              onTap: calendar.title == null || calendar.title!.isEmpty ? null : (){
+                ref.read(calendarStateProvider(null).notifier).createCalendar()
+                    .then((value){
+                          Navigator.of(context).pop(true);
+                    });
+              },
               child: Text(
                 "保存",
                 style: TextStyle(
                     fontSize: 20,
-                    color: Colors.grey,
+                    color: calendar.title == null || calendar.title!.isEmpty ? Colors.grey : Colors.blue,
                     fontWeight: FontWeight.w700
                 ),
               ),

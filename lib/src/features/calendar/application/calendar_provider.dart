@@ -2,7 +2,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
 import '../../../common_widgets/application/common_provider.dart';
+import '../data/calendar_repositories.dart';
 import '../domain/calendar.dart';
+import 'image_provider.dart';
 
 final calendarStateProvider = StateNotifierProvider.autoDispose.family<CalendarState, Calendar, Calendar?>(
         (ref, calendar){
@@ -46,5 +48,27 @@ class CalendarState extends StateNotifier<Calendar>{
   void savePassword(String password) {
     final calendar = state.copyWith(password: password);
     state = calendar;
+  }
+
+  Future<void> createCalendar() async{
+    final image = ref.read(imageStateProvider);
+    DateTime date = DateTime.now();
+    Map<String, dynamic> data = {
+      'author': state.author,
+      'title': state.title,
+      'description': state.description,
+      'image': state.image,
+      'publicPreference': state.publicPreference,
+      'password': state.password,
+      'created': date,
+      'updated': date,
+    };
+
+    if(image != null){
+      final imageUrl = await ref.read(imageStateProvider.notifier).uploadFile();
+      data['image'] = imageUrl;
+    }
+
+    ref.read(calendarRepositories).createCalendar(data);
   }
 }

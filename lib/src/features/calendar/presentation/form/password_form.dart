@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../application/calendar_state_provider.dart';
+import '../../application/calendar_provider.dart';
 import '../../domain/calendar.dart';
 
 class PasswordForm extends ConsumerWidget{

@@ -145,11 +145,11 @@ class EventTile extends ConsumerWidget{
           ),
           child: Row(
             children: [
-              eventTime(event.isAllDay!, event.from!, event.to!, focusedDay),
-              eventColor(event.color!),
+              _eventTime(event.isAllDay!, event.from!, event.to!, focusedDay),
+              _eventColor(event.color!),
               Expanded(
                   //flex: 5,
-                  child: eventSummary(event.title!, event.event)
+                  child: _eventSummary(event.title!, event.event)
               ),
             ],
           ),
@@ -159,7 +159,7 @@ class EventTile extends ConsumerWidget{
   }
 }
 
-Widget eventTime(bool isAllDay, DateTime from, DateTime to, DateTime focusedDay){
+Widget _eventTime(bool isAllDay, DateTime from, DateTime to, DateTime focusedDay){
   DateTime fromDate = DateTime(from.year, from.month, from.day);
   DateTime toDate = DateTime(to.year, to.month, to.day);
   DateTime focusedDate = DateTime(focusedDay.year, focusedDay.month, focusedDay.day);
@@ -216,7 +216,7 @@ Widget eventTime(bool isAllDay, DateTime from, DateTime to, DateTime focusedDay)
   }
 }
 
-Widget eventColor(int color){
+Widget _eventColor(int color){
   return Padding(
     padding: const EdgeInsets.all(8.0),
     child: Consumer(
@@ -235,7 +235,7 @@ Widget eventColor(int color){
   );
 }
 
-Widget eventSummary(String title, String? overview){
+Widget _eventSummary(String title, String? overview){
   return Column(
     mainAxisAlignment: MainAxisAlignment.center,
     crossAxisAlignment: CrossAxisAlignment.start,

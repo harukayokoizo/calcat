@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../../application/calendar_state_provider.dart';
+import '../../application/calendar_provider.dart';
 import '../../application/image_provider.dart';
 import '../../domain/calendar.dart';
 
@@ -16,9 +16,9 @@ class IconForm extends ConsumerWidget{
   @override
   Widget build(BuildContext context, WidgetRef ref){
     final state = ref.watch(imageStateProvider);
-    String imagePath = 'path/';
+    Image imagePath = Image.asset('images/no_image.png',fit: BoxFit.cover,);
     if(state != null) {
-      imagePath = state.path;
+      imagePath = Image.file(File(state.path));
     }
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -56,7 +56,7 @@ class IconForm extends ConsumerWidget{
                 ),
                 child: FittedBox(
                     fit: BoxFit.cover,
-                    child: Image.file(File(imagePath))
+                    child: imagePath
                 ),
               ),
             ),
