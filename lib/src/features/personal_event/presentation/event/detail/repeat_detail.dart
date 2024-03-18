@@ -1,26 +1,23 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
+import '../../../application/notification_setting_provider.dart';
+import '../../../application/repeat_setting_provider.dart';
+import '../../../domain/event.dart';
 
-import '../../application/notification_setting_provider.dart';
-import '../../domain/event.dart';
-
-class EventNotificationDetail extends ConsumerWidget{
+class EventRepeatDetail extends ConsumerWidget{
   Event event;
-  EventNotificationDetail(this.event, {super.key});
+  EventRepeatDetail(this.event, {super.key});
 
   @override
-
   Widget build(BuildContext context, WidgetRef ref){
-    final notification = ref.read(notificationList);
+    DateFormat endDateFormat = DateFormat("MM/dd");
+    final repeat = ref.read(repeatList);
     final double deviceWidth = MediaQuery.of(context).size.width;
-    String time = '';
-    for(int num in event.notification!){
-      time = '$time${notification[num]}, ';
-    }
-
-    if(time.isNotEmpty){
-      time = time.substring(0, time.length - 2);
+    String text = '';
+    if(event.repeat != 0){
+      text = '${repeat[event.repeat!]}, ${endDateFormat.format(event.endDate!)}まで';
     }
 
     return Container(
@@ -34,11 +31,11 @@ class EventNotificationDetail extends ConsumerWidget{
         padding: const EdgeInsets.all(10.0),
         child: Row(
           children: [
-            const Icon(Icons.notifications_none),
+            const Icon(Icons.repeat),
             const Padding(
               padding: EdgeInsets.only(left: 4.0),
               child: Text(
-                '通知',
+                '繰り返し',
                 style: TextStyle(
                   fontSize: 18,
                   //fontWeight: FontWeight.bold
@@ -50,7 +47,7 @@ class EventNotificationDetail extends ConsumerWidget{
                 alignment: Alignment.centerRight,
                 child: Padding(
                   padding: const EdgeInsets.only(left: 15.0),
-                  child: Text(time,
+                  child: Text(text,
                     style: const TextStyle(
                       fontSize: 18,
                     ),

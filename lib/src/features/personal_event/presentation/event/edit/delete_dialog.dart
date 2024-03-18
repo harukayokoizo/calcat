@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:share_calendar/src/features/personal_event/domain/event_document.dart';
 
-import '../../data/personal_event_repositories.dart';
+import '../../../data/personal_event_repositories.dart';
 
 class DeleteDialog extends ConsumerWidget{
   int value;

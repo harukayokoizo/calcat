@@ -1,23 +1,20 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:share_calendar/src/features/personal_event/presentation/event_detail/overview_detail.dart';
-import 'package:share_calendar/src/features/personal_event/presentation/event_detail/title_detail.dart';
+import 'package:share_calendar/src/features/personal_event/presentation/event/detail/title_detail.dart';
 
-import '../../application/event_provider.dart';
-import '../../domain/event_document.dart';
-import '../../domain/event.dart';
-import '../event_edit/delete_action_button.dart';
-import '../event_edit/delete_dialog.dart';
-import '../event_edit/edit_action_button.dart';
-import '../event_edit/event_edit_page.dart';
-import '../event_registration/date_form.dart';
+
+import '../../../application/event_provider.dart';
+import '../../../domain/event_document.dart';
+import '../../../domain/event.dart';
+import '../edit/delete_action_button.dart';
+import '../edit/edit_action_button.dart';
 import 'action_sheet.dart';
 import 'color_detail.dart';
 import 'date_detail.dart';
 import 'notification_detail.dart';
+import 'overview_detail.dart';
 import 'repeat_detail.dart';
-import 'modal_bottom_sheet.dart';
 
 class EventDetail extends ConsumerWidget{
   EventDocument eventDoc;

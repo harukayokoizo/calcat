@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../application/calendar_list_provider.dart';
-import '../domain/calendar_document.dart';
-import 'content/calendar_content.dart';
+import '../../../application/calendar_list_provider.dart';
+import '../../../domain/calendar_document.dart';
+import 'calendar_content.dart';
 
 class PublishedCalendarList extends ConsumerWidget{
   const PublishedCalendarList({super.key});

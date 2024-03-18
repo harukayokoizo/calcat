@@ -2,9 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../application/color_setting_provider.dart';
-import '../../application/event_provider.dart';
-import '../../domain/event.dart';
+import '../../../application/color_setting_provider.dart';
+import '../../../application/event_provider.dart';
+import '../../../domain/event.dart';
 import 'color_settings_page.dart';
 
 class ColorForm extends ConsumerWidget{

@@ -1,21 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:share_calendar/src/features/personal_event/presentation/event_detail/overview_detail.dart';
-import 'package:share_calendar/src/features/personal_event/presentation/event_detail/title_detail.dart';
-
 import '../../../personal_event/domain/event.dart';
 import '../../../personal_event/domain/event_document.dart';
-import '../../../personal_event/presentation/event_detail/action_sheet.dart';
-import '../../../personal_event/presentation/event_detail/color_detail.dart';
-import '../../../personal_event/presentation/event_detail/date_detail.dart';
-import '../../../personal_event/presentation/event_detail/notification_detail.dart';
-import '../../../personal_event/presentation/event_detail/repeat_detail.dart';
-import '../../../personal_event/presentation/event_edit/delete_action_button.dart';
-import '../../../personal_event/presentation/event_edit/delete_dialog.dart';
-import '../../../personal_event/presentation/event_edit/edit_action_button.dart';
-import '../../../personal_event/presentation/event_edit/event_edit_page.dart';
-import '../../data/event_repositories.dart';
+import '../../../personal_event/presentation/event/detail/color_detail.dart';
+import '../../../personal_event/presentation/event/detail/date_detail.dart';
+import '../../../personal_event/presentation/event/detail/notification_detail.dart';
+import '../../../personal_event/presentation/event/detail/overview_detail.dart';
+import '../../../personal_event/presentation/event/detail/repeat_detail.dart';
+import '../../../personal_event/presentation/event/detail/title_detail.dart';
+import '../../../personal_event/presentation/event/edit/delete_action_button.dart';
+import '../../../personal_event/presentation/event/edit/edit_action_button.dart';
+
 
 class PublicEventDetail extends ConsumerWidget{
   dynamic repositories;

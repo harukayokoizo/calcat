@@ -1,12 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:share_calendar/src/features/personal_event/presentation/event_registration/repeat_form.dart';
-import 'package:share_calendar/src/features/personal_event/presentation/event_registration/title_form.dart';
+import 'package:share_calendar/src/features/personal_event/presentation/event/registration/repeat_form.dart';
+import 'package:share_calendar/src/features/personal_event/presentation/event/registration/title_form.dart';
 
-import '../../../../common_widgets/application/common_provider.dart';
-import '../../application/event_provider.dart';
-import '../../domain/event.dart';
+import '../../../../../common_widgets/application/common_provider.dart';
+import '../../../application/event_provider.dart';
+import '../../../domain/event.dart';
 import 'color_form.dart';
 import 'date_form.dart';
 import 'notification_form.dart';

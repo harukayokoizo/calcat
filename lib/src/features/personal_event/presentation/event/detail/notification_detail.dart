@@ -1,25 +1,26 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
-import 'package:share_calendar/src/features/personal_event/presentation/event_registration/repeat_settings_page.dart';
 
-import '../../application/notification_setting_provider.dart';
-import '../../application/repeat_setting_provider.dart';
-import '../../domain/event.dart';
+import '../../../application/notification_setting_provider.dart';
+import '../../../domain/event.dart';
 
-class EventRepeatDetail extends ConsumerWidget{
+class EventNotificationDetail extends ConsumerWidget{
   Event event;
-  EventRepeatDetail(this.event, {super.key});
+  EventNotificationDetail(this.event, {super.key});
 
   @override
+
   Widget build(BuildContext context, WidgetRef ref){
-    DateFormat endDateFormat = DateFormat("MM/dd");
-    final repeat = ref.read(repeatList);
+    final notification = ref.read(notificationList);
     final double deviceWidth = MediaQuery.of(context).size.width;
-    String text = '';
-    if(event.repeat != 0){
-      text = '${repeat[event.repeat!]}, ${endDateFormat.format(event.endDate!)}まで';
+    String time = '';
+    for(int num in event.notification!){
+      time = '$time${notification[num]}, ';
+    }
+
+    if(time.isNotEmpty){
+      time = time.substring(0, time.length - 2);
     }
 
     return Container(
@@ -33,11 +34,11 @@ class EventRepeatDetail extends ConsumerWidget{
         padding: const EdgeInsets.all(10.0),
         child: Row(
           children: [
-            const Icon(Icons.repeat),
+            const Icon(Icons.notifications_none),
             const Padding(
               padding: EdgeInsets.only(left: 4.0),
               child: Text(
-                '繰り返し',
+                '通知',
                 style: TextStyle(
                   fontSize: 18,
                   //fontWeight: FontWeight.bold
@@ -49,7 +50,7 @@ class EventRepeatDetail extends ConsumerWidget{
                 alignment: Alignment.centerRight,
                 child: Padding(
                   padding: const EdgeInsets.only(left: 15.0),
-                  child: Text(text,
+                  child: Text(time,
                     style: const TextStyle(
                       fontSize: 18,
                     ),

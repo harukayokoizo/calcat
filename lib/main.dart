@@ -9,10 +9,10 @@ import 'package:share_calendar/src/common_widgets/application/common_provider.da
 import 'package:share_calendar/src/features/authentication/application/mail_auth.dart';
 import 'package:share_calendar/src/features/authentication/application/user_provider.dart';
 import 'package:share_calendar/src/features/authentication/presentation/login_page.dart';
-import 'package:share_calendar/src/features/calendar/presentation/calendar_list.dart';
-import 'package:share_calendar/src/features/personal_event/presentation/personal_calendar.dart';
+import 'package:share_calendar/src/features/calendar/presentation/calendar/list/calendar_list.dart';
+import 'package:share_calendar/src/features/personal_event/presentation/calendar.dart';
 
-import 'src/features/personal_event/presentation/personal_calendar.dart';
+import 'src/features/personal_event/presentation/calendar.dart';
 
 // void main() {
 //   runApp(const MyApp());

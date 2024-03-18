@@ -1,16 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:share_calendar/src/features/personal_event/presentation/event_registration/repeat_form.dart';
 
-import '../../application/event_provider.dart';
-import '../../domain/event_document.dart';
-import '../../domain/event.dart';
-import '../event_registration/color_form.dart';
-import '../event_registration/date_form.dart';
-import '../event_registration/notification_form.dart';
-import '../event_registration/overview_form.dart';
-import '../event_registration/title_form.dart';
+import '../../../application/event_provider.dart';
+import '../../../domain/event_document.dart';
+import '../../../domain/event.dart';
+import '../registration/color_form.dart';
+import '../registration/date_form.dart';
+import '../registration/notification_form.dart';
+import '../registration/overview_form.dart';
+import '../registration/repeat_form.dart';
+import '../registration/title_form.dart';
+
 
 class EventEdit extends ConsumerWidget{
   EventDocument eventDoc;

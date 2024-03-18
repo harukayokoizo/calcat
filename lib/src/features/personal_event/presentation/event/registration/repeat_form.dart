@@ -2,11 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:share_calendar/src/features/personal_event/presentation/event_registration/repeat_settings_page.dart';
+import 'package:share_calendar/src/features/personal_event/presentation/event/registration/repeat_settings_page.dart';
 
-import '../../application/event_provider.dart';
-import '../../application/repeat_setting_provider.dart';
-import '../../domain/event.dart';
+import '../../../application/event_provider.dart';
+import '../../../application/repeat_setting_provider.dart';
+import '../../../domain/event.dart';
 
 class RepeatForm extends ConsumerWidget{
   Event event;

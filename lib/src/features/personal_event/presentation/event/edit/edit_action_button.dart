@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../domain/event.dart';
-import '../../domain/event_document.dart';
-import '../event_detail/action_sheet.dart';
+import '../../../domain/event.dart';
+import '../../../domain/event_document.dart';
+import '../detail/action_sheet.dart';
 import 'delete_dialog.dart';
 import 'event_edit_page.dart';
 

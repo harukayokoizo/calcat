@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:share_calendar/src/features/calendar/presentation/published_list.dart';
+import 'package:share_calendar/src/features/calendar/presentation/calendar/list/published_list.dart';
 
 import 'favorite_list.dart';
-import 'form/calendar_form.dart';
+import '../../form/calendar_form.dart';
 
 class CalendarList extends StatelessWidget{
   const CalendarList({super.key});
