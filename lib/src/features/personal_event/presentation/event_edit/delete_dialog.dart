@@ -8,7 +8,8 @@ import '../../data/personal_event_repositories.dart';
 class DeleteDialog extends ConsumerWidget{
   int value;
   EventDocument eventDoc;
-  DeleteDialog(this.value, this.eventDoc, {super.key});
+  dynamic repositories;
+  DeleteDialog(this.value, this.eventDoc, this.repositories, {super.key});
 
   @override
 
@@ -34,12 +35,12 @@ class DeleteDialog extends ConsumerWidget{
             ),
             onPressed: ()async{
               if(value == 0 || value == 1){
-                ref.read(eventRepositories).deleteEvent(eventDoc.docId!)
+                repositories.deleteEvent(eventDoc.docId!)
                     .then((value){
                       Navigator.pop(context, true);
                     });
               }else if(value == 2){
-                ref.read(eventRepositories).deleteSameEvents(eventDoc).then((value){
+                repositories.deleteSameEvents(eventDoc).then((value){
                   Navigator.pop(context, true);
                 });
               }

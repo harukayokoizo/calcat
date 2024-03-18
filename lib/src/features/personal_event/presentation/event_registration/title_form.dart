@@ -6,7 +6,7 @@ import '../../application/event_provider.dart';
 import '../../domain/event.dart';
 
 class TitleForm extends ConsumerWidget{
-  Event? event;
+  Event event;
   TitleForm(this.event, {super.key});
 
   @override

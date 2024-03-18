@@ -1,33 +1,14 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:share_calendar/src/features/personal_event/application/eventlist_provider.dart';
+import 'package:share_calendar/src/features/personal_event/application/event_list_provider.dart';
 
 import '../../../common_widgets/application/common_provider.dart';
 import '../data/personal_event_repositories.dart';
 import '../domain/event_document.dart';
 import '../domain/event.dart';
 
-final eventFormStateProvider = StateNotifierProvider.autoDispose.family<EventFormState, Event, Event?>(
+final eventFormStateProvider = StateNotifierProvider.autoDispose.family<EventFormState, Event, Event>(
         (ref, event){
-          if(event == null) {
-            final user = ref.read(currentUser);
-            final DateTime focusedDay = ref.read(focusedDayProvider);
-            event = Event(
-                uid: user!.uid,
-                title: null,
-                event: null,
-                image: null,
-                color: 8,
-                isAllDay: true,
-                from: focusedDay,
-                to: focusedDay,
-                notification: [],
-                repeat: 0,
-                endDate: null,
-                sameEventId: null,
-                number: null
-            );
-          }
-          return EventFormState(ref, event);
+          return EventFormState(ref, event!);
         }
 );
 
@@ -159,28 +140,28 @@ class EventFormState extends StateNotifier<Event>{
     }
   }
 
-  void createEvent(){
+  void createEvent(dynamic repositories){
     List<Map<String, dynamic>> events = saveDataList();
-    ref.read(eventRepositories).createEvent(events);
+    repositories.createEvent(events);
   }
 
-  void updateEvent(int value, EventDocument eventDoc) async{
+  void updateEvent(int value, EventDocument eventDoc, dynamic repositories) async{
     List<Map<String, dynamic>> events = saveDataList();
     if(value == 0){
       //繰り返しがないイベント
       if(state.repeat == 0){
-        ref.read(eventRepositories).updateEvent(events.first, eventDoc.docId!);
+        repositories.updateEvent(events.first, eventDoc.docId!);
       }else{
-        ref.read(eventRepositories).deleteAndUpdateEvent([eventDoc.docId!], events);
+        repositories.deleteAndUpdateEvent([eventDoc.docId!], events);
       }
     }else if(value == 1){
       //繰り返しはあるが、特定の予定のみを更新する場合
-      ref.read(eventRepositories).updateEvent(events.first, eventDoc.docId!);
+      repositories.updateEvent(events.first, eventDoc.docId!);
     }else if(value == 2){
       //繰り返しがあり、かつ定期的な予定を更新する場合
       //sameEventIdが同じのイベントをすべて取得する
-      List deleteEvents = await ref.read(eventRepositories).getSameEvent(state.sameEventId!);
-      ref.read(eventRepositories).deleteAndUpdateEvent(deleteEvents, events);
+      List deleteEvents = await repositories.getSameEvent(state.sameEventId!);
+      repositories.deleteAndUpdateEvent(deleteEvents, events);
     }
 
   }

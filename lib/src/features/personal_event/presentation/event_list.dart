@@ -6,8 +6,10 @@ import 'package:share_calendar/src/features/personal_event/application/color_set
 import 'package:share_calendar/src/features/personal_event/presentation/event_registration/event_registration.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+import '../../calendar/data/event_repositories.dart';
 import '../application/datetime_format.dart';
-import '../application/eventlist_provider.dart';
+import '../application/event_list_provider.dart';
+import '../data/personal_event_repositories.dart';
 import '../domain/event_document.dart';
 import '../domain/event.dart';
 import 'event_detail/event_detail.dart';
@@ -18,6 +20,7 @@ class PersonalEventList extends ConsumerWidget{
 
   @override
   Widget build(BuildContext context, WidgetRef ref){
+    final repositories = ref.read(eventRepositories);
     DateTimeFormat dateFormat = ref.read(dateTimeFormatClass(focusedDay));
     String date = dateFormat.dateJaFormat();
     Map eventList = ref.read(personalEventList.notifier).state;
@@ -67,7 +70,7 @@ class PersonalEventList extends ConsumerWidget{
                                   onTap: (){
                                     Navigator.push(
                                       context,
-                                      MaterialPageRoute(builder: (context) => EventDetail(eventDoc),
+                                      MaterialPageRoute(builder: (context) => EventDetail(eventDoc, repositories),
                                       ),
                                     );
                                   },
@@ -99,7 +102,7 @@ class PersonalEventList extends ConsumerWidget{
                     onPressed: (){
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => EventRegistration(focusedDay),
+                        MaterialPageRoute(builder: (context) => EventRegistration(focusedDay, repositories),
                         ),
                       );
                     },

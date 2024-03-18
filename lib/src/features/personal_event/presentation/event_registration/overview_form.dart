@@ -6,7 +6,7 @@ import '../../application/event_provider.dart';
 import '../../domain/event.dart';
 
 class OverViewForm extends ConsumerWidget{
-  Event? event;
+  Event event;
   OverViewForm(this.event, {super.key});
 
   @override

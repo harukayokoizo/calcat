@@ -8,7 +8,7 @@ import '../../application/repeat_setting_provider.dart';
 import '../../domain/event.dart';
 
 class RepeatSettingsPage extends ConsumerWidget{
-  Event? event;
+  Event event;
   RepeatSettingsPage(this.event, {super.key});
 
   @override

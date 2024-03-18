@@ -4,7 +4,7 @@ import 'package:table_calendar/table_calendar.dart';
 
 import '../../personal_event/domain/event.dart';
 import '../../personal_event/domain/event_document.dart';
-import '../data/public_repositories.dart';
+import '../data/event_repositories.dart';
 import '../domain/calendar_document.dart';
 
 final publicCalendarFormat = StateProvider.autoDispose<CalendarFormat>((ref) => CalendarFormat.month);
@@ -27,13 +27,8 @@ class PublicFocusedDay extends StateNotifier<DateTime>{
 
 final publicEvents = StreamProvider.autoDispose.family<List<EventDocument>,String>(
         (ref, calendarDocId) async*{
-          yield* ref.read(publicEventRepositories).getEvent(calendarDocId);
+          yield* ref.read(publicEventRepositories(calendarDocId)).getEvent();
         });
-
-// final publicEvents = FutureProvider.autoDispose.family<List<EventDocument>,CalendarDocument>(
-//         (ref, calendarDoc){
-//           return ref.read(publicEventRepositories).getEvent(calendarDoc.docId!);
-//     });
 
 final publicEventList = StateNotifierProvider.autoDispose.family<PublicEventListController, Map<dynamic, dynamic>, String>(
         (ref, calendarDocId) {
@@ -57,10 +52,6 @@ class PublicEventListController extends StateNotifier<Map<dynamic, dynamic>>{
   }
 
   Map<DateTime, List<EventDocument>> changeFormat(List<EventDocument> events){
-    // final sampleMap = {
-    //   DateTime.utc(2024, 2, 22): ['firstEvent', 'secondEvent'],
-    //   DateTime.utc(2024, 2, 23): ['thirdEvent', 'fourthEvent']
-    // };
     final Map<DateTime, List<EventDocument>> eventList = {};
     for(final EventDocument eventDoc in events){
       Event event = eventDoc.event!;
@@ -76,8 +67,6 @@ class PublicEventListController extends StateNotifier<Map<dynamic, dynamic>>{
         for(int i = 0;i <= to.difference(from).inDays;i++){
           keyDate.add(from.add(Duration(days: i)));
         }
-        // do{
-        // } while(to.difference(from).inDays == i);
       }
 
       //eventListにMap<DateTime, List<PersonalEvent>>を追加する

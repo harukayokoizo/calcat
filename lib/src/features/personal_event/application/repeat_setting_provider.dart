@@ -12,7 +12,7 @@ final repeatList = StateProvider<List<dynamic>>(
         ]
 );
 
-final repeatEndDate = StateProvider.autoDispose.family<DateTime, Event?>(
+final repeatEndDate = StateProvider.autoDispose.family<DateTime, Event>(
         (ref, event){
           final personalEvent = ref.read(eventFormStateProvider(event));
           DateTime date = personalEvent.endDate ?? personalEvent.from!.add(const Duration(days: 7));
@@ -20,7 +20,7 @@ final repeatEndDate = StateProvider.autoDispose.family<DateTime, Event?>(
         }
 );
 
-final repeatCheck = StateProvider.autoDispose.family<int, Event?>(
+final repeatCheck = StateProvider.autoDispose.family<int, Event>(
         (ref, event){
           final personalEvent = ref.read(eventFormStateProvider(event));
           return personalEvent.repeat!;

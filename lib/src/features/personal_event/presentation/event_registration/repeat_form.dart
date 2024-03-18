@@ -9,7 +9,7 @@ import '../../application/repeat_setting_provider.dart';
 import '../../domain/event.dart';
 
 class RepeatForm extends ConsumerWidget{
-  Event? event;
+  Event event;
   RepeatForm(this.event, {super.key});
 
   @override

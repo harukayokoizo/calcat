@@ -15,7 +15,8 @@ import '../event_registration/title_form.dart';
 class EventEdit extends ConsumerWidget{
   EventDocument eventDoc;
   int value;
-  EventEdit(this.eventDoc, this.value, {super.key});
+  dynamic repositories;
+  EventEdit(this.eventDoc, this.value, this.repositories, {super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref){
@@ -73,7 +74,7 @@ class EventEdit extends ConsumerWidget{
                 padding: const EdgeInsets.only(bottom: 10.0, right: 20.0),
                 child: Align(
                   alignment: Alignment.centerRight,
-                  child: SaveEventButton(eventDoc, event, value),
+                  child: SaveEventButton(eventDoc, event, value, repositories),
                 ),
               )
             ],
@@ -88,7 +89,8 @@ class SaveEventButton extends ConsumerWidget{
   EventDocument eventDoc;
   Event event;
   int value;
-  SaveEventButton(this.eventDoc, this.event, this.value, {super.key});
+  dynamic repositories;
+  SaveEventButton(this.eventDoc, this.event, this.value, this.repositories, {super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref){
@@ -96,7 +98,7 @@ class SaveEventButton extends ConsumerWidget{
     final personalEvent = ref.watch(eventFormStateProvider(event));
     return ElevatedButton(
       onPressed: personalEvent.title == null || personalEvent.title!.isEmpty ? null : (){
-        ref.read(eventFormStateProvider(event).notifier).updateEvent(value, eventDoc);
+        ref.read(eventFormStateProvider(event).notifier).updateEvent(value, eventDoc, repositories);
         Navigator.of(context).pop(true);
       },
       style: ElevatedButton.styleFrom(

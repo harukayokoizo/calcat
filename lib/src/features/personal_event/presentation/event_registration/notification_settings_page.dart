@@ -7,7 +7,7 @@ import '../../application/event_provider.dart';
 import '../../domain/event.dart';
 
 class NotificationSettingsPage extends ConsumerWidget{
- Event? event;
+ Event event;
   NotificationSettingsPage(this.event, {super.key});
 
   @override

@@ -18,7 +18,7 @@ final notificationList = StateProvider<List<dynamic>>(
     ]
 );
 
-final notificationCheckList = StateProvider.autoDispose.family<List<int>,Event?>(
+final notificationCheckList = StateProvider.autoDispose.family<List<int>,Event>(
     (ref,event){
           final personalEvent = ref.read(eventFormStateProvider(event));
           return personalEvent.notification!;

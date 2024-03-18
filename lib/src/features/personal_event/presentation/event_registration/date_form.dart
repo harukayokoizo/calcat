@@ -13,7 +13,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 
 
 class DateSettingFormat extends ConsumerWidget{
-  Event? event;
+  Event event;
   DateSettingFormat(this.event, {super.key});
 
   @override
@@ -80,7 +80,7 @@ class DateSettingFormat extends ConsumerWidget{
   }
 }
 
-Widget dateFormFormat(BuildContext context, WidgetRef ref, Event event, int fromOrTo, Event? parameter){
+Widget dateFormFormat(BuildContext context, WidgetRef ref, Event event, int fromOrTo, Event parameter){
   final DateTime from = DateTime(event.from!.year, event.from!.month, event.from!.day);
   final DateTime to = DateTime(event.to!.year, event.to!.month, event.to!.day);
 

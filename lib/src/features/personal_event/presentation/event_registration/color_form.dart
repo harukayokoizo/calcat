@@ -8,7 +8,7 @@ import '../../domain/event.dart';
 import 'color_settings_page.dart';
 
 class ColorForm extends ConsumerWidget{
-  Event? event;
+  Event event;
   ColorForm(this.event, {super.key});
 
   @override

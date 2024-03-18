@@ -8,7 +8,7 @@ import '../../domain/event.dart';
 import 'notification_settings_page.dart';
 
 class NotificationForm extends ConsumerWidget{
-  Event? event;
+  Event event;
   NotificationForm(this.event, {super.key});
 
   @override

@@ -17,7 +17,7 @@ final colorList = StateProvider<List<int>>(
         ]
 );
 
-final colorCheck = StateProvider.autoDispose.family<int,Event?>(
+final colorCheck = StateProvider.autoDispose.family<int,Event>(
         (ref, event){
           final personalEvent = ref.read(eventFormStateProvider(event));
           return personalEvent.color!;

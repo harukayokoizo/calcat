@@ -5,8 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-import '../application/calendar.dart';
-import '../application/eventlist_provider.dart';
+import '../application/event_list_provider.dart';
 
 class PersonalCalendarPage extends ConsumerStatefulWidget{
   const PersonalCalendarPage({super.key});

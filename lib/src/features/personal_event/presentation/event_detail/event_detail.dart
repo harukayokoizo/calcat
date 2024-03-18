@@ -7,7 +7,9 @@ import 'package:share_calendar/src/features/personal_event/presentation/event_de
 import '../../application/event_provider.dart';
 import '../../domain/event_document.dart';
 import '../../domain/event.dart';
+import '../event_edit/delete_action_button.dart';
 import '../event_edit/delete_dialog.dart';
+import '../event_edit/edit_action_button.dart';
 import '../event_edit/event_edit_page.dart';
 import '../event_registration/date_form.dart';
 import 'action_sheet.dart';
@@ -19,7 +21,8 @@ import 'modal_bottom_sheet.dart';
 
 class EventDetail extends ConsumerWidget{
   EventDocument eventDoc;
-  EventDetail(this.eventDoc, {super.key});
+  dynamic repositories;
+  EventDetail(this.eventDoc, this.repositories, {super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -53,86 +56,10 @@ class EventDetail extends ConsumerWidget{
       floatingActionButton: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          FloatingActionButton(
-            heroTag: "delete",
-            child: const Icon(Icons.delete),
-            //backgroundColor: Colors.blue[200],
-            onPressed: () async {
-              if (event.repeat != 0) {
-                showCupertinoModalPopup(
-                    context: context,
-                    builder: (BuildContext context) => const ActionSheet()
-                ).then((value) {
-                  if (value != null) {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return DeleteDialog(value, eventDoc);
-                      },
-                    ).then((value){
-                      if(value){
-                        Navigator.pop(context);
-                      }
-                    });
-                  }
-                });
-              }else{
-                showCupertinoDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return DeleteDialog(0, eventDoc);
-                  },
-                ).then((value){
-                  if(value){
-                    Navigator.pop(context);
-                  }
-                });
-              }
-            },
-          ),
+          DeleteActionButton(eventDoc, repositories),
           Padding(
             padding: const EdgeInsets.only(left: 8.0),
-            child: FloatingActionButton(
-              heroTag: "edit",
-              child: const Icon(Icons.edit),
-              //backgroundColor: Colors.blue[200],
-              onPressed: () async {
-                if (event.repeat != 0) {
-                  showCupertinoModalPopup(
-                      context: context,
-                      builder: (BuildContext context) => const ActionSheet()
-                  ).then((value) {
-                    if (value != null) {
-                      showModalBottomSheet(
-                        isScrollControlled: true,
-                        backgroundColor: const Color.fromRGBO(0, 0, 0, 0.0),
-                        context: context,
-                        builder: (BuildContext context) {
-                          return EventEdit(eventDoc, value);
-                        },
-                      ).then((value){
-                        if(value){
-                          Navigator.pop(context);
-                        }
-                      });
-                    }
-                  });
-                }else{
-                  showModalBottomSheet(
-                    isScrollControlled: true,
-                    backgroundColor: const Color.fromRGBO(0, 0, 0, 0.0),
-                    context: context,
-                    builder: (BuildContext context) {
-                      return EventEdit(eventDoc, 0);
-                    },
-                  ).then((value){
-                    if(value){
-                      Navigator.pop(context);
-                    }
-                  });
-                }
-              }
-            ),
+            child: EditActionButton(eventDoc, repositories)
           ),
         ],
       ),

@@ -7,7 +7,7 @@ import '../../application/event_provider.dart';
 import '../../domain/event.dart';
 
 class ColorSettingsPage extends ConsumerWidget{
-  Event? event;
+  Event event;
   ColorSettingsPage(this.event, {super.key});
 
   @override

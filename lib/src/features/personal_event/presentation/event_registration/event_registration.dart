@@ -4,7 +4,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:share_calendar/src/features/personal_event/presentation/event_registration/repeat_form.dart';
 import 'package:share_calendar/src/features/personal_event/presentation/event_registration/title_form.dart';
 
+import '../../../../common_widgets/application/common_provider.dart';
 import '../../application/event_provider.dart';
+import '../../domain/event.dart';
 import 'color_form.dart';
 import 'date_form.dart';
 import 'notification_form.dart';
@@ -12,11 +14,28 @@ import 'overview_form.dart';
 
 class EventRegistration extends ConsumerWidget{
   final DateTime focusedDay;
-  const EventRegistration(this.focusedDay, {super.key});
+  dynamic repositories;
+  EventRegistration(this.focusedDay, this.repositories, {super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref){
-    final event = ref.watch(eventFormStateProvider(null));
+    final user = ref.read(currentUser);
+    Event event = Event(
+        uid: user!.uid,
+        title: null,
+        event: null,
+        image: null,
+        color: 8,
+        isAllDay: true,
+        from: focusedDay,
+        to: focusedDay,
+        notification: [],
+        repeat: 0,
+        endDate: null,
+        sameEventId: null,
+        number: null
+    );
+    ref.watch(eventFormStateProvider(event));
     return Scaffold(
       appBar: AppBar(
         elevation: 5,
@@ -35,20 +54,20 @@ class EventRegistration extends ConsumerWidget{
         },
         child: Column(
           children: [
-            TitleForm(null),
-            OverViewForm(null),
-            DateSettingFormat(null),
-            ColorForm(null),
-            NotificationForm(null),
-            RepeatForm(null),
+            TitleForm(event),
+            OverViewForm(event),
+            DateSettingFormat(event),
+            ColorForm(event),
+            NotificationForm(event),
+            RepeatForm(event),
             const Expanded(
               child: SizedBox(),
             ),
-            const Padding(
-              padding: EdgeInsets.only(bottom: 10.0, right: 20.0),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 10.0, right: 20.0),
               child: Align(
                   alignment: Alignment.centerRight,
-                  child: SaveEventButton(),
+                  child: SaveEventButton(event, repositories),
               ),
             )
           ],
@@ -59,15 +78,17 @@ class EventRegistration extends ConsumerWidget{
 }
 
 class SaveEventButton extends ConsumerWidget{
-  const SaveEventButton({super.key});
+  Event event;
+  dynamic repositories;
+  SaveEventButton(this.event, this.repositories, {super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref){
-    final personalEvent = ref.watch(eventFormStateProvider(null));
+    final personalEvent = ref.watch(eventFormStateProvider(event));
 
     return ElevatedButton(
       onPressed: personalEvent.title == null || personalEvent.title!.isEmpty ? null : (){
-        ref.read(eventFormStateProvider(null).notifier).createEvent();
+        ref.read(eventFormStateProvider(event).notifier).createEvent(repositories);
         Navigator.of(context).pop();
       },
       style: ElevatedButton.styleFrom(
