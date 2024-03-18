@@ -24,7 +24,6 @@ class EventDetail extends ConsumerWidget{
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     Event event = eventDoc.event!;
-    final double deviceWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
         elevation: 5,
