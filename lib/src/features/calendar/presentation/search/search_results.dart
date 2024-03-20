@@ -12,11 +12,30 @@ class SearchResults extends ConsumerWidget{
 
   @override
   Widget build(BuildContext context, WidgetRef ref){
-    return Column(
-      children: [
-        for(CalendarDocument calendarDoc in calendarList)
-          CalendarContent(calendarDoc)
-      ],
-    );
+    final double deviceWidth = MediaQuery.of(context).size.width;
+    final double deviceHeight = MediaQuery.of(context).size.height;
+    if(calendarList.isNotEmpty) {
+      return Padding(
+        padding: const EdgeInsets.only(top: 10.0),
+        child: Column(
+          children: [
+            for(CalendarDocument calendarDoc in calendarList)
+              CalendarContent(calendarDoc)
+          ],
+        ),
+      );
+    }else{
+      return const Expanded(
+        child: Center(
+          child: Text(
+            '検索結果はありません。',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 20
+            ),
+          ),
+        ),
+      );
+    }
   }
 }

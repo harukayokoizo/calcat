@@ -14,6 +14,8 @@ class SearchPage extends ConsumerWidget{
   Widget build(BuildContext context, WidgetRef ref){
     final List<CalendarDocument> searchResults = ref.watch(searchResultsProvider);
     final bool search = ref.watch(searchSwitch);
+    final bool result = ref.watch(resultPage);
+    print(searchResults);
     return Scaffold(
       //appBar: AppBar(),
       body: GestureDetector(
@@ -25,7 +27,7 @@ class SearchPage extends ConsumerWidget{
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             SearchForm(search),
-            if(searchResults.isEmpty)
+            if(result)
               SearchResults(searchResults),
           ],
         ),

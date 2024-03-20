@@ -16,6 +16,18 @@ class SearchSwitch extends StateNotifier<bool>{
   }
 }
 
+final resultPage = StateNotifierProvider<ResultPageState , bool>(
+        (ref) => ResultPageState()
+);
+
+class ResultPageState extends StateNotifier<bool>{
+  ResultPageState() : super(false);
+
+  void resultPage(bool value){
+    state = value;
+  }
+}
+
 final searchResultsProvider = StateNotifierProvider.autoDispose<SearchResultState, List<CalendarDocument>>(
         (ref) => SearchResultState(ref)
 );

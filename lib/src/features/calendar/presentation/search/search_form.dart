@@ -28,7 +28,12 @@ class SearchFormState extends State<SearchForm>{
               Expanded(
                 child: Focus(
                   onFocusChange: (value){
-                    ref.read(searchSwitch.notifier).switchState(value);
+                    if(value){
+                      ref.read(searchSwitch.notifier).switchState(value);
+                    }
+                    if(_controller.value.text.isEmpty){
+                      ref.read(searchSwitch.notifier).switchState(value);
+                    }
                   },
                   child: TextFormField(
                     //initialValue: initialTitle,
@@ -54,7 +59,10 @@ class SearchFormState extends State<SearchForm>{
                     ),
                     onChanged: (value){},
                     onFieldSubmitted: (value){
-                      ref.read(calendarRepositories).searchCalendar(value);
+                      ref.read(searchResultsProvider.notifier).searchCalendar(value).then((value){
+                        ref.read(searchSwitch.notifier).switchState(true);
+                        ref.read(resultPage.notifier).resultPage(true);
+                      });
                     },
                   ),
                 ),
@@ -63,6 +71,8 @@ class SearchFormState extends State<SearchForm>{
               TextButton(
                   onPressed: (){
                     ref.read(searchSwitch.notifier).switchState(false);
+                    ref.read(resultPage.notifier).resultPage(false);
+                    _controller.clear();
                     FocusScope.of(context).unfocus();
                   },
                   child: const Text(
