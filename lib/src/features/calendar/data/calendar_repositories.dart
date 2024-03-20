@@ -35,8 +35,8 @@ class CalendarRepositories {
         .add(data);
   }
 
-  Future<List<dynamic>> searchCalendar(String value) async{
-    List calendars = [];
+  Future<List<CalendarDocument>> searchCalendar(String value) async{
+    List<CalendarDocument> calendars = [];
     var calendarList = await FirebaseFirestore.instance
         .collection('calendar')
         .where('searchIndex', arrayContainsAny: [value])
@@ -45,7 +45,8 @@ class CalendarRepositories {
     if(calendarList.docs.isNotEmpty){
       for (var e in calendarList.docs) {
         var calendar = Calendar.fromJson(e.data());
-        calendars.add(calendar);
+        var calendarDoc = CalendarDocument(docId: e.id, calendar: calendar);
+        calendars.add(calendarDoc);
       }
       return calendars;
     }else{

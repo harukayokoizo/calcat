@@ -54,13 +54,7 @@ class SearchFormState extends State<SearchForm>{
                     ),
                     onChanged: (value){},
                     onFieldSubmitted: (value){
-                      ref.read(calendarRepositories).searchCalendar(value).then((value){
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(builder: (context) => EventDetail(eventDoc, repositories),
-                        //   ),
-                        // );
-                      });
+                      ref.read(calendarRepositories).searchCalendar(value);
                     },
                   ),
                 ),

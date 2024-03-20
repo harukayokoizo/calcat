@@ -2,14 +2,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:share_calendar/src/features/calendar/presentation/search/search_form.dart';
+import 'package:share_calendar/src/features/calendar/presentation/search/search_results.dart';
 
 import '../../application/search_provider.dart';
+import '../../domain/calendar_document.dart';
 
 class SearchPage extends ConsumerWidget{
   const SearchPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref){
+    final List<CalendarDocument> searchResults = ref.watch(searchResultsProvider);
     final bool search = ref.watch(searchSwitch);
     return Scaffold(
       //appBar: AppBar(),
@@ -21,7 +24,9 @@ class SearchPage extends ConsumerWidget{
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            SearchForm(search)
+            SearchForm(search),
+            if(searchResults.isEmpty)
+              SearchResults(searchResults),
           ],
         ),
       ),
