@@ -41,3 +41,16 @@ class SearchResultState extends StateNotifier<List<CalendarDocument>>{
     state = results;
   }
 }
+
+final selectedCalendarProvider = StateNotifierProvider.autoDispose<SelectedCalendarState, CalendarDocument?>(
+        (ref) => SelectedCalendarState(ref)
+);
+
+class SelectedCalendarState extends StateNotifier<CalendarDocument?>{
+  Ref ref;
+  SelectedCalendarState(this.ref) : super(null);
+
+  void selectCalendar(CalendarDocument calendarDoc) {
+    state = calendarDoc;
+  }
+}
