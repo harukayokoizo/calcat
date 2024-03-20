@@ -18,6 +18,7 @@ abstract class Calendar with _$Calendar{
     String? password,
     @TimestampConverter() DateTime? created,
     @TimestampConverter() DateTime? updated,
+    List<String>? searchIndex,
   }) = _Calendar;
 
   factory Calendar.fromJson(Map<String,dynamic> json) => _$CalendarFromJson(json);

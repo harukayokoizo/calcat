@@ -32,9 +32,6 @@ class PersonalCalendarPageState extends ConsumerState{
     var focusedDay = ref.watch(focusedDayProvider);
     var calendarFormat = ref.watch(calendarFormatState);
     const week = ['日', '月', '火', '水', '木', '金', '土'];
-    late Offset itemPosition = const Offset(0, 0);
-    final double deviceWidth = MediaQuery.of(context).size.width;
-    final double deviceHeight = MediaQuery.of(context).size.height;
     final events = ref.watch(personalEventList);
     //print(events);
 
@@ -94,6 +91,23 @@ class PersonalCalendarPageState extends ConsumerState{
           );
         }
       ),
+      // bottomNavigationBar: BottomNavigationBar(
+      //   // ignore: invalid_use_of_protected_member
+      //   items: const [
+      //     BottomNavigationBarItem(
+      //       icon: Icon(Icons.search),
+      //       label: 'Search',
+      //     ),
+      //     BottomNavigationBarItem(
+      //       icon: Icon(Icons.star),
+      //       label: 'Calendar',
+      //     ),
+      //     BottomNavigationBarItem(
+      //       icon: Icon(Icons.calendar_month),
+      //       label: 'My Calendar',
+      //     ),
+      //   ],
+      // ),
     );
   }
 }

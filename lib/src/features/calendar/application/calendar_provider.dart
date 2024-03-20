@@ -53,6 +53,7 @@ class CalendarState extends StateNotifier<Calendar>{
   Future<void> createCalendar() async{
     final image = ref.read(imageStateProvider);
     DateTime date = DateTime.now();
+    List<String> searchIndex = createSearchIndex();
     Map<String, dynamic> data = {
       'author': state.author,
       'title': state.title,
@@ -62,6 +63,7 @@ class CalendarState extends StateNotifier<Calendar>{
       'password': state.password,
       'created': date,
       'updated': date,
+      'searchIndex': searchIndex,
     };
 
     if(image != null){
@@ -70,5 +72,20 @@ class CalendarState extends StateNotifier<Calendar>{
     }
 
     ref.read(calendarRepositories).createCalendar(data);
+  }
+
+  List<String> createSearchIndex(){
+    String title = state.title!;
+    List<String> searchIndex = [];
+    var titleLength = title.length;//5
+
+    for(int i = 0; i < titleLength; i++){
+      for(int j = 0; j <= i; j++){
+        int diff = titleLength - i;
+        searchIndex.add(title.substring(j, j + diff));
+      }
+    }
+
+    return searchIndex;
   }
 }

@@ -30,6 +30,7 @@ mixin _$Calendar {
   DateTime? get created => throw _privateConstructorUsedError;
   @TimestampConverter()
   DateTime? get updated => throw _privateConstructorUsedError;
+  List<String>? get searchIndex => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -50,7 +51,8 @@ abstract class $CalendarCopyWith<$Res> {
       bool? publicPreference,
       String? password,
       @TimestampConverter() DateTime? created,
-      @TimestampConverter() DateTime? updated});
+      @TimestampConverter() DateTime? updated,
+      List<String>? searchIndex});
 }
 
 /// @nodoc
@@ -74,6 +76,7 @@ class _$CalendarCopyWithImpl<$Res, $Val extends Calendar>
     Object? password = freezed,
     Object? created = freezed,
     Object? updated = freezed,
+    Object? searchIndex = freezed,
   }) {
     return _then(_value.copyWith(
       author: freezed == author
@@ -108,6 +111,10 @@ class _$CalendarCopyWithImpl<$Res, $Val extends Calendar>
           ? _value.updated
           : updated // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      searchIndex: freezed == searchIndex
+          ? _value.searchIndex
+          : searchIndex // ignore: cast_nullable_to_non_nullable
+              as List<String>?,
     ) as $Val);
   }
 }
@@ -128,7 +135,8 @@ abstract class _$$CalendarImplCopyWith<$Res>
       bool? publicPreference,
       String? password,
       @TimestampConverter() DateTime? created,
-      @TimestampConverter() DateTime? updated});
+      @TimestampConverter() DateTime? updated,
+      List<String>? searchIndex});
 }
 
 /// @nodoc
@@ -150,6 +158,7 @@ class __$$CalendarImplCopyWithImpl<$Res>
     Object? password = freezed,
     Object? created = freezed,
     Object? updated = freezed,
+    Object? searchIndex = freezed,
   }) {
     return _then(_$CalendarImpl(
       author: freezed == author
@@ -184,6 +193,10 @@ class __$$CalendarImplCopyWithImpl<$Res>
           ? _value.updated
           : updated // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      searchIndex: freezed == searchIndex
+          ? _value._searchIndex
+          : searchIndex // ignore: cast_nullable_to_non_nullable
+              as List<String>?,
     ));
   }
 }
@@ -199,7 +212,9 @@ class _$CalendarImpl implements _Calendar {
       this.publicPreference,
       this.password,
       @TimestampConverter() this.created,
-      @TimestampConverter() this.updated});
+      @TimestampConverter() this.updated,
+      final List<String>? searchIndex})
+      : _searchIndex = searchIndex;
 
   factory _$CalendarImpl.fromJson(Map<String, dynamic> json) =>
       _$$CalendarImplFromJson(json);
@@ -222,10 +237,19 @@ class _$CalendarImpl implements _Calendar {
   @override
   @TimestampConverter()
   final DateTime? updated;
+  final List<String>? _searchIndex;
+  @override
+  List<String>? get searchIndex {
+    final value = _searchIndex;
+    if (value == null) return null;
+    if (_searchIndex is EqualUnmodifiableListView) return _searchIndex;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
 
   @override
   String toString() {
-    return 'Calendar(author: $author, title: $title, description: $description, image: $image, publicPreference: $publicPreference, password: $password, created: $created, updated: $updated)';
+    return 'Calendar(author: $author, title: $title, description: $description, image: $image, publicPreference: $publicPreference, password: $password, created: $created, updated: $updated, searchIndex: $searchIndex)';
   }
 
   @override
@@ -243,13 +267,24 @@ class _$CalendarImpl implements _Calendar {
             (identical(other.password, password) ||
                 other.password == password) &&
             (identical(other.created, created) || other.created == created) &&
-            (identical(other.updated, updated) || other.updated == updated));
+            (identical(other.updated, updated) || other.updated == updated) &&
+            const DeepCollectionEquality()
+                .equals(other._searchIndex, _searchIndex));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, author, title, description,
-      image, publicPreference, password, created, updated);
+  int get hashCode => Object.hash(
+      runtimeType,
+      author,
+      title,
+      description,
+      image,
+      publicPreference,
+      password,
+      created,
+      updated,
+      const DeepCollectionEquality().hash(_searchIndex));
 
   @JsonKey(ignore: true)
   @override
@@ -274,7 +309,8 @@ abstract class _Calendar implements Calendar {
       final bool? publicPreference,
       final String? password,
       @TimestampConverter() final DateTime? created,
-      @TimestampConverter() final DateTime? updated}) = _$CalendarImpl;
+      @TimestampConverter() final DateTime? updated,
+      final List<String>? searchIndex}) = _$CalendarImpl;
 
   factory _Calendar.fromJson(Map<String, dynamic> json) =
       _$CalendarImpl.fromJson;
@@ -297,6 +333,8 @@ abstract class _Calendar implements Calendar {
   @override
   @TimestampConverter()
   DateTime? get updated;
+  @override
+  List<String>? get searchIndex;
   @override
   @JsonKey(ignore: true)
   _$$CalendarImplCopyWith<_$CalendarImpl> get copyWith =>

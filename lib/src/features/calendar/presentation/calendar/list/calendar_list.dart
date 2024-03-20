@@ -42,6 +42,23 @@ class CalendarList extends StatelessWidget{
               );
             },
           ),
+          // bottomNavigationBar: BottomNavigationBar(
+          //   // ignore: invalid_use_of_protected_member
+          //   items: const [
+          //     BottomNavigationBarItem(
+          //       icon: Icon(Icons.search),
+          //       label: 'Search',
+          //     ),
+          //     BottomNavigationBarItem(
+          //       icon: Icon(Icons.star),
+          //       label: 'Calendar',
+          //     ),
+          //     BottomNavigationBarItem(
+          //       icon: Icon(Icons.calendar_month),
+          //       label: 'My Calendar',
+          //     ),
+          //   ],
+          // ),
         )
     );
   }
