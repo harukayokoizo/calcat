@@ -18,7 +18,22 @@ class SearchedCalendarContent extends ConsumerWidget{
       padding: const EdgeInsets.only(left: 20, top: 10.0, right: 20.0),
       child: InkWell(
         onTap: (){
-          ref.read(selectedCalendarProvider.notifier).selectCalendar(calendarDoc);
+          showModalBottomSheet(
+            isScrollControlled: true,
+            backgroundColor: const Color.fromRGBO(0, 0, 0, 0.0),
+            context: context,
+            builder: (BuildContext context) {
+              return Container(
+                height: 300,
+                color: Colors.white,
+              );
+            },
+          ).then((value){
+            if(value){
+              Navigator.pop(context);
+            }
+          });
+          //ref.read(selectedCalendarProvider.notifier).selectCalendar(calendarDoc);
         },
         child: Container(
           height: 100,

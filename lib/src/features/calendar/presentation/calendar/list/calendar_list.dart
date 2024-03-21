@@ -2,11 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:share_calendar/src/features/calendar/presentation/calendar/list/published_list.dart';
 
-import 'favorite_list.dart';
+import 'follow_list.dart';
 import '../../form/calendar_form.dart';
 
-class CalendarList extends StatelessWidget{
-  const CalendarList({super.key});
+class AllCalendarList extends StatelessWidget{
+  const AllCalendarList({super.key});
 
   @override
   Widget build(BuildContext context){
@@ -19,14 +19,14 @@ class CalendarList extends StatelessWidget{
               centerTitle: true,
             bottom : const TabBar(
               tabs: [
-                Tab(text: 'お気に入り'),
+                Tab(text: 'フォローリスト'),
                 Tab(text: '公開カレンダー'),
               ],
             )
           ),
           body: const TabBarView(
             children: [
-              FavoriteCalendarList(),
+              FollowCalendarList(),
               PublishedCalendarList()
             ],
           ),

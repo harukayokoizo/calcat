@@ -68,7 +68,7 @@ class TopPageState extends State<TopPage>{
   int number = 0;
   final List<Widget> _pageList = <Widget>[
     const SearchPageController(),
-    const CalendarList(),
+    const AllCalendarList(),
     const PersonalCalendarPage()
   ];
 

@@ -17,3 +17,14 @@ class TimestampConverter implements JsonConverter<DateTime, Timestamp> {
   //DateTimeからTimeStampに変換する。
   Timestamp toJson(DateTime date) => Timestamp.fromDate(date);
 }
+
+class DocumentReferenceConverter
+    implements JsonConverter<DocumentReference, DocumentReference> {
+  const DocumentReferenceConverter();
+
+  @override
+  DocumentReference fromJson(DocumentReference docRef) => docRef;
+
+  @override
+  DocumentReference toJson(DocumentReference docRef) => docRef;
+}
