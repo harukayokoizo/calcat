@@ -11,6 +11,7 @@ import '../../domain/calendar_document.dart';
 class SearchPageController extends ConsumerWidget{
   const SearchPageController({super.key});
 
+  @override
   Widget build(BuildContext context, WidgetRef ref){
     final selected = ref.watch(selectedCalendarProvider);
     if(selected != null){
@@ -29,7 +30,6 @@ class SearchPage extends ConsumerWidget{
     final List<CalendarDocument> searchResults = ref.watch(searchResultsProvider);
     final bool search = ref.watch(searchSwitch);
     final bool result = ref.watch(resultPage);
-    print(searchResults);
     return Scaffold(
       //appBar: AppBar(),
       body: GestureDetector(

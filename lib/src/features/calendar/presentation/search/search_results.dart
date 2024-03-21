@@ -5,6 +5,7 @@ import '../../application/search_provider.dart';
 import '../../domain/calendar.dart';
 import '../../domain/calendar_document.dart';
 import '../calendar/list/calendar_content.dart';
+import 'calendar_content_searched.dart';
 
 class SearchResults extends ConsumerWidget{
   List<CalendarDocument> calendarList;
@@ -20,7 +21,7 @@ class SearchResults extends ConsumerWidget{
         child: Column(
           children: [
             for(CalendarDocument calendarDoc in calendarList)
-              CalendarContent(calendarDoc)
+              SearchedCalendarContent(calendarDoc)
           ],
         ),
       );

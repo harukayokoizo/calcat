@@ -35,8 +35,8 @@ class CalendarContent extends StatelessWidget{
           ),
           child: Row(
             children: [
-              _calendarIcon(calendarDoc.calendar!.image),
-              _calendarSummary(calendarDoc.calendar!.title!, calendarDoc.calendar!.description),
+              calendarIcon(calendarDoc.calendar!.image),
+              calendarSummary(calendarDoc.calendar!.title!, calendarDoc.calendar!.description),
             ],
           ),
         ),
@@ -46,7 +46,7 @@ class CalendarContent extends StatelessWidget{
 
 }
 
-Widget _calendarIcon(String? image){
+Widget calendarIcon(String? image){
   Image imagePath = Image.asset('images/no_image.png',fit: BoxFit.cover,);
   if(image != null) {
     imagePath = Image.network(image);
@@ -66,7 +66,7 @@ Widget _calendarIcon(String? image){
   );
 }
 
-Widget _calendarSummary(String title, String? description){
+Widget calendarSummary(String title, String? description){
   return Padding(
     padding: const EdgeInsets.all(15.0),
     child: Column(

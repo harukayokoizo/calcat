@@ -67,7 +67,7 @@ class TopPage extends StatefulWidget{
 class TopPageState extends State<TopPage>{
   int number = 0;
   final List<Widget> _pageList = <Widget>[
-    const SearchPage(),
+    const SearchPageController(),
     const CalendarList(),
     const PersonalCalendarPage()
   ];

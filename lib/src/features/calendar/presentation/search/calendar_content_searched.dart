@@ -1,21 +1,24 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../application/search_provider.dart';
 import '../../domain/calendar_document.dart';
+import '../calendar/list/calendar_content.dart';
 
-class SearchedCalendarContent extends StatelessWidget{
+class SearchedCalendarContent extends ConsumerWidget{
   CalendarDocument calendarDoc;
 
   SearchedCalendarContent(this.calendarDoc, {super.key});
 
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context, WidgetRef ref){
     final double deviceWidth = MediaQuery.of(context).size.width;
     return Padding(
       padding: const EdgeInsets.only(left: 20, top: 10.0, right: 20.0),
       child: InkWell(
         onTap: (){
-
+          ref.read(selectedCalendarProvider.notifier).selectCalendar(calendarDoc);
         },
         child: Container(
           height: 100,
@@ -30,8 +33,8 @@ class SearchedCalendarContent extends StatelessWidget{
           ),
           child: Row(
             children: [
-              _calendarIcon(calendarDoc.calendar!.image),
-              _calendarSummary(calendarDoc.calendar!.title!, calendarDoc.calendar!.description),
+              calendarIcon(calendarDoc.calendar!.image),
+              calendarSummary(calendarDoc.calendar!.title!, calendarDoc.calendar!.description),
             ],
           ),
         ),
