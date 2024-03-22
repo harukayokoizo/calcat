@@ -118,6 +118,9 @@ class TableCalendar<T> extends StatefulWidget {
   ///公開用カレンダーの場合、true
   final bool publicCalendar;
 
+  ///フォローカレンダーの場合、true
+  final bool followCalendar;
+
   /// Used for setting the height of `TableCalendar`'s rows.
   final double rowHeight;
 
@@ -242,6 +245,7 @@ class TableCalendar<T> extends StatefulWidget {
     this.shouldFillViewport = false,
     this.weekNumbersVisible = false,
     this.publicCalendar = false,
+    this.followCalendar = false,
     this.rowHeight = 52.0,
     this.daysOfWeekHeight = 16.0,
     this.formatAnimationDuration = const Duration(milliseconds: 200),
@@ -592,7 +596,7 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
             elevation: 30.0,
             child: SizedBox(
                 height: taskViewHeight,
-                child: PublicEventList(widget.focusedDay, widget.calendarDocId!)
+                child: PublicEventList(widget.focusedDay, widget.calendarDocId!, widget.followCalendar)
             ),
           )
       ],

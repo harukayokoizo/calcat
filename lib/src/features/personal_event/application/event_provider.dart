@@ -8,7 +8,7 @@ import '../domain/event.dart';
 
 final eventFormStateProvider = StateNotifierProvider.autoDispose.family<EventFormState, Event, Event>(
         (ref, event){
-          return EventFormState(ref, event!);
+          return EventFormState(ref, event);
         }
 );
 

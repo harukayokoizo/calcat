@@ -15,7 +15,15 @@ class ListWidget extends StatelessWidget{
   List eventOnDate;
   DateTime focusedDay;
 
-  ListWidget(this.repositories,this.calendarFormat, this.focusedDayState, this.date, this.eventOnDate, this.focusedDay, {super.key});
+  ListWidget(
+      this.repositories,
+      this.calendarFormat,
+      this.focusedDayState,
+      this.date,
+      this.eventOnDate,
+      this.focusedDay,
+      {super.key}
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -97,7 +105,7 @@ class ListWidget extends StatelessWidget{
                 onPressed: (){
                   showCupertinoModalPopup(
                       context: context,
-                      builder: (BuildContext context) => EventRegistration(focusedDay, repositories)
+                      builder: (BuildContext context) => EventRegistration(focusedDayState.state, repositories)
                   );
                 },
                 icon: const Icon(Icons.add,color: Colors.white,),

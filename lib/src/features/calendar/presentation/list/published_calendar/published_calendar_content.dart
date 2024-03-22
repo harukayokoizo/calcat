@@ -2,12 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../domain/calendar_document.dart';
-import '../calendar.dart';
+import 'calendar.dart';
 
-class CalendarContent extends StatelessWidget{
+class PublishedCalendarContent extends StatelessWidget{
   CalendarDocument calendarDoc;
 
-  CalendarContent(this.calendarDoc, {super.key});
+  PublishedCalendarContent(this.calendarDoc, {super.key});
 
   @override
   Widget build(BuildContext context){

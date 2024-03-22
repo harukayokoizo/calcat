@@ -2,10 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:share_calendar/src/features/calendar/presentation/search/selected_calendar.dart';
-
-import '../../application/search_provider.dart';
 import '../../domain/calendar_document.dart';
-import '../calendar/list/calendar_content.dart';
+import '../list/published_calendar/published_calendar_content.dart';
 
 class SearchedCalendarContent extends ConsumerWidget{
   CalendarDocument calendarDoc;

@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../application/calendar_list_provider.dart';
 import '../../../domain/calendar_document.dart';
-import 'calendar_content.dart';
+import 'published_calendar_content.dart';
 
 class PublishedCalendarList extends ConsumerWidget{
   const PublishedCalendarList({super.key});
@@ -29,7 +29,7 @@ class CalendarList extends StatelessWidget{
     return Column(
       children: [
         for(CalendarDocument calendarDoc in calendarList)
-          CalendarContent(calendarDoc)
+          PublishedCalendarContent(calendarDoc)
       ],
     );
   }

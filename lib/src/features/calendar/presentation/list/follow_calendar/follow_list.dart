@@ -1,13 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:share_calendar/src/features/calendar/presentation/calendar/list/published_list.dart';
-
 import '../../../domain/calendar_user.dart';
 import '../../../application/calendar_list_provider.dart';
 import '../../../data/calendar_user_repositories.dart';
 import '../../../domain/calendar_document.dart';
-import 'calendar_content.dart';
+import '../published_calendar/published_calendar_content.dart';
+import 'follow_calendar_content.dart';
 
 class FollowCalendarList extends ConsumerWidget{
   const FollowCalendarList({super.key});
@@ -34,15 +33,15 @@ class FollowList extends StatelessWidget{
     return Column(
       children: [
         for(CalendarUser calendarDoc in calendarList)
-          FollowCalendarContent(calendarDoc)
+          FollowCalendar(calendarDoc)
       ],
     );
   }
 }
 
-class FollowCalendarContent extends ConsumerWidget{
+class FollowCalendar extends ConsumerWidget{
   CalendarUser calendar;
-  FollowCalendarContent(this.calendar, {super.key});
+  FollowCalendar(this.calendar, {super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -51,7 +50,7 @@ class FollowCalendarContent extends ConsumerWidget{
       future: followList,
       builder: (BuildContext context, AsyncSnapshot<CalendarDocument?> snapshot) {
         if(snapshot.hasData){
-          return CalendarContent(snapshot.data!);
+          return FollowCalendarContent(snapshot.data!);
         }
         return const SizedBox();
       },

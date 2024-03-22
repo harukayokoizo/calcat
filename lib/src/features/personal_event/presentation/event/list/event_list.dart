@@ -15,6 +15,7 @@ class PersonalEventList extends ConsumerWidget{
     final repositories = ref.read(eventRepositories);
     final calendarFormat = ref.read(calendarFormatState.notifier);
     final focusedDayState = ref.read(focusedDayProvider.notifier);
+    // focusedDay = ref.read(focusedDayProvider);
 
     DateTimeFormat dateFormat = ref.read(dateTimeFormatClass(focusedDay));
     String date = dateFormat.dateJaFormat();

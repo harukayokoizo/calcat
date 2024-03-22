@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../application/search_provider.dart';
 import '../../domain/calendar.dart';
 import '../../domain/calendar_document.dart';
-import '../calendar/list/calendar_content.dart';
 import 'calendar_content_searched.dart';
 
 class SearchResults extends ConsumerWidget{
@@ -13,8 +12,6 @@ class SearchResults extends ConsumerWidget{
 
   @override
   Widget build(BuildContext context, WidgetRef ref){
-    final double deviceWidth = MediaQuery.of(context).size.width;
-    final double deviceHeight = MediaQuery.of(context).size.height;
     if(calendarList.isNotEmpty) {
       return Padding(
         padding: const EdgeInsets.only(top: 10.0),

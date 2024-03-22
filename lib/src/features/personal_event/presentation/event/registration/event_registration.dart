@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:share_calendar/src/features/personal_event/application/event_list_provider.dart';
 import 'package:share_calendar/src/features/personal_event/presentation/event/registration/repeat_form.dart';
 import 'package:share_calendar/src/features/personal_event/presentation/event/registration/title_form.dart';
 

@@ -4,8 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 
-import '../../application/event_list_provider.dart';
-import '../../domain/calendar_document.dart';
+import '../../../application/event_list_provider.dart';
+import '../../../domain/calendar_document.dart';
 
 class PublicCalendarPage extends ConsumerWidget{
   PublicCalendarPage(this.calendarDoc, {super.key});
