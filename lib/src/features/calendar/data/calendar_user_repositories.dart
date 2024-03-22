@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../common_widgets/application/common_provider.dart';
-import '../../personal_event/domain/calendar_user.dart';
+import '../domain/calendar_user.dart';
 import '../domain/calendar.dart';
 import '../domain/calendar_document.dart';
 

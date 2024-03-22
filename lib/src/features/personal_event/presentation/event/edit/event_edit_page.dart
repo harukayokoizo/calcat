@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../../common_widgets/application/common_provider.dart';
 import '../../../application/event_provider.dart';
 import '../../../domain/event_document.dart';
 import '../../../domain/event.dart';
@@ -33,7 +34,7 @@ class EventEdit extends ConsumerWidget{
     }
 
     return SizedBox(
-      height: deviceHeight - 30,
+      height: deviceHeight,
       child: Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,

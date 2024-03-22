@@ -8,19 +8,19 @@ import 'package:share_calendar/src/features/calendar/presentation/search/selecte
 import '../../application/search_provider.dart';
 import '../../domain/calendar_document.dart';
 
-class SearchPageController extends ConsumerWidget{
-  const SearchPageController({super.key});
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref){
-    final selected = ref.watch(selectedCalendarProvider);
-    if(selected != null){
-      return SelectedCalendar(selected);
-    }else{
-      return const SearchPage();
-    }
-  }
-}
+// class SearchPageController extends ConsumerWidget{
+//   const SearchPageController({super.key});
+//
+//   @override
+//   Widget build(BuildContext context, WidgetRef ref){
+//     final selected = ref.watch(selectedCalendarProvider);
+//     if(selected != null){
+//       return SelectedCalendar(selected);
+//     }else{
+//       return const SearchPage();
+//     }
+//   }
+// }
 
 class SearchPage extends ConsumerWidget{
   const SearchPage({super.key});

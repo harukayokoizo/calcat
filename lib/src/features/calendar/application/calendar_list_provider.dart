@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../personal_event/domain/calendar_user.dart';
+import '../domain/calendar_user.dart';
 import '../data/calendar_repositories.dart';
 import '../data/calendar_user_repositories.dart';
 import '../domain/calendar_document.dart';

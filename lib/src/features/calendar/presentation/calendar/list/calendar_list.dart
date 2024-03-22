@@ -35,30 +35,12 @@ class AllCalendarList extends StatelessWidget{
             child: Icon(Icons.add),
             //backgroundColor: Colors.blue[200],
             onPressed: () async {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const CalendarForm(),
-                ),
+              showCupertinoModalPopup(
+                  context: context,
+                  builder: (BuildContext context) => CalendarForm()
               );
             },
           ),
-          // bottomNavigationBar: BottomNavigationBar(
-          //   // ignore: invalid_use_of_protected_member
-          //   items: const [
-          //     BottomNavigationBarItem(
-          //       icon: Icon(Icons.search),
-          //       label: 'Search',
-          //     ),
-          //     BottomNavigationBarItem(
-          //       icon: Icon(Icons.star),
-          //       label: 'Calendar',
-          //     ),
-          //     BottomNavigationBarItem(
-          //       icon: Icon(Icons.calendar_month),
-          //       label: 'My Calendar',
-          //     ),
-          //   ],
-          // ),
         )
     );
   }

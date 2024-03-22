@@ -42,15 +42,15 @@ class SearchResultState extends StateNotifier<List<CalendarDocument>>{
   }
 }
 
-final selectedCalendarProvider = StateNotifierProvider<SelectedCalendarState, CalendarDocument?>(
-        (ref) => SelectedCalendarState(ref)
-);
-
-class SelectedCalendarState extends StateNotifier<CalendarDocument?>{
-  Ref ref;
-  SelectedCalendarState(this.ref) : super(null);
-
-  void selectCalendar(CalendarDocument? calendarDoc) {
-    state = calendarDoc;
-  }
-}
+// final selectedCalendarProvider = StateNotifierProvider<SelectedCalendarState, CalendarDocument?>(
+//         (ref) => SelectedCalendarState(ref)
+// );
+//
+// class SelectedCalendarState extends StateNotifier<CalendarDocument?>{
+//   Ref ref;
+//   SelectedCalendarState(this.ref) : super(null);
+//
+//   void selectCalendar(CalendarDocument? calendarDoc) {
+//     state = calendarDoc;
+//   }
+// }

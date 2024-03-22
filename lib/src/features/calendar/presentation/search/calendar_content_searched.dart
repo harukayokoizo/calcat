@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:share_calendar/src/features/calendar/presentation/search/selected_calendar.dart';
 
 import '../../application/search_provider.dart';
 import '../../domain/calendar_document.dart';
@@ -18,21 +19,13 @@ class SearchedCalendarContent extends ConsumerWidget{
       padding: const EdgeInsets.only(left: 20, top: 10.0, right: 20.0),
       child: InkWell(
         onTap: (){
-          showModalBottomSheet(
-            isScrollControlled: true,
-            backgroundColor: const Color.fromRGBO(0, 0, 0, 0.0),
-            context: context,
-            builder: (BuildContext context) {
-              return Container(
-                height: 300,
-                color: Colors.white,
-              );
-            },
-          ).then((value){
-            if(value){
-              Navigator.pop(context);
-            }
-          });
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              fullscreenDialog: true,
+              builder: (context) => SelectedCalendar(calendarDoc),
+            ),
+          );
           //ref.read(selectedCalendarProvider.notifier).selectCalendar(calendarDoc);
         },
         child: Container(

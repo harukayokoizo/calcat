@@ -63,7 +63,9 @@ class ListWidget extends StatelessWidget{
                                 onTap: (){
                                   Navigator.push(
                                     context,
-                                    MaterialPageRoute(builder: (context) => EventDetail(eventDoc, repositories),
+                                    MaterialPageRoute(
+                                      fullscreenDialog: true,
+                                      builder: (context) => EventDetail(eventDoc, repositories),
                                     ),
                                   );
                                 },
@@ -93,10 +95,9 @@ class ListWidget extends StatelessWidget{
               ),
               IconButton(
                 onPressed: (){
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => EventRegistration(focusedDay, repositories),
-                    ),
+                  showCupertinoModalPopup(
+                      context: context,
+                      builder: (BuildContext context) => EventRegistration(focusedDay, repositories)
                   );
                 },
                 icon: const Icon(Icons.add,color: Colors.white,),

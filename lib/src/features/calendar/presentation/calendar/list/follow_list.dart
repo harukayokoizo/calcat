@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:share_calendar/src/features/calendar/presentation/calendar/list/published_list.dart';
 
-import '../../../../personal_event/domain/calendar_user.dart';
+import '../../../domain/calendar_user.dart';
 import '../../../application/calendar_list_provider.dart';
 import '../../../data/calendar_user_repositories.dart';
 import '../../../domain/calendar_document.dart';

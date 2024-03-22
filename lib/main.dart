@@ -8,9 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:share_calendar/firebase_options.dart';
 import 'package:share_calendar/src/features/authentication/application/user_provider.dart';
 import 'package:share_calendar/src/features/authentication/presentation/login_page.dart';
-import 'package:share_calendar/src/features/calendar/presentation/calendar/list/calendar_list.dart';
-import 'package:share_calendar/src/features/calendar/presentation/search/search_page.dart';
-import 'package:share_calendar/src/features/personal_event/presentation/calendar.dart';
+import 'package:share_calendar/tab_navigator.dart';
 
 Future<void> main() async {
   // main()の中で非同期処理を行う際には、下記を実行しなければいけないらしい
@@ -66,60 +64,16 @@ class TopPage extends StatefulWidget{
 
 class TopPageState extends State<TopPage>{
   int number = 0;
-  final List<Widget> _pageList = <Widget>[
-    const SearchPageController(),
-    const AllCalendarList(),
-    const PersonalCalendarPage()
-  ];
+
+  TabItem _currentTab = TabItem.search;
+  final Map<TabItem, GlobalKey<NavigatorState>> _navigatorKeys = {
+    TabItem.search: GlobalKey<NavigatorState>(),
+    TabItem.calendar: GlobalKey<NavigatorState>(),
+    TabItem.myCalendar: GlobalKey<NavigatorState>(),
+  };
 
   @override
   Widget build(BuildContext context) {
-    // return CupertinoTabScaffold(
-    //     tabBar: CupertinoTabBar(
-    //       items: const <BottomNavigationBarItem> [
-    //         BottomNavigationBarItem(
-    //           icon: Icon(Icons.search),
-    //           label: 'Search',
-    //         ),
-    //         BottomNavigationBarItem(
-    //           icon: Icon(Icons.star),
-    //           label: 'Calendar',
-    //         ),
-    //         BottomNavigationBarItem(
-    //           icon: Icon(Icons.calendar_month),
-    //           label: 'My Calendar',
-    //         ),
-    //       ],
-    //       // onTap: _onItemTapped(index), // 実は無くても動く
-    //       // currentIndex: _selectedIndex, // 実は無くても動く
-    //     ),
-    //     tabBuilder: (context, index) {
-    //       switch (index) {
-    //         case 0:
-    //           return CupertinoTabView(builder: (context) {
-    //             return const CupertinoPageScaffold(
-    //               resizeToAvoidBottomInset: false,
-    //                 child: SearchPage()
-    //             );
-    //           });
-    //         case 1:
-    //           return CupertinoTabView(builder: (context) {
-    //             return const CupertinoPageScaffold(
-    //                 resizeToAvoidBottomInset: false,
-    //                 child: CalendarList()
-    //             );
-    //           });
-    //         case 2:
-    //           return CupertinoTabView(builder: (context) {
-    //             return PersonalCalendarPage();const CupertinoPageScaffold(
-    //                 child: PersonalCalendarPage(),
-    //             );
-    //           });
-    //         default:
-    //           return Container();
-    //       }
-    //     }
-    // );
     final tabItems = [
       const BottomNavigationBarItem(
         icon: Icon(Icons.search),
@@ -136,26 +90,75 @@ class TopPageState extends State<TopPage>{
     ];
 
     return Scaffold(
-      //appBar: AppBar(),
-      // ignore: invalid_use_of_protected_member
-      body: IndexedStack(
-        index: number,
-        children: _pageList,
+      body: Stack(
+        children: <Widget>[
+          _buildTabItem(
+            TabItem.search,
+            '/search',
+          ),
+          _buildTabItem(
+            TabItem.calendar,
+            '/list',
+          ),
+          _buildTabItem(
+            TabItem.myCalendar,
+            '/calendar',
+          ),
+        ],
       ),
       bottomNavigationBar: BottomNavigationBar(
-        // ignore: invalid_use_of_protected_member
         currentIndex: number,
-        onTap: (index) {
-          setState(() {
-            number = index;
-          });
-        },
         items: tabItems,
+        onTap: (index) {
+          number = index;
+          onSelect(TabItem.values[index]);
+        },
+      )
+    );
+  }
+
+  Widget _buildTabItem(
+      TabItem tabItem,
+      String root,
+      ) {
+    return Offstage(
+      offstage: _currentTab != tabItem,
+      child: TabNavigator(
+        navigationKey: _navigatorKeys[tabItem],
+        tabItem: tabItem,
+        routerName: root,
       ),
     );
   }
 
+  void onSelect(TabItem tabItem) {
+    if (_currentTab == tabItem) {
+      _navigatorKeys[tabItem]?.currentState?.popUntil((route) => route.isFirst);
+    } else {
+      setState(() {
+        _currentTab = tabItem;
+      });
+    }
+  }
+
+  Future<bool> onWillPop() async {
+    final isFirstRouteInCurrentTab = !await _navigatorKeys[_currentTab]!.currentState!.maybePop();
+    if (isFirstRouteInCurrentTab) {
+      if (_currentTab != TabItem.myCalendar) {
+        onSelect(TabItem.myCalendar);
+        return false;
+      }
+    }
+    return isFirstRouteInCurrentTab;
+  }
 }
+
+enum TabItem{
+  search,
+  calendar,
+  myCalendar,
+}
+
 
 /*
 class TopPage extends ConsumerWidget{
@@ -184,62 +187,4 @@ class TopPage extends ConsumerWidget{
       )
     );
   }
-}
-
-class Tab(){
-return CupertinoTabScaffold(
-        tabBar: CupertinoTabBar(
-          items: const <BottomNavigationBarItem> [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.search),
-              label: 'Search',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.star),
-              label: 'Calendar',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.calendar_month),
-              label: 'My Calendar',
-            ),
-          ],
-          // onTap: _onItemTapped(index), // 実は無くても動く
-          // currentIndex: _selectedIndex, // 実は無くても動く
-        ),
-        tabBuilder: (context, index) {
-          switch (index) {
-            case 0:
-              return CupertinoTabView(builder: (context) {
-                return const CupertinoPageScaffold(
-                  //  navigationBar: CupertinoNavigationBar(
-                  // //leading: Icon(), // ページのヘッダ左のアイコン
-                  // ),
-                    child: SearchPage()
-                );
-              });
-            case 1:
-              return CupertinoTabView(builder: (context) {
-                return const CupertinoPageScaffold(
-                  //  navigationBar: CupertinoNavigationBar(
-                  // //leading: Icon(), // ページのヘッダ左のアイコン
-                  // ),
-                    child: CalendarList()
-                );
-              });
-            case 2:
-              return CupertinoTabView(builder: (context) {
-                return const CupertinoPageScaffold(
-                  //  navigationBar: CupertinoNavigationBar(
-                  // //leading: Icon(), // ページのヘッダ左のアイコン
-                  // ),
-                    child: PersonalCalendarPage()
-                );
-              });
-            default:
-              return Container();
-          }
-        }
-    );
-}
-*/
-
+}*/
