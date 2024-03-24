@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../domain/calendar_document.dart';
-import 'calendar.dart';
+import 'calendar/calendar.dart';
 
 class PublishedCalendarContent extends StatelessWidget{
   CalendarDocument calendarDoc;

@@ -4,8 +4,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 
-import '../../../application/event_list_provider.dart';
-import '../../../domain/calendar_document.dart';
+import '../../../../application/event_list_provider.dart';
+import '../../../../domain/calendar_document.dart';
+import 'detail/calendar_detail.dart';
 
 class PublicCalendarPage extends ConsumerWidget{
   PublicCalendarPage(this.calendarDoc, {super.key});
@@ -21,7 +22,12 @@ class PublicCalendarPage extends ConsumerWidget{
     var calendarFormat = ref.watch(publicCalendarFormat);
     const week = ['日', '月', '火', '水', '木', '金', '土'];
     final events = ref.watch(publicEventList(calendarDocId));
-    print(events);
+    Image imagePath = Image.asset('images/no_image.png',fit: BoxFit.cover,);
+    if(calendarDoc.calendar!.image != null) {
+      imagePath = Image.network(calendarDoc.calendar!.image!);
+    }
+    var barSize = AppBar().preferredSize.height;
+    print(barSize);
 
     return Scaffold(
       key: itemKey,
@@ -34,6 +40,31 @@ class PublicCalendarPage extends ConsumerWidget{
               String title = '${value.year}年${value.month}月';
               return Text(title);
             }),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 12.0),
+            child: InkWell(
+              onTap: (){
+                showCupertinoModalPopup(
+                    context: context,
+                    builder: (BuildContext context) => CalendarDetail(calendarDoc)
+                );
+              },
+              child: Container(
+                width: barSize,
+                clipBehavior: Clip.hardEdge,
+                decoration: const BoxDecoration(
+                  color: Colors.grey,
+                  shape: BoxShape.circle,
+                ),
+                child: FittedBox(
+                    fit: BoxFit.cover,
+                    child: imagePath
+                ),
+              ),
+            ),
+          ),
+        ],
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(30.0),
           child: Row(
@@ -58,8 +89,6 @@ class PublicCalendarPage extends ConsumerWidget{
               focusedDay: focusedDay,
               headerVisible: false,
               rowHeight: constraints.maxHeight / 6.0,
-              //shouldFillViewport: true,
-              //availableGestures: AvailableGestures.verticalSwipe,
               locale: 'ja_JP',
               calendarFormat: calendarFormat,
               eventLoader: (date){

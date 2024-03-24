@@ -22,9 +22,6 @@ class SelectedCalendar extends ConsumerWidget{
               icon: const Icon(Icons.arrow_back_ios),
               onPressed: () {
                 Navigator.of(context).pop();
-                // ref.read(selectedCalendarProvider.notifier).selectCalendar(null);
-                // ref.read(searchSwitch.notifier).switchState(false);
-                // ref.read(resultPage.notifier).resultPage(false);
               },
             ),
           ),
