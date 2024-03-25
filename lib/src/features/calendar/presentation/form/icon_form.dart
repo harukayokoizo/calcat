@@ -10,8 +10,8 @@ import '../../application/image_provider.dart';
 import '../../domain/calendar.dart';
 
 class IconForm extends ConsumerWidget{
-  Calendar? calendar;
-  IconForm({super.key});
+  Calendar calendar;
+  IconForm(this.calendar, {super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref){
@@ -19,6 +19,8 @@ class IconForm extends ConsumerWidget{
     Image imagePath = Image.asset('images/no_image.png',fit: BoxFit.cover,);
     if(state != null) {
       imagePath = Image.file(File(state.path));
+    }else if(calendar.image != null){
+      imagePath = Image.network(calendar.image!);
     }
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,

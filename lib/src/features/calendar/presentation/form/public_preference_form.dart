@@ -6,8 +6,8 @@ import '../../application/calendar_provider.dart';
 import '../../domain/calendar.dart';
 
 class PublicPreferenceForm extends ConsumerWidget{
-  Calendar? calendar;
-  PublicPreferenceForm({super.key});
+  Calendar calendar;
+  PublicPreferenceForm(this.calendar, {super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref){

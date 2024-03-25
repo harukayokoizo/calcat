@@ -6,13 +6,12 @@ import '../../application/calendar_provider.dart';
 import '../../domain/calendar.dart';
 
 class CalendarTitleForm extends ConsumerWidget{
-  Calendar? calendar;
-  CalendarTitleForm({super.key});
+  Calendar calendar;
+  CalendarTitleForm(this.calendar, {super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref){
-    final state = ref.read(calendarStateProvider(calendar));
-    final initialTitle = state.title ?? '';
+    final initialTitle = calendar.title;
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,

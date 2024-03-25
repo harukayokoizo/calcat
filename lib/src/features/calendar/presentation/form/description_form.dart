@@ -6,12 +6,11 @@ import '../../application/calendar_provider.dart';
 import '../../domain/calendar.dart';
 
 class DescriptionForm extends ConsumerWidget{
-  Calendar? calendar;
-  DescriptionForm({super.key});
+  Calendar calendar;
+  DescriptionForm(this.calendar, {super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref){
-    final state = ref.read(calendarStateProvider(calendar));
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -29,8 +28,7 @@ class DescriptionForm extends ConsumerWidget{
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: TextFormField(
-            //initialValue: initialTitle,
-            //controller: titleController,
+            initialValue: calendar.description,
             decoration: const InputDecoration(
               //hintText: 'イベント名',
               //border: InputBorder.none

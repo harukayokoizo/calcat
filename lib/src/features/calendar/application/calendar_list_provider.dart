@@ -7,12 +7,18 @@ import '../domain/calendar_document.dart';
 
 final calendarList = StreamProvider<List<CalendarDocument>>(
         (ref) {
-          var calendarDoc = ref.read(calendarRepositories).getCalendar();
+          var calendarDoc = ref.read(calendarRepositories).getCalendarList();
           return calendarDoc;
         });
 
 final followCalendarList = StreamProvider<List<CalendarUser>>(
         (ref) {
           var calendarDoc = ref.read(calendarUserRepositories).getAllFollowCalendar();
+          return calendarDoc;
+        });
+
+final calendarDocumentProvider = StreamProvider.family<CalendarDocument,String>(
+        (ref, docId){
+          var calendarDoc = ref.read(calendarRepositories).getCalendar(docId);
           return calendarDoc;
         });

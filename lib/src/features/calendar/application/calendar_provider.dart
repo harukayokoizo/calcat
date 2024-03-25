@@ -51,8 +51,17 @@ class CalendarState extends StateNotifier<Calendar>{
   }
 
   Future<void> createCalendar() async{
+    Map<String, dynamic> data = await getCalendarState();
+    ref.read(calendarRepositories).createCalendar(data);
+  }
+
+  Future<void> editCalendar(String docId) async{
+    Map<String, dynamic> data = await getCalendarState();
+    ref.read(calendarRepositories).editCalendar(data, docId);
+  }
+
+  Future<Map<String, dynamic>> getCalendarState() async{
     final image = ref.read(imageStateProvider);
-    DateTime date = DateTime.now();
     List<String> searchIndex = createSearchIndex();
     Map<String, dynamic> data = {
       'author': state.author,
@@ -61,8 +70,8 @@ class CalendarState extends StateNotifier<Calendar>{
       'image': state.image,
       'publicPreference': state.publicPreference,
       'password': state.password,
-      'created': date,
-      'updated': date,
+      'created': DateTime.now(),
+      'updated': DateTime.now(),
       'searchIndex': searchIndex,
     };
 
@@ -71,7 +80,7 @@ class CalendarState extends StateNotifier<Calendar>{
       data['image'] = imageUrl;
     }
 
-    ref.read(calendarRepositories).createCalendar(data);
+    return data;
   }
 
   List<String> createSearchIndex(){

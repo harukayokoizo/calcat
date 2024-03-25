@@ -13,7 +13,7 @@ class CalendarRepositories {
   CalendarRepositories(this.ref);
 
   //personal_eventコレクションからイベントを取得する
-  Stream<List<CalendarDocument>> getCalendar() async*{
+  Stream<List<CalendarDocument>> getCalendarList() async*{
     final currentUser = ref.read(currentUserProvider);
     var calendars = FirebaseFirestore.instance
         .collection('calendar')
@@ -29,10 +29,31 @@ class CalendarRepositories {
     yield* calendars;
   }
 
+  Stream<CalendarDocument> getCalendar(String docId) async*{
+    var calendarDoc = FirebaseFirestore.instance
+        .collection('calendar')
+        .doc(docId)
+        .snapshots()
+        .map(
+            (e){
+              Calendar calendar = Calendar.fromJson(e.data()!);
+              return CalendarDocument(calendar:calendar, docId: e.id);
+            });
+
+    yield* calendarDoc;
+  }
+
   Future<void> createCalendar(Map<String, dynamic> data) async{
     await FirebaseFirestore.instance
         .collection('calendar')
         .add(data);
+  }
+
+  Future<void> editCalendar(Map<String, dynamic> data, String docId) async{
+    await FirebaseFirestore.instance
+        .collection('calendar')
+        .doc(docId)
+        .update(data);
   }
 
   Future<List<CalendarDocument>> searchCalendar(String value) async{
@@ -52,5 +73,12 @@ class CalendarRepositories {
     }else{
       return calendars;
     }
+  }
+
+  Future<void> deleteCalendar(String docId) async{
+    await FirebaseFirestore.instance
+        .collection('calendar')
+        .doc(docId)
+        .delete();
   }
 }

@@ -3,12 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:share_calendar/src/features/calendar/presentation/list/published_calendar/calendar/detail/title_widget.dart';
 
 import '../../../../../domain/calendar_document.dart';
+import '../edit/delete_action_button.dart';
+import '../edit/edit_action_button.dart';
 import 'description_widget.dart';
 import 'icon_widget.dart';
 
 class CalendarDetail extends StatelessWidget{
+  bool followCalendar;
   CalendarDocument calendarDoc;
-  CalendarDetail(this.calendarDoc, {super.key});
+  CalendarDetail(this.followCalendar, this.calendarDoc, {super.key});
 
   @override
   Widget build(BuildContext context){
@@ -35,16 +38,20 @@ class CalendarDetail extends StatelessWidget{
                 ),
               ),
             ),
-            Fotter()
           ]
+      ),
+      floatingActionButton: followCalendar ? null : Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          if(!followCalendar)
+            CalendarDeleteActionButton(calendarDoc),
+          if(!followCalendar)
+            Padding(
+                padding: const EdgeInsets.only(left: 8.0),
+                child: CalendarEditActionButton(calendarDoc)
+            ),
+        ],
       ),
     );
   }
-}
-
-Widget Fotter(){
-  return Container(
-    height: 60,
-    color: Colors.yellow,
-  );
 }

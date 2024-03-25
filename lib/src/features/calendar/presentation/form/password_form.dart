@@ -6,8 +6,8 @@ import '../../application/calendar_provider.dart';
 import '../../domain/calendar.dart';
 
 class PasswordForm extends ConsumerWidget{
-  Calendar? calendar;
-  PasswordForm({super.key});
+  Calendar calendar;
+  PasswordForm(this.calendar, {super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref){

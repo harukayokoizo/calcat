@@ -5,7 +5,9 @@ import 'package:share_calendar/src/features/calendar/presentation/form/password_
 import 'package:share_calendar/src/features/calendar/presentation/form/public_preference_form.dart';
 import 'package:share_calendar/src/features/calendar/presentation/form/title_form.dart';
 
+import '../../../../common_widgets/application/common_provider.dart';
 import '../../application/calendar_provider.dart';
+import '../../domain/calendar.dart';
 import 'description_form.dart';
 import 'icon_form.dart';
 
@@ -14,8 +16,19 @@ class CalendarForm extends ConsumerWidget{
 
   @override
   Widget build(BuildContext context, WidgetRef ref){
-    final calendar = ref.watch(calendarStateProvider(null));
-    print(calendar);
+    final user = ref.read(currentUser);
+    Calendar calendar = Calendar(
+      author: user!.uid,
+      title: null,
+      description: null,
+      image: null,
+      publicPreference: true,
+      password: null,
+      created: null,
+      updated: null,
+    );
+    Calendar calendarState = ref.watch(calendarStateProvider(calendar));
+
     return Scaffold(
       appBar: AppBar(
         elevation: 3,
@@ -25,8 +38,8 @@ class CalendarForm extends ConsumerWidget{
           Padding(
             padding: const EdgeInsets.only(right: 20.0),
             child: GestureDetector(
-              onTap: calendar.title == null || calendar.title!.isEmpty ? null : (){
-                ref.read(calendarStateProvider(null).notifier).createCalendar()
+              onTap: calendarState.title == null || calendarState.title!.isEmpty ? null : (){
+                ref.read(calendarStateProvider(calendar).notifier).createCalendar()
                     .then((value){
                           Navigator.of(context).pop(true);
                     });
@@ -35,7 +48,7 @@ class CalendarForm extends ConsumerWidget{
                 "保存",
                 style: TextStyle(
                     fontSize: 20,
-                    color: calendar.title == null || calendar.title!.isEmpty ? Colors.grey : Colors.blue,
+                    color: calendarState.title == null || calendarState.title!.isEmpty ? Colors.grey : Colors.blue,
                     fontWeight: FontWeight.w700
                 ),
               ),
@@ -51,11 +64,11 @@ class CalendarForm extends ConsumerWidget{
         child: SingleChildScrollView(
           child: Column(
             children: [
-              IconForm(),
-              CalendarTitleForm(),
-              DescriptionForm(),
-              PublicPreferenceForm(),
-              PasswordForm()
+              IconForm(calendar),
+              CalendarTitleForm(calendar),
+              DescriptionForm(calendar),
+              PublicPreferenceForm(calendar),
+              PasswordForm(calendar)
             ]
           ),
         ),

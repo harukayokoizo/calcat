@@ -4,8 +4,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 
+import '../../../application/calendar_list_provider.dart';
 import '../../../application/event_list_provider.dart';
 import '../../../domain/calendar_document.dart';
+import '../published_calendar/calendar/detail/calendar_detail.dart';
 
 class FollowCalendarPage extends ConsumerWidget{
   FollowCalendarPage(this.calendarDoc, {super.key});
@@ -46,6 +48,50 @@ class FollowCalendarPage extends ConsumerWidget{
             ],
           ),
         ),
+        actions: [
+          Consumer(
+              builder: (context, ref, _) {
+                final calendar = ref.watch(calendarDocumentProvider(calendarDoc.docId!));
+                return calendar.when(
+                    data: (value){
+                      Image imagePath = Image.asset('images/no_image.png',fit: BoxFit.cover,);
+                      if(value.calendar!.image != null) {
+                        imagePath = Image.network(value.calendar!.image!);
+                      }
+                      var barSize = AppBar().preferredSize.height;
+
+                      return Padding(
+                        padding: const EdgeInsets.only(right: 12.0),
+                        child: GestureDetector(
+                          onTap: (){
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => CalendarDetail(true, value),
+                              ),
+                            );
+                          },
+                          child: Container(
+                            width: barSize,
+                            clipBehavior: Clip.hardEdge,
+                            decoration: const BoxDecoration(
+                              color: Colors.grey,
+                              shape: BoxShape.circle,
+                            ),
+                            child: FittedBox(
+                                fit: BoxFit.cover,
+                                child: imagePath
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                    error: (e, stack) => const SizedBox(),
+                    loading: () => const SizedBox()
+                );
+              }
+          ),
+        ],
       ),
       body: LayoutBuilder(
           builder: (context, constraints) {
