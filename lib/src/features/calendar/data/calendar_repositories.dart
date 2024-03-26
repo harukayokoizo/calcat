@@ -43,6 +43,21 @@ class CalendarRepositories {
     yield* calendarDoc;
   }
 
+  Future<bool> getSameCalendar(String title, String password) async{
+    final sameCalendar = await FirebaseFirestore.instance
+        .collection('calendar')
+        .where('title', isEqualTo: title)
+        .where('password', isEqualTo: password)
+        .where('publicPreference', isEqualTo: false)
+        .get();
+
+    if(sameCalendar.docs.isEmpty){
+      return false;
+    }
+
+    return true;
+  }
+
   Future<void> createCalendar(Map<String, dynamic> data) async{
     await FirebaseFirestore.instance
         .collection('calendar')
@@ -61,6 +76,28 @@ class CalendarRepositories {
     var calendarList = await FirebaseFirestore.instance
         .collection('calendar')
         .where('searchIndex', arrayContainsAny: [value])
+        .where('publicPreference', isEqualTo: true)
+        .get();
+
+    if(calendarList.docs.isNotEmpty){
+      for (var e in calendarList.docs) {
+        var calendar = Calendar.fromJson(e.data());
+        var calendarDoc = CalendarDocument(docId: e.id, calendar: calendar);
+        calendars.add(calendarDoc);
+      }
+      return calendars;
+    }else{
+      return calendars;
+    }
+  }
+
+  Future<List<CalendarDocument>> searchLimitedCalendar(String calendarTitle, String password) async{
+    List<CalendarDocument> calendars = [];
+    var calendarList = await FirebaseFirestore.instance
+        .collection('calendar')
+        .where('title', isEqualTo: calendarTitle)
+        .where('password', isEqualTo: password)
+        .where('publicPreference', isEqualTo: false)
         .get();
 
     if(calendarList.docs.isNotEmpty){

@@ -3,24 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:share_calendar/src/features/calendar/presentation/search/search_form.dart';
 import 'package:share_calendar/src/features/calendar/presentation/search/search_results.dart';
-import 'package:share_calendar/src/features/calendar/presentation/search/selected_calendar.dart';
-
 import '../../application/search_provider.dart';
 import '../../domain/calendar_document.dart';
-
-// class SearchPageController extends ConsumerWidget{
-//   const SearchPageController({super.key});
-//
-//   @override
-//   Widget build(BuildContext context, WidgetRef ref){
-//     final selected = ref.watch(selectedCalendarProvider);
-//     if(selected != null){
-//       return SelectedCalendar(selected);
-//     }else{
-//       return const SearchPage();
-//     }
-//   }
-// }
+import 'limited_calendar_search_page.dart';
 
 class SearchPage extends ConsumerWidget{
   const SearchPage({super.key});
@@ -45,6 +30,18 @@ class SearchPage extends ConsumerWidget{
               SearchResults(searchResults),
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        heroTag: "search",
+        child: const Icon(Icons.search),
+        onPressed: () async {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const LimitedCalendar(),
+            ),
+          );
+        },
       ),
     );
   }

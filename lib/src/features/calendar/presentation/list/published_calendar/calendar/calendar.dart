@@ -57,7 +57,11 @@ class PublicCalendarPage extends ConsumerWidget{
                             MaterialPageRoute(
                               builder: (context) => CalendarDetail(false, value),
                             ),
-                          );
+                          ).then((value){
+                            if(value){
+                              Navigator.pop(context);
+                            }
+                          });
                         },
                         child: Container(
                           width: barSize,

@@ -81,4 +81,9 @@ class CalendarUserRepositories {
         .doc(currentUser!.uid)
         .delete();
   }
+
+  Future<void> deleteFollowCalendarUser(DocumentReference<dynamic> calendarReference) async{
+    final currentUser = ref.read(currentUserProvider);
+    await calendarReference.collection('calendar_user').doc(currentUser!.uid).delete();
+  }
 }

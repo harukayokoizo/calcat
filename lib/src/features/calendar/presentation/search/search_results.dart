@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../application/search_provider.dart';
 import '../../domain/calendar.dart';
 import '../../domain/calendar_document.dart';
-import 'calendar_content_searched.dart';
+import 'searched_calendar_content.dart';
 
 class SearchResults extends ConsumerWidget{
   List<CalendarDocument> calendarList;

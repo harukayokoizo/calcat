@@ -24,7 +24,7 @@ class CalendarDeleteActionButton extends StatelessWidget{
           },
         ).then((value){
           if(value){
-            Navigator.pop(context);
+            Navigator.pop(context, true);
           }
         });
       },

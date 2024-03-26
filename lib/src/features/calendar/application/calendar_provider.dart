@@ -6,21 +6,8 @@ import '../data/calendar_repositories.dart';
 import '../domain/calendar.dart';
 import 'image_provider.dart';
 
-final calendarStateProvider = StateNotifierProvider.autoDispose.family<CalendarState, Calendar, Calendar?>(
+final calendarStateProvider = StateNotifierProvider.autoDispose.family<CalendarState, Calendar, Calendar>(
         (ref, calendar){
-          if(calendar == null) {
-            final user = ref.read(currentUser);
-            calendar = Calendar(
-              author: user!.uid,
-              title: null,
-              description: null,
-              image: null,
-              publicPreference: true,
-              password: null,
-              created: null,
-              updated: null,
-            );
-          }
           return CalendarState(ref, calendar);
         }
 );
@@ -50,12 +37,24 @@ class CalendarState extends StateNotifier<Calendar>{
     state = calendar;
   }
 
-  Future<void> createCalendar() async{
+  Future<String?> createCalendar() async{
+    if(!state.publicPreference! && state.password != null){
+      bool exits = await ref.read(calendarRepositories).getSameCalendar(state.title!,state.password!);
+      if(exits){
+        return 'カレンダー名とパスワードが同じものが存在します。';
+      }
+    }
     Map<String, dynamic> data = await getCalendarState();
     ref.read(calendarRepositories).createCalendar(data);
   }
 
-  Future<void> editCalendar(String docId) async{
+  Future<String?> editCalendar(String docId) async{
+    if(!state.publicPreference! && state.password != null){
+      bool exits = await ref.read(calendarRepositories).getSameCalendar(state.title!,state.password!);
+      if(exits){
+        return 'カレンダー名とパスワードが同じものが存在します。';
+      }
+    }
     Map<String, dynamic> data = await getCalendarState();
     ref.read(calendarRepositories).editCalendar(data, docId);
   }

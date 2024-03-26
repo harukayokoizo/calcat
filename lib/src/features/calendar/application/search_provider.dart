@@ -16,7 +16,7 @@ class SearchSwitch extends StateNotifier<bool>{
   }
 }
 
-final resultPage = StateNotifierProvider<ResultPageState , bool>(
+final resultPage = StateNotifierProvider.autoDispose<ResultPageState , bool>(
         (ref) => ResultPageState()
 );
 
@@ -40,15 +40,20 @@ class SearchResultState extends StateNotifier<List<CalendarDocument>>{
     List<CalendarDocument> results = await ref.read(calendarRepositories).searchCalendar(value);
     state = results;
   }
+
+  Future<void> searchLimitedCalendar(String calendarTitle, String password) async{
+    List<CalendarDocument> results = await ref.read(calendarRepositories).searchLimitedCalendar(calendarTitle, password);
+    state = results;
+  }
 }
 
-// final selectedCalendarProvider = StateNotifierProvider<SelectedCalendarState, CalendarDocument?>(
-//         (ref) => SelectedCalendarState(ref)
+// final limitedCalendarProvider = StateNotifierProvider<LimitedCalendarState, CalendarDocument?>(
+//         (ref) => LimitedCalendarState(ref)
 // );
 //
-// class SelectedCalendarState extends StateNotifier<CalendarDocument?>{
+// class LimitedCalendarState extends StateNotifier<CalendarDocument?>{
 //   Ref ref;
-//   SelectedCalendarState(this.ref) : super(null);
+//   LimitedCalendarState(this.ref) : super(null);
 //
 //   void selectCalendar(CalendarDocument? calendarDoc) {
 //     state = calendarDoc;
