@@ -32,11 +32,25 @@ class CalendarEditForm extends ConsumerWidget{
               onTap: calendarState.title == null || calendarState.title!.isEmpty ? null : (){
                 ref.read(calendarStateProvider(calendar).notifier).editCalendar(calendarDoc.docId!)
                     .then((value){
-                  Navigator.of(context).pop(true);
-                });
+                      if(value != null){
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            backgroundColor: Colors.red,
+                            content: Text(
+                              value,
+                              style: const TextStyle(
+                                fontSize: 15,
+                              ),
+                            ),
+                          ),
+                        );
+                      }else{
+                        Navigator.of(context).pop(true);
+                      }
+                    });
               },
               child: Text(
-                "編集",
+                "保存",
                 style: TextStyle(
                     fontSize: 20,
                     color: calendarState.title == null || calendarState.title!.isEmpty ? Colors.grey : Colors.blue,

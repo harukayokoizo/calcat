@@ -38,37 +38,58 @@ class CalendarState extends StateNotifier<Calendar>{
   }
 
   Future<String?> createCalendar() async{
-    if(!state.publicPreference! && state.password != null){
-      bool exits = await ref.read(calendarRepositories).getSameCalendar(state.title!,state.password!);
-      if(exits){
-        return 'カレンダー名とパスワードが同じものが存在します。';
-      }
+    String? error = await validationCheck(null);
+    if(error != null){
+      return error;
     }
     Map<String, dynamic> data = await getCalendarState();
     ref.read(calendarRepositories).createCalendar(data);
   }
 
   Future<String?> editCalendar(String docId) async{
-    if(!state.publicPreference! && state.password != null){
-      bool exits = await ref.read(calendarRepositories).getSameCalendar(state.title!,state.password!);
-      if(exits){
-        return 'カレンダー名とパスワードが同じものが存在します。';
-      }
+    String? error = await validationCheck(docId);
+    if(error != null){
+      return error;
     }
     Map<String, dynamic> data = await getCalendarState();
     ref.read(calendarRepositories).editCalendar(data, docId);
   }
 
+  Future<String?> validationCheck(String? docId) async{
+    if(state.title == null || state.title!.isEmpty){
+      return 'カレンダー名を入力してください。';
+    }
+    if(state.description == null || state.description!.isEmpty){
+      return '概要を入力してください。';
+    }
+    if(!state.publicPreference! && (state.password == null || state.password!.isEmpty)){
+      return '限定公開の場合は、パスワードを入力してください。';
+    }
+    if(!state.publicPreference! && state.password != null){
+      String? id = await ref.read(calendarRepositories).getSameCalendar(state.title!,state.password!);
+      if(docId == null){
+        if(id != null){
+          return 'カレンダー名とパスワードが一致するものが既に存在します。';
+        }
+      }else{
+        if(id != null && id != docId){
+          return 'カレンダー名とパスワードが一致するものが既に存在します。';
+        }
+      }
+    }
+  }
+
   Future<Map<String, dynamic>> getCalendarState() async{
     final image = ref.read(imageStateProvider);
     List<String> searchIndex = createSearchIndex();
+    String? password = state.publicPreference! ? null : state.password;
     Map<String, dynamic> data = {
       'author': state.author,
       'title': state.title,
       'description': state.description,
       'image': state.image,
       'publicPreference': state.publicPreference,
-      'password': state.password,
+      'password': password,
       'created': DateTime.now(),
       'updated': DateTime.now(),
       'searchIndex': searchIndex,

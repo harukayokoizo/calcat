@@ -43,7 +43,7 @@ class CalendarRepositories {
     yield* calendarDoc;
   }
 
-  Future<bool> getSameCalendar(String title, String password) async{
+  Future<String?> getSameCalendar(String title, String password) async{
     final sameCalendar = await FirebaseFirestore.instance
         .collection('calendar')
         .where('title', isEqualTo: title)
@@ -51,11 +51,13 @@ class CalendarRepositories {
         .where('publicPreference', isEqualTo: false)
         .get();
 
-    if(sameCalendar.docs.isEmpty){
-      return false;
+    if(sameCalendar.docs.isNotEmpty){
+      for (var e in sameCalendar.docs) {
+        return e.id;
+      }
+    }else{
+      return null;
     }
-
-    return true;
   }
 
   Future<void> createCalendar(Map<String, dynamic> data) async{
