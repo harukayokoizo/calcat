@@ -25,6 +25,7 @@ class SearchForm extends ConsumerWidget{
                     suffixIcon: IconButton(
                       onPressed: (){
                         controller.clear();
+                        ref.watch(textControllerProvider.notifier).switchState(false);
                       },
                       icon: const Icon(Icons.clear),
                     ),
@@ -57,6 +58,7 @@ class SearchForm extends ConsumerWidget{
                 onPressed: (){
                   ref.read(focusState.notifier).switchState(false);
                   ref.read(resultPage.notifier).resultPage(false);
+                  ref.watch(textControllerProvider.notifier).switchState(false);
                   controller.clear();
                   FocusScope.of(context).unfocus();
                 },
