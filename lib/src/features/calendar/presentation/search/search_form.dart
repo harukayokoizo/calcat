@@ -5,86 +5,70 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../application/search_provider.dart';
 import '../../data/calendar_repositories.dart';
 
-class SearchForm extends StatefulWidget{
-  final bool search;
-  @override
-  const SearchForm(this.search, {super.key});
+class SearchForm extends ConsumerWidget{
+  final TextEditingController controller = TextEditingController();
 
   @override
-  State<SearchForm> createState() => SearchFormState();
-}
-
-class SearchFormState extends State<SearchForm>{
-  final TextEditingController _controller = TextEditingController();
-
-  @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context, WidgetRef ref){
+    final focus = ref.watch(focusState);
+    final textEdit = ref.watch(textControllerProvider.notifier);
     return Consumer(
       builder: (context, ref, _) {
-        return Padding(
-          padding: const EdgeInsets.only(top: 40.0, left: 10.0, right: 10.0),
-          child: Row(
-            children: [
-              Expanded(
-                child: Focus(
-                  onFocusChange: (value){
-                    if(value){
-                      ref.read(searchSwitch.notifier).switchState(value);
-                    }
-                    if(_controller.value.text.isEmpty){
-                      ref.read(searchSwitch.notifier).switchState(value);
-                    }
-                  },
-                  child: TextFormField(
-                    //initialValue: initialTitle,
-                    controller: _controller,
-                    decoration: InputDecoration(
-                        prefixIcon: const Icon(Icons.search),
-                        suffixIcon: IconButton(
-                          onPressed: (){
-                            setState(() {
-                              _controller.clear();
-                            });
-                          },
-                          icon: Icon(Icons.clear),
-                        ),
-                        contentPadding: const EdgeInsets.symmetric(
-                          vertical: 10,
-                          horizontal: 10,
-                        ),
-                        hintText: '検索',
-                        border: const OutlineInputBorder(
-                          borderRadius: BorderRadius.horizontal(left: Radius.circular(30), right: Radius.circular(30))
-                        )
+        return Row(
+          children: [
+            Expanded(
+              child: TextFormField(
+                //initialValue: initialTitle,
+                controller: controller,
+                decoration: InputDecoration(
+                    prefixIcon: const Icon(Icons.search),
+                    suffixIcon: IconButton(
+                      onPressed: (){
+                        controller.clear();
+                      },
+                      icon: const Icon(Icons.clear),
                     ),
-                    onChanged: (value){},
-                    onFieldSubmitted: (value){
-                      ref.read(searchResultsProvider.notifier).searchCalendar(value).then((value){
-                        ref.read(searchSwitch.notifier).switchState(true);
-                        ref.read(resultPage.notifier).resultPage(true);
-                      });
-                    },
-                  ),
+                    contentPadding: const EdgeInsets.symmetric(
+                      vertical: 10,
+                      horizontal: 10,
+                    ),
+                    hintText: '検索',
+                    border: const OutlineInputBorder(
+                      borderRadius: BorderRadius.horizontal(left: Radius.circular(30), right: Radius.circular(30))
+                    )
                 ),
+                onChanged: (value){
+                  if(value.isNotEmpty){
+                    ref.read(textControllerProvider.notifier).switchState(true);
+                  }else{
+                    ref.watch(textControllerProvider.notifier).switchState(false);
+                  }
+                },
+                onFieldSubmitted: (value){
+                  ref.read(searchResultsProvider.notifier).searchCalendar(value).then((value){
+                    ref.read(focusState.notifier).switchState(true);
+                    ref.read(resultPage.notifier).resultPage(true);
+                  });
+                },
               ),
-              if(widget.search)
-              TextButton(
-                  onPressed: (){
-                    ref.read(searchSwitch.notifier).switchState(false);
-                    ref.read(resultPage.notifier).resultPage(false);
-                    _controller.clear();
-                    FocusScope.of(context).unfocus();
-                  },
-                  child: const Text(
-                    'キャンセル',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 15,
-                    ),
-                  )
-              ),
-            ],
-          ),
+            ),
+            if(focus)
+            TextButton(
+                onPressed: (){
+                  ref.read(focusState.notifier).switchState(false);
+                  ref.read(resultPage.notifier).resultPage(false);
+                  controller.clear();
+                  FocusScope.of(context).unfocus();
+                },
+                child: const Text(
+                  'キャンセル',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 15,
+                  ),
+                )
+            ),
+          ],
         );
       }
     );

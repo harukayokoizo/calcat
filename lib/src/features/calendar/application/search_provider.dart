@@ -1,15 +1,16 @@
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../data/calendar_repositories.dart';
 import '../domain/calendar_document.dart';
 
-final searchSwitch = StateNotifierProvider<SearchSwitch, bool>(
-        (ref) => SearchSwitch()
+final focusState = StateNotifierProvider<FocusSwitch, bool>(
+        (ref) => FocusSwitch()
 );
 
-class SearchSwitch extends StateNotifier<bool>{
-  SearchSwitch() : super(false);
+class FocusSwitch extends StateNotifier<bool>{
+  FocusSwitch() : super(false);
 
   void switchState(bool value){
     state = value;
@@ -47,15 +48,14 @@ class SearchResultState extends StateNotifier<List<CalendarDocument>>{
   }
 }
 
-// final limitedCalendarProvider = StateNotifierProvider<LimitedCalendarState, CalendarDocument?>(
-//         (ref) => LimitedCalendarState(ref)
-// );
-//
-// class LimitedCalendarState extends StateNotifier<CalendarDocument?>{
-//   Ref ref;
-//   LimitedCalendarState(this.ref) : super(null);
-//
-//   void selectCalendar(CalendarDocument? calendarDoc) {
-//     state = calendarDoc;
-//   }
-// }
+final textControllerProvider = StateNotifierProvider.autoDispose<TextController, bool>(
+        (ref) => TextController()
+);
+
+class TextController extends StateNotifier<bool>{
+  TextController() : super(false);
+
+  void switchState(bool value){
+    state = value;
+  }
+}

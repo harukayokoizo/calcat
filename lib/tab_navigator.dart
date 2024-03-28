@@ -19,7 +19,7 @@ class TabNavigator extends StatelessWidget {
   final GlobalKey<NavigatorState>? navigationKey;
 
   Map<String, Widget Function(BuildContext)> _routerBuilder(BuildContext context) => {
-    '/search': (context) => const SearchPage(),
+    '/search': (context) => SearchPage(),
     '/list': (context) => const AllCalendarList(),
     '/calendar': (context) => const PersonalCalendarPage(),
   };
