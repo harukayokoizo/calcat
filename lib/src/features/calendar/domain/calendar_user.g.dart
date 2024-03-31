@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of '../../calendar/domain/calendar_user.dart';
+part of 'calendar_user.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator

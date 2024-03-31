@@ -4,8 +4,8 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../../common_widgets/application/timestamp_converter.dart';
 
-part '../../calendar/domain/calendar_user.freezed.dart';
-part '../../calendar/domain/calendar_user.g.dart';
+part 'calendar_user.freezed.dart';
+part 'calendar_user.g.dart';
 
 @freezed
 abstract class CalendarUser with _$CalendarUser{
