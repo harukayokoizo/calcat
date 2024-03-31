@@ -13,18 +13,9 @@ class SearchPage extends ConsumerWidget{
 
   @override
   Widget build(BuildContext context, WidgetRef ref){
-    final List<CalendarDocument> searchResults = ref.watch(searchResultsProvider);
-    final bool focus = ref.watch(focusState);
-    final bool result = ref.watch(resultPage);
-    final bool textEditing = ref.watch(textControllerProvider);
-    Widget display = displaySearchPage(focus, result, textEditing, searchResults);
-
     return Focus(
       onFocusChange: (value){
         if(value){
-          ref.read(focusState.notifier).switchState(value);
-        }
-        if(!textEditing){
           ref.read(focusState.notifier).switchState(value);
         }
       },
@@ -32,12 +23,21 @@ class SearchPage extends ConsumerWidget{
         appBar: AppBar(
           title: SearchForm(),
         ),
-        body: GestureDetector(
-          behavior: HitTestBehavior.opaque,
-          onTap: (){
-            FocusScope.of(context).unfocus();
-          },
-          child: display
+        body: Consumer(
+          builder: (context, ref, _) {
+            final List<CalendarDocument> searchResults = ref.watch(searchResultsProvider);
+            final bool focus = ref.watch(focusState);
+            final bool result = ref.watch(resultPage);
+            final bool textEditing = ref.watch(textControllerProvider);
+            Widget display = displaySearchPage(focus, result, textEditing, searchResults);
+            return GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: (){
+                FocusScope.of(context).unfocus();
+              },
+              child: display
+            );
+          }
         ),
         floatingActionButton: FloatingActionButton(
           heroTag: "search",
