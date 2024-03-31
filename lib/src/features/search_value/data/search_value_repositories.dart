@@ -7,10 +7,11 @@ import '../domain/search_value.dart';
 final searchValueRepositories = Provider((ref) => SearchValueRepositories());
 
 class SearchValueRepositories {
+  Isar? isar;
 
   Future<void> createCollection(String value) async{
     final dir = await getApplicationDocumentsDirectory();
-    final isar = await Isar.open(
+    isar ??= await Isar.open(
       [SearchValueSchema],
       directory: dir.path,
     );
@@ -19,15 +20,24 @@ class SearchValueRepositories {
       ..searchValue = value
       ..created = date;
 
-    await isar.searchValues.put(searchValue);
+    await isar!.writeTxn(() async {
+      await isar!.searchValues.put(searchValue);
+    });
   }
 
-  Future<void> getSearchValue() async{
+  Future<List<String?>> getSearchValue() async{
     final dir = await getApplicationDocumentsDirectory();
-    final isar = await Isar.open(
+    isar ??= await Isar.open(
       [SearchValueSchema],
       directory: dir.path,
     );
-    await isar.searchValues.where(sort: )
+    final searchValue = await isar!.searchValues
+        .where(sort: Sort.desc)
+        .anyCreated()
+        .limit(20)
+        .searchValueProperty()
+        .findAll();
+
+    return searchValue;
   }
 }

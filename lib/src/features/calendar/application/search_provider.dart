@@ -2,6 +2,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../search_value/data/search_value_repositories.dart';
 import '../data/calendar_repositories.dart';
 import '../domain/calendar_document.dart';
 
@@ -38,6 +39,7 @@ class SearchResultState extends StateNotifier<List<CalendarDocument>>{
   SearchResultState(this.ref) : super([]);
 
   Future<void> searchCalendar(String value) async{
+    await ref.read(searchValueRepositories).createCollection(value);
     List<CalendarDocument> results = await ref.read(calendarRepositories).searchCalendar(value);
     state = results;
   }

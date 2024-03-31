@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:share_calendar/src/features/calendar/presentation/search/search_form.dart';
 import 'package:share_calendar/src/features/calendar/presentation/search/search_results.dart';
+import '../../../search_value/presentation/search_value_list.dart';
 import '../../application/search_provider.dart';
 import '../../domain/calendar_document.dart';
 import 'limited_calendar_search_page.dart';
@@ -64,7 +65,7 @@ Widget displaySearchPage(bool focus, bool result, bool textEditing, List<Calenda
       if(textEditing){
         return Container(width: 30, height:30, color: Colors.red,);
       }else{
-        return Container(width: 30, height:30,color: Colors.green,);
+        return const SearchValueList();
       }
     }else {
       return Container(width: 30, height:30,color: Colors.blue,);
