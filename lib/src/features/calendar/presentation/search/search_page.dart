@@ -65,7 +65,7 @@ Widget displaySearchPage(bool focus, bool result, bool textEditing, List<Calenda
       if(textEditing){
         return Container(width: 30, height:30, color: Colors.red,);
       }else{
-        return const SearchValueList();
+        return SearchValueList();
       }
     }else {
       return Container(width: 30, height:30,color: Colors.blue,);

@@ -10,13 +10,14 @@ class SearchValueList extends ConsumerWidget{
 
   @override
   Widget build(BuildContext context, WidgetRef ref){
-    final searchValueList = ref.read(searchValueListProvider);
+    final searchValueList = ref.watch(searchValueListProvider);
     print(searchValueList);
     return searchValueList.when(
         data: (valueList){
           print(valueList);
           if(valueList.isNotEmpty) {
             return ListView.builder(
+                itemCount: valueList.length,
                 itemBuilder: (BuildContext context, int index) {
                   String title = valueList[index]!;
                   return ListTile(

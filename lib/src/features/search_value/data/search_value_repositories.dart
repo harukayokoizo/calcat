@@ -9,12 +9,18 @@ final searchValueRepositories = Provider((ref) => SearchValueRepositories());
 class SearchValueRepositories {
   Isar? isar;
 
-  Future<void> createCollection(String value) async{
+  Future<void> connectIsar() async{
     final dir = await getApplicationDocumentsDirectory();
     isar ??= await Isar.open(
       [SearchValueSchema],
       directory: dir.path,
     );
+  }
+
+  Future<void> createCollection(String value) async{
+    if(isar == null) {
+      await connectIsar();
+    }
     DateTime date = DateTime.now();
     final searchValue = SearchValue()
       ..searchValue = value
@@ -26,11 +32,9 @@ class SearchValueRepositories {
   }
 
   Future<List<String?>> getSearchValue() async{
-    final dir = await getApplicationDocumentsDirectory();
-    isar ??= await Isar.open(
-      [SearchValueSchema],
-      directory: dir.path,
-    );
+    if(isar == null) {
+      await connectIsar();
+    }
     final searchValue = await isar!.searchValues
         .where(sort: Sort.desc)
         .anyCreated()

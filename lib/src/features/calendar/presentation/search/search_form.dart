@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../search_value/data/search_value_repositories.dart';
 import '../../application/search_provider.dart';
 import '../../data/calendar_repositories.dart';
 
@@ -12,6 +13,7 @@ class SearchForm extends ConsumerWidget{
 
   @override
   Widget build(BuildContext context, WidgetRef ref){
+    ref.read(searchValueRepositories).connectIsar();
     return Row(
         children: [
           Expanded(
