@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../calendar/application/search_provider.dart';
 import '../application/search_value_list_provider.dart';
 import '../data/search_value_repositories.dart';
 
@@ -11,16 +12,22 @@ class SearchValueList extends ConsumerWidget{
   @override
   Widget build(BuildContext context, WidgetRef ref){
     final searchValueList = ref.watch(searchValueListProvider);
-    print(searchValueList);
     return searchValueList.when(
         data: (valueList){
-          print(valueList);
           if(valueList.isNotEmpty) {
             return ListView.builder(
                 itemCount: valueList.length,
                 itemBuilder: (BuildContext context, int index) {
                   String title = valueList[index]!;
                   return ListTile(
+                      onTap: (){
+                        FocusScope.of(context).requestFocus(FocusNode());
+                        ref.read(searchValue.notifier).tapSearchValue(title);
+                        ref.read(searchResultsProvider.notifier).searchCalendar(title).then((value){
+                          //ref.read(focusState.notifier).switchState(false);
+                          ref.read(resultPage.notifier).resultPage(true);
+                        });
+                      },
                       title: Text(title)
                   );
                 });

@@ -7,3 +7,15 @@ final searchValueListProvider = FutureProvider.autoDispose<List<String?>>(
           final searchValueList = ref.read(searchValueRepositories).getSearchValue();
           return searchValueList;
     });
+
+final searchValue = StateNotifierProvider.autoDispose<SearchValueState, String?>(
+        (ref) => SearchValueState()
+);
+
+class SearchValueState extends StateNotifier<String?>{
+  SearchValueState() : super(null);
+
+  void tapSearchValue(String value){
+    state = value;
+  }
+}

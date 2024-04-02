@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:share_calendar/src/features/calendar/presentation/search/search_form.dart';
 import 'package:share_calendar/src/features/calendar/presentation/search/search_results.dart';
+import '../../../search_value/data/search_value_repositories.dart';
 import '../../../search_value/presentation/search_value_list.dart';
 import '../../application/search_provider.dart';
 import '../../domain/calendar_document.dart';
@@ -14,6 +15,7 @@ class SearchPage extends ConsumerWidget{
 
   @override
   Widget build(BuildContext context, WidgetRef ref){
+    ref.read(searchValueRepositories).connectIsar();
     return Focus(
       onFocusChange: (value){
         if(value){
