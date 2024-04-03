@@ -23,14 +23,12 @@ class SearchResults extends ConsumerWidget{
         ),
       );
     }else{
-      return const Expanded(
-        child: Center(
-          child: Text(
-            '検索結果はありません。',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 20
-            ),
+      return const Center(
+        child: Text(
+          '検索結果はありません。',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 20
           ),
         ),
       );

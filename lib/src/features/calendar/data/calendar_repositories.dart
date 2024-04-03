@@ -93,6 +93,47 @@ class CalendarRepositories {
     }
   }
 
+  Future<List<CalendarDocument>> searchCalendarList(String value) async{
+    List<CalendarDocument> calendars = [];
+    var calendarList = await FirebaseFirestore.instance
+        .collection('calendar')
+        .where('searchIndex', arrayContainsAny: [value])
+        .where('publicPreference', isEqualTo: true)
+        .orderBy('followsCount', descending: true)
+        .get();
+
+    if(calendarList.docs.isNotEmpty){
+      for (var e in calendarList.docs) {
+        var calendar = Calendar.fromJson(e.data());
+        var calendarDoc = CalendarDocument(docId: e.id, calendar: calendar);
+        calendars.add(calendarDoc);
+      }
+      return calendars;
+    }else{
+      return calendars;
+    }
+  }
+
+  Future<List<CalendarDocument>> followRankingList() async{
+    List<CalendarDocument> calendars = [];
+    var calendarList = await FirebaseFirestore.instance
+        .collection('calendar')
+        .where('publicPreference', isEqualTo: true)
+        .orderBy('followsCount', descending: true)
+        .get();
+
+    if(calendarList.docs.isNotEmpty){
+      for (var e in calendarList.docs) {
+        var calendar = Calendar.fromJson(e.data());
+        var calendarDoc = CalendarDocument(docId: e.id, calendar: calendar);
+        calendars.add(calendarDoc);
+      }
+      return calendars;
+    }else{
+      return calendars;
+    }
+  }
+
   Future<List<CalendarDocument>> searchLimitedCalendar(String calendarTitle, String password) async{
     List<CalendarDocument> calendars = [];
     var calendarList = await FirebaseFirestore.instance

@@ -61,3 +61,15 @@ class TextController extends StateNotifier<bool>{
     state = value;
   }
 }
+
+final searchCalendarListProvider = FutureProvider.autoDispose.family<List<CalendarDocument>, String>(
+        (ref, value) {
+          final searchCalendarList = ref.read(calendarRepositories).searchCalendarList(value);
+          return searchCalendarList;
+        });
+
+final followRankingListProvider = FutureProvider.autoDispose<List<CalendarDocument>>(
+        (ref) {
+          final calendarList = ref.read(calendarRepositories).followRankingList();
+          return calendarList;
+    });

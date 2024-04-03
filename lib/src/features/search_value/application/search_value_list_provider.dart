@@ -15,7 +15,7 @@ final searchValue = StateNotifierProvider.autoDispose<SearchValueState, String?>
 class SearchValueState extends StateNotifier<String?>{
   SearchValueState() : super(null);
 
-  void tapSearchValue(String value){
+  void tapSearchValue(String? value){
     state = value;
   }
 }

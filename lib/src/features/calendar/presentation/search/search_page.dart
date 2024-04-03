@@ -2,11 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:share_calendar/src/features/calendar/presentation/search/search_form.dart';
+import 'package:share_calendar/src/features/calendar/presentation/search/search_list.dart';
 import 'package:share_calendar/src/features/calendar/presentation/search/search_results.dart';
 import '../../../search_value/data/search_value_repositories.dart';
 import '../../../search_value/presentation/search_value_list.dart';
 import '../../application/search_provider.dart';
 import '../../domain/calendar_document.dart';
+import 'follow_ranking_list.dart';
 import 'limited_calendar_search_page.dart';
 
 class SearchPage extends ConsumerWidget{
@@ -65,12 +67,12 @@ Widget displaySearchPage(bool focus, bool result, bool textEditing, List<Calenda
   }else{
     if(focus){
       if(textEditing){
-        return Container(width: 30, height:30, color: Colors.red,);
+        return SearchCalendarList();
       }else{
         return SearchValueList();
       }
     }else {
-      return Container(width: 30, height:30,color: Colors.blue,);
+      return FollowRankingList();
     }
   }
 }

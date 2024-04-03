@@ -28,7 +28,8 @@ class SearchForm extends ConsumerWidget{
                   suffixIcon: IconButton(
                     onPressed: (){
                       controller.clear();
-                      ref.watch(textControllerProvider.notifier).switchState(false);
+                      ref.read(searchValue.notifier).tapSearchValue(null);
+                      ref.read(textControllerProvider.notifier).switchState(false);
                     },
                     icon: const Icon(Icons.clear),
                   ),
@@ -43,9 +44,10 @@ class SearchForm extends ConsumerWidget{
               ),
               onChanged: (value){
                 if(value.isNotEmpty){
+                  ref.read(searchValue.notifier).tapSearchValue(value);
                   ref.read(textControllerProvider.notifier).switchState(true);
                 }else{
-                  ref.watch(textControllerProvider.notifier).switchState(false);
+                  ref.read(textControllerProvider.notifier).switchState(false);
                 }
               },
               onFieldSubmitted: (value){
@@ -71,6 +73,8 @@ class SearchForm extends ConsumerWidget{
                       ref.watch(textControllerProvider.notifier).switchState(
                           false);
                       controller.clear();
+                      ref.read(searchValue.notifier).tapSearchValue(null);
+
                       FocusScope.of(context).unfocus();
                     },
                     child: const Text(
