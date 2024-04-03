@@ -19,6 +19,7 @@ abstract class Calendar with _$Calendar{
     @TimestampConverter() DateTime? created,
     @TimestampConverter() DateTime? updated,
     List<String>? searchIndex,
+    int? followCount,
   }) = _Calendar;
 
   factory Calendar.fromJson(Map<String,dynamic> json) => _$CalendarFromJson(json);

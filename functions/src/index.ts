@@ -7,21 +7,31 @@
  * See a full list of supported triggers at https://firebase.google.com/docs/functions
  */
 
-import "firebase-admin/app";
-import "firebase-admin/firestore";
-const db = require("firebase-admin").firestore;
-const FieldValue = require("firebase-admin").firestore.FieldValue;
-
 import {
   onDocumentCreated,
+  onDocumentDeleted,
 } from "firebase-functions/v2/firestore";
 
-exports.writeCalendar = onDocumentCreated(
-  "calendar/{calendarId}/calendar_user/{userId}",
-  (calendarUser) => {
-    const docId = calendarUser.params.calendarId;
-    db.doc("calendar/"+docId).set({followsCount: FieldValue.increment(1.0)});
-  });
-// calendarコレクション下calendar_userコレクションにドキュメントが追加されか検知する
-// 追加されたらcalendarコレクションのfollowに+1する
-// 削除されたらcalendarコレクションのfollowに+1する
+const { initializeApp } = require('firebase-admin/app');
+const { getFirestore, FieldValue } = require('firebase-admin/firestore');
+
+initializeApp();
+const db = getFirestore();
+
+exports.incrementFollow = onDocumentCreated("calendar/{calendarId}/calendar_user/{userId}", (calendarUser) => {
+  const docId = calendarUser.params.calendarId;
+  db.doc("calendar/" + docId).update({ followsCount: FieldValue.increment(1.0) });
+});
+
+exports.decrementFollow = onDocumentDeleted("calendar/{calendarId}/calendar_user/{userId}", (event) => {
+  const docId = event.params.calendarId;
+  db.doc("calendar/" + docId).update({ followsCount: FieldValue.increment(-1.0) });
+});
+
+// Start writing functions
+// https://firebase.google.com/docs/functions/typescript
+
+// export const helloWorld = onRequest((request, response) => {
+//   logger.info("Hello logs!", {structuredData: true});
+//   response.send("Hello from Firebase!");
+// });

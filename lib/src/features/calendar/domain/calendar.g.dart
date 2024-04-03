@@ -21,6 +21,7 @@ _$CalendarImpl _$$CalendarImplFromJson(Map<String, dynamic> json) =>
       searchIndex: (json['searchIndex'] as List<dynamic>?)
           ?.map((e) => e as String)
           .toList(),
+      followCount: json['followCount'] as int?,
     );
 
 Map<String, dynamic> _$$CalendarImplToJson(_$CalendarImpl instance) =>
@@ -36,6 +37,7 @@ Map<String, dynamic> _$$CalendarImplToJson(_$CalendarImpl instance) =>
       'updated': _$JsonConverterToJson<Timestamp, DateTime>(
           instance.updated, const TimestampConverter().toJson),
       'searchIndex': instance.searchIndex,
+      'followCount': instance.followCount,
     };
 
 Value? _$JsonConverterFromJson<Json, Value>(
