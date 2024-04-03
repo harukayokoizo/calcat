@@ -24,7 +24,6 @@ class SearchValueList extends ConsumerWidget{
                         FocusScope.of(context).requestFocus(FocusNode());
                         ref.read(searchValue.notifier).tapSearchValue(title);
                         ref.read(searchResultsProvider.notifier).searchCalendar(title).then((value){
-                          //ref.read(focusState.notifier).switchState(false);
                           ref.read(resultPage.notifier).resultPage(true);
                         });
                       },

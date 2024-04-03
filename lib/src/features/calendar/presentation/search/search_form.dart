@@ -49,10 +49,14 @@ class SearchForm extends ConsumerWidget{
                 }
               },
               onFieldSubmitted: (value){
-                ref.read(searchResultsProvider.notifier).searchCalendar(value).then((value){
-                  ref.read(focusState.notifier).switchState(true);
-                  ref.read(resultPage.notifier).resultPage(true);
-                });
+                if(value.isNotEmpty) {
+                  ref.read(searchResultsProvider.notifier)
+                      .searchCalendar(value)
+                      .then((value) {
+                    ref.read(focusState.notifier).switchState(true);
+                    ref.read(resultPage.notifier).resultPage(true);
+                  });
+                }
               },
             ),
           ),

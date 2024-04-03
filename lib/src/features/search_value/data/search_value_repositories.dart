@@ -17,10 +17,21 @@ class SearchValueRepositories {
     );
   }
 
-  Future<void> createCollection(String value) async{
+  Future<void> operateCollection(String value) async{
     if(isar == null) {
       await connectIsar();
     }
+    final searchCollection = await getSingleSearchValue(value);
+    if(searchCollection != null){
+      await updateSearchValue(searchCollection);
+    }else{
+      await createCollection(value);
+    }
+
+    await deleteSearchValue();
+  }
+
+  Future<void> createCollection(String value) async{
     DateTime date = DateTime.now();
     final searchValue = SearchValue()
       ..searchValue = value
@@ -29,6 +40,22 @@ class SearchValueRepositories {
     await isar!.writeTxn(() async {
       await isar!.searchValues.put(searchValue);
     });
+  }
+
+  Future<void> updateSearchValue(SearchValue searchCollection) async{
+    DateTime date = DateTime.now();
+    await isar!.writeTxn(() async {
+      searchCollection.created = date;
+      await isar!.searchValues.put(searchCollection);
+    });
+  }
+
+  Future<SearchValue?> getSingleSearchValue(String value) async{
+    final searchValue = await isar!.searchValues.filter()
+        .searchValueEqualTo(value)
+        .findFirst();
+
+    return searchValue;
   }
 
   Future<List<String?>> getSearchValue() async{
@@ -43,5 +70,20 @@ class SearchValueRepositories {
         .findAll();
 
     return searchValue;
+  }
+
+  Future<void> deleteSearchValue() async{
+    int count = await isar!.searchValues.count();
+    if(count > 20){
+      final id = await isar!.searchValues
+          .where(sort: Sort.asc)
+          .anyCreated()
+          .idProperty()
+          .findFirst();
+
+      await isar!.writeTxn(() async {
+        await isar!.searchValues.delete(id!);
+      });
+    }
   }
 }

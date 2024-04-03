@@ -39,7 +39,7 @@ class SearchResultState extends StateNotifier<List<CalendarDocument>>{
   SearchResultState(this.ref) : super([]);
 
   Future<void> searchCalendar(String value) async{
-    await ref.read(searchValueRepositories).createCollection(value);
+    await ref.read(searchValueRepositories).operateCollection(value);
     List<CalendarDocument> results = await ref.read(calendarRepositories).searchCalendar(value);
     state = results;
   }
