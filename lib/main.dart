@@ -9,6 +9,7 @@ import 'package:intl/intl.dart';
 import 'package:share_calendar/firebase_options.dart';
 import 'package:share_calendar/src/features/authentication/application/user_provider.dart';
 import 'package:share_calendar/src/features/authentication/presentation/login_page.dart';
+import 'package:share_calendar/src/features/push_notification/application/push_notification.dart';
 import 'package:share_calendar/tab_navigator.dart';
 
 Future<void> main() async {
@@ -32,6 +33,7 @@ class MyApp extends ConsumerWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    ref.read(pushNotification);
     var userCheck = ref.watch(userControllerProvider);
 
     return MaterialApp(

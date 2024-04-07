@@ -1,12 +1,3 @@
-/**
- * Import function triggers from their respective submodules:
- *
- * import {onCall} from "firebase-functions/v2/https";
- * import {onDocumentWritten} from "firebase-functions/v2/firestore";
- *
- * See a full list of supported triggers at https://firebase.google.com/docs/functions
- */
-
 import {
   onDocumentCreated,
   onDocumentDeleted,
@@ -14,6 +5,8 @@ import {
 
 const { initializeApp } = require('firebase-admin/app');
 const { getFirestore, FieldValue } = require('firebase-admin/firestore');
+const { onSchedule } = require("firebase-functions/v2/scheduler");
+const { logger } = require("firebase-functions");
 
 initializeApp();
 const db = getFirestore();
@@ -28,6 +21,23 @@ exports.decrementFollow = onDocumentDeleted("calendar/{calendarId}/calendar_user
   db.doc("calendar/" + docId).update({ followsCount: FieldValue.increment(-1.0) });
 });
 
+exports.scheduledEventNotification = onSchedule("* * * * *", async () => {
+  logger.log('Hello');
+  // 現在時刻を取得
+  // コレクショングループeventでfromが現在時刻と一致するものを取得
+  // 取得したドキュメントの通知サブコレクションのドキュメントを全部取得
+  // 各ドキュメントのuserReferenceの値からUserコレクションのドキュメントを取得（トークンを取得）
+  // 通知する。
+});
+
+/**
+ * Import function triggers from their respective submodules:
+ *
+ * import {onCall} from "firebase-functions/v2/https";
+ * import {onDocumentWritten} from "firebase-functions/v2/firestore";
+ *
+ * See a full list of supported triggers at https://firebase.google.com/docs/functions
+ */
 // Start writing functions
 // https://firebase.google.com/docs/functions/typescript
 
