@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:share_calendar/src/features/calendar/presentation/list/calendar_list.dart';
 import 'package:share_calendar/src/features/calendar/presentation/search/search_page.dart';
-import 'package:share_calendar/src/features/personal_event/presentation/calendar.dart';
+import 'package:share_calendar/src/features/event/presentation/calendar.dart';
 
 import 'main.dart';
 

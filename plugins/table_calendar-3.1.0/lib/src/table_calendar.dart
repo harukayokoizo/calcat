@@ -8,10 +8,10 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:share_calendar/src/features/calendar/presentation/event/event_list.dart';
-import 'package:share_calendar/src/features/personal_event/application/color_setting_provider.dart';
-import 'package:share_calendar/src/features/personal_event/domain/event_document.dart';
-import 'package:share_calendar/src/features/personal_event/domain/event.dart';
-import 'package:share_calendar/src/features/personal_event/presentation/event/list/event_list.dart';
+import 'package:share_calendar/src/features/event/application/color_setting_provider.dart';
+import 'package:share_calendar/src/features/event/domain/event_document.dart';
+import 'package:share_calendar/src/features/event/domain/event.dart';
+import 'package:share_calendar/src/features/event/presentation/event/list/event_list.dart';
 import 'package:simple_gesture_detector/simple_gesture_detector.dart';
 
 import 'customization/calendar_builders.dart';

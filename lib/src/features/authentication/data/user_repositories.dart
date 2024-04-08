@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:share_calendar/src/features/push_notification/application/push_notification.dart';
 
 import '../../../common_widgets/application/common_provider.dart';
+import '../../notification/application/push_notification.dart';
 
 final userRepositories = Provider((ref) => UserRepositories(ref));
 

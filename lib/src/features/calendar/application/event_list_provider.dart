@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-import '../../personal_event/domain/event.dart';
-import '../../personal_event/domain/event_document.dart';
+import '../../event/domain/event.dart';
+import '../../event/domain/event_document.dart';
 import '../data/event_repositories.dart';
 import '../domain/calendar_document.dart';
 

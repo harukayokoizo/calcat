@@ -9,7 +9,7 @@ import 'package:intl/intl.dart';
 import 'package:share_calendar/firebase_options.dart';
 import 'package:share_calendar/src/features/authentication/application/user_provider.dart';
 import 'package:share_calendar/src/features/authentication/presentation/login_page.dart';
-import 'package:share_calendar/src/features/push_notification/application/push_notification.dart';
+import 'package:share_calendar/src/features/notification/application/push_notification.dart';
 import 'package:share_calendar/tab_navigator.dart';
 
 Future<void> main() async {

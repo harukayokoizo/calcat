@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:share_calendar/src/features/personal_event/application/event_provider.dart';
+import 'package:share_calendar/src/features/event/application/event_provider.dart';
 
 import '../../../common_widgets/application/common_provider.dart';
-import '../../personal_event/domain/event.dart';
-import '../../personal_event/domain/event_document.dart';
+import '../../event/domain/event.dart';
+import '../../event/domain/event_document.dart';
 
 final publicEventRepositories = Provider.autoDispose.family<PublicEventRepositories, String>(
         (ref, docId) => PublicEventRepositories(ref, docId)

@@ -2,10 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-import '../../../personal_event/domain/event_document.dart';
-import '../../../personal_event/presentation/event/detail/event_detail.dart';
-import '../../../personal_event/presentation/event/list/component/event_tile.dart';
-import '../../../personal_event/presentation/event/registration/event_registration.dart';
+import '../../../event/domain/event_document.dart';
+import '../../../event/presentation/event/detail/event_detail.dart';
+import '../../../event/presentation/event/list/component/event_tile.dart';
+import '../../../event/presentation/event/registration/event_registration.dart';
 import 'event_detail.dart';
 
 
@@ -17,6 +17,7 @@ class PublicListWidget extends StatelessWidget{
   List eventOnDate;
   DateTime focusedDay;
   bool followCalendar;
+  String calendarId;
 
   PublicListWidget(
       this.repositories,
@@ -26,6 +27,7 @@ class PublicListWidget extends StatelessWidget{
       this.eventOnDate,
       this.focusedDay,
       this.followCalendar,
+      this.calendarId,
       {super.key}
       );
 
@@ -110,7 +112,7 @@ class PublicListWidget extends StatelessWidget{
                   onPressed: (){
                     showCupertinoModalPopup(
                         context: context,
-                        builder: (BuildContext context) => EventRegistration(focusedDayState.state, repositories)
+                        builder: (BuildContext context) => EventRegistration(focusedDayState.state, repositories, calendarId)
                     );
                   },
                   icon: const Icon(Icons.add,color: Colors.white,),

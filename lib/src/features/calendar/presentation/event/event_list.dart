@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../personal_event/application/datetime_format.dart';
-import '../../../personal_event/presentation/event/list/component/list_widget.dart';
+import '../../../event/application/datetime_format.dart';
+import '../../../event/presentation/event/list/component/list_widget.dart';
 import '../../application/event_list_provider.dart';
 import '../../data/event_repositories.dart';
 import 'list_widget.dart';
@@ -26,6 +26,6 @@ class PublicEventList extends ConsumerWidget{
     Map eventList = ref.read(publicEventList(calendarDocId));
     List eventOnDate = eventList[focusedDay] ?? [];
 
-    return PublicListWidget(repositories, calendarFormat, focusedDayState, date, eventOnDate, focusedDay, followCalendar);
+    return PublicListWidget(repositories, calendarFormat, focusedDayState, date, eventOnDate, focusedDay, followCalendar, calendarDocId);
   }
 }

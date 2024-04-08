@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:share_calendar/src/features/personal_event/domain/event_document.dart';
+import 'package:share_calendar/src/features/event/domain/event_document.dart';
 
 import '../../../../../data/calendar_repositories.dart';
 import '../../../../../data/calendar_user_repositories.dart';
