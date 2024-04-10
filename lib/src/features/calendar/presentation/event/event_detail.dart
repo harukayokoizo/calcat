@@ -24,7 +24,6 @@ class PublicEventDetail extends ConsumerWidget{
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final notificationRepo = ref.read(publicEventNotificationRepositories(eventDoc));
     Event event = eventDoc.event!;
     return Scaffold(
       appBar: AppBar(
@@ -54,7 +53,7 @@ class PublicEventDetail extends ConsumerWidget{
       floatingActionButton: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          NotificationButton(eventDoc, notificationRepo),
+          NotificationButton(eventDoc, true),
           if(!followCalendar)
             Padding(
               padding: const EdgeInsets.only(left: 8.0),

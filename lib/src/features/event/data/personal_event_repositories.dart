@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:share_calendar/src/features/event/application/event_provider.dart';
 
 import '../../../common_widgets/application/common_provider.dart';
+import '../../notification/data/personal_event_notification_repositories.dart';
 import '../domain/event_document.dart';
 import '../domain/event.dart';
 
@@ -71,6 +72,13 @@ class EventRepositories{
         .update(event);
   }
 
+  Future<void> changeNotificationExist(Map<String, dynamic> event, String docId) async{
+    await FirebaseFirestore.instance
+        .collection('event')
+        .doc(docId)
+        .update(event);
+  }
+
   Future<void> deleteAndUpdateEvent(List deleteEvents, List createEvents) async{
     WriteBatch batch = FirebaseFirestore.instance.batch();
     final db = FirebaseFirestore.instance.collection('event');
@@ -88,20 +96,34 @@ class EventRepositories{
     await batch.commit();
   }
 
-  Future<void> deleteEvent(String docId) async{
-    await FirebaseFirestore.instance
-        .collection('event')
-        .doc(docId)
-        .delete();
+  Future<void> deleteEvent(EventDocument eventDoc) async{
+    WriteBatch batch = FirebaseFirestore.instance.batch();
+    final eventCollection = FirebaseFirestore.instance.collection('event');
+    final notificationCollection = FirebaseFirestore.instance.collection('event').doc(eventDoc.docId).collection('notification');
+    List deleteNotification = await ref.read(personalEventNotificationRepositories(eventDoc)).deleteAllNotification();
+
+    batch.delete(eventCollection.doc(eventDoc.docId));
+
+    for(var data in deleteNotification){
+      batch.delete(notificationCollection.doc(data));
+    }
+
+    await batch.commit();
   }
 
   Future<void> deleteSameEvents(EventDocument eventDoc) async{
-    List deleteEvents = await getSameEvent(eventDoc.event!.sameEventId!);
     WriteBatch batch = FirebaseFirestore.instance.batch();
-    final db = FirebaseFirestore.instance.collection('event');
+    final eventCollection = FirebaseFirestore.instance.collection('event');
+    final notificationCollection = FirebaseFirestore.instance.collection('event').doc(eventDoc.docId).collection('notification');
+    List deleteEvents = await getSameEvent(eventDoc.event!.sameEventId!);
+    List deleteNotification = await ref.read(personalEventNotificationRepositories(eventDoc)).deleteAllNotification();
 
     for(var data in deleteEvents){
-      batch.delete(db.doc(data));
+      batch.delete(eventCollection.doc(data));
+    }
+
+    for(var data in deleteNotification){
+      batch.delete(notificationCollection.doc(data));
     }
 
     await batch.commit();

@@ -68,4 +68,21 @@ class PersonalEventNotificationRepositories{
         .doc(uid)
         .delete();
   }
+
+  Future<List<dynamic>> deleteAllNotification() async{
+    List notifications = [];
+    await FirebaseFirestore.instance
+        .collection('event')
+        .doc(eventId)
+        .collection('notification')
+        .get()
+        .asStream()
+        .forEach((element) {
+          for (var element in element.docs) {
+            notifications.add(element.id);
+          }
+        });
+
+    return notifications;
+  }
 }

@@ -22,7 +22,8 @@ abstract class Event with _$Event{
     @TimestampConverter() DateTime? endDate,
     String? sameEventId,
     int? number,
-    String? calendarId
+    String? calendarId,
+    bool? notificationExist,
   }) = _Event;
 
   factory Event.fromJson(Map<String,dynamic> json) => _$EventFromJson(json);

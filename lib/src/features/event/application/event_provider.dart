@@ -183,6 +183,7 @@ class EventFormState extends StateNotifier<Event>{
       'sameEventId': state.sameEventId,
       'number': state.number,
       'calendarId': state.calendarId,
+      'notificationExist': state.notificationExist,
     };
 
     List<Map<String, dynamic>> events = [data];

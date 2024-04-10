@@ -36,6 +36,7 @@ mixin _$Event {
   String? get sameEventId => throw _privateConstructorUsedError;
   int? get number => throw _privateConstructorUsedError;
   String? get calendarId => throw _privateConstructorUsedError;
+  bool? get notificationExist => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -60,7 +61,8 @@ abstract class $EventCopyWith<$Res> {
       @TimestampConverter() DateTime? endDate,
       String? sameEventId,
       int? number,
-      String? calendarId});
+      String? calendarId,
+      bool? notificationExist});
 }
 
 /// @nodoc
@@ -89,6 +91,7 @@ class _$EventCopyWithImpl<$Res, $Val extends Event>
     Object? sameEventId = freezed,
     Object? number = freezed,
     Object? calendarId = freezed,
+    Object? notificationExist = freezed,
   }) {
     return _then(_value.copyWith(
       uid: freezed == uid
@@ -143,6 +146,10 @@ class _$EventCopyWithImpl<$Res, $Val extends Event>
           ? _value.calendarId
           : calendarId // ignore: cast_nullable_to_non_nullable
               as String?,
+      notificationExist: freezed == notificationExist
+          ? _value.notificationExist
+          : notificationExist // ignore: cast_nullable_to_non_nullable
+              as bool?,
     ) as $Val);
   }
 }
@@ -167,7 +174,8 @@ abstract class _$$EventImplCopyWith<$Res> implements $EventCopyWith<$Res> {
       @TimestampConverter() DateTime? endDate,
       String? sameEventId,
       int? number,
-      String? calendarId});
+      String? calendarId,
+      bool? notificationExist});
 }
 
 /// @nodoc
@@ -194,6 +202,7 @@ class __$$EventImplCopyWithImpl<$Res>
     Object? sameEventId = freezed,
     Object? number = freezed,
     Object? calendarId = freezed,
+    Object? notificationExist = freezed,
   }) {
     return _then(_$EventImpl(
       uid: freezed == uid
@@ -248,6 +257,10 @@ class __$$EventImplCopyWithImpl<$Res>
           ? _value.calendarId
           : calendarId // ignore: cast_nullable_to_non_nullable
               as String?,
+      notificationExist: freezed == notificationExist
+          ? _value.notificationExist
+          : notificationExist // ignore: cast_nullable_to_non_nullable
+              as bool?,
     ));
   }
 }
@@ -268,7 +281,8 @@ class _$EventImpl implements _Event {
       @TimestampConverter() this.endDate,
       this.sameEventId,
       this.number,
-      this.calendarId});
+      this.calendarId,
+      this.notificationExist});
 
   factory _$EventImpl.fromJson(Map<String, dynamic> json) =>
       _$$EventImplFromJson(json);
@@ -302,10 +316,12 @@ class _$EventImpl implements _Event {
   final int? number;
   @override
   final String? calendarId;
+  @override
+  final bool? notificationExist;
 
   @override
   String toString() {
-    return 'Event(uid: $uid, title: $title, overview: $overview, image: $image, color: $color, isAllDay: $isAllDay, from: $from, to: $to, repeat: $repeat, endDate: $endDate, sameEventId: $sameEventId, number: $number, calendarId: $calendarId)';
+    return 'Event(uid: $uid, title: $title, overview: $overview, image: $image, color: $color, isAllDay: $isAllDay, from: $from, to: $to, repeat: $repeat, endDate: $endDate, sameEventId: $sameEventId, number: $number, calendarId: $calendarId, notificationExist: $notificationExist)';
   }
 
   @override
@@ -329,7 +345,9 @@ class _$EventImpl implements _Event {
                 other.sameEventId == sameEventId) &&
             (identical(other.number, number) || other.number == number) &&
             (identical(other.calendarId, calendarId) ||
-                other.calendarId == calendarId));
+                other.calendarId == calendarId) &&
+            (identical(other.notificationExist, notificationExist) ||
+                other.notificationExist == notificationExist));
   }
 
   @JsonKey(ignore: true)
@@ -348,7 +366,8 @@ class _$EventImpl implements _Event {
       endDate,
       sameEventId,
       number,
-      calendarId);
+      calendarId,
+      notificationExist);
 
   @JsonKey(ignore: true)
   @override
@@ -378,7 +397,8 @@ abstract class _Event implements Event {
       @TimestampConverter() final DateTime? endDate,
       final String? sameEventId,
       final int? number,
-      final String? calendarId}) = _$EventImpl;
+      final String? calendarId,
+      final bool? notificationExist}) = _$EventImpl;
 
   factory _Event.fromJson(Map<String, dynamic> json) = _$EventImpl.fromJson;
 
@@ -411,6 +431,8 @@ abstract class _Event implements Event {
   int? get number;
   @override
   String? get calendarId;
+  @override
+  bool? get notificationExist;
   @override
   @JsonKey(ignore: true)
   _$$EventImplCopyWith<_$EventImpl> get copyWith =>

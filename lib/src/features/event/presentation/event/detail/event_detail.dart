@@ -55,7 +55,7 @@ class EventDetail extends ConsumerWidget{
       floatingActionButton: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          NotificationButton(eventDoc, notificationRepo),
+          NotificationButton(eventDoc, false),
           Padding(
             padding: const EdgeInsets.only(left: 8.0),
             child: DeleteActionButton(eventDoc, repositories),

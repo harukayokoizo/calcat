@@ -35,7 +35,7 @@ class DeleteDialog extends ConsumerWidget{
             ),
             onPressed: ()async{
               if(value == 0 || value == 1){
-                repositories.deleteEvent(eventDoc.docId!)
+                repositories.deleteEvent(eventDoc)
                     .then((value){
                       Navigator.pop(context, true);
                     });

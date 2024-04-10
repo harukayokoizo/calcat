@@ -23,6 +23,7 @@ _$EventImpl _$$EventImplFromJson(Map<String, dynamic> json) => _$EventImpl(
       sameEventId: json['sameEventId'] as String?,
       number: json['number'] as int?,
       calendarId: json['calendarId'] as String?,
+      notificationExist: json['notificationExist'] as bool?,
     );
 
 Map<String, dynamic> _$$EventImplToJson(_$EventImpl instance) =>
@@ -43,6 +44,7 @@ Map<String, dynamic> _$$EventImplToJson(_$EventImpl instance) =>
       'sameEventId': instance.sameEventId,
       'number': instance.number,
       'calendarId': instance.calendarId,
+      'notificationExist': instance.notificationExist,
     };
 
 Value? _$JsonConverterFromJson<Json, Value>(

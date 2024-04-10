@@ -5,6 +5,7 @@ import 'package:share_calendar/src/features/event/application/event_provider.dar
 import '../../../common_widgets/application/common_provider.dart';
 import '../../event/domain/event.dart';
 import '../../event/domain/event_document.dart';
+import '../../notification/data/public_event_notification_repositories.dart';
 
 final publicEventRepositories = Provider.autoDispose.family<PublicEventRepositories, String>(
         (ref, docId) => PublicEventRepositories(ref, docId)
@@ -96,22 +97,35 @@ class PublicEventRepositories{
     await batch.commit();
   }
 
-  Future<void> deleteEvent(String docId) async{
-    await FirebaseFirestore.instance
-        .collection('calendar')
-        .doc(calendarDocId)
-        .collection('event')
-        .doc(docId)
-        .delete();
+  Future<void> deleteEvent(EventDocument eventDoc) async{
+    WriteBatch batch = FirebaseFirestore.instance.batch();
+    final eventCollection = FirebaseFirestore.instance.collection('calendar').doc(calendarDocId).collection('event');
+    final notificationCollection = FirebaseFirestore.instance.collection('calendar').doc(calendarDocId).collection('event').doc(eventDoc.docId).collection('notification');
+
+    List deleteNotification = await ref.read(publicEventNotificationRepositories(eventDoc)).deleteAllNotification();
+
+    batch.delete(eventCollection.doc(eventDoc.docId));
+
+    for(var data in deleteNotification){
+      batch.delete(notificationCollection.doc(data));
+    }
+
+    await batch.commit();
   }
 
   Future<void> deleteSameEvents(EventDocument eventDoc) async{
-    List deleteEvents = await getSameEvent(eventDoc.event!.sameEventId!);
     WriteBatch batch = FirebaseFirestore.instance.batch();
-    final db = FirebaseFirestore.instance.collection('calendar').doc(calendarDocId).collection('event');
+    final eventCollection = FirebaseFirestore.instance.collection('calendar').doc(calendarDocId).collection('event');
+    final notificationCollection = FirebaseFirestore.instance.collection('calendar').doc(calendarDocId).collection('event').doc(eventDoc.docId).collection('notification');
+    List deleteEvents = await getSameEvent(eventDoc.event!.sameEventId!);
+    List deleteNotification = await ref.read(publicEventNotificationRepositories(eventDoc)).deleteAllNotification();
 
     for(var data in deleteEvents){
-      batch.delete(db.doc(data));
+      batch.delete(eventCollection.doc(data));
+    }
+
+    for(var data in deleteNotification){
+      batch.delete(notificationCollection.doc(data));
     }
 
     await batch.commit();

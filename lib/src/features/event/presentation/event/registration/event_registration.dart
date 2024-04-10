@@ -35,7 +35,8 @@ class EventRegistration extends ConsumerWidget{
         endDate: null,
         sameEventId: null,
         number: null,
-        calendarId: calendarId
+        calendarId: calendarId,
+        notificationExist: false,
     );
     ref.watch(eventFormStateProvider(event));
     return Scaffold(
