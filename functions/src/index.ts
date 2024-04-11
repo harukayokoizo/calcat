@@ -3,8 +3,16 @@ import {
   onDocumentDeleted,
 } from "firebase-functions/v2/firestore";
 
+import * as admin from 'firebase-admin'
+import { TokenMessage } from "firebase-admin/lib/messaging/messaging-api";
+
+/*
+import {
+  QueryDocumentSnapshot,
+} from "firebase-admin/firestore";*/
+
 const { initializeApp } = require('firebase-admin/app');
-const { getFirestore, FieldValue } = require('firebase-admin/firestore');
+const { getFirestore, FieldValue, Timestamp } = require('firebase-admin/firestore');
 const { onSchedule } = require("firebase-functions/v2/scheduler");
 const { logger } = require("firebase-functions");
 
@@ -49,76 +57,118 @@ exports.notificationExitsFalse = onDocumentDeleted("calendar/{calendarId}/event/
     const eventId = notification.params.eventId
     const snapshot = await db.collection('calendar').doc(calendarId).collection('event').doc(eventId).collection('notification').limit(1).get()
     if(snapshot.empty){
-    db.collection('calendar').doc(calendarId).collection('event').doc(eventId).update({ notificationExist: false });
+      db.collection('calendar').doc(calendarId).collection('event').doc(eventId).update({ notificationExist: false });
     }
   }catch (e){
     console.log(e)
   }
 });
 
+/*
+type Event = {
+  eventId: string;
+  calendarId: number;
+  uid: string;
+  title: string;
+};*/
+
+
+class Event{
+  constructor(
+    readonly eventId: string, 
+    readonly calendarId: string, 
+    readonly uid: string, 
+    readonly title: string) {}
+}
+/*
+export const eventConverter = {
+  fromFirestore(snapshot: QueryDocumentSnapshot): Event {
+    const data = snapshot.data();
+    logger.log(data)
+    return new Event(data.id(), data.calendarId, data.uid, data.title);
+  }
+};*/
+
 exports.scheduledEventNotification = onSchedule("* * * * *", async () => {
-  logger.log('Hello');
-  // 現在時刻を取得
+  logger.log('Hello')
   const now = (() => {
-    let s = db.Timestamp.now().seconds
+    let s = Timestamp.now().seconds
     s = s - s % 60
-    return new db.Timestamp(s, 0)
+    return new Timestamp(s, 0)
   })()
 
   try{
-    const snapshots = await db.collectionGroup('event').where('from', '==', now).where('notificationExists', true).get()
-    snapshots.docs.map((doc: any) =>{
-      if(doc.empty){
-        logger.log('No matching documents')
-        return;
-      }
-      console.log(doc)
-      // await getSenderEventNotification(doc.id(), doc.data)
-    })
+    const snapshots = await db.collectionGroup('event').where('notificationExist','==', true).where('from', '!=', now).get()
+    if(!snapshots.empty){
+      const events = snapshots.docs.map((doc: { data: () => any; id: string; }) => {
+        const data = doc.data()
+        const id = doc.id
+        return new Event(id, data.calendarId, data.uid, data.title)
+      })
+      events.forEach(async (event: Event) => {
+        const message = await getSenderEventNotification(event)
+        message.forEach((value: TokenMessage) => {
+          
+        })
+      });
+    }
   }catch(e){
-    console.log(e)
+    logger.log(e)
   }
-  // 取得したドキュメントの通知サブコレクションのドキュメントを全部取得
-  // 各ドキュメントのuserReferenceの値からUserコレクションのドキュメントを取得（トークンを取得）
-  // 通知する。
 });
 
-/*
-async function getSenderEventNotification(String: any docId: any, dynamic: undefined doc: { calendarId: any; } | undefined){
+
+async function getSenderEventNotification(event: Event){
+  const message = []
   try{
-    const calendarId = doc.calendarId;
-    if(calendarId != null){
-      const notificationList = await db.collection('calendar').doc(calendarId).collection('event').doc(eventId).collection('notification').get()
+    if(event.calendarId != null){
+      const snapshots = await db.collection('calendar').doc(event.calendarId).collection('event').doc(event.eventId).collection('notification').get()
+      if(!snapshots.empty){
+        const uidList = snapshots.docs.map((doc: { id: string; }) => doc.id)
+        uidList.forEach(async (uid: string) => {
+          const token = await getUserToken(uid)
+          if(token != null){
+            const megs = sendPushNotificationsForReminder(event,token)
+            message.push(megs)
+          }
+        })
+      }
     }else{
-      const notificationList = await db.collection('event').doc(eventId).collection('notification').get()
+      //こちら側に問題がある
+      const token = await getUserToken(event.uid)
+      if(token != null){
+        const megs = sendPushNotificationsForReminder(event,token)
+        message.push(megs)
+      }
     }
+
+    return message
   }catch(err){
     console.log(err)
+    return message
   }
-  
 }
 
-async function sendPushNotificationsForReminder(reminders: Model.Reminder[]) {
-  const messages: admin.messaging.Message[] = []
-  for (const reminder of reminders) {
-    // ユーザーのトークンは複数ある可能性があるので、ユーザーのトークン分メッセージを作る
-    const msgs: admin.messaging.Message[] = reminder.tokens.map((token: any) => {
-      const notification: admin.messaging.Notification = {
-        title: "リマインダー",
-        body: reminder.task.content
-      }
-      const message: admin.messaging.Message = {
-        token: token,
-        notification: notification
-      }
-      return message
-    })
-    Array.prototype.push.apply(messages, msgs)
-  }
-  if (messages.length === 0) { return }
-  await sendAll(messages)
+async function getUserToken(uid: string){
+  const snapshots = await db.collection('user').doc(uid).get()
+  const data = snapshots.data()
+  return data.token
 }
 
+
+function sendPushNotificationsForReminder(event: Event, token: string) {
+  const notification: admin.messaging.Notification = {
+    title: event.title,
+  }
+  const message: admin.messaging.Message = {
+    token: token,
+    notification: notification
+  }
+
+  return message
+}
+
+/*
 async function sendAll(messages: admin.messaging.Message[]) {
   // 500件ずつに分割する(500件以上は、sendAllメソッド側でエラーになるため)
   const msgs = messages.reduce((acc: admin.messaging.Message[][], val) => {

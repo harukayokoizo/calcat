@@ -172,7 +172,7 @@ class EventFormState extends StateNotifier<Event>{
     Map<String, dynamic> data = {
       'uid': state.uid,
       'title': state.title,
-      'event': state.overview,
+      'overview': state.overview,
       'image': state.image,
       'color': state.color,
       'isAllDay': state.isAllDay,
