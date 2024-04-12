@@ -33,7 +33,8 @@ class MyApp extends ConsumerWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    ref.read(pushNotification);
+    final notification = ref.read(pushNotification);
+    print(notification.fcmToken);
     var userCheck = ref.watch(userControllerProvider);
 
     return MaterialApp(

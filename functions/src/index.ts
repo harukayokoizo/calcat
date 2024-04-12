@@ -105,12 +105,12 @@ exports.scheduledEventNotification = onSchedule("* * * * *", async () => {
         const id = doc.id
         return new Event(id, data.calendarId, data.uid, data.title)
       })
-      events.forEach(async (event: Event) => {
-        const message = await getSenderEventNotification(event)
-        message.forEach((value: TokenMessage) => {
-          
-        })
-      });
+      for(const event of events){
+        const messages = await getSenderEventNotification(event)
+        if(messages.length !== 0){
+          await sendAll(messages)
+        }
+      }
     }
   }catch(e){
     logger.log(e)
@@ -119,22 +119,20 @@ exports.scheduledEventNotification = onSchedule("* * * * *", async () => {
 
 
 async function getSenderEventNotification(event: Event){
-  const message = []
+  const message: TokenMessage[] = []
   try{
     if(event.calendarId != null){
       const snapshots = await db.collection('calendar').doc(event.calendarId).collection('event').doc(event.eventId).collection('notification').get()
-      if(!snapshots.empty){
-        const uidList = snapshots.docs.map((doc: { id: string; }) => doc.id)
-        uidList.forEach(async (uid: string) => {
-          const token = await getUserToken(uid)
-          if(token != null){
-            const megs = sendPushNotificationsForReminder(event,token)
-            message.push(megs)
-          }
-        })
+      if(snapshots.empty) return message
+      const uidList = snapshots.docs.map((doc: { id: string; }) => doc.id)
+      for(const uid of uidList){
+        const token = await getUserToken(uid)
+        if(token != null){
+          const megs = sendPushNotificationsForReminder(event,token)
+          message.push(megs)
+        }
       }
     }else{
-      //こちら側に問題がある
       const token = await getUserToken(event.uid)
       if(token != null){
         const megs = sendPushNotificationsForReminder(event,token)
@@ -168,7 +166,6 @@ function sendPushNotificationsForReminder(event: Event, token: string) {
   return message
 }
 
-/*
 async function sendAll(messages: admin.messaging.Message[]) {
   // 500件ずつに分割する(500件以上は、sendAllメソッド側でエラーになるため)
   const msgs = messages.reduce((acc: admin.messaging.Message[][], val) => {
@@ -185,7 +182,7 @@ async function sendAll(messages: admin.messaging.Message[]) {
   // Promise.allで分割して配信
   const promises = msgs
     .map((ms) => admin.messaging()
-      .sendAll(ms)
+      .sendEach(ms)
       .then((batchResponse: { responses: any[]; }) => {
         batchResponse.responses.forEach((res: { error: any; }) => {
           // FCM側でエラーが発生した場合、StackDriverにログを残す
@@ -200,4 +197,4 @@ async function sendAll(messages: admin.messaging.Message[]) {
       })
     )
   await Promise.all(promises)
-}*/
+}
