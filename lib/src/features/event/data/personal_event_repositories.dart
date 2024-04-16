@@ -4,6 +4,7 @@ import 'package:share_calendar/src/features/event/application/event_provider.dar
 
 import '../../../common_widgets/application/common_provider.dart';
 import '../../notification/data/personal_event_notification_repositories.dart';
+import '../application/event_list_provider.dart';
 import '../domain/event_document.dart';
 import '../domain/event.dart';
 
@@ -15,11 +16,14 @@ class EventRepositories{
   EventRepositories(this.ref);
 
   //personal_eventコレクションからイベントを取得する
-  Stream<List<EventDocument>> getEvent() async*{
+  Stream<List<EventDocument>> getEvent(String calendarMonth) async*{
+    print(calendarMonth);
+    print('stream');
     final currentUser = ref.read(currentUserProvider);
     var events = FirebaseFirestore.instance
         .collection('event')
         .where('uid', isEqualTo: currentUser!.uid)
+        .where('calendarMonth', isEqualTo: calendarMonth)
         .snapshots().map(
             (snapshots) => snapshots.docs.map(
                     (e){

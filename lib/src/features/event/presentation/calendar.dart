@@ -32,8 +32,18 @@ class PersonalCalendarPageState extends ConsumerState{
     var focusedDay = ref.watch(focusedDayProvider);
     var calendarFormat = ref.watch(calendarFormatState);
     const week = ['日', '月', '火', '水', '木', '金', '土'];
-    final events = ref.watch(personalEventList);
-    //print(events);
+    Map events = {};
+    var extraEventList = ref.watch(eventStream);
+    if(extraEventList.isNotEmpty){
+      for(var stream in extraEventList){
+        final eventList = ref.watch(stream);
+        if(eventList.isNotEmpty){
+          events.addAll(eventList);
+        }
+      }
+    }
+    print(events);
+    print(events.length);
 
     return Scaffold(
       key: itemKey,
@@ -87,27 +97,19 @@ class PersonalCalendarPageState extends ConsumerState{
             onPageChanged: (value){
               _focusedDayValue.value = value;
               ref.read(focusedDayProvider.notifier).saveState(focusedDay: value);
+              if(focusedDay.isBefore(value)){
+                //次月に移動
+                String month = '${value.year}年${value.month + 1}月';
+                ref.read(eventStream.notifier).addStream(personalEventList(month));
+              }else{
+                //前月に移動
+                String month = '${value.year}年${value.month}月';
+                ref.read(eventStream.notifier).addStream(personalEventList(month));
+              }
             },
           );
         }
       ),
-      // bottomNavigationBar: BottomNavigationBar(
-      //   // ignore: invalid_use_of_protected_member
-      //   items: const [
-      //     BottomNavigationBarItem(
-      //       icon: Icon(Icons.search),
-      //       label: 'Search',
-      //     ),
-      //     BottomNavigationBarItem(
-      //       icon: Icon(Icons.star),
-      //       label: 'Calendar',
-      //     ),
-      //     BottomNavigationBarItem(
-      //       icon: Icon(Icons.calendar_month),
-      //       label: 'My Calendar',
-      //     ),
-      //   ],
-      // ),
     );
   }
 }

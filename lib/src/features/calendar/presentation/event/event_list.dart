@@ -5,6 +5,7 @@ import '../../../event/application/datetime_format.dart';
 import '../../../event/presentation/event/list/component/list_widget.dart';
 import '../../application/event_list_provider.dart';
 import '../../data/event_repositories.dart';
+import '../../domain/calendar_event.dart';
 import 'list_widget.dart';
 
 class PublicEventList extends ConsumerWidget{
@@ -18,12 +19,13 @@ class PublicEventList extends ConsumerWidget{
     final repositories = ref.read(publicEventRepositories(calendarDocId));
     final calendarFormat = ref.read(publicCalendarFormat.notifier);
     final focusedDayState = ref.read(publicFocusedDay.notifier);
-    // final focusedDay = ref.read(publicFocusedDay);
 
     DateTimeFormat dateFormat = ref.read(dateTimeFormatClass(focusedDay));
     String date = dateFormat.dateJaFormat();
+    String month = dateFormat.getCalendarMonth();
+    CalendarEvent calendarEvent = CalendarEvent(calendarDocId, month);
 
-    Map eventList = ref.read(publicEventList(calendarDocId));
+    Map eventList = ref.read(publicEventList(calendarEvent));
     List eventOnDate = eventList[focusedDay] ?? [];
 
     return PublicListWidget(repositories, calendarFormat, focusedDayState, date, eventOnDate, focusedDay, followCalendar, calendarDocId);

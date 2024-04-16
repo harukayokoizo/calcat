@@ -37,6 +37,7 @@ mixin _$Event {
   int? get number => throw _privateConstructorUsedError;
   String? get calendarId => throw _privateConstructorUsedError;
   bool? get notificationExist => throw _privateConstructorUsedError;
+  String? get calendarMonth => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -62,7 +63,8 @@ abstract class $EventCopyWith<$Res> {
       String? sameEventId,
       int? number,
       String? calendarId,
-      bool? notificationExist});
+      bool? notificationExist,
+      String? calendarMonth});
 }
 
 /// @nodoc
@@ -92,6 +94,7 @@ class _$EventCopyWithImpl<$Res, $Val extends Event>
     Object? number = freezed,
     Object? calendarId = freezed,
     Object? notificationExist = freezed,
+    Object? calendarMonth = freezed,
   }) {
     return _then(_value.copyWith(
       uid: freezed == uid
@@ -150,6 +153,10 @@ class _$EventCopyWithImpl<$Res, $Val extends Event>
           ? _value.notificationExist
           : notificationExist // ignore: cast_nullable_to_non_nullable
               as bool?,
+      calendarMonth: freezed == calendarMonth
+          ? _value.calendarMonth
+          : calendarMonth // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -175,7 +182,8 @@ abstract class _$$EventImplCopyWith<$Res> implements $EventCopyWith<$Res> {
       String? sameEventId,
       int? number,
       String? calendarId,
-      bool? notificationExist});
+      bool? notificationExist,
+      String? calendarMonth});
 }
 
 /// @nodoc
@@ -203,6 +211,7 @@ class __$$EventImplCopyWithImpl<$Res>
     Object? number = freezed,
     Object? calendarId = freezed,
     Object? notificationExist = freezed,
+    Object? calendarMonth = freezed,
   }) {
     return _then(_$EventImpl(
       uid: freezed == uid
@@ -261,6 +270,10 @@ class __$$EventImplCopyWithImpl<$Res>
           ? _value.notificationExist
           : notificationExist // ignore: cast_nullable_to_non_nullable
               as bool?,
+      calendarMonth: freezed == calendarMonth
+          ? _value.calendarMonth
+          : calendarMonth // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -282,7 +295,8 @@ class _$EventImpl implements _Event {
       this.sameEventId,
       this.number,
       this.calendarId,
-      this.notificationExist});
+      this.notificationExist,
+      this.calendarMonth});
 
   factory _$EventImpl.fromJson(Map<String, dynamic> json) =>
       _$$EventImplFromJson(json);
@@ -318,10 +332,12 @@ class _$EventImpl implements _Event {
   final String? calendarId;
   @override
   final bool? notificationExist;
+  @override
+  final String? calendarMonth;
 
   @override
   String toString() {
-    return 'Event(uid: $uid, title: $title, overview: $overview, image: $image, color: $color, isAllDay: $isAllDay, from: $from, to: $to, repeat: $repeat, endDate: $endDate, sameEventId: $sameEventId, number: $number, calendarId: $calendarId, notificationExist: $notificationExist)';
+    return 'Event(uid: $uid, title: $title, overview: $overview, image: $image, color: $color, isAllDay: $isAllDay, from: $from, to: $to, repeat: $repeat, endDate: $endDate, sameEventId: $sameEventId, number: $number, calendarId: $calendarId, notificationExist: $notificationExist, calendarMonth: $calendarMonth)';
   }
 
   @override
@@ -347,7 +363,9 @@ class _$EventImpl implements _Event {
             (identical(other.calendarId, calendarId) ||
                 other.calendarId == calendarId) &&
             (identical(other.notificationExist, notificationExist) ||
-                other.notificationExist == notificationExist));
+                other.notificationExist == notificationExist) &&
+            (identical(other.calendarMonth, calendarMonth) ||
+                other.calendarMonth == calendarMonth));
   }
 
   @JsonKey(ignore: true)
@@ -367,7 +385,8 @@ class _$EventImpl implements _Event {
       sameEventId,
       number,
       calendarId,
-      notificationExist);
+      notificationExist,
+      calendarMonth);
 
   @JsonKey(ignore: true)
   @override
@@ -398,7 +417,8 @@ abstract class _Event implements Event {
       final String? sameEventId,
       final int? number,
       final String? calendarId,
-      final bool? notificationExist}) = _$EventImpl;
+      final bool? notificationExist,
+      final String? calendarMonth}) = _$EventImpl;
 
   factory _Event.fromJson(Map<String, dynamic> json) = _$EventImpl.fromJson;
 
@@ -433,6 +453,8 @@ abstract class _Event implements Event {
   String? get calendarId;
   @override
   bool? get notificationExist;
+  @override
+  String? get calendarMonth;
   @override
   @JsonKey(ignore: true)
   _$$EventImplCopyWith<_$EventImpl> get copyWith =>

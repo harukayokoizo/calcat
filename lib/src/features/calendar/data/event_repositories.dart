@@ -18,12 +18,14 @@ class PublicEventRepositories{
   PublicEventRepositories(this.ref, this.calendarDocId);
 
   //personal_eventコレクションからイベントを取得する
-  Stream<List<EventDocument>> getEvent() async*{
-    final currentUser = ref.read(currentUserProvider);
+  Stream<List<EventDocument>> getEvent(String calendarMonth) async*{
+    print(calendarMonth);
+    print('stream');
     var events = FirebaseFirestore.instance
         .collection('calendar')
         .doc(calendarDocId)
         .collection('event')
+        .where('calendarMonth', isEqualTo: calendarMonth)
         .snapshots().map(
             (snapshots) => snapshots.docs.map(
                 (e){

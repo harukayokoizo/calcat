@@ -2,12 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table_calendar/table_calendar.dart';
-
-
 import '../../../../application/calendar_list_provider.dart';
 import '../../../../application/event_list_provider.dart';
-import '../../../../data/calendar_repositories.dart';
 import '../../../../domain/calendar_document.dart';
+import '../../../../domain/calendar_event.dart';
 import 'detail/calendar_detail.dart';
 
 class PublicCalendarPage extends ConsumerWidget{
@@ -23,7 +21,21 @@ class PublicCalendarPage extends ConsumerWidget{
     var focusedDay = ref.watch(publicFocusedDay);
     var calendarFormat = ref.watch(publicCalendarFormat);
     const week = ['日', '月', '火', '水', '木', '金', '土'];
-    final events = ref.watch(publicEventList(calendarDocId));
+
+    Map events = {};
+    var eventsList = ref.watch(publicEventStream(calendarDocId));
+    if(eventsList.isNotEmpty){
+      for(var stream in eventsList){
+        final list = ref.watch(stream);
+        if(list.isNotEmpty){
+          events.addAll(list);
+        }
+      }
+    }
+    //final events = ref.watch(publicEventList(calendarDocId));
+
+    print(events);
+    print(events.length);
 
     return Scaffold(
       key: itemKey,
@@ -125,6 +137,17 @@ class PublicCalendarPage extends ConsumerWidget{
               onPageChanged: (value){
                 _focusedDayValue.value = value;
                 ref.read(publicFocusedDay.notifier).saveState(focusedDay: value);
+                if(focusedDay.isBefore(value)){
+                  //次月に移動
+                  String month = '${value.year}年${value.month + 1}月';
+                  CalendarEvent calendarEvent = CalendarEvent(calendarDocId, month);
+                  ref.read(publicEventStream(calendarDocId).notifier).addStream(publicEventList(calendarEvent));
+                }else{
+                  //前月に移動
+                  String month = '${value.year}年${value.month}月';
+                  CalendarEvent calendarEvent = CalendarEvent(calendarDocId, month);
+                  ref.read(publicEventStream(calendarDocId).notifier).addStream(publicEventList(calendarEvent));
+                }
               },
             );
           }

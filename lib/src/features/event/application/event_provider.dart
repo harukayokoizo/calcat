@@ -169,6 +169,7 @@ class EventFormState extends StateNotifier<Event>{
   List<Map<String, dynamic>> saveDataList(){
     DateTime from = DateTime(state.from!.year, state.from!.month, state.from!.day, state.from!.hour, state.from!.minute);
     DateTime to = DateTime(state.to!.year, state.to!.month, state.to!.day, state.to!.hour, state.to!.minute);
+    String calendarMonth = '${state.from!.year}年${state.from!.month}月';
     Map<String, dynamic> data = {
       'uid': state.uid,
       'title': state.title,
@@ -184,6 +185,7 @@ class EventFormState extends StateNotifier<Event>{
       'number': state.number,
       'calendarId': state.calendarId,
       'notificationExist': state.notificationExist,
+      'calendarMonth': calendarMonth
     };
 
     List<Map<String, dynamic>> events = [data];
@@ -196,8 +198,10 @@ class EventFormState extends StateNotifier<Event>{
 
       while(from.isBefore(endDate)){
         Map<String, dynamic> newData = Map.of(data);
+        calendarMonth = '${from.year}年${from.month}月';
         newData['from'] = from;
         newData['to'] = to;
+        newData['calendarMonth'] = calendarMonth;
         events.add(newData);
         from = from.add(Duration(days: days));
         to = to.add(Duration(days: days));

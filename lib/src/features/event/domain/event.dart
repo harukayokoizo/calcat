@@ -24,6 +24,7 @@ abstract class Event with _$Event{
     int? number,
     String? calendarId,
     bool? notificationExist,
+    String? calendarMonth,
   }) = _Event;
 
   factory Event.fromJson(Map<String,dynamic> json) => _$EventFromJson(json);

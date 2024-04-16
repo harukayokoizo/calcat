@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:share_calendar/src/features/calendar/domain/calendar.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../data/personal_event_repositories.dart';
@@ -22,25 +23,29 @@ class FocusedDayState extends StateNotifier<DateTime>{
   }
 
 }
-final personalEvents = StreamProvider<List<EventDocument>>(
-        (ref) {
-          var personalEvents = ref.read(eventRepositories).getEvent();
+
+// 該当月のイベント情報のStreamを提供する
+final personalEvents = StreamProvider.family<List<EventDocument>, String>(
+        (ref, calendarMonth) {
+          //final month = ref.watch(calendarMonth);
+          var personalEvents = ref.read(eventRepositories).getEvent(calendarMonth);
           return personalEvents;
         });
 
-final personalEventList = StateNotifierProvider.autoDispose<PersonalEventListController, Map<dynamic, dynamic>>(
-        (ref) {
-          //List<PersonalEvent> events = ref.watch(personalEvents);
-          return PersonalEventListController(ref);
+// 該当月のイベント情報を取得、監視するクラスのプロバイダー
+final personalEventList = StateNotifierProvider.autoDispose.family<PersonalEventListController, Map<dynamic, dynamic>, String>(
+        (ref, calendarMonth) {
+          return PersonalEventListController(ref, calendarMonth);
         }
 );
 
 class PersonalEventListController extends StateNotifier<Map<dynamic, dynamic>>{
   Ref ref;
-  //List<PersonalEvent> personalEvents;
-  PersonalEventListController(this.ref) : super({}){
+  String calendarMonth;
+
+  PersonalEventListController(this.ref, this.calendarMonth) : super({}){
     Map<DateTime, List<EventDocument>> eventsDisplay = {};
-    final events = ref.watch(personalEvents);
+    final events = ref.watch(personalEvents(calendarMonth));
     events.whenData((value){
       eventsDisplay = changeFormat(value);
       eventsDisplay = sortEventList(eventsDisplay);
@@ -68,8 +73,6 @@ class PersonalEventListController extends StateNotifier<Map<dynamic, dynamic>>{
         for(int i = 0;i <= to.difference(from).inDays;i++){
           keyDate.add(from.add(Duration(days: i)));
         }
-        // do{
-        // } while(to.difference(from).inDays == i);
       }
 
       //eventListにMap<DateTime, List<PersonalEvent>>を追加する
@@ -99,3 +102,39 @@ class PersonalEventListController extends StateNotifier<Map<dynamic, dynamic>>{
   }
 
 }
+
+// 閲覧した月の「personalEventList:イベント取得用クラス」のプロバイダーを格納するクラスを提供する
+final eventStream = StateNotifierProvider<EventStream, List<dynamic>>(
+        (ref) {
+          DateTime today = DateTime.now();
+          String month = '${today.year}年${today.month}月';
+          String nextMonth = '${today.year}年${today.month + 1}月';
+          return EventStream([personalEventList(month), personalEventList(nextMonth)]);
+    }
+);
+
+class EventStream extends StateNotifier<List<dynamic>>{
+  List<dynamic> streamList;
+  EventStream(this.streamList) : super(streamList);
+
+  void addStream(dynamic stream){
+    state = [...state, stream];
+  }
+
+}
+//
+// // 取得した月の全イベントを格納するクラスを提供する
+// final allEventList = StateNotifierProvider<AllEventList, Map<DateTime, List<EventDocument>>>(
+//         (ref) {
+//       return AllEventList();
+//     }
+// );
+//
+// class AllEventList extends StateNotifier<Map<DateTime, List<EventDocument>>>{
+//   AllEventList() : super({});
+//
+//   void addEvent(Map<DateTime, List<EventDocument>> eventMap){
+//     state = {...state, ...eventMap};
+//   }
+//
+// }

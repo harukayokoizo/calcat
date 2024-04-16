@@ -40,4 +40,11 @@ class DateTimeFormat{
 
     return '$year年$month月$day日(${weekday[weekdayNum]})';
   }
+
+  String getCalendarMonth(){
+    final year = this.year;
+    final month = this.month;
+
+    return '$year年$month月';
+  }
 }

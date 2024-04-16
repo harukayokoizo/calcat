@@ -6,6 +6,9 @@ import '../../event/domain/event.dart';
 import '../../event/domain/event_document.dart';
 import '../data/event_repositories.dart';
 import '../domain/calendar_document.dart';
+import '../domain/calendar_event.dart';
+
+final calendarIdProvider = StateProvider.autoDispose.family<String?, String>((ref,calendarId) => calendarId);
 
 final publicCalendarFormat = StateProvider.autoDispose<CalendarFormat>((ref) => CalendarFormat.month);
 
@@ -25,14 +28,14 @@ class PublicFocusedDay extends StateNotifier<DateTime>{
 
 }
 
-final publicEvents = StreamProvider.autoDispose.family<List<EventDocument>,String>(
-        (ref, calendarDocId) async*{
-          yield* ref.read(publicEventRepositories(calendarDocId)).getEvent();
+final publicEvents = StreamProvider.autoDispose.family<List<EventDocument>,CalendarEvent>(
+        (ref, calendarEvent) async*{
+          yield* ref.read(publicEventRepositories(calendarEvent.calendarId)).getEvent(calendarEvent.calendarMonth);
         });
 
-final publicEventList = StateNotifierProvider.autoDispose.family<PublicEventListController, Map<dynamic, dynamic>, String>(
-        (ref, calendarDocId) {
-          final events = ref.watch(publicEvents(calendarDocId));
+final publicEventList = StateNotifierProvider.autoDispose.family<PublicEventListController, Map<dynamic, dynamic>, CalendarEvent>(
+        (ref, calendarEvent) {
+          final events = ref.watch(publicEvents(calendarEvent));
           return PublicEventListController(ref, events);
         }
 );
@@ -93,6 +96,28 @@ class PublicEventListController extends StateNotifier<Map<dynamic, dynamic>>{
     });
 
     return sortEventMap;
+  }
+}
+
+
+// 閲覧した月の「personalEventList:イベント取得用クラス」のプロバイダーを格納するクラスを提供する
+final publicEventStream = StateNotifierProvider.autoDispose.family<PublicEventStream, List<dynamic>, String>(
+        (ref, calendarId) {
+          DateTime today = DateTime.now();
+          String month = '${today.year}年${today.month}月';
+          String nextMonth = '${today.year}年${today.month + 1}月';
+          CalendarEvent monthEvent = CalendarEvent(calendarId, month);
+          CalendarEvent nextMonthEvent = CalendarEvent(calendarId, nextMonth);
+          return PublicEventStream([publicEventList(monthEvent), publicEventList(nextMonthEvent)]);
+        }
+);
+
+class PublicEventStream extends StateNotifier<List<dynamic>>{
+  List<dynamic> streamList;
+  PublicEventStream(this.streamList) : super(streamList);
+
+  void addStream(dynamic stream){
+    state = [...state, stream];
   }
 
 }
