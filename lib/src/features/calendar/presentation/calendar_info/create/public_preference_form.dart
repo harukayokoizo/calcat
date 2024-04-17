@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../application/calendar_provider.dart';
-import '../../domain/calendar.dart';
+import '../../../application/calendar_provider.dart';
+import '../../../domain/calendar.dart';
 
 class PublicPreferenceForm extends ConsumerWidget{
   Calendar calendar;
@@ -21,35 +21,30 @@ class PublicPreferenceForm extends ConsumerWidget{
       allUser = 0;
       limitUser = 1;
     }
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Padding(
-          padding: EdgeInsets.all(8.0),
-          child: Text(
+    return Padding(
+      padding: const EdgeInsets.only(top: 10, right: 30, left: 30, bottom: 10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
             '公開設定',
             style: TextStyle(
-              fontSize: 18,
+              fontSize: 16,
               fontWeight: FontWeight.bold,
             ),
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(left: 20.0, right: 20.0),
-          child: RadioListTile(
+          RadioListTile(
             title: const Text('全ユーザーに公開'),
             value: allUser,
             groupValue: 1,
             controlAffinity: ListTileControlAffinity.trailing,
+            //contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 16.0),
             onChanged: (value) {
               ref.read(calendarStateProvider(calendar).notifier).savePublicPreference(true);
             },
 
-          )
-        ),
-        Padding(
-          padding: const EdgeInsets.only(left: 20.0, right: 20.0),
-          child: RadioListTile(
+          ),
+          RadioListTile(
             title: const Text('限定公開'),
             value: limitUser,
             groupValue: 1,
@@ -58,9 +53,9 @@ class PublicPreferenceForm extends ConsumerWidget{
               ref.read(calendarStateProvider(calendar).notifier).savePublicPreference(false);
             },
 
-          )
-        ),
-      ],
+          ),
+        ],
+      ),
     );
   }
 }

@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../domain/calendar.dart';
-import '../../../../../domain/calendar_document.dart';
+import '../../../domain/calendar.dart';
+import '../../../domain/calendar_document.dart';
 import 'calendar_edit.dart';
 
 class CalendarEditActionButton extends ConsumerWidget{
@@ -23,7 +23,7 @@ class CalendarEditActionButton extends ConsumerWidget{
               return CalendarEditForm(calendarDoc);
             },
           ).then((value){
-            if(value){
+            if(value != null){
               Navigator.pop(context);
             }
           });

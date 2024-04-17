@@ -1,12 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:share_calendar/src/features/calendar/presentation/list/published_calendar/calendar/detail/title_widget.dart';
+import 'package:share_calendar/src/features/calendar/presentation/calendar_info/detail/description_widget.dart';
+import 'package:share_calendar/src/features/calendar/presentation/calendar_info/detail/icon_widget.dart';
+import 'package:share_calendar/src/features/calendar/presentation/calendar_info/detail/title_widget.dart';
 
-import '../../../../../domain/calendar_document.dart';
+import '../../../domain/calendar_document.dart';
 import '../edit/delete_action_button.dart';
 import '../edit/edit_action_button.dart';
-import 'description_widget.dart';
-import 'icon_widget.dart';
 
 class CalendarDetail extends StatelessWidget{
   bool followCalendar;
@@ -22,15 +22,6 @@ class CalendarDetail extends StatelessWidget{
               child: SingleChildScrollView(
                 child: SizedBox(
                   child: Column(children: [
-                    Align(
-                      alignment: Alignment.topLeft,
-                      child: IconButton(
-                        icon: const Icon(Icons.arrow_back_ios),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                      ),
-                    ),
                     CalendarIconWidget(calendarDoc.calendar!),
                     CalendarTitleWidget(calendarDoc.calendar!),
                     CalendarDescriptionWidget(calendarDoc.calendar!),

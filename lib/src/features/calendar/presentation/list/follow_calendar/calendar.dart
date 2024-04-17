@@ -8,7 +8,7 @@ import '../../../application/calendar_list_provider.dart';
 import '../../../application/event_list_provider.dart';
 import '../../../domain/calendar_document.dart';
 import '../../../domain/calendar_event.dart';
-import '../published_calendar/calendar/detail/calendar_detail.dart';
+import '../../calendar_info/detail/calendar_detail.dart';
 
 class FollowCalendarPage extends ConsumerWidget{
   FollowCalendarPage(this.calendarDoc, {super.key});

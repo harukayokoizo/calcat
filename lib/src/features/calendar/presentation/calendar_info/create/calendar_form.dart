@@ -1,36 +1,45 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:share_calendar/src/features/calendar/presentation/form/password_form.dart';
-import 'package:share_calendar/src/features/calendar/presentation/form/public_preference_form.dart';
-import 'package:share_calendar/src/features/calendar/presentation/form/title_form.dart';
+import 'package:share_calendar/src/features/calendar/presentation/calendar_info/create/icon_form.dart';
+import 'package:share_calendar/src/features/calendar/presentation/calendar_info/create/password_form.dart';
+import 'package:share_calendar/src/features/calendar/presentation/calendar_info/create/public_preference_form.dart';
+import 'package:share_calendar/src/features/calendar/presentation/calendar_info/create/title_form.dart';
 
-import '../../../../../application/calendar_provider.dart';
-import '../../../../../domain/calendar.dart';
-import '../../../../../domain/calendar_document.dart';
-import '../../../../form/description_form.dart';
-import '../../../../form/icon_form.dart';
+import '../../../../../common_widgets/application/common_provider.dart';
+import '../../../application/calendar_provider.dart';
+import '../../../domain/calendar.dart';
+import 'description_form.dart';
 
-class CalendarEditForm extends ConsumerWidget{
-  CalendarDocument calendarDoc;
-  CalendarEditForm(this.calendarDoc, {super.key});
+class CalendarForm extends ConsumerWidget{
+  const CalendarForm({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref){
-    Calendar calendar = calendarDoc.calendar!;
+    final user = ref.read(currentUser);
+    Calendar calendar = Calendar(
+      author: user!.uid,
+      title: null,
+      description: null,
+      image: null,
+      publicPreference: true,
+      password: null,
+      created: null,
+      updated: null,
+    );
     Calendar calendarState = ref.watch(calendarStateProvider(calendar));
 
     return Scaffold(
       appBar: AppBar(
         elevation: 3,
-        title: const Text('カレンダー編集'),
+        title: const Text('カレンダー作成'),
         centerTitle: true,
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 20.0),
             child: GestureDetector(
               onTap: calendarState.title == null || calendarState.title!.isEmpty ? null : (){
-                ref.read(calendarStateProvider(calendar).notifier).editCalendar(calendarDoc.docId!)
+                ref.read(calendarStateProvider(calendar).notifier).createCalendar()
                     .then((value){
                       if(value != null){
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -68,13 +77,13 @@ class CalendarEditForm extends ConsumerWidget{
         },
         child: SingleChildScrollView(
           child: Column(
-              children: [
-                IconForm(calendar),
-                CalendarTitleForm(calendar),
-                DescriptionForm(calendar),
-                PublicPreferenceForm(calendar),
-                PasswordForm(calendar)
-              ]
+            children: [
+              IconForm(calendar),
+              CalendarTitleForm(calendar),
+              DescriptionForm(calendar),
+              PublicPreferenceForm(calendar),
+              PasswordForm(calendar)
+            ]
           ),
         ),
       ),

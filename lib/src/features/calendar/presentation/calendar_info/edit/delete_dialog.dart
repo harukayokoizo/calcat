@@ -1,12 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:share_calendar/src/features/event/domain/event_document.dart';
 
-import '../../../../../data/calendar_repositories.dart';
-import '../../../../../data/calendar_user_repositories.dart';
-import '../../../../../domain/calendar_document.dart';
-import '../../../../../domain/calendar_user.dart';
+import '../../../data/calendar_repositories.dart';
+import '../../../data/calendar_user_repositories.dart';
+import '../../../domain/calendar_document.dart';
+import '../../../domain/calendar_user.dart';
+
 
 class CalendarDeleteDialog extends ConsumerWidget{
   CalendarDocument calendarDoc;

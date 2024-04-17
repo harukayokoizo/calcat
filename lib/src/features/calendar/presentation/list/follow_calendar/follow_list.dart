@@ -6,7 +6,7 @@ import '../../../domain/calendar_user.dart';
 import '../../../application/calendar_list_provider.dart';
 import '../../../data/calendar_user_repositories.dart';
 import '../../../domain/calendar_document.dart';
-import '../published_calendar/calendar/edit/delete_dialog.dart';
+import '../../calendar_info/edit/delete_dialog.dart';
 import '../published_calendar/published_calendar_content.dart';
 import 'follow_calendar_content.dart';
 

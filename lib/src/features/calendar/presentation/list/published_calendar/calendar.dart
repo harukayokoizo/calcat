@@ -2,11 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table_calendar/table_calendar.dart';
-import '../../../../application/calendar_list_provider.dart';
-import '../../../../application/event_list_provider.dart';
-import '../../../../domain/calendar_document.dart';
-import '../../../../domain/calendar_event.dart';
-import 'detail/calendar_detail.dart';
+import '../../../application/calendar_list_provider.dart';
+import '../../../application/event_list_provider.dart';
+import '../../../domain/calendar_document.dart';
+import '../../../domain/calendar_event.dart';
+import '../../calendar_info/detail/calendar_detail.dart';
 
 class PublicCalendarPage extends ConsumerWidget{
   PublicCalendarPage(this.calendarDoc, {super.key});
@@ -70,12 +70,13 @@ class PublicCalendarPage extends ConsumerWidget{
                               builder: (context) => CalendarDetail(false, value),
                             ),
                           ).then((value){
-                            if(value){
+                            if(value != null){
                               Navigator.pop(context);
                             }
                           });
                         },
                         child: Container(
+                          height: barSize,
                           width: barSize,
                           clipBehavior: Clip.hardEdge,
                           decoration: const BoxDecoration(
