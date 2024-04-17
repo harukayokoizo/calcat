@@ -33,23 +33,20 @@ class FollowList extends StatefulWidget{
 }
 
 class FollowListState extends State<FollowList> with SingleTickerProviderStateMixin{
-  late final controller = SlidableController(this);
+  //late final controller = SlidableController(this);
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: (){
-        controller.close();
-      },
+    return SlidableAutoCloseBehavior(
       child: ListView.builder(
         itemCount: widget.calendarList.length,
         itemBuilder: (BuildContext context, int index){
           return Slidable(
-              key: const ValueKey(0),
-              controller: controller,
-              endActionPane: ActionPane( // (2)
+              key: ValueKey(index),
+              // controller: controller,
+              endActionPane: ActionPane(
                 extentRatio: 0.25,
-                motion: const ScrollMotion(), // (5)
+                motion: const ScrollMotion(),
                 children: [
                   SlidableAction(
                     onPressed: (_) {
@@ -58,11 +55,7 @@ class FollowListState extends State<FollowList> with SingleTickerProviderStateMi
                         builder: (BuildContext context) {
                           return FollowCalendarDeleteDialog(widget.calendarList[index]);
                         },
-                      ).then((value){
-                        if(value){
-                          controller.close();
-                        }
-                      });
+                      );
                     },
                     backgroundColor: Colors.red,
                     //foregroundColor: Colors.red,
@@ -74,10 +67,6 @@ class FollowListState extends State<FollowList> with SingleTickerProviderStateMi
               child: FollowCalendar(widget.calendarList[index])
           );
         },
-        // children: [
-        //   for(CalendarUser calendarDoc in calendarList)
-        //     FollowCalendar(calendarDoc)
-        // ],
       ),
     );
   }

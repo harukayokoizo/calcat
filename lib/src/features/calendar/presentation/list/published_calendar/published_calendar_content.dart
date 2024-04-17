@@ -36,7 +36,7 @@ class PublishedCalendarContent extends StatelessWidget{
           child: Row(
             children: [
               calendarIcon(calendarDoc.calendar!.image),
-              calendarSummary(calendarDoc.calendar!.title!, calendarDoc.calendar!.description),
+              calendarSummary(calendarDoc.calendar!.title!, calendarDoc.calendar!.description!),
             ],
           ),
         ),
@@ -66,24 +66,24 @@ Widget calendarIcon(String? image){
   );
 }
 
-Widget calendarSummary(String title, String? description){
-  return Padding(
-    padding: const EdgeInsets.all(15.0),
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Flexible(
-          flex: 1,
-          child: Text(title,
-            style: const TextStyle(
-              color: Colors.black,
-              fontSize: 20,
-              //fontWeight: FontWeight.bold,
+Widget calendarSummary(String title, String description){
+  return Expanded(
+    child: Padding(
+      padding: const EdgeInsets.all(15.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Flexible(
+            flex: 1,
+            child: Text(title,
+              style: const TextStyle(
+                color: Colors.black,
+                fontSize: 20,
+                //fontWeight: FontWeight.bold,
+              ),
             ),
           ),
-        ),
-        if(description != null)
           Flexible(
             flex: 2,
             child: Text(description,
@@ -93,8 +93,9 @@ Widget calendarSummary(String title, String? description){
                 //fontWeight: FontWeight.bold,
               ),
             ),
-          ),
-      ],
+          ), 
+        ],
+      ),
     ),
   );
 }

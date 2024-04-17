@@ -26,12 +26,12 @@ class CalendarList extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        for(CalendarDocument calendarDoc in calendarList)
-          PublishedCalendarContent(calendarDoc)
-      ],
-    );
+    print(calendarList);
+    return ListView.builder(
+        itemCount: calendarList.length,
+        itemBuilder: (BuildContext context, int index){
+          return PublishedCalendarContent(calendarList[index]);
+        });
   }
 
 }

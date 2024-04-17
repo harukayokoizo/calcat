@@ -22,7 +22,7 @@ class CalendarIconWidget extends ConsumerWidget{
     return Stack(
       children: [
         Container(
-          height: 200,
+          height: 250,
           width: deviceWidth,
           clipBehavior: Clip.hardEdge,
           decoration: const BoxDecoration(
@@ -33,8 +33,8 @@ class CalendarIconWidget extends ConsumerWidget{
               child: imagePath
           ),
         ),
-        Align(
-          alignment: Alignment.topLeft,
+        Padding(
+          padding: const EdgeInsets.only(top: 10.0),
           child: IconButton(
             icon: const Icon(Icons.arrow_back_ios),
             onPressed: () {

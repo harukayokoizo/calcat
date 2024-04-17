@@ -37,7 +37,7 @@ class FollowCalendarContent extends StatelessWidget{
           child: Row(
             children: [
               calendarIcon(calendarDoc.calendar!.image),
-              calendarSummary(calendarDoc.calendar!.title!, calendarDoc.calendar!.description),
+              calendarSummary(calendarDoc.calendar!.title!, calendarDoc.calendar!.description!),
             ],
           ),
         ),

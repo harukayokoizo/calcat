@@ -17,14 +17,12 @@ class SearchedCalendarContent extends ConsumerWidget{
       padding: const EdgeInsets.only(left: 20, top: 10.0, right: 20.0),
       child: InkWell(
         onTap: (){
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              fullscreenDialog: true,
-              builder: (context) => SelectedCalendar(calendarDoc),
-            ),
+          showCupertinoModalPopup(
+            context: context,
+            builder: (BuildContext context) {
+              return SelectedCalendar(calendarDoc);
+            },
           );
-          //ref.read(selectedCalendarProvider.notifier).selectCalendar(calendarDoc);
         },
         child: Container(
           height: 100,
@@ -40,7 +38,7 @@ class SearchedCalendarContent extends ConsumerWidget{
           child: Row(
             children: [
               calendarIcon(calendarDoc.calendar!.image),
-              calendarSummary(calendarDoc.calendar!.title!, calendarDoc.calendar!.description),
+              calendarSummary(calendarDoc.calendar!.title!, calendarDoc.calendar!.description!),
             ],
           ),
         ),

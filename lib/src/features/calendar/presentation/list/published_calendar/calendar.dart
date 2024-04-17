@@ -64,11 +64,11 @@ class PublicCalendarPage extends ConsumerWidget{
                       padding: const EdgeInsets.only(right: 12.0),
                       child: GestureDetector(
                         onTap: (){
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => CalendarDetail(false, value),
-                            ),
+                          showCupertinoModalPopup(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return CalendarDetail(false, value);
+                            },
                           ).then((value){
                             if(value != null){
                               Navigator.pop(context);

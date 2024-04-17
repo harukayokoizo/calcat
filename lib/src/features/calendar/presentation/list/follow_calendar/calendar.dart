@@ -79,11 +79,17 @@ class FollowCalendarPage extends ConsumerWidget{
                         padding: const EdgeInsets.only(right: 12.0),
                         child: GestureDetector(
                           onTap: (){
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => CalendarDetail(true, value),
-                              ),
+                            // Navigator.push(
+                            //   context,
+                            //   MaterialPageRoute(
+                            //     builder: (context) => CalendarDetail(true, value),
+                            //   ),
+                            // );
+                            showCupertinoModalPopup(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return CalendarDetail(true, value);
+                              },
                             );
                           },
                           child: Container(
