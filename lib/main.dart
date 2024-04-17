@@ -41,6 +41,7 @@ class MyApp extends ConsumerWidget {
         title: 'calendar',
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          //scaffoldBackgroundColor: const Color(0xFFE5E5E5),
           useMaterial3: true,
         ),
         home: userCheck.when(
