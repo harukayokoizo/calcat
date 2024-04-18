@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:share_calendar/src/features/event/presentation/event/detail/location_detail.dart';
 import 'package:share_calendar/src/features/event/presentation/event/detail/title_detail.dart';
+import 'package:share_calendar/src/features/event/presentation/event/detail/url_detail.dart';
 
 
 import '../../../../notification/data/personal_event_notification_repositories.dart';
@@ -45,9 +47,13 @@ class EventDetail extends ConsumerWidget{
             if(event.overview != null)
               OverViewDetail(event),
             EventDateDetail(event),
-            EventColorDetail(event),
+            if(event.url != null)
+              UrlDetail(event),
+            if(event.location != null)
+              LocationDetail(event),
+            // EventColorDetail(event),
             // EventNotificationDetail(event),
-            EventRepeatDetail(event),
+            // EventRepeatDetail(event),
             const SizedBox(height: 100,)
           ],
         ),

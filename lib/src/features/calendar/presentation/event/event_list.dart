@@ -27,6 +27,8 @@ class PublicEventList extends ConsumerWidget{
 
     Map eventList = ref.read(publicEventList(calendarEvent));
     List eventOnDate = eventList[focusedDay] ?? [];
+    eventOnDate.sort((a, b) => a.event!.from!.compareTo(b.event!.from!));
+    eventOnDate.sort((a, b) => (a.event!.isAllDay == b.event!.isAllDay ? 0 : (a.event!.isAllDay! ? -1 : 1)));
 
     return PublicListWidget(repositories, calendarFormat, focusedDayState, date, eventOnDate, focusedDay, followCalendar, calendarDocId);
   }

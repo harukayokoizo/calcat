@@ -13,7 +13,7 @@ class PublishedCalendarContent extends StatelessWidget{
   Widget build(BuildContext context){
     final double deviceWidth = MediaQuery.of(context).size.width;
     return Padding(
-      padding: const EdgeInsets.only(left: 20, top: 15.0, right: 20.0),
+      padding: const EdgeInsets.only(left: 20, top: 10.0, right: 20.0),
       child: InkWell(
         onTap: (){
           Navigator.push(

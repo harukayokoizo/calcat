@@ -15,6 +15,8 @@ abstract class Event with _$Event{
     String? overview,
     String? image,
     int? color,
+    String? url,
+    String? location,
     bool? isAllDay,
     @TimestampConverter() DateTime? from,
     @TimestampConverter() DateTime? to,

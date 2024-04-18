@@ -12,6 +12,8 @@ _$EventImpl _$$EventImplFromJson(Map<String, dynamic> json) => _$EventImpl(
       overview: json['overview'] as String?,
       image: json['image'] as String?,
       color: json['color'] as int?,
+      url: json['url'] as String?,
+      location: json['location'] as String?,
       isAllDay: json['isAllDay'] as bool?,
       from: _$JsonConverterFromJson<Timestamp, DateTime>(
           json['from'], const TimestampConverter().fromJson),
@@ -34,6 +36,8 @@ Map<String, dynamic> _$$EventImplToJson(_$EventImpl instance) =>
       'overview': instance.overview,
       'image': instance.image,
       'color': instance.color,
+      'url': instance.url,
+      'location': instance.location,
       'isAllDay': instance.isAllDay,
       'from': _$JsonConverterToJson<Timestamp, DateTime>(
           instance.from, const TimestampConverter().toJson),

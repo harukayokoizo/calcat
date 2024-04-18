@@ -12,12 +12,6 @@ final eventFormStateProvider = StateNotifierProvider.autoDispose.family<EventFor
         }
 );
 
-// final personalEventEditFormStateProvider = StateNotifierProvider.autoDispose.family<PersonalEventFormState, PersonalEvent, PersonalEvent>(
-//         (ref, event){
-//           return PersonalEventFormState(ref, event);
-//         }
-// );
-
 class EventFormState extends StateNotifier<Event>{
   Ref ref;
   // String uid;
@@ -41,6 +35,16 @@ class EventFormState extends StateNotifier<Event>{
 
   void changeColor(int color){
     final event = state.copyWith(color: color);
+    state = event;
+  }
+
+  void changeUrl(String url){
+    final event = state.copyWith(url: url);
+    state = event;
+  }
+
+  void changeLocation(String location){
+    final event = state.copyWith(location: location);
     state = event;
   }
 
@@ -176,6 +180,8 @@ class EventFormState extends StateNotifier<Event>{
       'overview': state.overview,
       'image': state.image,
       'color': state.color,
+      'url': state.url,
+      'location': state.location,
       'isAllDay': state.isAllDay,
       'from': state.from,
       'to': state.to,

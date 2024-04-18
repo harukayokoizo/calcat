@@ -681,8 +681,9 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
           Widget? markerWidget;
 
           if (events.isNotEmpty) {
-            // events.sort((a,b) => a.event!.from!.compareTo(b.event!.from!));
-            int count = events.length > 3 ? 3 : events.length;
+            events.sort((a, b) => a.event!.from!.compareTo(b.event!.from!));
+            events.sort((a, b) => (a.event!.isAllDay == b.event!.isAllDay ? 0 : (a.event!.isAllDay! ? -1 : 1)));
+            int count = events.length > 4 ? 4 : events.length;
             markerWidget = Consumer(
               builder: (context, ref, _) {
                 final colors = ref.read(colorList);
@@ -690,7 +691,7 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
                   children: [
                     for(var i = 0; i < count; i++)
                       Padding(
-                        padding: const EdgeInsets.all(1.0),
+                        padding: const EdgeInsets.only(left: 2.0),
                         child: SizedBox(
                           height: 16,
                           child: Align(
@@ -699,20 +700,13 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
                               '${events[i].event!.title}',
                               style: TextStyle(
                                 fontSize: 13,
-                                color: Color(colors[events[i].event!.color!]),
+                                color: isOutside ? const Color(0xFFAEAEAE) : Color(colors[events[i].event!.color!]),
                                 fontWeight: FontWeight.bold
                               ),
                             ),
                           ),
                         ),
                       )
-                    // Container(
-                    //   height: 20,
-                    //   decoration: BoxDecoration(
-                    //     color: Colors.red,
-                    //   ),
-                    //   child: Text(events[i] as String),
-                    // )
                   ],
                 );
               }

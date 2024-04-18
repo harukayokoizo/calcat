@@ -25,6 +25,8 @@ mixin _$Event {
   String? get overview => throw _privateConstructorUsedError;
   String? get image => throw _privateConstructorUsedError;
   int? get color => throw _privateConstructorUsedError;
+  String? get url => throw _privateConstructorUsedError;
+  String? get location => throw _privateConstructorUsedError;
   bool? get isAllDay => throw _privateConstructorUsedError;
   @TimestampConverter()
   DateTime? get from => throw _privateConstructorUsedError;
@@ -55,6 +57,8 @@ abstract class $EventCopyWith<$Res> {
       String? overview,
       String? image,
       int? color,
+      String? url,
+      String? location,
       bool? isAllDay,
       @TimestampConverter() DateTime? from,
       @TimestampConverter() DateTime? to,
@@ -85,6 +89,8 @@ class _$EventCopyWithImpl<$Res, $Val extends Event>
     Object? overview = freezed,
     Object? image = freezed,
     Object? color = freezed,
+    Object? url = freezed,
+    Object? location = freezed,
     Object? isAllDay = freezed,
     Object? from = freezed,
     Object? to = freezed,
@@ -117,6 +123,14 @@ class _$EventCopyWithImpl<$Res, $Val extends Event>
           ? _value.color
           : color // ignore: cast_nullable_to_non_nullable
               as int?,
+      url: freezed == url
+          ? _value.url
+          : url // ignore: cast_nullable_to_non_nullable
+              as String?,
+      location: freezed == location
+          ? _value.location
+          : location // ignore: cast_nullable_to_non_nullable
+              as String?,
       isAllDay: freezed == isAllDay
           ? _value.isAllDay
           : isAllDay // ignore: cast_nullable_to_non_nullable
@@ -174,6 +188,8 @@ abstract class _$$EventImplCopyWith<$Res> implements $EventCopyWith<$Res> {
       String? overview,
       String? image,
       int? color,
+      String? url,
+      String? location,
       bool? isAllDay,
       @TimestampConverter() DateTime? from,
       @TimestampConverter() DateTime? to,
@@ -202,6 +218,8 @@ class __$$EventImplCopyWithImpl<$Res>
     Object? overview = freezed,
     Object? image = freezed,
     Object? color = freezed,
+    Object? url = freezed,
+    Object? location = freezed,
     Object? isAllDay = freezed,
     Object? from = freezed,
     Object? to = freezed,
@@ -234,6 +252,14 @@ class __$$EventImplCopyWithImpl<$Res>
           ? _value.color
           : color // ignore: cast_nullable_to_non_nullable
               as int?,
+      url: freezed == url
+          ? _value.url
+          : url // ignore: cast_nullable_to_non_nullable
+              as String?,
+      location: freezed == location
+          ? _value.location
+          : location // ignore: cast_nullable_to_non_nullable
+              as String?,
       isAllDay: freezed == isAllDay
           ? _value.isAllDay
           : isAllDay // ignore: cast_nullable_to_non_nullable
@@ -287,6 +313,8 @@ class _$EventImpl implements _Event {
       this.overview,
       this.image,
       this.color,
+      this.url,
+      this.location,
       this.isAllDay,
       @TimestampConverter() this.from,
       @TimestampConverter() this.to,
@@ -311,6 +339,10 @@ class _$EventImpl implements _Event {
   final String? image;
   @override
   final int? color;
+  @override
+  final String? url;
+  @override
+  final String? location;
   @override
   final bool? isAllDay;
   @override
@@ -337,7 +369,7 @@ class _$EventImpl implements _Event {
 
   @override
   String toString() {
-    return 'Event(uid: $uid, title: $title, overview: $overview, image: $image, color: $color, isAllDay: $isAllDay, from: $from, to: $to, repeat: $repeat, endDate: $endDate, sameEventId: $sameEventId, number: $number, calendarId: $calendarId, notificationExist: $notificationExist, calendarMonth: $calendarMonth)';
+    return 'Event(uid: $uid, title: $title, overview: $overview, image: $image, color: $color, url: $url, location: $location, isAllDay: $isAllDay, from: $from, to: $to, repeat: $repeat, endDate: $endDate, sameEventId: $sameEventId, number: $number, calendarId: $calendarId, notificationExist: $notificationExist, calendarMonth: $calendarMonth)';
   }
 
   @override
@@ -351,6 +383,9 @@ class _$EventImpl implements _Event {
                 other.overview == overview) &&
             (identical(other.image, image) || other.image == image) &&
             (identical(other.color, color) || other.color == color) &&
+            (identical(other.url, url) || other.url == url) &&
+            (identical(other.location, location) ||
+                other.location == location) &&
             (identical(other.isAllDay, isAllDay) ||
                 other.isAllDay == isAllDay) &&
             (identical(other.from, from) || other.from == from) &&
@@ -377,6 +412,8 @@ class _$EventImpl implements _Event {
       overview,
       image,
       color,
+      url,
+      location,
       isAllDay,
       from,
       to,
@@ -409,6 +446,8 @@ abstract class _Event implements Event {
       final String? overview,
       final String? image,
       final int? color,
+      final String? url,
+      final String? location,
       final bool? isAllDay,
       @TimestampConverter() final DateTime? from,
       @TimestampConverter() final DateTime? to,
@@ -432,6 +471,10 @@ abstract class _Event implements Event {
   String? get image;
   @override
   int? get color;
+  @override
+  String? get url;
+  @override
+  String? get location;
   @override
   bool? get isAllDay;
   @override

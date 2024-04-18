@@ -8,10 +8,12 @@ import '../../../domain/event_document.dart';
 import '../../../domain/event.dart';
 import '../registration/color_form.dart';
 import '../registration/date_form.dart';
+import '../registration/location_form.dart';
 import '../registration/notification_form.dart';
 import '../registration/overview_form.dart';
 import '../registration/repeat_form.dart';
 import '../registration/title_form.dart';
+import '../registration/url_form.dart';
 
 
 class EventEdit extends ConsumerWidget{
@@ -36,6 +38,7 @@ class EventEdit extends ConsumerWidget{
     return SizedBox(
       height: deviceHeight,
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           automaticallyImplyLeading: false,
           leading: IconButton(
@@ -63,6 +66,8 @@ class EventEdit extends ConsumerWidget{
               TitleForm(event),
               OverViewForm(event),
               DateSettingFormat(event),
+              UrlForm(event),
+              LocationForm(event),
               ColorForm(event),
               // NotificationForm(event),
               Visibility(

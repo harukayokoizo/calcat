@@ -48,10 +48,13 @@ class FollowCalendarPage extends ConsumerWidget{
             valueListenable: _focusedDayValue,
             builder: (context, value, _) {
               String title = '${value.year}年${value.month}月';
-              return Text(title);
+              return Text(title,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold
+              ),);
             }),
         bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(30.0),
+          preferredSize: const Size.fromHeight(20.0),
           child: Row(
             children: [
               for(int i=0; i<7; i++)

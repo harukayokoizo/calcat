@@ -4,12 +4,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:share_calendar/src/features/event/application/event_list_provider.dart';
 import 'package:share_calendar/src/features/event/presentation/event/registration/repeat_form.dart';
 import 'package:share_calendar/src/features/event/presentation/event/registration/title_form.dart';
+import 'package:share_calendar/src/features/event/presentation/event/registration/url_form.dart';
 
 import '../../../../../common_widgets/application/common_provider.dart';
 import '../../../application/event_provider.dart';
 import '../../../domain/event.dart';
 import 'color_form.dart';
 import 'date_form.dart';
+import 'location_form.dart';
 import 'notification_form.dart';
 import 'overview_form.dart';
 
@@ -28,6 +30,8 @@ class EventRegistration extends ConsumerWidget{
         overview: null,
         image: null,
         color: 8,
+        url: null,
+        location: null,
         isAllDay: true,
         from: focusedDay,
         to: focusedDay,
@@ -41,6 +45,7 @@ class EventRegistration extends ConsumerWidget{
     );
     ref.watch(eventFormStateProvider(event));
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         elevation: 5,
         titleTextStyle: const TextStyle(
@@ -61,22 +66,22 @@ class EventRegistration extends ConsumerWidget{
             TitleForm(event),
             OverViewForm(event),
             DateSettingFormat(event),
+            UrlForm(event),
+            LocationForm(event),
             ColorForm(event),
             //NotificationForm(event),
             RepeatForm(event),
-            const Expanded(
-              child: SizedBox(),
-            ),
+            const Expanded(child: SizedBox(),),
             Padding(
-              padding: const EdgeInsets.only(bottom: 10.0, right: 20.0),
+              padding: const EdgeInsets.only(bottom: 10.0, right: 10.0),
               child: Align(
-                  alignment: Alignment.centerRight,
-                  child: SaveEventButton(event, repositories),
+                alignment: Alignment.centerRight,
+                child: SaveEventButton(event, repositories),
               ),
             )
           ],
         ),
-      ),
+      )
     );
   }
 }

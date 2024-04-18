@@ -7,9 +7,11 @@ import '../../../event/domain/event.dart';
 import '../../../event/domain/event_document.dart';
 import '../../../event/presentation/event/detail/color_detail.dart';
 import '../../../event/presentation/event/detail/date_detail.dart';
+import '../../../event/presentation/event/detail/location_detail.dart';
 import '../../../event/presentation/event/detail/notification_detail.dart';
 import '../../../event/presentation/event/detail/overview_detail.dart';
 import '../../../event/presentation/event/detail/repeat_detail.dart';
+import '../../../event/presentation/event/detail/url_detail.dart';
 import '../../../event/presentation/event/edit/delete_action_button.dart';
 import '../../../event/presentation/event/edit/edit_action_button.dart';
 import '../../../notification/data/public_event_notification_repositories.dart';
@@ -43,9 +45,13 @@ class PublicEventDetail extends ConsumerWidget{
             if(event.overview != null)
               OverViewDetail(event),
             EventDateDetail(event),
-            EventColorDetail(event),
-            // EventNotificationDetail(event),
-            EventRepeatDetail(event),
+            if(event.url != null)
+              UrlDetail(event),
+            if(event.location != null)
+              LocationDetail(event),
+            // EventColorDetail(event),
+            // // EventNotificationDetail(event),
+            // EventRepeatDetail(event),
             const SizedBox(height: 100,)
           ],
         ),
