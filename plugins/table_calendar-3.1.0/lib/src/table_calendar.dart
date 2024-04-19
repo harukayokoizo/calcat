@@ -652,6 +652,8 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
         final isToday = isSameDay(day, widget.currentDay);
         final isDisabled = _isDayDisabled(day);
         final isWeekend = _isWeekend(day, weekendDays: widget.weekendDays);
+        final isSaturday = _isSaturday(day);
+        final isSunday = _isSunday(day);
 
         Widget content = CellContent(
           key: ValueKey('CellContent-${day.year}-${day.month}-${day.day}'),
@@ -668,6 +670,8 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
           isOutside: isOutside,
           isDisabled: isDisabled,
           isWeekend: isWeekend,
+          isSaturday: isSaturday,
+          isSunday: isSunday,
           isHoliday: widget.holidayPredicate?.call(day) ?? false,
           locale: widget.locale,
         );
@@ -809,6 +813,20 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
     DateTime day, {
     List<int> weekendDays = const [DateTime.saturday, DateTime.sunday],
   }) {
+    return weekendDays.contains(day.weekday);
+  }
+
+  bool _isSaturday(
+      DateTime day, {
+        List<int> weekendDays = const [DateTime.saturday],
+      }) {
+    return weekendDays.contains(day.weekday);
+  }
+
+  bool _isSunday(
+      DateTime day, {
+        List<int> weekendDays = const [DateTime.sunday],
+      }) {
     return weekendDays.contains(day.weekday);
   }
 }

@@ -21,14 +21,19 @@ class SearchCalendarList extends ConsumerWidget{
                 itemBuilder: (BuildContext context, int index) {
                   String? title = calendarList[index].calendar!.title!;
                   return ListTile(
-                      onTap: (){
-                        FocusScope.of(context).requestFocus(FocusNode());
-                        ref.read(searchValue.notifier).tapSearchValue(title);
-                        ref.read(searchResultsProvider.notifier).searchCalendar(title).then((value){
-                          ref.read(resultPage.notifier).resultPage(true);
-                        });
-                      },
-                      title: Text(title)
+                    leading: const Icon(Icons.search),
+                    trailing: Transform.rotate(
+                      angle: -45,
+                      child: const Icon(Icons.arrow_upward, color: Colors.blue,),
+                    ),
+                    onTap: (){
+                      FocusScope.of(context).requestFocus(FocusNode());
+                      ref.read(searchValue.notifier).tapSearchValue(title);
+                      ref.read(searchResultsProvider.notifier).searchCalendar(title).then((value){
+                        ref.read(resultPage.notifier).resultPage(true);
+                      });
+                    },
+                    title: Text(title),
                   );
                 });
           }else{

@@ -17,7 +17,7 @@ class ColorSettingsPage extends ConsumerWidget{
     return Scaffold(
       appBar: AppBar(
         elevation: 5,
-        title: Text('色設定'),
+        title: const Text('色設定'),
         centerTitle: true,
         actions: [
           TextButton(
@@ -31,7 +31,7 @@ class ColorSettingsPage extends ConsumerWidget{
                 "保存",
                 style: TextStyle(
                     fontSize: 20,
-                    color: Colors.grey,
+                    color: Colors.blue,
                     fontWeight: FontWeight.w700
                 ),
               ),

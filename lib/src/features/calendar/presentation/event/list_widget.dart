@@ -33,104 +33,146 @@ class PublicListWidget extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Flexible(
-          flex: 1,
-          child: Padding(
-            padding: const EdgeInsets.only(top: 10.0, left: 20.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  date,
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                IconButton(
-                  onPressed: (){
-                    calendarFormat.state = CalendarFormat.month;
-                  },
-                  icon: const Icon(
-                      Icons.clear
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-        if(eventOnDate.isNotEmpty)
-          Flexible(
-            flex: 5,
-            child: Align(
-              alignment: Alignment.topCenter,
-              child: LayoutBuilder(
-                  builder: (context, constraint) {
-                    return SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          for(EventDocument eventDoc in eventOnDate)
-                            InkWell(
-                                onTap: (){
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      fullscreenDialog: true,
-                                      builder: (context) => PublicEventDetail(eventDoc, repositories, followCalendar),
-                                    ),
-                                  );
-                                },
-                                child: EventTile(eventDoc.event!, focusedDay)
-                            )
-                        ],
+    return GestureDetector(
+      onHorizontalDragUpdate: (details) {},
+      onHorizontalDragEnd: (details){
+        if(details.primaryVelocity! < 0.0){
+          final nextDate = focusedDay.add(const Duration(days: 1));
+          focusedDayState.saveState(focusedDay: nextDate);
+        }
+        if(details.primaryVelocity! > 0.0){
+          final previousDate = focusedDay.subtract(const Duration(days: 1));
+          focusedDayState.saveState(focusedDay: previousDate);
+        }
+      },
+      child: Scaffold(
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Flexible(
+              flex: 1,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 10.0, left: 20.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      date,
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
                       ),
-                    );
-                  }
+                    ),
+                    IconButton(
+                      onPressed: (){
+                        calendarFormat.state = CalendarFormat.month;
+                      },
+                      icon: const Icon(
+                          Icons.clear
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-          )
-        else
-          const Center(child: Text('予定はありません。', style: TextStyle(fontWeight: FontWeight.bold),)),
-
-        Flexible(
-          flex: 1,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              IconButton(
-                  onPressed: (){
-                    final previousDate = focusedDay.subtract(const Duration(days: 1));
-                    focusedDayState.saveState(focusedDay: previousDate);
-                  },
-                  icon: const Icon(Icons.arrow_back_ios_new)
-              ),
-              if(!followCalendar)
-                IconButton(
-                  onPressed: (){
-                    showCupertinoModalPopup(
-                        context: context,
-                        builder: (BuildContext context) => EventRegistration(focusedDayState.state, repositories, calendarId)
-                    );
-                  },
-                  icon: const Icon(Icons.add,color: Colors.white,),
-                  style: IconButton.styleFrom(
-                    backgroundColor: Colors.deepPurple,
-                  ),
+            Flexible(
+              flex: 5,
+              child: Align(
+                alignment: Alignment.topCenter,
+                child: LayoutBuilder(
+                    builder: (context, constraint) {
+                      return SizedBox(
+                        height: constraint.maxHeight,
+                        width: constraint.maxWidth,
+                        child: SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              if(eventOnDate.isEmpty)
+                                SizedBox(
+                                  height: constraint.maxHeight,
+                                  width: constraint.maxWidth,
+                                  child: const Padding(
+                                    padding: EdgeInsets.only(left: 20.0),
+                                    child: Text(
+                                      '予定はありません。',
+                                      style: TextStyle(fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                ),
+                              if(eventOnDate.isNotEmpty)
+                                for(EventDocument eventDoc in eventOnDate)
+                                  InkWell(
+                                      onTap: (){
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            fullscreenDialog: true,
+                                            builder: (context) => PublicEventDetail(eventDoc, repositories, followCalendar),
+                                          ),
+                                        );
+                                      },
+                                      child: EventTile(eventDoc.event!, focusedDay)
+                                  )
+                            ],
+                          ),
+                        ),
+                      );
+                    }
                 ),
-              IconButton(
-                  onPressed: (){
-                    final nextDate = focusedDay.add(const Duration(days: 1));
-                    focusedDayState.saveState(focusedDay: nextDate);
-                  },
-                  icon: const Icon(Icons.arrow_forward_ios)
               ),
-            ],
-          ),
-        )
-      ],
+            ),
+
+            // Flexible(
+            //   flex: 1,
+            //   child: Row(
+            //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //     children: [
+            //       IconButton(
+            //           onPressed: (){
+            //             final previousDate = focusedDay.subtract(const Duration(days: 1));
+            //             focusedDayState.saveState(focusedDay: previousDate);
+            //           },
+            //           icon: const Icon(Icons.arrow_back_ios_new)
+            //       ),
+            //       if(!followCalendar)
+            //         IconButton(
+            //           onPressed: (){
+            //             showCupertinoModalPopup(
+            //                 context: context,
+            //                 builder: (BuildContext context) => EventRegistration(focusedDayState.state, repositories, calendarId)
+            //             );
+            //           },
+            //           icon: const Icon(Icons.add,color: Colors.white,),
+            //           style: IconButton.styleFrom(
+            //             backgroundColor: Colors.deepPurple,
+            //           ),
+            //         ),
+            //       IconButton(
+            //           onPressed: (){
+            //             final nextDate = focusedDay.add(const Duration(days: 1));
+            //             focusedDayState.saveState(focusedDay: nextDate);
+            //           },
+            //           icon: const Icon(Icons.arrow_forward_ios)
+            //       ),
+            //     ],
+            //   ),
+            // )
+          ],
+        ),
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: Colors.purple.shade400,
+          heroTag: "add calendar",
+          shape: const CircleBorder(),
+          child: const Icon(Icons.add, color: Colors.white),
+          //backgroundColor: Colors.blue[200],
+          onPressed: (){
+            showCupertinoModalPopup(
+                context: context,
+                builder: (BuildContext context) => EventRegistration(focusedDayState.state, repositories, calendarId)
+            );
+          },
+        ),
+      ),
     );
   }
 

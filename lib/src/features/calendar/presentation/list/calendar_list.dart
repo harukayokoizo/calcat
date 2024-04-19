@@ -12,26 +12,45 @@ class AllCalendarList extends StatelessWidget{
     return DefaultTabController(
         length: 2,
         child: Scaffold(
-          appBar: AppBar(
-            elevation: 3,
-              title: const Text('カレンダー一覧'),
-              centerTitle: true,
-            bottom : const TabBar(
-              tabs: [
-                Tab(text: 'フォローリスト'),
-                Tab(text: '公開カレンダー'),
+          body: NestedScrollView(
+            headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+              return [
+                const SliverAppBar(
+                  toolbarHeight: 0,
+                  excludeHeaderSemantics: true,
+                  forceElevated: true,
+                  // centerTitle: true,
+                  // title: Text(
+                  //   'カレンダー一覧',
+                  //   style: TextStyle(
+                  //     fontWeight: FontWeight.bold,
+                  //   ),
+                  // ),
+                  pinned: true,
+                  floating: true,
+                  snap: true,
+                  bottom: TabBar(
+                    tabs: [
+                      Tab(text: 'フォローリスト'),
+                      Tab(text: '作成リスト'),
+                    ],
+                  ),
+                  // bottom:
+                ),
+              ];
+            },
+            body: const TabBarView(
+              children: [
+                FollowCalendarList(),
+                PublishedCalendarList(),
               ],
-            )
-          ),
-          body: const TabBarView(
-            children: [
-              FollowCalendarList(),
-              PublishedCalendarList()
-            ],
+            ),
           ),
           floatingActionButton: FloatingActionButton(
+            backgroundColor: Colors.purple.shade400,
+            shape: const CircleBorder(),
             heroTag: "add calendar",
-            child: Icon(Icons.add),
+            child: const Icon(Icons.add, color: Colors.white),
             //backgroundColor: Colors.blue[200],
             onPressed: () async {
               showCupertinoModalPopup(
@@ -40,7 +59,39 @@ class AllCalendarList extends StatelessWidget{
               );
             },
           ),
-        )
+        ),
+          // appBar: AppBar(
+          //   backgroundColor: Color(0xFFFFFFFF),
+          //   elevation: 3,
+          //   title: Text(
+          //       'カレンダー一覧',
+          //     style: TextStyle(
+          //       color: Color(0xFFFFFFFF).computeLuminance() < 0.5 ? Colors.white : Colors.black,
+          //       fontWeight: FontWeight.bold,
+          //     ),
+          //   ),
+          //   centerTitle: true,
+          //   bottom : TabBar(
+          //     unselectedLabelColor: Color(0xFFFFFFFF).computeLuminance() < 0.5 ? Colors.white : Colors.black,
+          //     labelColor: Color(0xFFFFFFFF).computeLuminance() < 0.5 ? Colors.white : Colors.black,
+          //     tabs: const [
+          //       Tab(
+          //         text: 'フォローリスト',
+          //         iconMargin: EdgeInsets.only(bottom: 0.0),
+          //       ),
+          //       Tab(
+          //         text: '作成リスト',
+          //         iconMargin: EdgeInsets.only(bottom: 0.0),
+          //       ),
+          //     ],
+          //   )
+          // ),
+          // body: const TabBarView(
+          //   children: [
+          //     FollowCalendarList(),
+          //     PublishedCalendarList()
+          //   ],
+          // ),
     );
   }
 }

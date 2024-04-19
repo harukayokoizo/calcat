@@ -115,6 +115,10 @@ class CalendarStyle {
   /// as well as dates that are outside of the bounds set up by `firstDay` and `lastDay`.
   final TextStyle disabledTextStyle;
 
+  final TextStyle isSaturdayTextStyle;
+
+  final TextStyle isSundayTextStyle;
+
   /// Decoration for day cells that have been disabled.
   ///
   /// This refers to dates disabled by returning false in `enabledDayPredicate`,
@@ -210,6 +214,8 @@ class CalendarStyle {
     this.outsideTextStyle = const TextStyle(color: const Color(0xFFAEAEAE)),
     this.outsideDecoration = const BoxDecoration(shape: BoxShape.circle),
     this.disabledTextStyle = const TextStyle(color: const Color(0xFFBFBFBF)),
+    this.isSaturdayTextStyle = const TextStyle(color: const Color(0xFF0066FF)),
+    this.isSundayTextStyle = const TextStyle(color: const Color(0xFFFF0000)),
     this.disabledDecoration = const BoxDecoration(shape: BoxShape.circle),
     this.holidayTextStyle = const TextStyle(color: const Color(0xFF5C6BC0)),
     this.holidayDecoration = const BoxDecoration(

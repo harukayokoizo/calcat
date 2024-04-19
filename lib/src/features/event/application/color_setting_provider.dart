@@ -5,15 +5,15 @@ import '../domain/event.dart';
 
 final colorList = StateProvider<List<int>>(
         (ref) => [
-          0xFFADFF2F,
-          0xFF32CD32,
-          0xFF00BFFF,
-          0xFF1E90FF,
-          0xFFFF69B4,
-          0xFFFF0000,
-          0xFFA9A9A9,
-          0xFF808080,
-          0xFF000000,
+          0xFFFF0000,//赤
+          0xFFFF8000,//オレンジ
+          0xFF32CD32,//緑
+          0xFF00BFFF,//水色
+          0xFF1E90FF,//青色
+          0xFFb300ff,//紫色
+          0xFFFF69B4,//ピンク
+          0xFF808080,//灰色
+          0xFF000000,//黒
         ]
 );
 

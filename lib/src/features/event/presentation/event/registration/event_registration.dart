@@ -29,7 +29,7 @@ class EventRegistration extends ConsumerWidget{
         title: null,
         overview: null,
         image: null,
-        color: 8,
+        color: 7,
         url: null,
         location: null,
         isAllDay: true,

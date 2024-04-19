@@ -14,7 +14,7 @@ class FollowCalendarContent extends StatelessWidget{
   Widget build(BuildContext context){
     final double deviceWidth = MediaQuery.of(context).size.width;
     return Padding(
-      padding: const EdgeInsets.only(left: 20, top: 10.0, right: 20.0),
+      padding: const EdgeInsets.only(left: 20, top: 0.0, right: 20.0, bottom: 10.0),
       child: InkWell(
         onTap: (){
           Navigator.push(
@@ -27,7 +27,7 @@ class FollowCalendarContent extends StatelessWidget{
           height: 100,
           width: deviceWidth,
           decoration: BoxDecoration(
-            //color: Colors.blue,
+            color: Colors.white,
             border: const Border(
                 bottom: BorderSide(width: 1.5, color: Color(0xFFCCCCCC)),
                 right: BorderSide(width: 1.5, color: Color(0xFFCCCCCC))

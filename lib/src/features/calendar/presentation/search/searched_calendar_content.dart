@@ -28,7 +28,7 @@ class SearchedCalendarContent extends ConsumerWidget{
           height: 100,
           width: deviceWidth,
           decoration: BoxDecoration(
-            //color: Colors.blue,
+            color: Colors.white,
             border: const Border(
                 bottom: BorderSide(width: 1.5, color: Color(0xFFCCCCCC)),
                 right: BorderSide(width: 1.5, color: Color(0xFFCCCCCC))

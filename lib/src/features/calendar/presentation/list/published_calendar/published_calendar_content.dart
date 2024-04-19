@@ -13,7 +13,7 @@ class PublishedCalendarContent extends StatelessWidget{
   Widget build(BuildContext context){
     final double deviceWidth = MediaQuery.of(context).size.width;
     return Padding(
-      padding: const EdgeInsets.only(left: 20, top: 10.0, right: 20.0),
+      padding: const EdgeInsets.only(left: 20, top: 0.0, right: 20.0, bottom: 10.0),
       child: InkWell(
         onTap: (){
           Navigator.push(
@@ -26,12 +26,20 @@ class PublishedCalendarContent extends StatelessWidget{
           height: 100,
           width: deviceWidth,
           decoration: BoxDecoration(
-            //color: Colors.blue,
+            color: Colors.white,
             border: const Border(
               bottom: BorderSide(width: 1.5, color: Color(0xFFCCCCCC)),
               right: BorderSide(width: 1.5, color: Color(0xFFCCCCCC)),
             ),
             borderRadius: BorderRadius.circular(10),
+            // boxShadow: [
+            //   BoxShadow(
+            //     color: Colors.grey.withOpacity(0.7), // 影の色
+            //     spreadRadius: 1, // スプレッド半径
+            //     blurRadius: 2, // ぼかし半径
+            //     offset: const Offset(0, 1), // オフセット（x, y）
+            //   ),
+            // ],
           ),
           child: Row(
             children: [

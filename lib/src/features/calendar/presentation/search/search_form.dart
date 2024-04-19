@@ -24,6 +24,8 @@ class SearchForm extends ConsumerWidget{
             child: TextFormField(
               controller: controller,
               decoration: InputDecoration(
+                fillColor: Color(0xFFE5E5E5),
+                  filled: true,
                   prefixIcon: const Icon(Icons.search),
                   suffixIcon: IconButton(
                     onPressed: (){
@@ -39,7 +41,8 @@ class SearchForm extends ConsumerWidget{
                   ),
                   hintText: '検索',
                   border: const OutlineInputBorder(
-                    borderRadius: BorderRadius.horizontal(left: Radius.circular(30), right: Radius.circular(30))
+                    borderRadius: BorderRadius.horizontal(left: Radius.circular(30), right: Radius.circular(30)),
+                    borderSide: BorderSide.none
                   )
               ),
               onChanged: (value){

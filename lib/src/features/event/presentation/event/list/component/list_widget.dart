@@ -30,7 +30,6 @@ class ListWidget extends StatelessWidget{
     return GestureDetector(
       onHorizontalDragUpdate: (details) {},
       onHorizontalDragEnd: (details){
-        print(details.primaryVelocity!);
         if(details.primaryVelocity! < 0.0){
           final nextDate = focusedDay.add(const Duration(days: 1));
           focusedDayState.saveState(focusedDay: nextDate);
@@ -118,19 +117,20 @@ class ListWidget extends StatelessWidget{
             ),
           ],
         ),
-        floatingActionButton: IconButton(
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: Colors.purple.shade400,
+          heroTag: "add calendar",
+          shape: const CircleBorder(),
+          child: const Icon(Icons.add, color: Colors.white),
+          //backgroundColor: Colors.blue[200],
           onPressed: (){
             showCupertinoModalPopup(
                 context: context,
                 builder: (BuildContext context) => EventRegistration(focusedDayState.state, repositories, null)
             );
           },
-          icon: const Icon(Icons.add,color: Colors.white,),
-          style: IconButton.styleFrom(
-            backgroundColor: Colors.deepPurple,
-          ),
         ),
-      ),
+      )
     );
   }
 

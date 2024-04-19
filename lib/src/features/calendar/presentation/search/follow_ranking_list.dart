@@ -19,11 +19,11 @@ class FollowRankingList extends ConsumerWidget{
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Padding(
-                  padding: EdgeInsets.only(left: 16.0, top: 20.0, bottom: 10.0),
+                  padding: EdgeInsets.only(left: 20.0, top: 20.0, bottom: 10.0),
                   child: Text(
-                    'フォロー数ランキング',
+                    'Topカレンダー',
                     style: TextStyle(
-                      fontSize: 18,
+                      fontSize: 24,
                       fontWeight: FontWeight.bold,
                     ),
                   ),

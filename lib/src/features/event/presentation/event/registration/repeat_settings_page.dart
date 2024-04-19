@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
@@ -20,7 +22,7 @@ class RepeatSettingsPage extends ConsumerWidget{
     return Scaffold(
       appBar: AppBar(
         elevation: 5,
-        title: Text('繰り返し設定'),
+        title: const Text('繰り返し設定'),
         centerTitle: true,
         actions: [
           TextButton(
@@ -35,7 +37,7 @@ class RepeatSettingsPage extends ConsumerWidget{
                 "保存",
                 style: TextStyle(
                     fontSize: 20,
-                    color: Colors.grey,
+                    color: Colors.blue,
                     fontWeight: FontWeight.w700
                 ),
               ),
@@ -47,13 +49,13 @@ class RepeatSettingsPage extends ConsumerWidget{
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Padding(
-            padding: EdgeInsets.all(8.0),
+            padding: EdgeInsets.only(top: 10.0, left: 8.0, bottom: 10.0),
             child: Text(
-              '頻度を設定',
+              '頻度',
               style: TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
-                  fontSize: 18
+                  fontSize: 20
               ),
             ),
           ),
@@ -61,75 +63,68 @@ class RepeatSettingsPage extends ConsumerWidget{
             shrinkWrap: true,
             itemCount: 3,
             itemBuilder: (BuildContext context, int index){
-              bool value = index == check ? true : false;
+              int value = index == check ? 1 : 0;
               return Container(
                 //height: 60,
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   border: Border(
-                      top: BorderSide(color: Colors.grey, width: 1.0),
-                      bottom: BorderSide(color: Colors.grey, width: 1.0)
+                      top: index == 0 ? const BorderSide(color: Colors.grey, width: 1.0) : BorderSide.none,
+                      bottom: const BorderSide(color: Colors.grey, width: 1.0)
                   ),
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 10.0, right: 10.0),
-                  child: Row(
-                    children: [
-                      Text(
-                        repeat[index],
-                        style: const TextStyle(
-                            fontSize: 16,
-                            //fontWeight: FontWeight.bold
-                        ),
-                      ),
-                      const Expanded(
-                        child: SizedBox(),
-                      ),
-                      Checkbox(
-                        value: value,
-                        onChanged: (value){
-                          ref.read(repeatCheck(event).notifier).state = index;
-                        },
-                        shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10))
-                        ),
-                      ),
-                    ],
+                child: RadioListTile(
+                  title: Text(
+                    repeat[index],
+                    style: const TextStyle(
+                      fontSize: 16,
+                      //fontWeight: FontWeight.bold
+                    ),
                   ),
+                  value: value,
+                  groupValue: 1,
+                  controlAffinity: ListTileControlAffinity.trailing,
+                  //contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 16.0),
+                  onChanged: (value) {
+                    ref.read(repeatCheck(event).notifier).state = index;
+                  },
                 ),
               );
             }
           ),
           const Padding(
-            padding: EdgeInsets.all(8.0),
+            padding: EdgeInsets.only(top:20.0, left: 8.0),
             child: Text(
-              '終了日を設定',
+              '終了日',
               style: TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
-                  fontSize: 18
+                  fontSize: 20
               ),
             ),
           ),
-          Align(
-            alignment: Alignment.center,
-            child: TextButton(
-              onPressed: () {
-                DatePicker.showDatePicker(context,
-                    showTitleActions: true,
-                    minTime: personalEvent.from!,
-                    maxTime: DateTime(2050, 12, 31),
-                    onConfirm: (date) {
-                      ref.read(repeatEndDate(event).notifier).state = date;
-                    },
-                    currentTime: endDate,
-                    locale: LocaleType.jp
-                );
-              },
-              child: Text(
-                '${endDate.year}年${endDate.month}月${endDate.day}日',
-                style: TextStyle(
-                  color: Colors.blue,
-                  fontSize: 30,
+          Padding(
+            padding: const EdgeInsets.only(top: 10.0),
+            child: Align(
+              alignment: Alignment.center,
+              child: TextButton(
+                onPressed: () {
+                  showDatePicker(
+                      initialDate: personalEvent.from!.add(const Duration(days: 7)),
+                      firstDate: personalEvent.from!,
+                      lastDate: DateTime(2050,1,1),
+                      context: context,
+                  ).then((picked){
+                    if(picked != null){
+                      ref.read(repeatEndDate(event).notifier).state = picked;
+                    }
+                  });
+                },
+                child: Text(
+                  '${endDate.year}年${endDate.month}月${endDate.day}日',
+                  style: const TextStyle(
+                    color: Colors.blue,
+                    fontSize: 30,
+                  ),
                 ),
               ),
             ),
