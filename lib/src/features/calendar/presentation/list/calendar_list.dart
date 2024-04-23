@@ -47,7 +47,7 @@ class AllCalendarList extends StatelessWidget{
             ),
           ),
           floatingActionButton: FloatingActionButton(
-            backgroundColor: Colors.purple.shade400,
+            backgroundColor: Colors.blue.shade500,
             shape: const CircleBorder(),
             heroTag: "add calendar",
             child: const Icon(Icons.add, color: Colors.white),

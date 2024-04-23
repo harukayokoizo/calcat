@@ -121,46 +121,10 @@ class PublicListWidget extends StatelessWidget{
                 ),
               ),
             ),
-
-            // Flexible(
-            //   flex: 1,
-            //   child: Row(
-            //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //     children: [
-            //       IconButton(
-            //           onPressed: (){
-            //             final previousDate = focusedDay.subtract(const Duration(days: 1));
-            //             focusedDayState.saveState(focusedDay: previousDate);
-            //           },
-            //           icon: const Icon(Icons.arrow_back_ios_new)
-            //       ),
-            //       if(!followCalendar)
-            //         IconButton(
-            //           onPressed: (){
-            //             showCupertinoModalPopup(
-            //                 context: context,
-            //                 builder: (BuildContext context) => EventRegistration(focusedDayState.state, repositories, calendarId)
-            //             );
-            //           },
-            //           icon: const Icon(Icons.add,color: Colors.white,),
-            //           style: IconButton.styleFrom(
-            //             backgroundColor: Colors.deepPurple,
-            //           ),
-            //         ),
-            //       IconButton(
-            //           onPressed: (){
-            //             final nextDate = focusedDay.add(const Duration(days: 1));
-            //             focusedDayState.saveState(focusedDay: nextDate);
-            //           },
-            //           icon: const Icon(Icons.arrow_forward_ios)
-            //       ),
-            //     ],
-            //   ),
-            // )
           ],
         ),
         floatingActionButton: FloatingActionButton(
-          backgroundColor: Colors.purple.shade400,
+          backgroundColor: Colors.blue.shade500,
           heroTag: "add calendar",
           shape: const CircleBorder(),
           child: const Icon(Icons.add, color: Colors.white),

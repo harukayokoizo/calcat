@@ -7,6 +7,7 @@ import '../../../event/domain/event.dart';
 import '../../../event/domain/event_document.dart';
 import '../../../event/presentation/event/detail/color_detail.dart';
 import '../../../event/presentation/event/detail/date_detail.dart';
+import '../../../event/presentation/event/detail/floationg_action_button.dart';
 import '../../../event/presentation/event/detail/location_detail.dart';
 import '../../../event/presentation/event/detail/notification_detail.dart';
 import '../../../event/presentation/event/detail/overview_detail.dart';
@@ -26,6 +27,7 @@ class PublicEventDetail extends ConsumerWidget{
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    bool public = true;
     Event event = eventDoc.event!;
     return Scaffold(
       appBar: AppBar(
@@ -56,22 +58,25 @@ class PublicEventDetail extends ConsumerWidget{
           ],
         ),
       ),
-      floatingActionButton: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          NotificationButton(eventDoc, true),
-          if(!followCalendar)
-            Padding(
-              padding: const EdgeInsets.only(left: 8.0),
-              child: DeleteActionButton(eventDoc, repositories),
-            ),
-          if(!followCalendar)
-            Padding(
-                padding: const EdgeInsets.only(left: 8.0),
-                child: EditActionButton(eventDoc, repositories)
-            ),
-        ],
-      ),
+      floatingActionButton: followCalendar
+          ? NotificationButton(eventDoc, true)
+          : PersonalEventFloatingButton(eventDoc, repositories, public),
+      // Row(
+      //   mainAxisAlignment: MainAxisAlignment.end,
+      //   children: [
+      //     NotificationButton(eventDoc, true),
+      //     if(!followCalendar)
+      //       Padding(
+      //         padding: const EdgeInsets.only(left: 8.0),
+      //         child: DeleteActionButton(eventDoc, repositories),
+      //       ),
+      //     if(!followCalendar)
+      //       Padding(
+      //           padding: const EdgeInsets.only(left: 8.0),
+      //           child: EditActionButton(eventDoc, repositories)
+      //       ),
+      //   ],
+      // ),
     );
   }
 }

@@ -45,7 +45,7 @@ class SearchPage extends ConsumerWidget{
           }
         ),
         floatingActionButton: FloatingActionButton(
-          backgroundColor: Colors.purple.shade400,
+          backgroundColor: Colors.blue.shade500,
           shape: const CircleBorder(),
           heroTag: "search",
           child: const Icon(Icons.search, color: Colors.white),

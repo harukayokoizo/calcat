@@ -118,7 +118,7 @@ class ListWidget extends StatelessWidget{
           ],
         ),
         floatingActionButton: FloatingActionButton(
-          backgroundColor: Colors.purple.shade400,
+          backgroundColor: Colors.blue.shade500,
           heroTag: "add calendar",
           shape: const CircleBorder(),
           child: const Icon(Icons.add, color: Colors.white),

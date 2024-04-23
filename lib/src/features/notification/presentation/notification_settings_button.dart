@@ -28,6 +28,7 @@ class NotificationButtonState extends State<NotificationButton>{
   Widget build(BuildContext context){
     return FloatingActionButton(
         heroTag: "notification_delete",
+        shape: const CircleBorder(),
         child: notification ? const Icon(Icons.notifications_active) : const Icon(Icons.notifications_off_outlined),
         onPressed: () async {
           showCupertinoModalPopup(
