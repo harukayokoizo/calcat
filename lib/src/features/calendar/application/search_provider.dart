@@ -6,17 +6,17 @@ import '../../search_value/data/search_value_repositories.dart';
 import '../data/calendar_repositories.dart';
 import '../domain/calendar_document.dart';
 
-final focusState = StateNotifierProvider<FocusSwitch, bool>(
-        (ref) => FocusSwitch()
-);
-
-class FocusSwitch extends StateNotifier<bool>{
-  FocusSwitch() : super(false);
-
-  void switchState(bool value){
-    state = value;
-  }
-}
+// final focusState = StateNotifierProvider<FocusSwitch, bool>(
+//         (ref) => FocusSwitch()
+// );
+//
+// class FocusSwitch extends StateNotifier<bool>{
+//   FocusSwitch() : super(false);
+//
+//   void switchState(bool value){
+//     state = value;
+//   }
+// }
 
 final resultPage = StateNotifierProvider.autoDispose<ResultPageState , bool>(
         (ref) => ResultPageState()

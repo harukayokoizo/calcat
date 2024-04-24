@@ -8,73 +8,44 @@ import '../../../search_value/data/search_value_repositories.dart';
 import '../../../search_value/presentation/search_value_list.dart';
 import '../../application/search_provider.dart';
 import '../../domain/calendar_document.dart';
-import 'follow_ranking_list.dart';
-import 'limited_calendar_search_page.dart';
 
 class SearchPage extends ConsumerWidget{
-  final TextEditingController _controller = TextEditingController();
-  SearchPage({super.key});
+  const SearchPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref){
-    ref.read(searchValueRepositories).connectIsar();
-    return Focus(
-      onFocusChange: (value){
-        if(value){
-          ref.read(focusState.notifier).switchState(value);
+    return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: SearchForm(),
+      ),
+      body: Consumer(
+        builder: (context, ref, _) {
+          final List<CalendarDocument> searchResults = ref.watch(searchResultsProvider);
+          final bool result = ref.watch(resultPage);
+          final bool textEditing = ref.watch(textControllerProvider);
+          Widget display = displaySearchPage(result, textEditing, searchResults);
+          return GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: (){
+              FocusScope.of(context).unfocus();
+            },
+            child: display
+          );
         }
-      },
-      child: Scaffold(
-        appBar: AppBar(
-          title: SearchForm(),
-        ),
-        body: Consumer(
-          builder: (context, ref, _) {
-            final List<CalendarDocument> searchResults = ref.watch(searchResultsProvider);
-            final bool focus = ref.watch(focusState);
-            final bool result = ref.watch(resultPage);
-            final bool textEditing = ref.watch(textControllerProvider);
-            Widget display = displaySearchPage(focus, result, textEditing, searchResults);
-            return GestureDetector(
-              behavior: HitTestBehavior.opaque,
-              onTap: (){
-                FocusScope.of(context).unfocus();
-              },
-              child: display
-            );
-          }
-        ),
-        floatingActionButton: FloatingActionButton(
-          backgroundColor: Colors.blue.shade500,
-          shape: const CircleBorder(),
-          heroTag: "search",
-          child: const Icon(Icons.search, color: Colors.white),
-          onPressed: () async {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const LimitedCalendar(),
-              ),
-            );
-          },
-        ),
       ),
     );
   }
 }
 
-Widget displaySearchPage(bool focus, bool result, bool textEditing, List<CalendarDocument> searchResults){
+Widget displaySearchPage(bool result, bool textEditing, List<CalendarDocument> searchResults){
   if(result){
     return SearchResults(searchResults);
   }else{
-    if(focus){
-      if(textEditing){
-        return SearchCalendarList();
-      }else{
-        return SearchValueList();
-      }
-    }else {
-      return FollowRankingList();
+    if(textEditing){
+      return SearchCalendarList();
+    }else{
+      return SearchValueList();
     }
   }
 }

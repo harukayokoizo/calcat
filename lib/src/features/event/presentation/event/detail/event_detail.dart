@@ -51,7 +51,7 @@ class EventDetail extends ConsumerWidget{
           ],
         ),
       ),
-      floatingActionButton: PersonalEventFloatingButton(eventDoc, repositories, public),
+      floatingActionButton: EventFloatingButton(eventDoc, repositories, public),
     );
   }
 }

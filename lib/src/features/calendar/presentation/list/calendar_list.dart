@@ -4,8 +4,15 @@ import 'package:share_calendar/src/features/calendar/presentation/list/published
 import 'follow_calendar/follow_list.dart';
 import '../calendar_info/create/calendar_form.dart';
 
-class AllCalendarList extends StatelessWidget{
+class AllCalendarList extends StatefulWidget{
   const AllCalendarList({super.key});
+
+  @override
+  State<AllCalendarList> createState() => AllCalendarListState();
+}
+
+class AllCalendarListState extends State<AllCalendarList>{
+  int currentIndex = 0;
 
   @override
   Widget build(BuildContext context){
@@ -15,7 +22,7 @@ class AllCalendarList extends StatelessWidget{
           body: NestedScrollView(
             headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
               return [
-                const SliverAppBar(
+                SliverAppBar(
                   toolbarHeight: 0,
                   excludeHeaderSemantics: true,
                   forceElevated: true,
@@ -30,7 +37,12 @@ class AllCalendarList extends StatelessWidget{
                   floating: true,
                   snap: true,
                   bottom: TabBar(
-                    tabs: [
+                    onTap: (index) {
+                      setState(() {
+                        currentIndex = index;
+                      });
+                    },
+                    tabs: const [
                       Tab(text: 'フォローリスト'),
                       Tab(text: '作成リスト'),
                     ],
@@ -39,8 +51,9 @@ class AllCalendarList extends StatelessWidget{
                 ),
               ];
             },
-            body: const TabBarView(
-              children: [
+            body: IndexedStack(
+              index: currentIndex,
+              children: const [
                 FollowCalendarList(),
                 PublishedCalendarList(),
               ],

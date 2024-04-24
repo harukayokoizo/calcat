@@ -1,11 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:share_calendar/src/features/calendar/presentation/search/search_page.dart';
 
 import '../../../search_value/application/search_value_list_provider.dart';
-import '../../../search_value/data/search_value_repositories.dart';
 import '../../application/search_provider.dart';
-import '../../data/calendar_repositories.dart';
 
 class SearchForm extends ConsumerWidget{
   final TextEditingController controller = TextEditingController();
@@ -22,6 +21,7 @@ class SearchForm extends ConsumerWidget{
         children: [
           Expanded(
             child: TextFormField(
+              autofocus: true,
               controller: controller,
               decoration: InputDecoration(
                 fillColor: Color(0xFFE5E5E5),
@@ -55,45 +55,69 @@ class SearchForm extends ConsumerWidget{
               },
               onFieldSubmitted: (value){
                 if(value.isNotEmpty) {
-                  ref.read(searchResultsProvider.notifier)
-                      .searchCalendar(value)
+                  ref.read(searchResultsProvider.notifier).searchCalendar(value)
                       .then((value) {
-                    ref.read(focusState.notifier).switchState(true);
-                    ref.read(resultPage.notifier).resultPage(true);
-                  });
+                        ref.read(resultPage.notifier).resultPage(true);
+                      });
                 }
               },
             ),
           ),
-          Consumer(
-            builder: (context, ref, _) {
-              final focus = ref.watch(focusState);
-              if(focus) {
-                return TextButton(
-                    onPressed: () {
-                      ref.read(focusState.notifier).switchState(false);
-                      ref.read(resultPage.notifier).resultPage(false);
-                      ref.watch(textControllerProvider.notifier).switchState(
-                          false);
-                      controller.clear();
-                      ref.read(searchValue.notifier).tapSearchValue(null);
+          TextButton(
+              onPressed: () {
+                ref.read(resultPage.notifier).resultPage(false);
+                ref.watch(textControllerProvider.notifier).switchState(false);
+                controller.clear();
+                ref.read(searchValue.notifier).tapSearchValue(null);
 
-                      FocusScope.of(context).unfocus();
-                    },
-                    child: const Text(
-                      'キャンセル',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 15,
-                      ),
-                    )
-                );
-              }else{
-                return const SizedBox();
-              }
-            }
-          ),
+                Navigator.pop(context);
+              },
+              child: const Text(
+                'キャンセル',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 15,
+                ),
+              )
+          )
         ],
+    );
+  }
+}
+
+class SearchFormDisplay extends ConsumerWidget{
+  final TextEditingController controller = TextEditingController();
+
+  SearchFormDisplay({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref){
+    return GestureDetector(
+      onTap: (){
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => SearchPage(),
+          ),
+        );
+      },
+      child: TextFormField(
+        enabled: false,
+        controller: controller,
+        decoration: const InputDecoration(
+            fillColor: Color(0xFFE5E5E5),
+            filled: true,
+            prefixIcon: Icon(Icons.search),
+            contentPadding: EdgeInsets.symmetric(
+              vertical: 10,
+              horizontal: 10,
+            ),
+            hintText: '検索',
+            border: OutlineInputBorder(
+                borderRadius: BorderRadius.horizontal(left: Radius.circular(30), right: Radius.circular(30)),
+                borderSide: BorderSide.none
+            )
+        ),
+      ),
     );
   }
 }

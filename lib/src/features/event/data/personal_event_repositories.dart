@@ -103,14 +103,7 @@ class EventRepositories{
   Future<void> deleteEvent(EventDocument eventDoc) async{
     WriteBatch batch = FirebaseFirestore.instance.batch();
     final eventCollection = FirebaseFirestore.instance.collection('event');
-    final notificationCollection = FirebaseFirestore.instance.collection('event').doc(eventDoc.docId).collection('notification');
-    List deleteNotification = await ref.read(personalEventNotificationRepositories(eventDoc)).deleteAllNotification();
-
     batch.delete(eventCollection.doc(eventDoc.docId));
-
-    for(var data in deleteNotification){
-      batch.delete(notificationCollection.doc(data));
-    }
 
     await batch.commit();
   }
@@ -118,16 +111,10 @@ class EventRepositories{
   Future<void> deleteSameEvents(EventDocument eventDoc) async{
     WriteBatch batch = FirebaseFirestore.instance.batch();
     final eventCollection = FirebaseFirestore.instance.collection('event');
-    final notificationCollection = FirebaseFirestore.instance.collection('event').doc(eventDoc.docId).collection('notification');
     List deleteEvents = await getSameEvent(eventDoc.event!.sameEventId!);
-    List deleteNotification = await ref.read(personalEventNotificationRepositories(eventDoc)).deleteAllNotification();
 
     for(var data in deleteEvents){
       batch.delete(eventCollection.doc(data));
-    }
-
-    for(var data in deleteNotification){
-      batch.delete(notificationCollection.doc(data));
     }
 
     await batch.commit();

@@ -5,8 +5,7 @@ import 'package:share_calendar/src/features/calendar/presentation/calendar_info/
 import 'package:share_calendar/src/features/calendar/presentation/calendar_info/detail/title_widget.dart';
 
 import '../../../domain/calendar_document.dart';
-import '../edit/delete_action_button.dart';
-import '../edit/edit_action_button.dart';
+import 'floating_action_button.dart';
 
 class CalendarDetail extends StatelessWidget{
   bool followCalendar;
@@ -31,18 +30,7 @@ class CalendarDetail extends StatelessWidget{
             ),
           ]
       ),
-      floatingActionButton: followCalendar ? null : Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          if(!followCalendar)
-            CalendarDeleteActionButton(calendarDoc),
-          if(!followCalendar)
-            Padding(
-                padding: const EdgeInsets.only(left: 8.0),
-                child: CalendarEditActionButton(calendarDoc)
-            ),
-        ],
-      ),
+      floatingActionButton: followCalendar ? null : CalendarFloatingButton(calendarDoc)
     );
   }
 }

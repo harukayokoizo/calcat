@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:share_calendar/src/features/calendar/presentation/list/calendar_list.dart';
 import 'package:share_calendar/src/features/calendar/presentation/search/search_page.dart';
+import 'package:share_calendar/src/features/calendar/presentation/search/search_top_page.dart';
 import 'package:share_calendar/src/features/event/presentation/calendar.dart';
 
 import 'main.dart';
@@ -19,7 +20,7 @@ class TabNavigator extends StatelessWidget {
   final GlobalKey<NavigatorState>? navigationKey;
 
   Map<String, Widget Function(BuildContext)> _routerBuilder(BuildContext context) => {
-    '/search': (context) => SearchPage(),
+    '/search': (context) => const SearchTopPage(),
     '/list': (context) => const AllCalendarList(),
     '/calendar': (context) => const PersonalCalendarPage(),
   };

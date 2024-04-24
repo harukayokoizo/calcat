@@ -10,17 +10,17 @@ import '../edit/delete_dialog.dart';
 import '../edit/event_edit_page.dart';
 import 'action_sheet.dart';
 
-class PersonalEventFloatingButton extends StatefulWidget{
+class EventFloatingButton extends StatefulWidget{
   EventDocument eventDoc;
   dynamic repositories;
   bool public;
-  PersonalEventFloatingButton(this.eventDoc, this.repositories, this.public, {super.key});
+  EventFloatingButton(this.eventDoc, this.repositories, this.public, {super.key});
 
   @override
-  State<PersonalEventFloatingButton> createState() => PersonalEventFloatingButtonState();
+  State<EventFloatingButton> createState() => EventFloatingButtonState();
 }
 
-class PersonalEventFloatingButtonState extends State<PersonalEventFloatingButton>{
+class EventFloatingButtonState extends State<EventFloatingButton>{
   late EventDocument eventDoc;
   late Event event;
   late dynamic repositories;

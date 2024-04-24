@@ -60,7 +60,7 @@ class PublicEventDetail extends ConsumerWidget{
       ),
       floatingActionButton: followCalendar
           ? NotificationButton(eventDoc, true)
-          : PersonalEventFloatingButton(eventDoc, repositories, public),
+          : EventFloatingButton(eventDoc, repositories, public),
       // Row(
       //   mainAxisAlignment: MainAxisAlignment.end,
       //   children: [

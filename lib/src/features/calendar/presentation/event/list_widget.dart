@@ -123,7 +123,7 @@ class PublicListWidget extends StatelessWidget{
             ),
           ],
         ),
-        floatingActionButton: FloatingActionButton(
+        floatingActionButton: followCalendar ? null : FloatingActionButton(
           backgroundColor: Colors.blue.shade500,
           heroTag: "add calendar",
           shape: const CircleBorder(),
