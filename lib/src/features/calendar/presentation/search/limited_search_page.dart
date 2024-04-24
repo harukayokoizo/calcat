@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../common_widgets/presentation/error_message_widget.dart';
 import '../../application/search_provider.dart';
 import '../../domain/calendar_document.dart';
-import 'limited_calendar_search_results.dart';
+import 'limited_search_results.dart';
 
 class LimitedCalendar extends ConsumerWidget{
   const LimitedCalendar({super.key});
