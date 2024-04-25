@@ -32,6 +32,8 @@ Widget setupTestWidget(
       isDisabled: isDisabled,
       isToday: isToday,
       isWeekend: isWeekend,
+      isSaturday: false,
+      isSunday: false,
       isOutside: isOutside,
       isSelected: isSelected,
       isRangeStart: isRangeStart,

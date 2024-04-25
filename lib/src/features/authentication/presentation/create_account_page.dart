@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../common_widgets/presentation/error_message_widget.dart';
 import '../application/mail_auth.dart';
 import '../application/user_provider.dart';
+import '../data/user_repositories.dart';
 
 class CreateAccountPage extends ConsumerStatefulWidget{
   const CreateAccountPage({super.key});
@@ -82,20 +83,24 @@ class CreateAccountPageState extends ConsumerState<CreateAccountPage>{
                       width: deviceWidth * 0.8,
                       height: 50,
                       child: ElevatedButton(
-                        onPressed: () async{
-                          String message = await ref.read(authenticateProvider).createAccount(mailTextController.text, passTextController.text);
-                          if(message == 'success'){
-                            Navigator.pop(
-                              context,
-                            );
-                            ref.read(userControllerProvider.notifier).changeTopPage();
-                          }else{
-                            passTextController.clear();
-                            mailTextController.clear();
-                            setState(() {
-                              errorMessage = message;
-                            });
-                          }
+                        onPressed: (){
+                          ref.read(authenticateProvider).createAccount(mailTextController.text, passTextController.text)
+                              .then((message){
+                                if(message == 'success'){
+                                  ref.read(userRepositories).controlUser().then((value){
+                                    Navigator.pop(
+                                      context,
+                                    );
+                                    ref.read(userControllerProvider.notifier).changeTopPage();
+                                  });
+                                }else{
+                                  passTextController.clear();
+                                  mailTextController.clear();
+                                  setState(() {
+                                    errorMessage = message;
+                                  });
+                                }
+                          });
                         },
                         style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),

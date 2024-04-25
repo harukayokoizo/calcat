@@ -7,10 +7,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:share_calendar/src/features/personal_event/application/color_setting_provider.dart';
-import 'package:share_calendar/src/features/personal_event/domain/event_document.dart';
-import 'package:share_calendar/src/features/personal_event/domain/personal_event.dart';
-import 'package:share_calendar/src/features/personal_event/presentation/personal_event_list.dart';
+import 'package:share_calendar/src/features/calendar/presentation/event/event_list.dart';
+import 'package:share_calendar/src/features/event/application/color_setting_provider.dart';
+import 'package:share_calendar/src/features/event/domain/event_document.dart';
+import 'package:share_calendar/src/features/event/domain/event.dart';
+import 'package:share_calendar/src/features/event/presentation/event/list/event_list.dart';
 import 'package:simple_gesture_detector/simple_gesture_detector.dart';
 
 import 'customization/calendar_builders.dart';
@@ -74,6 +75,8 @@ class TableCalendar<T> extends StatefulWidget {
   /// Specifies `TableCalendar`'s current format.
   final CalendarFormat calendarFormat;
 
+  final String? calendarDocId;
+
   /// `Map` of `CalendarFormat`s and `String` names associated with them.
   /// Those `CalendarFormat`s will be used by internal logic to manage displayed format.
   ///
@@ -111,6 +114,12 @@ class TableCalendar<T> extends StatefulWidget {
 
   /// Whether to display week numbers on calendar.
   final bool weekNumbersVisible;
+
+  ///公開用カレンダーの場合、true
+  final bool publicCalendar;
+
+  ///フォローカレンダーの場合、true
+  final bool followCalendar;
 
   /// Used for setting the height of `TableCalendar`'s rows.
   final double rowHeight;
@@ -222,6 +231,7 @@ class TableCalendar<T> extends StatefulWidget {
     this.rangeEndDay,
     this.weekendDays = const [DateTime.saturday, DateTime.sunday],
     this.calendarFormat = CalendarFormat.month,
+    this.calendarDocId,
     this.availableCalendarFormats = const {
       CalendarFormat.month: 'Month',
       CalendarFormat.twoWeeks: '2 weeks',
@@ -234,6 +244,8 @@ class TableCalendar<T> extends StatefulWidget {
     this.sixWeekMonthsEnforced = false,
     this.shouldFillViewport = false,
     this.weekNumbersVisible = false,
+    this.publicCalendar = false,
+    this.followCalendar = false,
     this.rowHeight = 52.0,
     this.daysOfWeekHeight = 16.0,
     this.formatAnimationDuration = const Duration(milliseconds: 200),
@@ -569,13 +581,22 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
             );
           },
         ),
-        if(widget.calendarFormat == CalendarFormat.twoWeeks)
+        if(widget.calendarFormat == CalendarFormat.twoWeeks && !widget.publicCalendar)
           PhysicalModel(
             color: Colors.white,
             elevation: 30.0,
             child: SizedBox(
               height: taskViewHeight,
               child: PersonalEventList(widget.focusedDay)
+            ),
+          ),
+        if(widget.calendarFormat == CalendarFormat.twoWeeks && widget.publicCalendar)
+          PhysicalModel(
+            color: Colors.white,
+            elevation: 30.0,
+            child: SizedBox(
+                height: taskViewHeight,
+                child: PublicEventList(widget.focusedDay, widget.calendarDocId!, widget.followCalendar)
             ),
           )
       ],
@@ -631,6 +652,8 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
         final isToday = isSameDay(day, widget.currentDay);
         final isDisabled = _isDayDisabled(day);
         final isWeekend = _isWeekend(day, weekendDays: widget.weekendDays);
+        final isSaturday = _isSaturday(day);
+        final isSunday = _isSunday(day);
 
         Widget content = CellContent(
           key: ValueKey('CellContent-${day.year}-${day.month}-${day.day}'),
@@ -647,6 +670,8 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
           isOutside: isOutside,
           isDisabled: isDisabled,
           isWeekend: isWeekend,
+          isSaturday: isSaturday,
+          isSunday: isSunday,
           isHoliday: widget.holidayPredicate?.call(day) ?? false,
           locale: widget.locale,
         );
@@ -660,8 +685,9 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
           Widget? markerWidget;
 
           if (events.isNotEmpty) {
-            // events.sort((a,b) => a.event!.from!.compareTo(b.event!.from!));
-            int count = events.length > 3 ? 3 : events.length;
+            events.sort((a, b) => a.event!.from!.compareTo(b.event!.from!));
+            events.sort((a, b) => (a.event!.isAllDay == b.event!.isAllDay ? 0 : (a.event!.isAllDay! ? -1 : 1)));
+            int count = events.length > 4 ? 4 : events.length;
             markerWidget = Consumer(
               builder: (context, ref, _) {
                 final colors = ref.read(colorList);
@@ -669,7 +695,7 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
                   children: [
                     for(var i = 0; i < count; i++)
                       Padding(
-                        padding: const EdgeInsets.all(1.0),
+                        padding: const EdgeInsets.only(left: 2.0),
                         child: SizedBox(
                           height: 16,
                           child: Align(
@@ -678,20 +704,13 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
                               '${events[i].event!.title}',
                               style: TextStyle(
                                 fontSize: 13,
-                                color: Color(colors[events[i].event!.color!]),
+                                color: isOutside ? const Color(0xFFAEAEAE) : Color(colors[events[i].event!.color!]),
                                 fontWeight: FontWeight.bold
                               ),
                             ),
                           ),
                         ),
                       )
-                    // Container(
-                    //   height: 20,
-                    //   decoration: BoxDecoration(
-                    //     color: Colors.red,
-                    //   ),
-                    //   child: Text(events[i] as String),
-                    // )
                   ],
                 );
               }
@@ -794,6 +813,20 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
     DateTime day, {
     List<int> weekendDays = const [DateTime.saturday, DateTime.sunday],
   }) {
+    return weekendDays.contains(day.weekday);
+  }
+
+  bool _isSaturday(
+      DateTime day, {
+        List<int> weekendDays = const [DateTime.saturday],
+      }) {
+    return weekendDays.contains(day.weekday);
+  }
+
+  bool _isSunday(
+      DateTime day, {
+        List<int> weekendDays = const [DateTime.sunday],
+      }) {
     return weekendDays.contains(day.weekday);
   }
 }
