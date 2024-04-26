@@ -92,7 +92,7 @@ class RepeatSettingsPage extends ConsumerWidget{
             }
           ),
           const Padding(
-            padding: EdgeInsets.only(top:20.0, left: 8.0),
+            padding: EdgeInsets.only(top:0.0, left: 8.0),
             child: Text(
               '終了日',
               style: TextStyle(

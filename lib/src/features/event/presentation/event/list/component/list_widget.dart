@@ -70,9 +70,9 @@ class ListWidget extends StatelessWidget{
               ),
             ),
             Flexible(
-              flex: 5,
+              flex: 6,
               child: Align(
-                alignment: Alignment.topCenter,
+                //alignment: Alignment.topCenter,
                 child: LayoutBuilder(
                     builder: (context, constraint) {
                       return SizedBox(

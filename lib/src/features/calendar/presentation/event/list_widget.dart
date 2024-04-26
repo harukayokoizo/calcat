@@ -76,7 +76,7 @@ class PublicListWidget extends StatelessWidget{
               ),
             ),
             Flexible(
-              flex: 5,
+              flex: 6,
               child: Align(
                 alignment: Alignment.topCenter,
                 child: LayoutBuilder(

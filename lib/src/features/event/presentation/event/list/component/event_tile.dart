@@ -36,10 +36,8 @@ class EventTile extends ConsumerWidget{
         child: Row(
           children: [
             eventTime(event.isAllDay!, event.from!, event.to!, focusedDay, colors[event.color!]),
-            // eventColor(event.color!),
             Expanded(
-              //flex: 5,
-                child: eventSummary(event.title!, event.overview, colors[event.color!])
+              child: eventSummary(event.title!, event.overview, colors[event.color!])
             ),
           ],
         ),

@@ -48,6 +48,7 @@ class PersonalCalendarPageState extends ConsumerState{
       appBar: AppBar(
         elevation: 2.0,
         centerTitle: true,
+        // toolbarHeight: 40.0,
         title: ValueListenableBuilder<DateTime>(
           valueListenable: _focusedDayValue,
           builder: (context, value, _) {

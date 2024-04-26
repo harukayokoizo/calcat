@@ -17,27 +17,29 @@ class SelectedCalendar extends ConsumerWidget{
   Widget build(BuildContext context, WidgetRef ref){
     final double deviceWidth = MediaQuery.of(context).size.width;
     return Scaffold(
-      body: Column(
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                child: SizedBox(
-                    child: Column(children: [
-                      CalendarIconWidget(calendarDoc.calendar!),
-                      CalendarTitleWidget(calendarDoc.calendar!),
-                      CalendarDescriptionWidget(calendarDoc.calendar!),
-                    ],)
+      body: SafeArea(
+        child: Column(
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  child: SizedBox(
+                      child: Column(children: [
+                        CalendarIconWidget(calendarDoc.calendar!),
+                        CalendarTitleWidget(calendarDoc.calendar!),
+                        CalendarDescriptionWidget(calendarDoc.calendar!),
+                      ],)
+                  ),
                 ),
               ),
-            ),
-            Material(
-              elevation: 20,
-              child: Container(
-                width: deviceWidth,
-                child: followButton(calendarDoc.docId!),
-              ),
-            )
-          ]
+              Material(
+                elevation: 20,
+                child: Container(
+                  width: deviceWidth,
+                  child: followButton(calendarDoc.docId!),
+                ),
+              )
+            ]
+        ),
       ),
       floatingActionButton: null
     );

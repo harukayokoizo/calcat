@@ -34,7 +34,7 @@ class CalendarIconWidget extends ConsumerWidget{
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(top: 10.0),
+          padding: const EdgeInsets.only(top: 0.0),
           child: IconButton(
             icon: const Icon(Icons.arrow_back_ios),
             onPressed: () {

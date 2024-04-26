@@ -33,8 +33,6 @@ class FollowList extends StatefulWidget{
 }
 
 class FollowListState extends State<FollowList> with SingleTickerProviderStateMixin{
-  //late final controller = SlidableController(this);
-
   @override
   Widget build(BuildContext context) {
     return SlidableAutoCloseBehavior(
@@ -43,7 +41,6 @@ class FollowListState extends State<FollowList> with SingleTickerProviderStateMi
         itemBuilder: (BuildContext context, int index){
           return Slidable(
               key: ValueKey(index),
-              // controller: controller,
               endActionPane: ActionPane(
                 extentRatio: 0.25,
                 motion: const ScrollMotion(),
@@ -84,8 +81,9 @@ class FollowCalendar extends ConsumerWidget{
       builder: (BuildContext context, AsyncSnapshot<CalendarDocument?> snapshot) {
         if(snapshot.hasData){
           return FollowCalendarContent(snapshot.data!);
+        }else {
+          return const SizedBox();
         }
-        return const SizedBox();
       },
     );
   }

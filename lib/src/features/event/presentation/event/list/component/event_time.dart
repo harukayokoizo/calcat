@@ -24,7 +24,7 @@ Widget eventTime(bool isAllDay, DateTime from, DateTime to, DateTime focusedDay,
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: SizedBox(
-        width: 50,
+        width: 60,
         child: Center(
           child: Text(
             '終日',
@@ -41,7 +41,7 @@ Widget eventTime(bool isAllDay, DateTime from, DateTime to, DateTime focusedDay,
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: SizedBox(
-        width: 50,
+        width: 60,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
