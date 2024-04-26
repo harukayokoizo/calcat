@@ -15,9 +15,9 @@ class CalendarIconWidget extends ConsumerWidget{
   @override
   Widget build(BuildContext context, WidgetRef ref){
     final double deviceWidth = MediaQuery.of(context).size.width;
-    Image imagePath = Image.asset('images/no_image.png',fit: BoxFit.cover,);
+    Widget imagePath = FittedBox(fit: BoxFit.cover, child: Image.asset('images/no_image.png'),);
     if(calendar.image != null) {
-      imagePath = Image.network(calendar.image!);
+      imagePath = FittedBox(fit: BoxFit.contain, child: Image.network(calendar.image!),);
     }
     return Stack(
       children: [
@@ -28,10 +28,7 @@ class CalendarIconWidget extends ConsumerWidget{
           decoration: const BoxDecoration(
             color: Colors.grey,
           ),
-          child: FittedBox(
-              fit: BoxFit.contain,
-              child: imagePath
-          ),
+          child: imagePath
         ),
         Padding(
           padding: const EdgeInsets.only(top: 0.0),

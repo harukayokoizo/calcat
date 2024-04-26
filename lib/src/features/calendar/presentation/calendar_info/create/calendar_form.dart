@@ -16,7 +16,7 @@ class CalendarForm extends ConsumerWidget{
 
   @override
   Widget build(BuildContext context, WidgetRef ref){
-    final user = ref.read(currentUser);
+    final user = ref.read(currentUserProvider);
     Calendar calendar = Calendar(
       author: user!.uid,
       title: null,

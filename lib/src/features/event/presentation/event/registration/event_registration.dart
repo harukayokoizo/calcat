@@ -23,7 +23,7 @@ class EventRegistration extends ConsumerWidget{
 
   @override
   Widget build(BuildContext context, WidgetRef ref){
-    final user = ref.read(currentUser);
+    final user = ref.read(currentUserProvider);
     Event event = Event(
         uid: user!.uid,
         title: null,

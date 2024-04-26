@@ -11,7 +11,7 @@ class UserRepositories{
   UserRepositories(this.ref);
 
   Future<void> controlUser() async{
-    final user = ref.read(currentUser);
+    final user = ref.read(currentUserProvider);
     bool exits = await getUser(user!.uid);
     if(!exits){
       final fcmToken = ref.read(pushNotification).fcmToken;

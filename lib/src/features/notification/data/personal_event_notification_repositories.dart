@@ -5,9 +5,9 @@ import '../../../common_widgets/application/common_provider.dart';
 import '../../event/domain/event_document.dart';
 import '../domain/notification.dart';
 
-final personalEventNotificationRepositories = Provider.family<PersonalEventNotificationRepositories, EventDocument>(
+final personalEventNotificationRepositories = Provider.autoDispose.family<PersonalEventNotificationRepositories, EventDocument>(
         (ref, eventDoc){
-          var user = ref.read(currentUser);
+          var user = ref.read(currentUserProvider);
           return PersonalEventNotificationRepositories(user!.uid, eventDoc);
         });
 

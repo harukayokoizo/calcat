@@ -88,7 +88,7 @@ Widget calendarSummary(String title, String description){
             child: Text(title,
               style: const TextStyle(
                 color: Colors.black,
-                fontSize: 18,
+                fontSize: 20,
                 fontWeight: FontWeight.bold,
               ),
             ),

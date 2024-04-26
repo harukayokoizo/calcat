@@ -5,13 +5,13 @@ import '../data/calendar_repositories.dart';
 import '../data/calendar_user_repositories.dart';
 import '../domain/calendar_document.dart';
 
-final calendarList = StreamProvider<List<CalendarDocument>>(
+final calendarList = StreamProvider.autoDispose<List<CalendarDocument>>(
         (ref) {
           var calendarDoc = ref.read(calendarRepositories).getCalendarList();
           return calendarDoc;
         });
 
-final followCalendarList = StreamProvider<List<CalendarUser>>(
+final followCalendarList = StreamProvider.autoDispose<List<CalendarUser>>(
         (ref) {
           var calendarDoc = ref.read(calendarUserRepositories).getAllFollowCalendar();
           return calendarDoc;
