@@ -20,7 +20,7 @@ class IconForm extends ConsumerWidget{
     Widget imagePath = FittedBox(fit: BoxFit.cover, child: Image.asset('images/no_image.png'),);
     if(state != null) {
       imagePath = FittedBox(
-        fit: BoxFit.contain,
+        fit: BoxFit.cover,
         child: Image.file(
           File(state.path),
           errorBuilder:(c,o,s) {
@@ -30,7 +30,7 @@ class IconForm extends ConsumerWidget{
       );
     }else if(calendar.image != null){
       imagePath = FittedBox(
-        fit: BoxFit.contain,
+        fit: BoxFit.cover,
         child: Image.network(
           calendar.image!,
           errorBuilder:(c,o,s) {

@@ -77,6 +77,7 @@ class CalendarState extends StateNotifier<Calendar>{
         }
       }
     }
+    return null;
   }
 
   Future<Map<String, dynamic>> getCalendarState(bool create) async{

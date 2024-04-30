@@ -21,7 +21,7 @@ class CalendarIconWidget extends ConsumerWidget{
     );
     if(calendar.image != null) {
       imagePath = FittedBox(
-        fit: BoxFit.contain,
+        fit: BoxFit.cover,
         child: Image.network(
           calendar.image!,
           errorBuilder:(c,o,s) {

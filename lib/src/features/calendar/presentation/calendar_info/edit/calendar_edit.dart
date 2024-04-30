@@ -42,25 +42,30 @@ class CalendarEditFormState extends ConsumerState<CalendarEditForm>{
                 child: GestureDetector(
                   onTap: calendarState.title == null || calendarState.title!.isEmpty
                       || calendarState.description == null || calendarState.description!.isEmpty ? null : (){
-                    ref.read(calendarStateProvider(calendar).notifier).editCalendar(widget.calendarDoc.docId!)
-                        .then((value){
-                          if(value != null){
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                backgroundColor: Colors.red,
-                                content: Text(
-                                  value,
-                                  style: const TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                    setState(() {loading = true;});
+                    try{
+                      ref.read(calendarStateProvider(calendar).notifier).editCalendar(widget.calendarDoc.docId!).then((value){
+                        setState(() {loading = false;});
+                        if(value != null){
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              backgroundColor: Colors.red,
+                              content: Text(
+                                value,
+                                style: const TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
-                            );
-                          }else{
-                            Navigator.of(context).pop(true);
-                          }
-                        });
+                            ),
+                          );
+                        }else{
+                          Navigator.of(context).pop(true);
+                        }
+                      });
+                    }catch (e){
+                      setState(() {loading = false;});
+                    }
                   },
                   child: Text(
                     "保存",

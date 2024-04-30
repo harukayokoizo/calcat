@@ -52,25 +52,30 @@ class CalendarFormState extends ConsumerState<CalendarForm>{
                   onTap: calendarState.title == null || calendarState.title!.isEmpty
                       || calendarState.description == null || calendarState.description!.isEmpty ? null : (){
                     setState(() {loading = true;});
-                    ref.read(calendarStateProvider(calendar).notifier).createCalendar().then((value){
-                      setState(() {loading = false;});
-                      if(value != null){
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            backgroundColor: Colors.red,
-                            content: Text(
-                              value,
-                              style: const TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
+                    try{
+                      ref.read(calendarStateProvider(calendar).notifier).createCalendar().then((value){
+                        setState(() {loading = false;});
+                        if(value != null){
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              backgroundColor: Colors.red,
+                              content: Text(
+                                value,
+                                style: const TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
-                          ),
-                        );
-                      }else{
-                        Navigator.of(context).pop(true);
-                      }
-                    });
+                          );
+                        }else{
+                          Navigator.of(context).pop(true);
+                        }
+                      });
+                    }catch (e){
+                      setState(() {loading = false;});
+                    }
+
                   },
                   child: Text(
                     "保存",
