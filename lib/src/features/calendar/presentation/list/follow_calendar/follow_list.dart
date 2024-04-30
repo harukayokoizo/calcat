@@ -15,7 +15,7 @@ class FollowCalendarList extends ConsumerWidget{
 
   @override
   Widget build(BuildContext context, WidgetRef ref){
-    final calendar = ref.watch(followCalendarList);
+    var calendar = ref.watch(followCalendarList);
     return calendar.when(
       error: (err, _) => const SizedBox(), //エラー時
       loading: () => const SizedBox(), //読み込み時
@@ -25,8 +25,8 @@ class FollowCalendarList extends ConsumerWidget{
 }
 
 class FollowList extends StatefulWidget{
-  List<CalendarUser> calendarList;
-  FollowList(this.calendarList, {super.key});
+  final List<CalendarUser> calendarList;
+  const FollowList(this.calendarList, {super.key});
 
   @override
   State<FollowList> createState() => FollowListState();
@@ -70,8 +70,8 @@ class FollowListState extends State<FollowList> with SingleTickerProviderStateMi
 }
 
 class FollowCalendar extends ConsumerWidget{
-  CalendarUser calendar;
-  FollowCalendar(this.calendar, {super.key});
+  final CalendarUser calendar;
+  const FollowCalendar(this.calendar, {super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

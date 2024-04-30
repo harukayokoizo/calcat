@@ -11,73 +11,95 @@ import '../create/icon_form.dart';
 import '../create/public_preference_form.dart';
 import '../create/title_form.dart';
 
-class CalendarEditForm extends ConsumerWidget{
+class CalendarEditForm extends ConsumerStatefulWidget{
   CalendarDocument calendarDoc;
   CalendarEditForm(this.calendarDoc, {super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref){
-    Calendar calendar = calendarDoc.calendar!;
+  CalendarEditFormState createState() => CalendarEditFormState();
+}
+
+class CalendarEditFormState extends ConsumerState<CalendarEditForm>{
+  bool loading = false;
+
+  @override
+  Widget build(BuildContext context){
+    final double deviceWidth = MediaQuery.of(context).size.width;
+    final double deviceHeight = MediaQuery.of(context).size.height;
+    Calendar calendar = widget.calendarDoc.calendar!;
     Calendar calendarState = ref.watch(calendarStateProvider(calendar));
 
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 3,
-        title: const Text('カレンダー編集'),
-        centerTitle: true,
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 20.0),
-            child: GestureDetector(
-              onTap: calendarState.title == null || calendarState.title!.isEmpty ? null : (){
-                ref.read(calendarStateProvider(calendar).notifier).editCalendar(calendarDoc.docId!)
-                    .then((value){
-                      if(value != null){
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            backgroundColor: Colors.red,
-                            content: Text(
-                              value,
-                              style: const TextStyle(
-                                fontSize: 15,
+    return Stack(
+      children: [
+        Scaffold(
+          appBar: AppBar(
+            elevation: 3,
+            title: const Text('カレンダー編集'),
+            centerTitle: true,
+            actions: [
+              Padding(
+                padding: const EdgeInsets.only(right: 20.0),
+                child: GestureDetector(
+                  onTap: calendarState.title == null || calendarState.title!.isEmpty
+                      || calendarState.description == null || calendarState.description!.isEmpty ? null : (){
+                    ref.read(calendarStateProvider(calendar).notifier).editCalendar(widget.calendarDoc.docId!)
+                        .then((value){
+                          if(value != null){
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                backgroundColor: Colors.red,
+                                content: Text(
+                                  value,
+                                  style: const TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-                        );
-                      }else{
-                        Navigator.of(context).pop(true);
-                      }
-                    });
-              },
-              child: Text(
-                "保存",
-                style: TextStyle(
-                    fontSize: 20,
-                    color: calendarState.title == null || calendarState.title!.isEmpty ? Colors.grey : Colors.blue,
-                    fontWeight: FontWeight.w700
+                            );
+                          }else{
+                            Navigator.of(context).pop(true);
+                          }
+                        });
+                  },
+                  child: Text(
+                    "保存",
+                    style: TextStyle(
+                        fontSize: 20,
+                        color: calendarState.title == null || calendarState.title!.isEmpty
+                            || calendarState.description == null || calendarState.description!.isEmpty ? Colors.grey : Colors.blue,
+                        fontWeight: FontWeight.w700
+                    ),
+                  ),
                 ),
+              ),
+            ],
+          ),
+          body: GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: (){
+              FocusScope.of(context).unfocus();
+            },
+            child: SingleChildScrollView(
+              child: Column(
+                  children: [
+                    IconForm(calendar),
+                    CalendarTitleForm(calendar),
+                    DescriptionForm(calendar),
+                    PublicPreferenceForm(calendar),
+                    PasswordForm(calendar)
+                  ]
               ),
             ),
           ),
-        ],
-      ),
-      body: GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onTap: (){
-          FocusScope.of(context).unfocus();
-        },
-        child: SingleChildScrollView(
-          child: Column(
-              children: [
-                IconForm(calendar),
-                CalendarTitleForm(calendar),
-                DescriptionForm(calendar),
-                PublicPreferenceForm(calendar),
-                PasswordForm(calendar)
-              ]
-          ),
         ),
-      ),
+        if(loading)
+          Container(
+            height: deviceHeight,
+            width: deviceWidth,
+            color: Colors.black.withOpacity(0.5),
+          ),
+      ],
     );
   }
 }

@@ -17,11 +17,27 @@ class IconForm extends ConsumerWidget{
   Widget build(BuildContext context, WidgetRef ref){
     final double deviceWidth = MediaQuery.of(context).size.width;
     final state = ref.watch(imageStateProvider);
-    Image imagePath = Image.asset('images/no_image.png',fit: BoxFit.cover,);
+    Widget imagePath = FittedBox(fit: BoxFit.cover, child: Image.asset('images/no_image.png'),);
     if(state != null) {
-      imagePath = Image.file(File(state.path));
+      imagePath = FittedBox(
+        fit: BoxFit.contain,
+        child: Image.file(
+          File(state.path),
+          errorBuilder:(c,o,s) {
+            return Container(color: Colors.grey);
+          },
+        ),
+      );
     }else if(calendar.image != null){
-      imagePath = Image.network(calendar.image!);
+      imagePath = FittedBox(
+        fit: BoxFit.contain,
+        child: Image.network(
+          calendar.image!,
+          errorBuilder:(c,o,s) {
+            return Container(color: Colors.grey);
+          },
+        ),
+      );
     }
     return InkWell(
       onTap: () async{
@@ -38,10 +54,7 @@ class IconForm extends ConsumerWidget{
         decoration: const BoxDecoration(
           color: Colors.grey,
         ),
-        child: FittedBox(
-            fit: BoxFit.contain,
-            child: imagePath
-        ),
+        child: imagePath
       ),
     );
   }

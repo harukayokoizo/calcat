@@ -17,7 +17,7 @@ final followCalendarList = StreamProvider.autoDispose<List<CalendarUser>>(
           return calendarDoc;
         });
 
-final calendarDocumentProvider = StreamProvider.family<CalendarDocument,String>(
+final calendarDocumentProvider = StreamProvider.autoDispose.family<CalendarDocument,String>(
         (ref, docId){
           var calendarDoc = ref.read(calendarRepositories).getCalendar(docId);
           return calendarDoc;
