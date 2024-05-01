@@ -49,6 +49,7 @@ class EventFloatingButtonState extends State<EventFloatingButton>{
           curve: Curves.bounceIn,
           children: [
             SpeedDialChild(
+              label: '編集',
               shape: const CircleBorder(),
               child: const Icon(Icons.edit),
               backgroundColor: Colors.blue.shade50,
@@ -86,6 +87,7 @@ class EventFloatingButtonState extends State<EventFloatingButton>{
               },
             ),
             SpeedDialChild(
+              label: '削除',
               child: const Icon(Icons.delete),
               shape: const CircleBorder(),
               backgroundColor: Colors.blue.shade50,
@@ -123,6 +125,7 @@ class EventFloatingButtonState extends State<EventFloatingButton>{
               },
             ),
             SpeedDialChild(
+              label: '通知',
               shape: const CircleBorder(),
               backgroundColor: Colors.blue.shade50,
               child: notification ? const Icon(Icons.notifications_active) : const Icon(Icons.notifications_off_outlined),

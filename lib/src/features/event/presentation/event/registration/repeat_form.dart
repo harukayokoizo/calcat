@@ -41,7 +41,7 @@ class RepeatForm extends ConsumerWidget{
                 '日付をまたぐ行動を繰り返すことはできません。',
                 style: TextStyle(
                   fontSize: 15,
-                  //fontWeight: FontWeight.bold
+                  fontWeight: FontWeight.bold
                 ),
               ),
             ),

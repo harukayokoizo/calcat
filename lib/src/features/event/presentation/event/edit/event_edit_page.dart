@@ -56,35 +56,37 @@ class EventEdit extends ConsumerWidget{
           title: const Text('予定編集'),
           centerTitle: true,
         ),
-        body: GestureDetector(
-          behavior: HitTestBehavior.opaque,
-          onTap: (){
-            FocusScope.of(context).unfocus();
-          },
-          child: Column(
-            children: [
-              TitleForm(event),
-              OverViewForm(event),
-              DateSettingFormat(event),
-              UrlForm(event),
-              LocationForm(event),
-              ColorForm(event),
-              // NotificationForm(event),
-              Visibility(
-                visible: visible,
-                  child: RepeatForm(event)
-              ),
-              const Expanded(
-                child: SizedBox(),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 10.0, right: 20.0),
-                child: Align(
-                  alignment: Alignment.centerRight,
-                  child: SaveEventButton(eventDoc, event, value, repositories),
+        body: SafeArea(
+          child: GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: (){
+              FocusScope.of(context).unfocus();
+            },
+            child: Column(
+              children: [
+                TitleForm(event),
+                OverViewForm(event),
+                DateSettingFormat(event),
+                UrlForm(event),
+                LocationForm(event),
+                ColorForm(event),
+                // NotificationForm(event),
+                Visibility(
+                  visible: visible,
+                    child: RepeatForm(event)
                 ),
-              )
-            ],
+                const Expanded(
+                  child: SizedBox(),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 10.0, right: 20.0),
+                  child: Align(
+                    alignment: Alignment.centerRight,
+                    child: SaveEventButton(eventDoc, event, value, repositories),
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),

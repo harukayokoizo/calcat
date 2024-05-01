@@ -2,10 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:share_calendar/src/features/event/presentation/side_menu.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../application/event_list_provider.dart';
+import 'menu.dart';
 
 class PersonalCalendarPage extends ConsumerStatefulWidget{
   const PersonalCalendarPage({super.key});
@@ -48,6 +50,7 @@ class PersonalCalendarPageState extends ConsumerState{
       appBar: AppBar(
         elevation: 2.0,
         centerTitle: true,
+        // toolbarHeight: 40.0,
         title: ValueListenableBuilder<DateTime>(
           valueListenable: _focusedDayValue,
           builder: (context, value, _) {
@@ -58,6 +61,17 @@ class PersonalCalendarPageState extends ConsumerState{
               ),
             );
           }),
+        actions: [
+          IconButton(
+              onPressed: (){
+                showCupertinoModalPopup(
+                    context: context,
+                    builder: (BuildContext context) => const MenuModal()
+                );
+              },
+              icon: const Icon(Icons.menu)
+          ),
+        ],
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(20.0),
           child: Row(
@@ -112,6 +126,7 @@ class PersonalCalendarPageState extends ConsumerState{
           );
         }
       ),
+      // endDrawer: drawerWidget(),
     );
   }
 }

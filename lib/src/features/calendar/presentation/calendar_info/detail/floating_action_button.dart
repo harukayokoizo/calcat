@@ -38,23 +38,7 @@ class CalendarFloatingButtonState extends State<CalendarFloatingButton>{
           curve: Curves.bounceIn,
           children: [
             SpeedDialChild(
-              shape: const CircleBorder(),
-              child: const Icon(Icons.delete),
-              backgroundColor: Colors.blue.shade50,
-              onTap: () async {
-                showCupertinoDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return CalendarDeleteDialog(calendarDoc);
-                  },
-                ).then((value){
-                  if(value){
-                    Navigator.pop(context, true);
-                  }
-                });
-              },
-            ),
-            SpeedDialChild(
+              label: '編集',
               child: const Icon(Icons.edit),
               shape: const CircleBorder(),
               backgroundColor: Colors.blue.shade50,
@@ -67,6 +51,24 @@ class CalendarFloatingButtonState extends State<CalendarFloatingButton>{
                 ).then((value){
                   if(value != null){
                     Navigator.pop(context);
+                  }
+                });
+              },
+            ),
+            SpeedDialChild(
+              label: '削除',
+              shape: const CircleBorder(),
+              child: const Icon(Icons.delete),
+              backgroundColor: Colors.blue.shade50,
+              onTap: () async {
+                showCupertinoDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return CalendarDeleteDialog(calendarDoc);
+                  },
+                ).then((value){
+                  if(value){
+                    Navigator.pop(context, true);
                   }
                 });
               },

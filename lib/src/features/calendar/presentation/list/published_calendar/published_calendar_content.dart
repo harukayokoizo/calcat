@@ -13,7 +13,7 @@ class PublishedCalendarContent extends StatelessWidget{
   Widget build(BuildContext context){
     final double deviceWidth = MediaQuery.of(context).size.width;
     return Padding(
-      padding: const EdgeInsets.only(left: 20, top: 0.0, right: 20.0, bottom: 10.0),
+      padding: const EdgeInsets.only(left: 20, top: 15.0, right: 20.0, bottom: 0.0),
       child: InkWell(
         onTap: (){
           Navigator.push(
@@ -27,19 +27,20 @@ class PublishedCalendarContent extends StatelessWidget{
           width: deviceWidth,
           decoration: BoxDecoration(
             color: Colors.white,
-            border: const Border(
-              bottom: BorderSide(width: 1.5, color: Color(0xFFCCCCCC)),
-              right: BorderSide(width: 1.5, color: Color(0xFFCCCCCC)),
-            ),
+            // border: const Border(
+            //   top: BorderSide(width: 1.0, color: Color(0xFFCCCCCC)),
+            //   bottom: BorderSide(width: 1.5, color: Color(0xFFCCCCCC)),
+            //   right: BorderSide(width: 1.5, color: Color(0xFFCCCCCC)),
+            // ),
             borderRadius: BorderRadius.circular(10),
-            // boxShadow: [
-            //   BoxShadow(
-            //     color: Colors.grey.withOpacity(0.7), // 影の色
-            //     spreadRadius: 1, // スプレッド半径
-            //     blurRadius: 2, // ぼかし半径
-            //     offset: const Offset(0, 1), // オフセット（x, y）
-            //   ),
-            // ],
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.7), // 影の色
+                spreadRadius: 1, // スプレッド半径
+                blurRadius: 2, // ぼかし半径
+                offset: const Offset(0, 1), // オフセット（x, y）
+              ),
+            ],
           ),
           child: Row(
             children: [
@@ -57,7 +58,12 @@ class PublishedCalendarContent extends StatelessWidget{
 Widget calendarIcon(String? image){
   Image imagePath = Image.asset('images/no_image.png',fit: BoxFit.cover,);
   if(image != null) {
-    imagePath = Image.network(image);
+    imagePath = Image.network(
+      image,
+      errorBuilder:(c,o,s) {
+        return Container(color: Colors.grey);
+      },
+    );
   }
   return Container(
     height: 100,
@@ -77,7 +83,7 @@ Widget calendarIcon(String? image){
 Widget calendarSummary(String title, String description){
   return Expanded(
     child: Padding(
-      padding: const EdgeInsets.all(15.0),
+      padding: const EdgeInsets.only(left: 10.0, right: 10.0, top: 5.0, bottom: 5.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -88,17 +94,20 @@ Widget calendarSummary(String title, String description){
               style: const TextStyle(
                 color: Colors.black,
                 fontSize: 20,
-                //fontWeight: FontWeight.bold,
+                fontWeight: FontWeight.bold,
               ),
             ),
           ),
           Flexible(
             flex: 2,
-            child: Text(description,
-              style: const TextStyle(
-                color: Colors.black,
-                fontSize: 15,
-                //fontWeight: FontWeight.bold,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 2.0),
+              child: Text(description,
+                style: const TextStyle(
+                  color: Colors.black,
+                  fontSize: 13,
+                  //fontWeight: FontWeight.bold,
+                ),
               ),
             ),
           ), 

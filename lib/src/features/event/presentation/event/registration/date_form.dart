@@ -188,20 +188,20 @@ Widget dateFormFormat(BuildContext context, WidgetRef ref, Event event, int from
               if(picked != null) {
                 if(fromOrTo == 0){
                   if(event.repeat != 0 && !picked.isAtSameMomentAs(to)){
-                    ref.read(eventFormStateProvider(parameter).notifier).changeOnlyFromDate(picked);
-                  }else{
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                         backgroundColor: Colors.red,
                         content: Text(
                           '日付をまたぐ行動を繰り返すことはできません。',
                           style: TextStyle(
-                            fontSize: 15,
-                            //fontWeight: FontWeight.bold
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold
                           ),
                         ),
                       ),
                     );
+                  }else{
+                    ref.read(eventFormStateProvider(parameter).notifier).changeOnlyFromDate(picked);
                   }
                 }else {
                   if(event.repeat != 0 && !picked.isAtSameMomentAs(from)){
@@ -211,8 +211,8 @@ Widget dateFormFormat(BuildContext context, WidgetRef ref, Event event, int from
                         content: Text(
                           '日付をまたぐ行動を繰り返すことはできません。',
                           style: TextStyle(
-                            fontSize: 15,
-                            //fontWeight: FontWeight.bold
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold
                           ),
                         ),
                       ),

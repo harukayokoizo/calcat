@@ -15,7 +15,7 @@ class FollowCalendarList extends ConsumerWidget{
 
   @override
   Widget build(BuildContext context, WidgetRef ref){
-    final calendar = ref.watch(followCalendarList);
+    var calendar = ref.watch(followCalendarList);
     return calendar.when(
       error: (err, _) => const SizedBox(), //エラー時
       loading: () => const SizedBox(), //読み込み時
@@ -25,16 +25,14 @@ class FollowCalendarList extends ConsumerWidget{
 }
 
 class FollowList extends StatefulWidget{
-  List<CalendarUser> calendarList;
-  FollowList(this.calendarList, {super.key});
+  final List<CalendarUser> calendarList;
+  const FollowList(this.calendarList, {super.key});
 
   @override
   State<FollowList> createState() => FollowListState();
 }
 
 class FollowListState extends State<FollowList> with SingleTickerProviderStateMixin{
-  //late final controller = SlidableController(this);
-
   @override
   Widget build(BuildContext context) {
     return SlidableAutoCloseBehavior(
@@ -43,7 +41,6 @@ class FollowListState extends State<FollowList> with SingleTickerProviderStateMi
         itemBuilder: (BuildContext context, int index){
           return Slidable(
               key: ValueKey(index),
-              // controller: controller,
               endActionPane: ActionPane(
                 extentRatio: 0.25,
                 motion: const ScrollMotion(),
@@ -73,8 +70,8 @@ class FollowListState extends State<FollowList> with SingleTickerProviderStateMi
 }
 
 class FollowCalendar extends ConsumerWidget{
-  CalendarUser calendar;
-  FollowCalendar(this.calendar, {super.key});
+  final CalendarUser calendar;
+  const FollowCalendar(this.calendar, {super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -84,8 +81,9 @@ class FollowCalendar extends ConsumerWidget{
       builder: (BuildContext context, AsyncSnapshot<CalendarDocument?> snapshot) {
         if(snapshot.hasData){
           return FollowCalendarContent(snapshot.data!);
+        }else {
+          return const SizedBox();
         }
-        return const SizedBox();
       },
     );
   }

@@ -11,12 +11,21 @@ import '../../../application/calendar_provider.dart';
 import '../../../domain/calendar.dart';
 import 'description_form.dart';
 
-class CalendarForm extends ConsumerWidget{
+class CalendarForm extends ConsumerStatefulWidget{
   const CalendarForm({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref){
-    final user = ref.read(currentUser);
+  CalendarFormState createState() => CalendarFormState();
+}
+
+class CalendarFormState extends ConsumerState<CalendarForm>{
+  bool loading = false;
+
+  @override
+  Widget build(BuildContext context){
+    final double deviceWidth = MediaQuery.of(context).size.width;
+    final double deviceHeight = MediaQuery.of(context).size.height;
+    final user = ref.read(currentUserProvider);
     Calendar calendar = Calendar(
       author: user!.uid,
       title: null,
@@ -29,64 +38,83 @@ class CalendarForm extends ConsumerWidget{
     );
     Calendar calendarState = ref.watch(calendarStateProvider(calendar));
 
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 3,
-        title: const Text('カレンダー作成'),
-        centerTitle: true,
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 20.0),
-            child: GestureDetector(
-              onTap: calendarState.title == null || calendarState.title!.isEmpty ? null : (){
-                ref.read(calendarStateProvider(calendar).notifier).createCalendar()
-                    .then((value){
-                      if(value != null){
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            backgroundColor: Colors.red,
-                            content: Text(
-                              value,
-                              style: const TextStyle(
-                                fontSize: 15,
+    return Stack(
+      children: [
+        Scaffold(
+          appBar: AppBar(
+            elevation: 3,
+            title: const Text('カレンダー作成'),
+            centerTitle: true,
+            actions: [
+              Padding(
+                padding: const EdgeInsets.only(right: 20.0),
+                child: GestureDetector(
+                  onTap: calendarState.title == null || calendarState.title!.isEmpty
+                      || calendarState.description == null || calendarState.description!.isEmpty ? null : (){
+                    setState(() {loading = true;});
+                    try{
+                      ref.read(calendarStateProvider(calendar).notifier).createCalendar().then((value){
+                        setState(() {loading = false;});
+                        if(value != null){
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              backgroundColor: Colors.red,
+                              content: Text(
+                                value,
+                                style: const TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
-                          ),
-                        );
-                      }else{
-                        Navigator.of(context).pop(true);
-                      }
-                    });
-              },
-              child: Text(
-                "保存",
-                style: TextStyle(
-                    fontSize: 20,
-                    color: calendarState.title == null || calendarState.title!.isEmpty ? Colors.grey : Colors.blue,
-                    fontWeight: FontWeight.w700
+                          );
+                        }else{
+                          Navigator.of(context).pop(true);
+                        }
+                      });
+                    }catch (e){
+                      setState(() {loading = false;});
+                    }
+
+                  },
+                  child: Text(
+                    "保存",
+                    style: TextStyle(
+                        fontSize: 20,
+                        color: calendarState.title == null || calendarState.title!.isEmpty
+                            || calendarState.description == null || calendarState.description!.isEmpty ? Colors.grey : Colors.blue,
+                        fontWeight: FontWeight.w700
+                    ),
+                  ),
                 ),
+              ),
+            ],
+          ),
+          body: GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: (){
+              FocusScope.of(context).unfocus();
+            },
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  IconForm(calendar),
+                  CalendarTitleForm(calendar),
+                  DescriptionForm(calendar),
+                  PublicPreferenceForm(calendar),
+                  PasswordForm(calendar)
+                ]
               ),
             ),
           ),
-        ],
-      ),
-      body: GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onTap: (){
-          FocusScope.of(context).unfocus();
-        },
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              IconForm(calendar),
-              CalendarTitleForm(calendar),
-              DescriptionForm(calendar),
-              PublicPreferenceForm(calendar),
-              PasswordForm(calendar)
-            ]
-          ),
         ),
-      ),
+        if(loading)
+          Container(
+            height: deviceHeight,
+            width: deviceWidth,
+            color: Colors.black.withOpacity(0.5),
+          ),
+      ],
     );
   }
 }

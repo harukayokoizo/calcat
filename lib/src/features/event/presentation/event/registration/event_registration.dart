@@ -23,7 +23,7 @@ class EventRegistration extends ConsumerWidget{
 
   @override
   Widget build(BuildContext context, WidgetRef ref){
-    final user = ref.read(currentUser);
+    final user = ref.read(currentUserProvider);
     Event event = Event(
         uid: user!.uid,
         title: null,
@@ -56,30 +56,32 @@ class EventRegistration extends ConsumerWidget{
         title: const Text('予定作成'),
         centerTitle: true,
       ),
-      body: GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onTap: (){
-          FocusScope.of(context).unfocus();
-        },
-        child: Column(
-          children: [
-            TitleForm(event),
-            OverViewForm(event),
-            DateSettingFormat(event),
-            UrlForm(event),
-            LocationForm(event),
-            ColorForm(event),
-            //NotificationForm(event),
-            RepeatForm(event),
-            const Expanded(child: SizedBox(),),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 10.0, right: 10.0),
-              child: Align(
-                alignment: Alignment.centerRight,
-                child: SaveEventButton(event, repositories),
-              ),
-            )
-          ],
+      body: SafeArea(
+        child: GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: (){
+            FocusScope.of(context).unfocus();
+          },
+          child: Column(
+            children: [
+              TitleForm(event),
+              OverViewForm(event),
+              DateSettingFormat(event),
+              UrlForm(event),
+              LocationForm(event),
+              ColorForm(event),
+              //NotificationForm(event),
+              RepeatForm(event),
+              const Expanded(child: SizedBox(),),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 10.0, right: 10.0),
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: SaveEventButton(event, repositories),
+                ),
+              )
+            ],
+          ),
         ),
       )
     );

@@ -55,7 +55,12 @@ class PublicCalendarPage extends ConsumerWidget{
                   data: (value){
                     Image imagePath = Image.asset('images/no_image.png',fit: BoxFit.cover,);
                     if(value.calendar!.image != null) {
-                      imagePath = Image.network(value.calendar!.image!);
+                      imagePath = Image.network(
+                        value.calendar!.image!,
+                        errorBuilder:(c,o,s) {
+                          return Container(color: Colors.grey);
+                        },
+                      );
                     }
                     var barSize = AppBar().preferredSize.height;
 

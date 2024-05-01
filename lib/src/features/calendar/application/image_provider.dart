@@ -18,15 +18,19 @@ class ImageState extends StateNotifier<XFile?>{
   }
 
   //FireStorageに画像を保存する。
-  Future<String> uploadFile() async{
-    final storage = FirebaseStorage.instance;
+  Future<void> uploadFile(String calendarId) async{
+    final storageRef = FirebaseStorage.instance.ref();
 
-    Reference reference = storage.ref().child('images/calendar').child(state!.name); //保存するフォルダ
-    await reference.putFile(File(state!.path));
+    print(state!.name);
+    print(state!.path);
+    if(state != null){
+      Reference reference = storageRef.child('images/calendar/$calendarId').child(state!.name); //保存するフォルダ
+      await reference.putFile(File(state!.path));
+    }
 
-    var imageUrl = await reference.getDownloadURL();
-
-    return imageUrl;
+    // var imageUrl = await reference.getDownloadURL();
+    //
+    // return imageUrl;
   }
 
 }

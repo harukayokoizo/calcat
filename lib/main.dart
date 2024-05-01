@@ -8,6 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:share_calendar/firebase_options.dart';
+import 'package:share_calendar/src/common_widgets/application/common_provider.dart';
 import 'package:share_calendar/src/features/authentication/application/user_provider.dart';
 import 'package:share_calendar/src/features/authentication/presentation/login_page.dart';
 import 'package:share_calendar/src/features/notification/application/push_notification.dart';
@@ -33,7 +34,9 @@ class MyApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final notification = ref.read(pushNotification);
     print(notification.fcmToken);
-    var userCheck = ref.watch(userControllerProvider);
+    //var userCheck = ref.watch(userControllerProvider);
+
+    final authState = ref.watch(authStateChangeProvider);
 
     return MaterialApp(
         localizationsDelegates: const [
@@ -50,11 +53,11 @@ class MyApp extends ConsumerWidget {
           //scaffoldBackgroundColor: const Color(0xFFE5E5E5),
           useMaterial3: true,
         ),
-        home: userCheck.when(
+        home: authState.when(
             data: (data) {
-              if(data == 0) {
+              if(data != null) {
                 return const TopPage();
-              }else if(data == 1) {
+              }else{
                 return const LoginPage();
               }
             },
@@ -169,33 +172,3 @@ enum TabItem{
   calendar,
   myCalendar,
 }
-
-
-/*
-class TopPage extends ConsumerWidget{
-  const TopPage({super.key});
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref){
-    return Scaffold(
-      appBar: AppBar(),
-      body: ElevatedButton(
-        onPressed: () async{
-          await ref.read(authenticateProvider).signOut();
-          ref.read(userControllerProvider.notifier).changeLoginPage();
-        },
-        style: ElevatedButton.styleFrom(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
-          //side: BorderSide(color: Colors.black)
-        ),
-        child: const Text(
-          "ログインアウト",
-          style: TextStyle(
-              fontSize: 20
-          ),
-        ),
-
-      )
-    );
-  }
-}*/

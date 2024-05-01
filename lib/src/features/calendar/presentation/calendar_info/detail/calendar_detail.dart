@@ -15,20 +15,22 @@ class CalendarDetail extends StatelessWidget{
   @override
   Widget build(BuildContext context){
     return Scaffold(
-      body: Column(
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                child: SizedBox(
-                  child: Column(children: [
-                    CalendarIconWidget(calendarDoc.calendar!),
-                    CalendarTitleWidget(calendarDoc.calendar!),
-                    CalendarDescriptionWidget(calendarDoc.calendar!),
-                  ],)
+      body: SafeArea(
+        child: Column(
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  child: SizedBox(
+                    child: Column(children: [
+                      CalendarIconWidget(calendarDoc.calendar!),
+                      CalendarTitleWidget(calendarDoc.calendar!),
+                      CalendarDescriptionWidget(calendarDoc.calendar!),
+                    ],)
+                  ),
                 ),
               ),
-            ),
-          ]
+            ]
+        ),
       ),
       floatingActionButton: followCalendar ? null : CalendarFloatingButton(calendarDoc)
     );

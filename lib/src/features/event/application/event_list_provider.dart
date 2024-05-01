@@ -25,7 +25,7 @@ class FocusedDayState extends StateNotifier<DateTime>{
 }
 
 // 該当月のイベント情報のStreamを提供する
-final personalEvents = StreamProvider.family<List<EventDocument>, String>(
+final personalEvents = StreamProvider.autoDispose.family<List<EventDocument>, String>(
         (ref, calendarMonth) {
           //final month = ref.watch(calendarMonth);
           var personalEvents = ref.read(eventRepositories).getEvent(calendarMonth);
@@ -35,17 +35,19 @@ final personalEvents = StreamProvider.family<List<EventDocument>, String>(
 // 該当月のイベント情報を取得、監視するクラスのプロバイダー
 final personalEventList = StateNotifierProvider.autoDispose.family<PersonalEventListController, Map<dynamic, dynamic>, String>(
         (ref, calendarMonth) {
-          return PersonalEventListController(ref, calendarMonth);
+          final events = ref.watch(personalEvents(calendarMonth));
+          return PersonalEventListController(ref, events, calendarMonth);
         }
 );
 
 class PersonalEventListController extends StateNotifier<Map<dynamic, dynamic>>{
   Ref ref;
+  AsyncValue<List<EventDocument>> events;
   String calendarMonth;
 
-  PersonalEventListController(this.ref, this.calendarMonth) : super({}){
+  PersonalEventListController(this.ref, this.events, this.calendarMonth) : super({}){
     Map<DateTime, List<EventDocument>> eventsDisplay = {};
-    final events = ref.watch(personalEvents(calendarMonth));
+    // final events = ref.watch(personalEvents(calendarMonth));
     events.whenData((value){
       eventsDisplay = changeFormat(value);
       eventsDisplay = sortEventList(eventsDisplay);
