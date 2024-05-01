@@ -38,12 +38,25 @@ class CalendarState extends StateNotifier<Calendar>{
   }
 
   Future<String?> createCalendar() async{
+    String? calendarId;
     String? error = await validationCheck(null);
     if(error != null){
       return error;
     }
-    Map<String, dynamic> data = await getCalendarState(true);
-    ref.read(calendarRepositories).createCalendar(data);
+    try {
+      Map<String, dynamic> data = getCalendarState(true);
+      calendarId = await ref.read(calendarRepositories).createCalendar(data);
+      if (calendarId != null) {
+        await ref.read(imageStateProvider.notifier).uploadFile(calendarId);
+      }
+    }catch (e){
+      if(calendarId != null){
+        await ref.read(calendarRepositories).deleteCalendar(calendarId);
+      }
+      return '保存に失敗しました。';
+    }
+
+    return null;
   }
 
   Future<String?> editCalendar(String docId) async{
@@ -51,7 +64,7 @@ class CalendarState extends StateNotifier<Calendar>{
     if(error != null){
       return error;
     }
-    Map<String, dynamic> data = await getCalendarState(false);
+    Map<String, dynamic> data = getCalendarState(false);
     ref.read(calendarRepositories).editCalendar(data, docId);
   }
 
@@ -80,8 +93,7 @@ class CalendarState extends StateNotifier<Calendar>{
     return null;
   }
 
-  Future<Map<String, dynamic>> getCalendarState(bool create) async{
-    final image = ref.read(imageStateProvider);
+  Map<String, dynamic> getCalendarState(bool create){
     List<String> searchIndex = createSearchIndex();
     String? password = state.publicPreference! ? null : state.password;
     Map<String, dynamic> data = {
@@ -95,11 +107,6 @@ class CalendarState extends StateNotifier<Calendar>{
       'updated': DateTime.now(),
       'searchIndex': searchIndex,
     };
-
-    if(image != null){
-      final imageUrl = await ref.read(imageStateProvider.notifier).uploadFile();
-      data['image'] = imageUrl;
-    }
     
     if(create){
       data.addAll({'followsCount': 0,});

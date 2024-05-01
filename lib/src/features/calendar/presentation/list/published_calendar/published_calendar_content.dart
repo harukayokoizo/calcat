@@ -58,7 +58,12 @@ class PublishedCalendarContent extends StatelessWidget{
 Widget calendarIcon(String? image){
   Image imagePath = Image.asset('images/no_image.png',fit: BoxFit.cover,);
   if(image != null) {
-    imagePath = Image.network(image);
+    imagePath = Image.network(
+      image,
+      errorBuilder:(c,o,s) {
+        return Container(color: Colors.grey);
+      },
+    );
   }
   return Container(
     height: 100,
