@@ -179,6 +179,9 @@ class LoginPageState extends ConsumerState<LoginPage>{
                 height: deviceHeight,
                 width: deviceWidth,
                 color: Colors.black.withOpacity(0.5),
+                child: const Center(
+                  child: CircularProgressIndicator(),
+                ),
               ),
           ],
         ),
