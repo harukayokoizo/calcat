@@ -12,6 +12,7 @@ _$CalendarImpl _$$CalendarImplFromJson(Map<String, dynamic> json) =>
       title: json['title'] as String?,
       description: json['description'] as String?,
       image: json['image'] as String?,
+      fileName: json['fileName'] as String?,
       publicPreference: json['publicPreference'] as bool?,
       password: json['password'] as String?,
       created: _$JsonConverterFromJson<Timestamp, DateTime>(
@@ -30,6 +31,7 @@ Map<String, dynamic> _$$CalendarImplToJson(_$CalendarImpl instance) =>
       'title': instance.title,
       'description': instance.description,
       'image': instance.image,
+      'fileName': instance.fileName,
       'publicPreference': instance.publicPreference,
       'password': instance.password,
       'created': _$JsonConverterToJson<Timestamp, DateTime>(

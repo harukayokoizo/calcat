@@ -24,6 +24,7 @@ mixin _$Calendar {
   String? get title => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
   String? get image => throw _privateConstructorUsedError;
+  String? get fileName => throw _privateConstructorUsedError;
   bool? get publicPreference => throw _privateConstructorUsedError;
   String? get password => throw _privateConstructorUsedError;
   @TimestampConverter()
@@ -49,6 +50,7 @@ abstract class $CalendarCopyWith<$Res> {
       String? title,
       String? description,
       String? image,
+      String? fileName,
       bool? publicPreference,
       String? password,
       @TimestampConverter() DateTime? created,
@@ -74,6 +76,7 @@ class _$CalendarCopyWithImpl<$Res, $Val extends Calendar>
     Object? title = freezed,
     Object? description = freezed,
     Object? image = freezed,
+    Object? fileName = freezed,
     Object? publicPreference = freezed,
     Object? password = freezed,
     Object? created = freezed,
@@ -97,6 +100,10 @@ class _$CalendarCopyWithImpl<$Res, $Val extends Calendar>
       image: freezed == image
           ? _value.image
           : image // ignore: cast_nullable_to_non_nullable
+              as String?,
+      fileName: freezed == fileName
+          ? _value.fileName
+          : fileName // ignore: cast_nullable_to_non_nullable
               as String?,
       publicPreference: freezed == publicPreference
           ? _value.publicPreference
@@ -139,6 +146,7 @@ abstract class _$$CalendarImplCopyWith<$Res>
       String? title,
       String? description,
       String? image,
+      String? fileName,
       bool? publicPreference,
       String? password,
       @TimestampConverter() DateTime? created,
@@ -162,6 +170,7 @@ class __$$CalendarImplCopyWithImpl<$Res>
     Object? title = freezed,
     Object? description = freezed,
     Object? image = freezed,
+    Object? fileName = freezed,
     Object? publicPreference = freezed,
     Object? password = freezed,
     Object? created = freezed,
@@ -185,6 +194,10 @@ class __$$CalendarImplCopyWithImpl<$Res>
       image: freezed == image
           ? _value.image
           : image // ignore: cast_nullable_to_non_nullable
+              as String?,
+      fileName: freezed == fileName
+          ? _value.fileName
+          : fileName // ignore: cast_nullable_to_non_nullable
               as String?,
       publicPreference: freezed == publicPreference
           ? _value.publicPreference
@@ -222,6 +235,7 @@ class _$CalendarImpl implements _Calendar {
       this.title,
       this.description,
       this.image,
+      this.fileName,
       this.publicPreference,
       this.password,
       @TimestampConverter() this.created,
@@ -241,6 +255,8 @@ class _$CalendarImpl implements _Calendar {
   final String? description;
   @override
   final String? image;
+  @override
+  final String? fileName;
   @override
   final bool? publicPreference;
   @override
@@ -266,7 +282,7 @@ class _$CalendarImpl implements _Calendar {
 
   @override
   String toString() {
-    return 'Calendar(author: $author, title: $title, description: $description, image: $image, publicPreference: $publicPreference, password: $password, created: $created, updated: $updated, searchIndex: $searchIndex, followCount: $followCount)';
+    return 'Calendar(author: $author, title: $title, description: $description, image: $image, fileName: $fileName, publicPreference: $publicPreference, password: $password, created: $created, updated: $updated, searchIndex: $searchIndex, followCount: $followCount)';
   }
 
   @override
@@ -279,6 +295,8 @@ class _$CalendarImpl implements _Calendar {
             (identical(other.description, description) ||
                 other.description == description) &&
             (identical(other.image, image) || other.image == image) &&
+            (identical(other.fileName, fileName) ||
+                other.fileName == fileName) &&
             (identical(other.publicPreference, publicPreference) ||
                 other.publicPreference == publicPreference) &&
             (identical(other.password, password) ||
@@ -299,6 +317,7 @@ class _$CalendarImpl implements _Calendar {
       title,
       description,
       image,
+      fileName,
       publicPreference,
       password,
       created,
@@ -326,6 +345,7 @@ abstract class _Calendar implements Calendar {
       final String? title,
       final String? description,
       final String? image,
+      final String? fileName,
       final bool? publicPreference,
       final String? password,
       @TimestampConverter() final DateTime? created,
@@ -344,6 +364,8 @@ abstract class _Calendar implements Calendar {
   String? get description;
   @override
   String? get image;
+  @override
+  String? get fileName;
   @override
   bool? get publicPreference;
   @override

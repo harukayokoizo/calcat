@@ -14,6 +14,7 @@ abstract class Calendar with _$Calendar{
     String? title,
     String? description,
     String? image,
+    String? fileName,
     bool? publicPreference,
     String? password,
     @TimestampConverter() DateTime? created,
