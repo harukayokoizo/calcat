@@ -3,6 +3,10 @@ import {
   onDocumentDeleted,
 } from "firebase-functions/v2/firestore";
 
+// import {
+//   onObjectFinalized,
+// } from "firebase-functions/v2/storage";
+
 import * as admin from 'firebase-admin'
 import { TokenMessage } from "firebase-admin/lib/messaging/messaging-api";
 
@@ -13,9 +17,10 @@ import {
 
 const { initializeApp } = require('firebase-admin/app');
 const { getFirestore, FieldValue, Timestamp } = require('firebase-admin/firestore');
-const { getStorage } = require("firebase-admin/storage");
+const { getStorage, getDownloadURL } = require("firebase-admin/storage");
 const { onSchedule } = require("firebase-functions/v2/scheduler");
 const { logger } = require("firebase-functions");
+const functions = require("firebase-functions");
 
 initializeApp();
 const db = getFirestore();
@@ -23,15 +28,85 @@ const storage = getStorage();
 
 exports.deleteCalendarImage = onDocumentDeleted("calendar/{calendarId}", (calendar)=> {
   try{
-    const calendarId = event.params.calendarId;
-    const defaultBucket = storage.bucket();
-    const file = defaultBucket.file("images/calendar/" + calendarId);
-
-    return file.delete();
+    const calendarId = calendar.params.calendarId;
+    const snapshot = calendar.data;
+    logger.log(snapshot)
+    if(!snapshot){
+      console.log("No data associated with the event")
+      return;
+    }
+    const data = snapshot.data()
+    const fileName = data.fileName
+    logger.log(fileName)
+    if(fileName != null){
+      deleteImage(calendarId, fileName)
+    }
   }catch (e){
     console.log(e)
   }
 });
+
+
+exports.updateCalendarImage = functions.region("asia-northeast1").storage.object().onFinalize(async (object: { bucket: any; name: any; contentType: any; }) => {
+  const fileBucket = object.bucket; // Storage bucket containing the file.
+  const filePath = object.name; // File path in the bucket.
+  const bucket = storage.bucket(fileBucket);
+  
+  const path:string[] = filePath.split('/');
+  if(path.length != 4){
+    console.log('The location where the image was created is incorrect');
+    return;
+  }
+
+  const calendarId = path[2]
+  const fileName = path[3]
+
+  const downloadUrl = await getDownloadURL(bucket.file(filePath));
+  logger.log(downloadUrl);
+
+  const snapshots = await db.collection('calendar').doc(calendarId).get()
+  const data = snapshots.data()
+
+  logger.log(data)
+  if(data != null){
+    const previousFileName = data.fileName
+    if(previousFileName != null){
+      const deleteResult = await deleteImage(calendarId, previousFileName)
+      if(deleteResult != null) return;
+      updateCalendarDoc(calendarId, downloadUrl, fileName)
+    }else{
+      updateCalendarDoc(calendarId, downloadUrl, fileName)
+    }
+  }else{
+    console.log('No data');
+    return;
+  }
+  
+});
+
+async function deleteImage(calendarId: string, fileName: string){
+  try{
+    const bucket = storage.bucket();
+    const file = bucket.file("images/calendar/" + calendarId + "/" + fileName);
+    await file.delete();
+    console.log('Delete Image: '+ calendarId + "/" + fileName);
+    return null
+  }catch(e){
+    console.log('cannot delete image')
+    return e;
+  }
+}
+
+async function updateCalendarDoc(calendarId: string, url: string, fileName: string){
+  try{
+    await db.doc("calendar/" + calendarId).update({ image: url, fileName: fileName });
+    console.log('Update calendar: '+ calendarId);
+    return null
+  }catch(e){
+    console.log('cannot update calendar document')
+    return e;
+  }
+}
 
 exports.incrementFollow = onDocumentCreated("calendar/{calendarId}/calendar_user/{userId}", (event)=> {
   try{
