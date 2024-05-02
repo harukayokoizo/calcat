@@ -13,11 +13,25 @@ import {
 
 const { initializeApp } = require('firebase-admin/app');
 const { getFirestore, FieldValue, Timestamp } = require('firebase-admin/firestore');
+const { getStorage } = require("firebase-admin/storage");
 const { onSchedule } = require("firebase-functions/v2/scheduler");
 const { logger } = require("firebase-functions");
 
 initializeApp();
 const db = getFirestore();
+const storage = getStorage();
+
+exports.deleteCalendarImage = onDocumentDeleted("calendar/{calendarId}", (calendar)=> {
+  try{
+    const calendarId = event.params.calendarId;
+    const defaultBucket = storage.bucket();
+    const file = defaultBucket.file("images/calendar/" + calendarId);
+
+    return file.delete();
+  }catch (e){
+    console.log(e)
+  }
+});
 
 exports.incrementFollow = onDocumentCreated("calendar/{calendarId}/calendar_user/{userId}", (event)=> {
   try{
@@ -64,15 +78,6 @@ exports.notificationExitsFalse = onDocumentDeleted("calendar/{calendarId}/event/
   }
 });
 
-/*
-type Event = {
-  eventId: string;
-  calendarId: number;
-  uid: string;
-  title: string;
-};*/
-
-
 class Event{
   constructor(
     readonly eventId: string, 
@@ -80,14 +85,6 @@ class Event{
     readonly uid: string, 
     readonly title: string) {}
 }
-/*
-export const eventConverter = {
-  fromFirestore(snapshot: QueryDocumentSnapshot): Event {
-    const data = snapshot.data();
-    logger.log(data)
-    return new Event(data.id(), data.calendarId, data.uid, data.title);
-  }
-};*/
 
 exports.scheduledEventNotification = onSchedule("* * * * *", async () => {
   logger.log('Hello')

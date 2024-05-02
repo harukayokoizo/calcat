@@ -62,22 +62,27 @@ class CalendarRepositories {
 
   Future<String?> createCalendar(Map<String, dynamic> data) async{
     try {
-      var calendar = await FirebaseFirestore.instance
+      final calendar = await FirebaseFirestore.instance
           .collection('calendar')
           .add(data);
 
-      print(calendar.id);
       return calendar.id;
     }catch (e){
       return null;
     }
   }
 
-  Future<void> editCalendar(Map<String, dynamic> data, String docId) async{
-    await FirebaseFirestore.instance
-        .collection('calendar')
-        .doc(docId)
-        .update(data);
+  Future<String?> editCalendar(Map<String, dynamic> data, String docId) async{
+    try {
+      final calendar = await FirebaseFirestore.instance
+          .collection('calendar')
+          .doc(docId)
+          .update(data);
+
+      return null;
+    }catch (e){
+      return null;
+    }
   }
 
   Future<List<CalendarDocument>> searchCalendar(String value) async{
