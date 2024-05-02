@@ -114,6 +114,7 @@ class CalendarState extends StateNotifier<Calendar>{
       'title': state.title,
       'description': state.description,
       'image': state.image,
+      'fileName': state.fileName,
       'publicPreference': state.publicPreference,
       'password': password,
       'created': DateTime.now(),
