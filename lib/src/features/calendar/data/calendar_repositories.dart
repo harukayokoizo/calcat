@@ -72,16 +72,14 @@ class CalendarRepositories {
     }
   }
 
-  Future<String?> editCalendar(Map<String, dynamic> data, String docId) async{
+  Future<void> editCalendar(Map<String, dynamic> data, String docId) async{
     try {
-      final calendar = await FirebaseFirestore.instance
+      await FirebaseFirestore.instance
           .collection('calendar')
           .doc(docId)
           .update(data);
-
-      return null;
     }catch (e){
-      return null;
+      throw('保存に失敗しました。');
     }
   }
 

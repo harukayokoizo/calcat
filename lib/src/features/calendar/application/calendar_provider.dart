@@ -60,22 +60,19 @@ class CalendarState extends StateNotifier<Calendar>{
   }
 
   Future<String?> editCalendar(String docId) async{
-    String? calendarId;
+    final imageState = ref.read(imageStateProvider);
     String? error = await validationCheck(null);
     if(error != null){
       return error;
     }
     try {
       Map<String, dynamic> data = getCalendarState(true);
-      calendarId = await ref.read(calendarRepositories).editCalendar(data, docId);
-      if (calendarId != null) {
-        await ref.read(imageStateProvider.notifier).uploadFile(calendarId);
+      await ref.read(calendarRepositories).editCalendar(data, docId);
+      if (imageState != null) {
+        await ref.read(imageStateProvider.notifier).uploadFile(docId);
       }
     }catch (e){
-      if(calendarId != null){
-        return '画像を保存できませんでした。';
-      }
-      return '保存に失敗しました。';
+      return e.toString();
     }
 
     return null;
