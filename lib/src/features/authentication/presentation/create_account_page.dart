@@ -143,6 +143,9 @@ class CreateAccountPageState extends ConsumerState<CreateAccountPage>{
             height: deviceHeight,
             width: deviceWidth,
             color: Colors.black.withOpacity(0.5),
+            child: const Center(
+              child: CircularProgressIndicator(),
+            ),
           ),
       ],
     );

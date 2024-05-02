@@ -113,6 +113,9 @@ class CalendarFormState extends ConsumerState<CalendarForm>{
             height: deviceHeight,
             width: deviceWidth,
             color: Colors.black.withOpacity(0.5),
+            child: const Center(
+              child: CircularProgressIndicator(),
+            ),
           ),
       ],
     );
