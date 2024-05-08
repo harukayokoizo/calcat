@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../common_widgets/application/common_provider.dart';
@@ -10,33 +11,64 @@ class UserRepositories{
   Ref ref;
   UserRepositories(this.ref);
 
-  Future<void> controlUser() async{
-    final user = ref.read(currentUserProvider);
-    bool exits = await getUser(user!.uid);
-    if(!exits){
-      final fcmToken = ref.read(pushNotification).fcmToken;
-      createUser(fcmToken, user.uid);
+  Future<void> controlUser(String fcmToken) async{
+    try {
+      final user = ref.read(currentUserProvider);
+      if (user != null) {
+        bool exits = await getUser(user.uid, fcmToken);
+        if (exits) {
+          await createUser(user.uid, fcmToken);
+        }
+      }
+    }catch (e){
+      print(e);
     }
   }
 
-  Future<void> createUser(dynamic fcmToken, String uid) async{
-    DateTime date = DateTime.now();
-    await FirebaseFirestore.instance
-        .collection('user')
-        .doc(uid)
-        .set(
-        {
-          'token': fcmToken,
-          'timestamp': date,
-        });
+  Future<void> createUser(String uid, String fcmToken) async{
+    try {
+      final DateTime date = DateTime.now();
+      await FirebaseFirestore.instance
+          .collection('user')
+          .add(
+          {
+            'token': fcmToken,
+            'timestamp': date,
+            'uid': uid,
+          });
+    }catch (e){
+      throw 'ログインに失敗しました。';
+    }
   }
 
-  Future<bool> getUser(String uid) async{
+  Future<bool> getUser(String uid, String fcmToken) async{
     final userDoc = await FirebaseFirestore.instance
         .collection('user')
-        .doc(uid)
+        .where('uid', isEqualTo: uid)
+        .where('token', isEqualTo: fcmToken)
         .get();
 
-    return userDoc.exists;
+    return userDoc.docs.isEmpty;
+  }
+
+  Future<String?> deleteUser() async{
+    try {
+      final user = ref.read(currentUserProvider);
+      final fcmToken = await FirebaseMessaging.instance.getToken();
+      final deviceToken = await FirebaseFirestore.instance
+          .collection('user')
+          .where('uid', isEqualTo: user!.uid)
+          .where('token', isEqualTo: fcmToken)
+          .get();
+
+      if (deviceToken.docs.isNotEmpty) {
+        for (var doc in deviceToken.docs) {
+          await doc.reference.delete();
+        }
+      }
+      return null;
+    }catch (e){
+      return 'ログアウトに失敗しました。';
+    }
   }
 }

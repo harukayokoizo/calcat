@@ -1,6 +1,7 @@
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +13,7 @@ import 'package:intl/intl.dart';
 import 'package:share_calendar/firebase_options.dart';
 import 'package:share_calendar/src/common_widgets/application/common_provider.dart';
 import 'package:share_calendar/src/features/authentication/application/user_provider.dart';
+import 'package:share_calendar/src/features/authentication/data/user_repositories.dart';
 import 'package:share_calendar/src/features/authentication/presentation/login_page.dart';
 import 'package:share_calendar/src/features/notification/application/push_notification.dart';
 import 'package:share_calendar/tab_navigator.dart';
@@ -27,6 +29,7 @@ Future<void> main() async {
     // androidProvider: kReleaseMode ? AndroidProvider.playIntegrity : AndroidProvider.debug,
     // appleProvider: kReleaseMode ? AppleProvider.deviceCheck : AppleProvider.debug,
   );
+  // FirebaseMessaging.instance.deleteToken().then((value) => FirebaseMessaging.instance.getToken());
 
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((_) {
@@ -35,16 +38,28 @@ Future<void> main() async {
   /// MyAppはルートウィジェットです。
 }
 
-class MyApp extends ConsumerWidget {
+class MyApp extends ConsumerWidget{
   const MyApp({super.key});
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final notification = ref.read(pushNotification);
-    print(notification.fcmToken);
-    //var userCheck = ref.watch(userControllerProvider);
+    FirebaseMessaging.instance.onTokenRefresh
+        .listen((fcmToken) async{
+          await ref.read(userRepositories).controlUser(fcmToken);
+        }).onError((err) {
+    });
 
+    return const ControlPage();
+  }
+}
+
+class ControlPage extends ConsumerWidget {
+  const ControlPage({super.key});
+
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
     final authState = ref.watch(authStateChangeProvider);
 
     return MaterialApp(

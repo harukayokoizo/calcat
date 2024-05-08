@@ -89,17 +89,10 @@ class CreateAccountPageState extends ConsumerState<CreateAccountPage>{
                             setState(() {
                               loading = true;
                             });
-                            ref.read(authenticateProvider).createAccount(mailTextController.text, passTextController.text).then((message){
-                              setState(() {
-                                loading = false;
-                              });
+                            ref.read(authenticateProvider).createAccountAndUser(mailTextController.text, passTextController.text).then((message){
+                              setState(() {loading = false;});
                               if(message == 'success'){
-                                ref.read(userRepositories).controlUser().then((value){
-                                  Navigator.pop(
-                                    context,
-                                  );
-                                  ref.read(userControllerProvider.notifier).changeTopPage();
-                                });
+                                Navigator.pop(context);
                               }else{
                                 passTextController.clear();
                                 setState(() {});

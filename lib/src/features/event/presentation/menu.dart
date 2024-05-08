@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../authentication/application/mail_auth.dart';
 import '../../authentication/application/user_provider.dart';
+import '../../authentication/data/user_repositories.dart';
 
 class MenuModal extends ConsumerWidget{
   const MenuModal({super.key});
@@ -43,10 +44,26 @@ class MenuModal extends ConsumerWidget{
                                 "ログアウト",
                               ),
                               onPressed: (){
-                                ref.read(authenticateProvider).signOut().then((value){
-                                  ref.read(userControllerProvider.notifier).changeLoginPage();
-                                  Navigator.pop(context, false);
-                                });
+                                ref.read(userRepositories).deleteUser().then(
+                                  (value){
+                                    if(value == null){
+                                      ref.read(authenticateProvider).signOut().then((value){
+                                        Navigator.pop(context, false);
+                                      });
+                                    }else{
+                                      SnackBar(
+                                        backgroundColor: Colors.red,
+                                        content: Text(
+                                          value,
+                                          style: const TextStyle(
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold
+                                          ),
+                                        ),
+                                      );
+                                    }
+                                  }
+                                );
                               }
                           ),
                         ],
