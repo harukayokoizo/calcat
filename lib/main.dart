@@ -30,7 +30,9 @@ Future<void> main() async {
     // androidProvider: kReleaseMode ? AndroidProvider.playIntegrity : AndroidProvider.debug,
     // appleProvider: kReleaseMode ? AppleProvider.deviceCheck : AppleProvider.debug,
   );
-  // FirebaseMessaging.instance.deleteToken().then((value) => FirebaseMessaging.instance.getToken());
+  // await FirebaseMessaging.instance.deleteToken().then((value){
+  //   FirebaseMessaging.instance.getToken();
+  // });
 
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((_) {

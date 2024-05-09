@@ -90,7 +90,6 @@ class CreateAccountPageState extends ConsumerState<CreateAccountPage>{
                               loading = true;
                             });
                             ref.read(authenticateProvider).createAccountAndUser(mailTextController.text, passTextController.text).then((message){
-                              setState(() {loading = false;});
                               if(message == 'success'){
                                 Navigator.pop(context);
                               }else{

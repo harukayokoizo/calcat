@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
 
+import '../../search_value/domain/search_value.dart';
 import '../domain/fcm_token.dart';
 
 
@@ -12,10 +13,15 @@ class FcmTokenRepositories {
 
   Future<void> connectIsar() async{
     final dir = await getApplicationDocumentsDirectory();
-    isar ??= await Isar.open(
-      [FcmTokenSchema],
-      directory: dir.path,
-    );
+    final instance = Isar.getInstance();
+    if(instance != null){
+      isar = instance;
+    }else {
+      isar ??= await Isar.open(
+        [FcmTokenSchema, SearchValueSchema],
+        directory: dir.path,
+      );
+    }
   }
 
   Future<String?> operateCollection(String uid, String fcmToken) async{
@@ -28,41 +34,56 @@ class FcmTokenRepositories {
       if (fcmTokenCollection == null) {
         await createCollection(uid, fcmToken);
       } else {
-        await updateCollection(fcmTokenCollection, fcmToken);
         token = fcmTokenCollection.fcmToken;
+        await updateCollection(fcmTokenCollection, fcmToken);
       }
 
       return token;
     }catch (e){
-      throw 'トークンの保存に失敗しました。';
+      throw e.toString();
     }
   }
 
   Future<void> createCollection(String uid, String value) async{
-    DateTime date = DateTime.now();
-    final fcmToken = FcmToken()
-      ..fcmToken = value
-      ..uid = uid
-      ..created = date;
+    try {
+      DateTime date = DateTime.now();
+      final fcmToken = FcmToken()
+        ..fcmToken = value
+        ..uid = uid
+        ..created = date;
 
-    await isar!.writeTxn(() async {
-      await isar!.fcmTokens.put(fcmToken);
-    });
+      await isar!.writeTxn(() async {
+        await isar!.fcmTokens.put(fcmToken);
+      });
+    }catch (e){
+      throw 'トークンの作成に失敗しました。';
+    }
   }
 
   Future<void> updateCollection(FcmToken fcmTokenCollection, String value) async{
-    DateTime date = DateTime.now();
-    await isar!.writeTxn(() async {
-      fcmTokenCollection.fcmToken = value;
-      fcmTokenCollection.created = date;
-      await isar!.fcmTokens.put(fcmTokenCollection);
-    });
+    try {
+      DateTime date = DateTime.now();
+      await isar!.writeTxn(() async {
+        fcmTokenCollection.fcmToken = value;
+        fcmTokenCollection.created = date;
+        await isar!.fcmTokens.put(fcmTokenCollection);
+      });
+    }catch (e){
+      throw 'トークンの更新に失敗しました。';
+    }
   }
 
   Future<FcmToken?> getFcmToken(String uid) async{
-    final fcmTokenCollection = await isar!.fcmTokens.filter().uidEqualTo(uid).findFirst();
+    try {
+      final fcmTokenCollection = await isar!.fcmTokens.filter()
+          .uidEqualTo(uid)
+          .findFirst();
 
-    return fcmTokenCollection;
+      return fcmTokenCollection;
+    }catch (e){
+      print(e.toString());
+      throw 'トークンの取得に失敗しました。';
+    }
   }
   
 
