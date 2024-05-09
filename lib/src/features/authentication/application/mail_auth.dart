@@ -2,6 +2,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import '../data/fcm_token_repositories.dart';
 import '../data/user_repositories.dart';
 
 final authenticateProvider = Provider<MailAuth>(
@@ -19,8 +20,14 @@ class MailAuth{
       final fcmToken = await FirebaseMessaging.instance.getToken();
       await ref.read(userRepositories).createUser(user.uid, fcmToken!);
 
+      String? oldToken = await ref.read(fcmTokenRepositories).operateCollection(user.uid, fcmToken);
+      if(oldToken != null && oldToken != fcmToken){
+        await ref.read(userRepositories).deleteUserHasOldToken(oldToken);
+      }
+
       return 'success';
     }catch (e){
+      signOut();
       return e.toString();
     }
   }
@@ -32,8 +39,14 @@ class MailAuth{
 
       await ref.read(userRepositories).createUser(user.uid, fcmToken!);
 
+      String? oldToken = await ref.read(fcmTokenRepositories).operateCollection(user.uid, fcmToken);
+      if(oldToken != null && oldToken != fcmToken){
+        await ref.read(userRepositories).deleteUserHasOldToken(oldToken);
+      }
+
       return 'success';
     }catch (e){
+      signOut();
       return e.toString();
     }
   }

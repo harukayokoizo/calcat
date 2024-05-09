@@ -13,6 +13,7 @@ import 'package:intl/intl.dart';
 import 'package:share_calendar/firebase_options.dart';
 import 'package:share_calendar/src/common_widgets/application/common_provider.dart';
 import 'package:share_calendar/src/features/authentication/application/user_provider.dart';
+import 'package:share_calendar/src/features/authentication/data/fcm_token_repositories.dart';
 import 'package:share_calendar/src/features/authentication/data/user_repositories.dart';
 import 'package:share_calendar/src/features/authentication/presentation/login_page.dart';
 import 'package:share_calendar/src/features/notification/application/push_notification.dart';
@@ -44,6 +45,7 @@ class MyApp extends ConsumerWidget{
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    ref.read(fcmTokenRepositories).connectIsar();
     FirebaseMessaging.instance.onTokenRefresh
         .listen((fcmToken) async{
           await ref.read(userRepositories).controlUser(fcmToken);

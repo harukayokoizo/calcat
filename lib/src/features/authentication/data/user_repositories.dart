@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../common_widgets/application/common_provider.dart';
 import '../../notification/application/push_notification.dart';
+import 'fcm_token_repositories.dart';
 
 final userRepositories = Provider((ref) => UserRepositories(ref));
 
@@ -14,10 +15,11 @@ class UserRepositories{
   Future<void> controlUser(String fcmToken) async{
     try {
       final user = ref.read(currentUserProvider);
-      if (user != null) {
-        bool exits = await getUser(user.uid, fcmToken);
-        if (exits) {
-          await createUser(user.uid, fcmToken);
+      if(user != null) {
+        await createUser(user.uid, fcmToken);
+        String? oldToken = await ref.read(fcmTokenRepositories).operateCollection(user.uid, fcmToken);
+        if(oldToken != null && oldToken != fcmToken){
+          await deleteUserHasOldToken(oldToken);
         }
       }
     }catch (e){
@@ -69,6 +71,25 @@ class UserRepositories{
       return null;
     }catch (e){
       return 'ログアウトに失敗しました。';
+    }
+  }
+
+  Future<void> deleteUserHasOldToken(String fcmToken) async{
+    try {
+      final user = ref.read(currentUserProvider);
+      final deviceToken = await FirebaseFirestore.instance
+          .collection('user')
+          .where('uid', isEqualTo: user!.uid)
+          .where('token', isEqualTo: fcmToken)
+          .get();
+
+      if (deviceToken.docs.isNotEmpty) {
+        for (var doc in deviceToken.docs) {
+          await doc.reference.delete();
+        }
+      }
+    }catch (e){
+      throw '古いトークンを削除できませんでした。';
     }
   }
 }
