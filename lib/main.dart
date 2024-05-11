@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -34,6 +36,17 @@ Future<void> main() async {
   //   FirebaseMessaging.instance.getToken();
   // });
 
+  final messagingInstance = FirebaseMessaging.instance;
+  if (Platform.isIOS) {
+    await messagingInstance.requestPermission();
+    // iOSでフォアグランド通知を行うための設定
+    await messagingInstance.setForegroundNotificationPresentationOptions(
+      alert: true,
+      badge: true,
+      sound: true,
+    );
+  }
+
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((_) {
     runApp(const ProviderScope(child: MyApp()));
@@ -47,6 +60,14 @@ class MyApp extends ConsumerWidget{
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      print('Got a message whilst in the foreground!');
+      print('Message data: ${message.data}');
+
+      if (message.notification != null) {
+        print('Message also contained a notification: ${message.notification}');
+      }
+    });
     ref.read(fcmTokenRepositories).connectIsar();
     FirebaseMessaging.instance.onTokenRefresh
         .listen((fcmToken) async{
