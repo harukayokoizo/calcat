@@ -9,6 +9,7 @@ import '../../../common_widgets/application/common_provider.dart';
 import '../../../common_widgets/presentation/error_message_widget.dart';
 import '../application/mail_auth.dart';
 import '../application/user_provider.dart';
+import '../data/user_repositories.dart';
 import 'create_account_page.dart';
 
 class LoginPage extends ConsumerStatefulWidget{
@@ -88,15 +89,11 @@ class LoginPageState extends ConsumerState<LoginPage>{
                           setState(() {
                             loading = true;
                           });
-                          ref.read(authenticateProvider).signInAccount(mailTextController.text, passTextController.text).then((message){
-                            setState(() {
-                              loading = false;
-                            });
-                            if(message == 'success'){
-                              ref.read(userControllerProvider.notifier).changeTopPage();
-                            }else{
+                          ref.read(authenticateProvider).loginAndCreateUser(mailTextController.text, passTextController.text).then((message){
+                            // setState(() {loading = false;});
+                            if(message != 'success') {
                               passTextController.clear();
-                              setState(() {});
+                              setState(() {loading = false;});
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
                                   backgroundColor: Colors.red,

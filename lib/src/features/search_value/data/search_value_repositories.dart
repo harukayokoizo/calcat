@@ -11,10 +11,15 @@ class SearchValueRepositories {
 
   Future<void> connectIsar() async{
     final dir = await getApplicationDocumentsDirectory();
-    isar ??= await Isar.open(
-      [SearchValueSchema],
-      directory: dir.path,
-    );
+    final instance = Isar.getInstance();
+    if(instance != null){
+      isar = instance;
+    }else{
+      isar ??= await Isar.open(
+        [SearchValueSchema],
+        directory: dir.path,
+      );
+    }
   }
 
   Future<void> operateCollection(String value) async{
