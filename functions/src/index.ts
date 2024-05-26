@@ -179,6 +179,7 @@ exports.scheduledEventNotification = onSchedule("* * * * *", async () => {
       })
       for(const event of events){
         const messages = await getSenderEventNotification(event)
+        logger.log(messages)
         if(messages.length !== 0){
           await sendAll(messages)
         }
@@ -198,17 +199,21 @@ async function getSenderEventNotification(event: Event){
       if(snapshots.empty) return message
       const uidList = snapshots.docs.map((doc: { id: string; }) => doc.id)
       for(const uid of uidList){
-        const token = await getUserToken(uid)
-        if(token != null){
-          const megs = sendPushNotificationsForReminder(event,token)
-          message.push(megs)
+        const tokens = await getUserToken(uid)
+        if(!tokens.empty){
+          for(const token of tokens){
+            const megs = sendPushNotificationsForReminder(event,token)
+            message.push(megs)
+          }
         }
       }
     }else{
-      const token = await getUserToken(event.uid)
-      if(token != null){
-        const megs = sendPushNotificationsForReminder(event,token)
-        message.push(megs)
+      const tokens = await getUserToken(event.uid)
+      if(!tokens.empty){
+        for(const token of tokens){
+          const megs = sendPushNotificationsForReminder(event,token)
+          message.push(megs)
+        }
       }
     }
 
@@ -220,9 +225,16 @@ async function getSenderEventNotification(event: Event){
 }
 
 async function getUserToken(uid: string){
-  const snapshots = await db.collection('user').doc(uid).get()
-  const data = snapshots.data()
-  return data.token
+  try{
+    const snapshots = await db.collection('user').where('uid', '==', uid).get()
+    if(snapshots != null){
+      const tokens = snapshots.docs.map((doc: { data: () => any;}) => doc.data().token)
+      return tokens
+    }
+    
+  }catch (e){
+    throw e
+  }
 }
 
 
@@ -251,6 +263,7 @@ async function sendAll(messages: admin.messaging.Message[]) {
     return acc
   }, [[]])
 
+  logger.log(msgs)
   // Promise.allで分割して配信
   const promises = msgs
     .map((ms) => admin.messaging()
