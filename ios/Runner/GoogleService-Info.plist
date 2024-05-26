@@ -9,7 +9,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.example.shareCalendar</string>
+	<string>com.harukayokomizo.banana-sharecalendar</string>
 	<key>PROJECT_ID</key>
 	<string>share-calendar-4f317</string>
 	<key>STORAGE_BUCKET</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:284978671535:ios:60c147000fe46855cd495a</string>
+	<string>1:284978671535:ios:063af55fad4b061fcd495a</string>
 </dict>
 </plist>
