@@ -242,8 +242,13 @@ function sendPushNotificationsForReminder(event: Event, token: string) {
   const notification: admin.messaging.Notification = {
     title: event.title,
   }
+  const data: admin.messaging.DataMessagePayload = {
+    calendarId: String(event.calendarId),
+    eventId: String(event.eventId)
+  }
   const message: admin.messaging.Message = {
     token: token,
+    data: data,
     notification: notification
   }
 

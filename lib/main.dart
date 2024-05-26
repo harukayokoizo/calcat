@@ -1,7 +1,9 @@
+import 'dart:convert';
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_functions/cloud_functions.dart';
-import 'package:firebase_app_check/firebase_app_check.dart';
+// import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
@@ -18,7 +20,12 @@ import 'package:share_calendar/src/features/authentication/application/user_prov
 import 'package:share_calendar/src/features/authentication/data/fcm_token_repositories.dart';
 import 'package:share_calendar/src/features/authentication/data/user_repositories.dart';
 import 'package:share_calendar/src/features/authentication/presentation/login_page.dart';
+import 'package:share_calendar/src/features/calendar/domain/calendar.dart';
+import 'package:share_calendar/src/features/calendar/domain/calendar_document.dart';
+import 'package:share_calendar/src/features/calendar/presentation/list/published_calendar/calendar.dart';
+import 'package:share_calendar/src/features/event/presentation/event/detail/event_detail.dart';
 import 'package:share_calendar/src/features/notification/application/push_notification.dart';
+import 'package:share_calendar/src/features/notification/domain/payload.dart';
 import 'package:share_calendar/tab_navigator.dart';
 
 Future<void> main() async {
@@ -26,12 +33,12 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-  await FirebaseAppCheck.instance.activate(
-    androidProvider: AndroidProvider.debug,
-    appleProvider: AppleProvider.debug,
-    // androidProvider: kReleaseMode ? AndroidProvider.playIntegrity : AndroidProvider.debug,
-    // appleProvider: kReleaseMode ? AppleProvider.deviceCheck : AppleProvider.debug,
-  );
+  // await FirebaseAppCheck.instance.activate(
+  //   androidProvider: AndroidProvider.debug,
+  //   appleProvider: AppleProvider.debug,
+  //   // androidProvider: kReleaseMode ? AndroidProvider.playIntegrity : AndroidProvider.debug,
+  //   // appleProvider: kReleaseMode ? AppleProvider.deviceCheck : AppleProvider.debug,
+  // );
   // await FirebaseMessaging.instance.deleteToken().then((value){
   //   FirebaseMessaging.instance.getToken();
   // });
@@ -60,14 +67,15 @@ class MyApp extends ConsumerWidget{
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      print('Got a message whilst in the foreground!');
-      print('Message data: ${message.data}');
-
-      if (message.notification != null) {
-        print('Message also contained a notification: ${message.notification}');
-      }
-    });
+    //フォアグラウンドでの受信
+    // FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    //   print('Got a message whilst in the foreground!');
+    //   print('Message data: ${message.data}');
+    //
+    //   if (message.notification != null) {
+    //     print('Message also contained a notification: ${message.notification}');
+    //   }
+    // });
     ref.read(fcmTokenRepositories).connectIsar();
     FirebaseMessaging.instance.onTokenRefresh
         .listen((fcmToken) async{
@@ -137,6 +145,40 @@ class TopPageState extends State<TopPage>{
 
   @override
   Widget build(BuildContext context) {
+    // 通知をタップした時の処理
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) async{
+      Payload payload = Payload.fromJson(message.data);
+      print(payload);
+      if(payload.calendarId != null){
+        number = 1;
+        onSelect(TabItem.values[1]);
+        var snapshot = await FirebaseFirestore.instance
+            .collection('calendar')
+            .doc(payload.calendarId)
+            .get();
+
+        if(snapshot.exists){
+          var calendar = Calendar.fromJson(snapshot.data()!);
+          var calendarDoc = CalendarDocument(docId: snapshot.id, calendar: calendar);
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => PublicCalendarPage(calendarDoc),
+            ),
+          );
+        }
+      }else{
+        number = 2;
+        onSelect(TabItem.values[2]);
+
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //     fullscreenDialog: true,
+        //     builder: (context) => EventDetail(eventDoc, repositories),
+        //   ),
+        // );
+      }
+    });
     final tabItems = [
       const BottomNavigationBarItem(
         icon: Icon(Icons.search),

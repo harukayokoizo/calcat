@@ -4,11 +4,6 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>AppCheckCore.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
 		<key>BoringSSL-GRPC-openssl_grpc.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -20,11 +15,6 @@
 			<false/>
 		</dict>
 		<key>Firebase.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>FirebaseAppCheck.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -215,11 +205,6 @@
 			<false/>
 		</dict>
 		<key>cloud_functions.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>firebase_app_check.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
