@@ -30,6 +30,12 @@
 @import firebase_core;
 #endif
 
+#if __has_include(<firebase_dynamic_links/FLTFirebaseDynamicLinksPlugin.h>)
+#import <firebase_dynamic_links/FLTFirebaseDynamicLinksPlugin.h>
+#else
+@import firebase_dynamic_links;
+#endif
+
 #if __has_include(<firebase_messaging/FLTFirebaseMessagingPlugin.h>)
 #import <firebase_messaging/FLTFirebaseMessagingPlugin.h>
 #else
@@ -73,6 +79,7 @@
   [FLTFirebaseFunctionsPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTFirebaseFunctionsPlugin"]];
   [FLTFirebaseAuthPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTFirebaseAuthPlugin"]];
   [FLTFirebaseCorePlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTFirebaseCorePlugin"]];
+  [FLTFirebaseDynamicLinksPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTFirebaseDynamicLinksPlugin"]];
   [FLTFirebaseMessagingPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTFirebaseMessagingPlugin"]];
   [FLTFirebaseStoragePlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTFirebaseStoragePlugin"]];
   [FLTImagePickerPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTImagePickerPlugin"]];

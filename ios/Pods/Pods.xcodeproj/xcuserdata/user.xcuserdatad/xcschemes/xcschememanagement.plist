@@ -69,6 +69,16 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>FirebaseDynamicLinks-FirebaseDynamicLinks_Privacy.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>FirebaseDynamicLinks.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>FirebaseFirestore-FirebaseFirestore_Privacy.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -215,6 +225,11 @@
 			<false/>
 		</dict>
 		<key>firebase_core.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>firebase_dynamic_links.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>

@@ -12,6 +12,8 @@ final authStateChangeProvider = StreamProvider.autoDispose<User?>((ref){
 
 final firebaseAuthProvider = Provider<FirebaseAuth>((ref) => FirebaseAuth.instance);
 
+final firstAuthentication = StateProvider<bool>((ref) => false);
+
 //final itemListExceptionProvider = StateProvider<CustomException?>((_) => null);
 
 // final userControllerProvider = StateNotifierProvider<UserController, AsyncValue<int>>(

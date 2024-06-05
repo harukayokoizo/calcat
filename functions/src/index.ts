@@ -170,7 +170,7 @@ exports.scheduledEventNotification = onSchedule("* * * * *", async () => {
   })()
 
   try{
-    const snapshots = await db.collectionGroup('event').where('notificationExist','==', true).where('from', '!=', now).get()
+    const snapshots = await db.collectionGroup('event').where('notificationExist','==', true).where('from', '==', now).get()
     if(!snapshots.empty){
       const events = snapshots.docs.map((doc: { data: () => any; id: string; }) => {
         const data = doc.data()

@@ -52,7 +52,7 @@ class MailAuth{
     }
   }
 
-  //アカウント作成
+  //アカウント作成（パスワード設定）
   Future<User> createAccount(String emailAddress, String password) async{
     try {
       UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
@@ -71,6 +71,36 @@ class MailAuth{
         error = 'パスワードが十分に強くありません。';
       }
       throw error;
+    }
+  }
+
+  //アカウント作成（メールリンク）
+  Future<String?> createAccountMailLink(String emailAddress) async{
+    try {
+      var acs = ActionCodeSettings(
+        url: 'https://sharecalendar.page.link',
+        handleCodeInApp: true,
+        iOSBundleId: 'com.harukayokomizo.banana-sharecalendar',
+          // androidPackageName: 'com.example.android',
+          // androidInstallApp: true,
+          // androidMinimumVersion: '12'
+      );
+
+      await FirebaseAuth.instance.sendSignInLinkToEmail(email: emailAddress, actionCodeSettings: acs);
+
+      return null;
+
+    } catch (e){
+      return 'メール送信できませんでした';
+    }
+  }
+
+  Future<String?> updatePassword(String password) async{
+    try {
+      await FirebaseAuth.instance.currentUser!.updatePassword(password);
+      return null;
+    } catch (e){
+      return 'パスワードを更新できませんでした。';
     }
   }
 

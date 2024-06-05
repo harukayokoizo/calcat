@@ -3,8 +3,10 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_functions/cloud_functions.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 // import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -20,13 +22,19 @@ import 'package:share_calendar/src/features/authentication/application/user_prov
 import 'package:share_calendar/src/features/authentication/data/fcm_token_repositories.dart';
 import 'package:share_calendar/src/features/authentication/data/user_repositories.dart';
 import 'package:share_calendar/src/features/authentication/presentation/login_page.dart';
+import 'package:share_calendar/src/features/authentication/presentation/password_set_page.dart';
+import 'package:share_calendar/src/features/calendar/application/calendar_list_provider.dart';
+import 'package:share_calendar/src/features/calendar/application/event_list_provider.dart';
 import 'package:share_calendar/src/features/calendar/domain/calendar.dart';
 import 'package:share_calendar/src/features/calendar/domain/calendar_document.dart';
+import 'package:share_calendar/src/features/calendar/presentation/list/follow_calendar/calendar.dart';
 import 'package:share_calendar/src/features/calendar/presentation/list/published_calendar/calendar.dart';
+import 'package:share_calendar/src/features/event/application/event_list_provider.dart';
 import 'package:share_calendar/src/features/event/presentation/event/detail/event_detail.dart';
 import 'package:share_calendar/src/features/notification/application/push_notification.dart';
 import 'package:share_calendar/src/features/notification/domain/payload.dart';
 import 'package:share_calendar/tab_navigator.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 Future<void> main() async {
   // main()の中で非同期処理を行う際には、下記を実行しなければいけないらしい
@@ -61,12 +69,38 @@ Future<void> main() async {
   /// MyAppはルートウィジェットです。
 }
 
-class MyApp extends ConsumerWidget{
+class MyApp extends ConsumerStatefulWidget{
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState createState() => MyAppState();
+}
+
+class MyAppState extends ConsumerState{
+  @override
+  void initState() {
+    super.initState();
+    ref.read(fcmTokenRepositories).connectIsar();
+    // FirebaseDynamicLinks.instance.onLink.listen((pendingDynamicLinkData) async{
+    //   const email = 'roku529haru@gmail.com';
+    //   final String deepLink = pendingDynamicLinkData.link.toString();
+    //   if (FirebaseAuth.instance.isSignInWithEmailLink(deepLink)) {
+    //     try {
+    //       await FirebaseAuth.instance.signInWithEmailLink(email: email, emailLink: deepLink);
+    //
+    //       print('Successfully signed in with email link!');
+    //     } catch (error) {
+    //       print('Error signing in with email link.');
+    //     }
+    //   }
+    // });
+
+    FirebaseMessaging.instance.onTokenRefresh.listen((fcmToken) async{
+      await ref.read(userRepositories).controlUser(fcmToken);
+    }).onError((err) {});
+  }
+  @override
+  Widget build(BuildContext context) {
     //フォアグラウンドでの受信
     // FirebaseMessaging.onMessage.listen((RemoteMessage message) {
     //   print('Got a message whilst in the foreground!');
@@ -76,12 +110,12 @@ class MyApp extends ConsumerWidget{
     //     print('Message also contained a notification: ${message.notification}');
     //   }
     // });
-    ref.read(fcmTokenRepositories).connectIsar();
-    FirebaseMessaging.instance.onTokenRefresh
-        .listen((fcmToken) async{
-          await ref.read(userRepositories).controlUser(fcmToken);
-        }).onError((err) {
-    });
+    // ref.read(fcmTokenRepositories).connectIsar();
+    // FirebaseMessaging.instance.onTokenRefresh
+    //     .listen((fcmToken) async{
+    //       await ref.read(userRepositories).controlUser(fcmToken);
+    //     }).onError((err) {
+    // });
 
     return const ControlPage();
   }
@@ -126,14 +160,14 @@ class ControlPage extends ConsumerWidget {
   }
 }
 
-class TopPage extends StatefulWidget{
+class TopPage extends ConsumerStatefulWidget{
   const TopPage({super.key});
 
   @override
-  State<TopPage> createState() => TopPageState();
+  ConsumerState createState() => TopPageState();
 }
 
-class TopPageState extends State<TopPage>{
+class TopPageState extends ConsumerState{
   int number = 0;
 
   TabItem _currentTab = TabItem.search;
@@ -144,41 +178,62 @@ class TopPageState extends State<TopPage>{
   };
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    super.initState();
+    final first = ref.read(firstAuthentication);
+    if(first){
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        showCupertinoModalPopup(
+            context: context,
+            builder: (BuildContext context) => const SetPasswordPage()
+        );
+      });
+    }
+
     // 通知をタップした時の処理
-    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) async{
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message){
       Payload payload = Payload.fromJson(message.data);
-      print(payload);
-      if(payload.calendarId != null){
-        number = 1;
-        onSelect(TabItem.values[1]);
-        var snapshot = await FirebaseFirestore.instance
+      if(message.data.isNotEmpty) {
+        FirebaseFirestore.instance
             .collection('calendar')
             .doc(payload.calendarId)
-            .get();
-
-        if(snapshot.exists){
-          var calendar = Calendar.fromJson(snapshot.data()!);
-          var calendarDoc = CalendarDocument(docId: snapshot.id, calendar: calendar);
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => PublicCalendarPage(calendarDoc),
-            ),
-          );
-        }
-      }else{
-        number = 2;
-        onSelect(TabItem.values[2]);
-
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(
-        //     fullscreenDialog: true,
-        //     builder: (context) => EventDetail(eventDoc, repositories),
-        //   ),
-        // );
-      }
+            .get().then((snapshot) {
+              if (snapshot.exists) {
+                number = 1;
+                onSelect(TabItem.values[1]);
+                var calendar = Calendar.fromJson(snapshot.data()!);
+                var calendarDoc = CalendarDocument(docId: snapshot.id, calendar: calendar);
+                final user = ref.read(currentUserProvider);
+                print(calendar.author);
+                if(user!.uid == calendar.author) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          PublicCalendarPage(calendarDoc, true),
+                    ),
+                  );
+                }else{
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          FollowCalendarPage(calendarDoc, true),
+                    ),
+                  );
+                }
+              } else {
+                number = 2;
+                onSelect(TabItem.values[2]);
+                ref.read(calendarFormatState.notifier).state = CalendarFormat.twoWeeks;
+              }
+            });
+          }
     });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final tabItems = [
       const BottomNavigationBarItem(
         icon: Icon(Icons.search),
