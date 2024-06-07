@@ -44,7 +44,7 @@ class CalendarFloatingButtonState extends State<CalendarFloatingButton>{
                 showCupertinoModalPopup(
                   context: context,
                   builder: (BuildContext context) {
-                    return UserSearch();
+                    return UserSearch(calendarDoc);
                   },
                 ).then((value){
                   if(value != null){

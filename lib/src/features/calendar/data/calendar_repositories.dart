@@ -16,8 +16,7 @@ class CalendarRepositories {
   Stream<List<CalendarDocument>> getCalendarList() async*{
     final currentUser = ref.read(currentUserProvider);
     var calendars = FirebaseFirestore.instance
-        .collection('calendar')
-        .where('author', isEqualTo: currentUser!.uid)
+        .collection('calendar').where('calendarOwner', arrayContainsAny: [currentUser!.uid])
         .snapshots().map(
             (snapshots) => snapshots.docs.map(
                 (e){
@@ -41,6 +40,25 @@ class CalendarRepositories {
             });
 
     yield* calendarDoc;
+  }
+
+  Future<bool> getCalendarOwner(String docId, String uid) async{
+    try {
+      final calendarDoc = await FirebaseFirestore.instance
+          .collection('calendar')
+          .doc(docId)
+          .get();
+
+      if (calendarDoc.exists) {
+        Calendar calendar = Calendar.fromJson(calendarDoc.data()!);
+        List<String> owner = calendar.calendarOwner!;
+        return owner.contains(uid);
+      } else {
+        return false;
+      }
+    }catch (e){
+      throw e.toString();
+    }
   }
 
   Future<String?> getSameCalendar(String title, String password) async{

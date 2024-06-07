@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:share_calendar/src/features/calendar/presentation/calendar_info/search/user_search_results.dart';
 
-class UserSearch extends ConsumerStatefulWidget {
-  final mailAddressController = TextEditingController();
+import '../../../domain/calendar_document.dart';
 
-  UserSearch({super.key});
+class UserSearch extends ConsumerStatefulWidget {
+  final CalendarDocument calendarDoc;
+
+  const UserSearch(this.calendarDoc, {super.key});
 
   @override
   ConsumerState<UserSearch> createState() => UserSearchState();
@@ -64,7 +66,7 @@ class UserSearchState extends ConsumerState<UserSearch>{
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => UserSearchResult(mailAddressController.text),
+                            builder: (context) => UserSearchResult(mailAddressController.text, widget.calendarDoc),
                           ),
                         );
                       },

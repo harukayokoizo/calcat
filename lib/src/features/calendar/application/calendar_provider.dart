@@ -115,14 +115,16 @@ class CalendarState extends StateNotifier<Calendar>{
       'fileName': state.fileName,
       'publicPreference': state.publicPreference,
       'password': password,
-      'created': DateTime.now(),
       'updated': DateTime.now(),
       'searchIndex': searchIndex,
     };
     
     if(create){
-      data.addAll({'followsCount': 0,});
-      data.addAll({'calendarOwner': calendarOwner,});
+      data.addAll({
+        'created': DateTime.now(),
+        'followsCount': 0,
+        'calendarOwner': calendarOwner,
+      });
     }
 
     return data;
