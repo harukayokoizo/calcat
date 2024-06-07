@@ -170,25 +170,25 @@ class CreateAccountPageState extends ConsumerState<CreateAccountPage>{
           setState(() {
             loading = true;
           });
-          await FirebaseAuth.instance.signInWithEmailLink(email: email, emailLink: deepLink).then((value){
-            ref.read(firstAuthentication.notifier).state = true;
-            Navigator.pop(context);
+          final UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailLink(email: email, emailLink: deepLink).catchError((onError){
+            throw '認証に失敗しました。';
           });
-          setState(() {
-            loading = false;
-          });
-          print('Successfully signed in with email link!');
+          if(userCredential.user != null){
+            await ref.read(authenticateProvider).loginAndCreateUser(email, userCredential.user!).then((value){
+              ref.read(firstAuthentication.notifier).state = true;
+              Navigator.pop(context);
+            });
+          }
         } catch (error) {
-          print('Error signing in with email link.');
           setState(() {
             loading = false;
           });
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
+            SnackBar(
               backgroundColor: Colors.red,
               content: Text(
-                '認証に失敗しました。',
-                style: TextStyle(
+                error.toString(),
+                style: const TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.bold
                 ),
@@ -206,7 +206,9 @@ class CreateAccountPageState extends ConsumerState<CreateAccountPage>{
     return Stack(
       children: [
         Scaffold(
-          appBar: AppBar(),
+          appBar: AppBar(
+            // title: const Text('アカウント作成'),
+          ),
           body: GestureDetector(
             onTap: focusNode.requestFocus,
             child: SizedBox(

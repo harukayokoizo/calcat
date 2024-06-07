@@ -226,7 +226,7 @@ async function getSenderEventNotification(event: Event){
 
 async function getUserToken(uid: string){
   try{
-    const snapshots = await db.collection('user').where('uid', '==', uid).get()
+    const snapshots = await db.collection('token').where('uid', '==', uid).get()
     if(snapshots != null){
       const tokens = snapshots.docs.map((doc: { data: () => any;}) => doc.data().token)
       return tokens

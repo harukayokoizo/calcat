@@ -1,10 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:share_calendar/src/features/calendar/presentation/calendar_info/search/user_search_form.dart';
 
-import '../../../../event/domain/event_document.dart';
-import '../../../../notification/presentation/action_sheet.dart';
-import '../../../../notification/presentation/notification_settings_button.dart';
 import '../../../domain/calendar_document.dart';
 import '../edit/calendar_edit.dart';
 import '../edit/delete_dialog.dart';
@@ -37,6 +35,24 @@ class CalendarFloatingButtonState extends State<CalendarFloatingButton>{
           animatedIconTheme: const IconThemeData(size: 22.0),
           curve: Curves.bounceIn,
           children: [
+            SpeedDialChild(
+              label: '検索',
+              child: const Icon(Icons.search),
+              shape: const CircleBorder(),
+              backgroundColor: Colors.blue.shade50,
+              onTap: () {
+                showCupertinoModalPopup(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return UserSearch();
+                  },
+                ).then((value){
+                  if(value != null){
+                    Navigator.pop(context);
+                  }
+                });
+              },
+            ),
             SpeedDialChild(
               label: '編集',
               child: const Icon(Icons.edit),

@@ -28,7 +28,9 @@ class SetPasswordPageState extends ConsumerState<SetPasswordPage>{
     return Stack(
       children: [
         Scaffold(
-          appBar: AppBar(),
+          appBar: AppBar(
+            // title: const Text('パスワード設定'),
+          ),
           body: GestureDetector(
             onTap: focusNode.requestFocus,
             child: SizedBox(

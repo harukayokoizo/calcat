@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../authentication/application/mail_auth.dart';
 import '../../authentication/application/user_provider.dart';
+import '../../authentication/data/token_repositories.dart';
 import '../../authentication/data/user_repositories.dart';
 
 class MenuModal extends ConsumerWidget{
@@ -44,7 +45,7 @@ class MenuModal extends ConsumerWidget{
                                 "ログアウト",
                               ),
                               onPressed: (){
-                                ref.read(userRepositories).deleteUser().then(
+                                ref.read(tokenRepositories).deleteUser().then(
                                   (value){
                                     if(value == null){
                                       ref.read(authenticateProvider).signOut().then((value){

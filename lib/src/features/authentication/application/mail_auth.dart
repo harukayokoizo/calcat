@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import '../data/fcm_token_repositories.dart';
+import '../data/token_repositories.dart';
 import '../data/user_repositories.dart';
 
 final authenticateProvider = Provider<MailAuth>(
@@ -18,11 +19,11 @@ class MailAuth{
     try{
       final User user = await createAccount(emailAddress, password);
       final fcmToken = await FirebaseMessaging.instance.getToken();
-      await ref.read(userRepositories).createUser(user.uid, fcmToken!);
+      await ref.read(tokenRepositories).createUser(user.uid, fcmToken!);
 
       String? oldToken = await ref.read(fcmTokenRepositories).operateCollection(user.uid, fcmToken);
       if(oldToken != null && oldToken != fcmToken){
-        await ref.read(userRepositories).deleteUserHasOldToken(oldToken);
+        await ref.read(tokenRepositories).deleteUserHasOldToken(oldToken);
       }
 
       return 'success';
@@ -32,16 +33,16 @@ class MailAuth{
     }
   }
 
-  Future<String> loginAndCreateUser(String emailAddress, String password) async{
+  Future<String> loginAndCreateToken(String emailAddress, String password) async{
     try{
       final User user = await signInAccount(emailAddress, password);
       final fcmToken = await FirebaseMessaging.instance.getToken();
 
-      await ref.read(userRepositories).createUser(user.uid, fcmToken!);
+      await ref.read(tokenRepositories).createUser(user.uid, fcmToken!);
 
       String? oldToken = await ref.read(fcmTokenRepositories).operateCollection(user.uid, fcmToken);
       if(oldToken != null && oldToken != fcmToken){
-        await ref.read(userRepositories).deleteUserHasOldToken(oldToken);
+        await ref.read(tokenRepositories).deleteUserHasOldToken(oldToken);
       }
 
       return 'success';
@@ -49,6 +50,28 @@ class MailAuth{
       signOut();
       print(e);
       return e.toString();
+    }
+  }
+
+  Future<String> loginAndCreateUser(String emailAddress, User user) async{
+    try{
+      final fcmToken = await FirebaseMessaging.instance.getToken();
+
+      //FireStoreにUser情報を保存する
+      await ref.read(userRepositories).createUser(emailAddress, user.uid);
+
+      //FireStoreにTokenを保存する。
+      await ref.read(tokenRepositories).createUser(user.uid, fcmToken!);
+
+      String? oldToken = await ref.read(fcmTokenRepositories).operateCollection(user.uid, fcmToken);
+      if(oldToken != null && oldToken != fcmToken){
+        await ref.read(tokenRepositories).deleteUserHasOldToken(oldToken);
+      }
+
+      return 'success';
+    }catch (e){
+      signOut();
+      throw 'ログインに失敗しました。';
     }
   }
 

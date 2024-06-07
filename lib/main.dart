@@ -20,6 +20,7 @@ import 'package:share_calendar/firebase_options.dart';
 import 'package:share_calendar/src/common_widgets/application/common_provider.dart';
 import 'package:share_calendar/src/features/authentication/application/user_provider.dart';
 import 'package:share_calendar/src/features/authentication/data/fcm_token_repositories.dart';
+import 'package:share_calendar/src/features/authentication/data/token_repositories.dart';
 import 'package:share_calendar/src/features/authentication/data/user_repositories.dart';
 import 'package:share_calendar/src/features/authentication/presentation/login_page.dart';
 import 'package:share_calendar/src/features/authentication/presentation/password_set_page.dart';
@@ -81,22 +82,9 @@ class MyAppState extends ConsumerState{
   void initState() {
     super.initState();
     ref.read(fcmTokenRepositories).connectIsar();
-    // FirebaseDynamicLinks.instance.onLink.listen((pendingDynamicLinkData) async{
-    //   const email = 'roku529haru@gmail.com';
-    //   final String deepLink = pendingDynamicLinkData.link.toString();
-    //   if (FirebaseAuth.instance.isSignInWithEmailLink(deepLink)) {
-    //     try {
-    //       await FirebaseAuth.instance.signInWithEmailLink(email: email, emailLink: deepLink);
-    //
-    //       print('Successfully signed in with email link!');
-    //     } catch (error) {
-    //       print('Error signing in with email link.');
-    //     }
-    //   }
-    // });
 
     FirebaseMessaging.instance.onTokenRefresh.listen((fcmToken) async{
-      await ref.read(userRepositories).controlUser(fcmToken);
+      await ref.read(tokenRepositories).controlUser(fcmToken);
     }).onError((err) {});
   }
   @override
@@ -109,12 +97,6 @@ class MyAppState extends ConsumerState{
     //   if (message.notification != null) {
     //     print('Message also contained a notification: ${message.notification}');
     //   }
-    // });
-    // ref.read(fcmTokenRepositories).connectIsar();
-    // FirebaseMessaging.instance.onTokenRefresh
-    //     .listen((fcmToken) async{
-    //       await ref.read(userRepositories).controlUser(fcmToken);
-    //     }).onError((err) {
     // });
 
     return const ControlPage();
