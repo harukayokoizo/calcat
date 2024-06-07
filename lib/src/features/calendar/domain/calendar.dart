@@ -20,6 +20,7 @@ abstract class Calendar with _$Calendar{
     @TimestampConverter() DateTime? created,
     @TimestampConverter() DateTime? updated,
     List<String>? searchIndex,
+    List<String>? calendarOwner,
     int? followCount,
   }) = _Calendar;
 
