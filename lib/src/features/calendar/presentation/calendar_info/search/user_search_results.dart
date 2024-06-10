@@ -106,7 +106,8 @@ class UserSearchResultState extends ConsumerState<UserSearchResult>{
               ]
             );
           }else {
-            return const Center(
+            return const Padding(
+              padding: EdgeInsets.all(20.0),
               child: Text(
                 '検索結果はありません。',
                 style: TextStyle(

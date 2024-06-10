@@ -17,8 +17,6 @@ class EventRepositories{
 
   //personal_eventコレクションからイベントを取得する
   Stream<List<EventDocument>> getEvent(String calendarMonth) async*{
-    print(calendarMonth);
-    print('stream');
     final currentUser = ref.read(currentUserProvider);
     var events = FirebaseFirestore.instance
         .collection('event')
@@ -65,6 +63,20 @@ class EventRepositories{
     }
 
     await batch.commit();
+  }
+
+  Future<bool> getSingleEvent(String docId) async{
+    var eventDoc = await FirebaseFirestore.instance
+        .collection('event')
+        .doc(docId)
+        .get();
+
+    if(eventDoc.data() != null){
+      final Event event = Event.fromJson(eventDoc.data()!);
+      return event.notificationExist!;
+    }
+
+    return false;
   }
 
   Future<void> updateEvent(Map<String, dynamic> event, String docId) async{

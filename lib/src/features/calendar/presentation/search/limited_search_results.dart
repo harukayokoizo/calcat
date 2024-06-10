@@ -42,7 +42,8 @@ class LimitedCalendarSearchResults extends ConsumerWidget{
             icon: const Icon(Icons.arrow_back),
           ),
         ),
-        body: const Center(
+        body: const Padding(
+          padding: EdgeInsets.all(20.0),
           child: Text(
             '検索結果はありません。',
             style: TextStyle(

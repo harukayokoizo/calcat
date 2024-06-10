@@ -18,17 +18,40 @@ import '../../../event/presentation/event/edit/edit_action_button.dart';
 import '../../../notification/data/public_event_notification_repositories.dart';
 import '../../../notification/presentation/notification_settings_button.dart';
 
+class PublicEventDetail extends ConsumerStatefulWidget {
+  final EventDocument eventDoc;
+  final dynamic repositories;
+  final bool followCalendar;
 
-class PublicEventDetail extends ConsumerWidget{
-  EventDocument eventDoc;
-  dynamic repositories;
-  bool followCalendar;
-  PublicEventDetail(this.eventDoc, this.repositories, this.followCalendar, {super.key});
+  const PublicEventDetail(this.eventDoc, this.repositories, this.followCalendar,
+      {super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<PublicEventDetail> createState() => PublicEventDetailState();
+}
+
+class PublicEventDetailState extends ConsumerState<PublicEventDetail>{
+  late EventDocument eventDoc;
+  late dynamic repositories;
+  late bool followCalendar;
+
+  @override
+  void initState() {
+    super.initState();
+    eventDoc = widget.eventDoc;
+    repositories = widget.repositories;
+    followCalendar = widget.followCalendar;
+  }
+
+  void reload(){
+    setState(() {});
+  }
+
+  @override
+  Widget build(BuildContext context) {
     bool public = true;
     Event event = eventDoc.event!;
+    Future<bool> getNotification = ref.read(publicEventNotificationRepositories(eventDoc)).getNotification();
     return Scaffold(
       appBar: AppBar(
         elevation: 5,
@@ -60,23 +83,15 @@ class PublicEventDetail extends ConsumerWidget{
       ),
       floatingActionButton: followCalendar
           ? NotificationButton(eventDoc, true)
-          : EventFloatingButton(eventDoc, repositories, public),
-      // Row(
-      //   mainAxisAlignment: MainAxisAlignment.end,
-      //   children: [
-      //     NotificationButton(eventDoc, true),
-      //     if(!followCalendar)
-      //       Padding(
-      //         padding: const EdgeInsets.only(left: 8.0),
-      //         child: DeleteActionButton(eventDoc, repositories),
-      //       ),
-      //     if(!followCalendar)
-      //       Padding(
-      //           padding: const EdgeInsets.only(left: 8.0),
-      //           child: EditActionButton(eventDoc, repositories)
-      //       ),
-      //   ],
-      // ),
+          : FutureBuilder(
+              future: getNotification,
+              builder: (BuildContext context, AsyncSnapshot<bool> notification) {
+                if(notification.connectionState == ConnectionState.done){
+                  return EventFloatingButton(eventDoc, repositories, public, notification.data!);
+                }else{
+                  return const SizedBox();
+                }
+              }),
     );
   }
 }

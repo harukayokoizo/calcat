@@ -44,13 +44,11 @@ class PublicEventRepositories{
         .collection('calendar')
         .doc(calendarDocId)
         .collection('event')
-        .where('uid', isEqualTo: currentUser!.uid)
         .where('sameEventId', isEqualTo: sameEventId)
         .get()
         .asStream()
         .forEach((element) {
           for(var event in element.docs){
-            //PersonalEvent personalEvent = PersonalEvent.fromJson(event.data());
             events.add(event.id);
           }
         });
