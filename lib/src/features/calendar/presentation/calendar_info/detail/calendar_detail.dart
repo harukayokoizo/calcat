@@ -8,14 +8,15 @@ import '../../../domain/calendar_document.dart';
 import 'floating_action_button.dart';
 
 class CalendarDetail extends StatelessWidget{
-  bool followCalendar;
-  CalendarDocument calendarDoc;
-  CalendarDetail(this.followCalendar, this.calendarDoc, {super.key});
+  final bool followCalendar;
+  final CalendarDocument calendarDoc;
+  const CalendarDetail(this.followCalendar, this.calendarDoc, {super.key});
 
   @override
   Widget build(BuildContext context){
     return Scaffold(
       body: SafeArea(
+        top: false,
         child: Column(
             children: [
               Expanded(

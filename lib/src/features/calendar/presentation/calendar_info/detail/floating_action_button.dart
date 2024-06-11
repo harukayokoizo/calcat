@@ -36,39 +36,31 @@ class CalendarFloatingButtonState extends State<CalendarFloatingButton>{
           curve: Curves.bounceIn,
           children: [
             SpeedDialChild(
-              label: '検索',
-              child: const Icon(Icons.search),
-              shape: const CircleBorder(),
-              backgroundColor: Colors.blue.shade50,
-              onTap: () {
-                showCupertinoModalPopup(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return UserSearch(calendarDoc);
-                  },
-                ).then((value){
-                  if(value != null){
-                    Navigator.pop(context);
-                  }
-                });
-              },
-            ),
-            SpeedDialChild(
               label: '編集',
               child: const Icon(Icons.edit),
               shape: const CircleBorder(),
               backgroundColor: Colors.blue.shade50,
               onTap: () {
-                showCupertinoModalPopup(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return CalendarEditForm(calendarDoc);
-                  },
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => CalendarEditForm(calendarDoc),
+                  ),
                 ).then((value){
                   if(value != null){
                     Navigator.pop(context);
                   }
                 });
+                // showCupertinoModalPopup(
+                //   context: context,
+                //   builder: (BuildContext context) {
+                //     return CalendarEditForm(calendarDoc);
+                //   },
+                // ).then((value){
+                //   if(value != null){
+                //     Navigator.pop(context);
+                //   }
+                // });
               },
             ),
             SpeedDialChild(
@@ -87,6 +79,34 @@ class CalendarFloatingButtonState extends State<CalendarFloatingButton>{
                     Navigator.pop(context, true);
                   }
                 });
+              },
+            ),
+            SpeedDialChild(
+              label: '検索',
+              child: const Icon(Icons.search),
+              shape: const CircleBorder(),
+              backgroundColor: Colors.blue.shade50,
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => UserSearch(calendarDoc),
+                  ),
+                ).then((value){
+                  if(value != null){
+                    Navigator.pop(context);
+                  }
+                });
+                // showCupertinoModalPopup(
+                //   context: context,
+                //   builder: (BuildContext context) {
+                //     return UserSearch(calendarDoc);
+                //   },
+                // ).then((value){
+                //   if(value != null){
+                //     Navigator.pop(context);
+                //   }
+                // });
               },
             ),
           ],

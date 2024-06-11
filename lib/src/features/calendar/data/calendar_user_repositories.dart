@@ -37,6 +37,7 @@ class CalendarUserRepositories {
     return calendarDocument;
   }
 
+
   Future<bool> getFollowCalendar(String docId) async{
     bool follow = false;
     final currentUser = ref.read(currentUserProvider);

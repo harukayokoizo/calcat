@@ -81,13 +81,15 @@ class PublicEventDetailState extends ConsumerState<PublicEventDetail>{
           ],
         ),
       ),
-      floatingActionButton: followCalendar
-          ? NotificationButton(eventDoc, true)
-          : FutureBuilder(
+      floatingActionButton: FutureBuilder(
               future: getNotification,
               builder: (BuildContext context, AsyncSnapshot<bool> notification) {
                 if(notification.connectionState == ConnectionState.done){
-                  return EventFloatingButton(eventDoc, repositories, public, notification.data!);
+                  if(followCalendar){
+                    return NotificationButton(eventDoc, true, notification.data!);
+                  }else{
+                    return EventFloatingButton(eventDoc, repositories, public, notification.data!);
+                  }
                 }else{
                   return const SizedBox();
                 }

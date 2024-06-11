@@ -112,33 +112,33 @@ class ControlPage extends ConsumerWidget {
     final authState = ref.watch(authStateChangeProvider);
 
     return MaterialApp(
-        localizationsDelegates: const [
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        supportedLocales: const [
-          Locale('ja'),
-        ],
-        title: 'calendar',
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueAccent),
-          //scaffoldBackgroundColor: const Color(0xFFE5E5E5),
-          useMaterial3: true,
-        ),
-        home: authState.when(
-            data: (data) {
-              if(data != null) {
-                return const TopPage();
-              }else{
-                return const LoginPage();
-              }
-            },
-            loading: () => Container(),
-            error: (_, __) => Container()
-        ),
-      );
-
+      debugShowCheckedModeBanner: false,
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('ja'),
+      ],
+      title: 'calendar',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueAccent),
+        //scaffoldBackgroundColor: const Color(0xFFE5E5E5),
+        useMaterial3: true,
+      ),
+      home: authState.when(
+          data: (data) {
+            if(data != null) {
+              return const TopPage();
+            }else{
+              return const LoginPage();
+            }
+          },
+          loading: () => Container(),
+          error: (_, __) => Container()
+      ),
+    );
   }
 }
 
