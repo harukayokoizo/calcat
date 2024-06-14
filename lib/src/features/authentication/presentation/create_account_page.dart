@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:share_calendar/src/features/authentication/presentation/password_set_page.dart';
 
 import '../../../common_widgets/presentation/error_message_widget.dart';
 import '../application/mail_auth.dart';
@@ -175,8 +176,17 @@ class CreateAccountPageState extends ConsumerState<CreateAccountPage>{
           });
           if(userCredential.user != null){
             await ref.read(authenticateProvider).loginAndCreateUser(email, userCredential.user!).then((value){
-              ref.read(firstAuthentication.notifier).state = true;
-              Navigator.pop(context);
+              // ref.read(firstAuthentication.notifier).state = true;
+              // Navigator.pop(context);
+              setState(() {
+                loading = false;
+              });
+              showCupertinoModalPopup(
+                  context: context,
+                  builder: (BuildContext context) => const SetPasswordPage()
+              ).then((value){
+                Navigator.pop(context);
+              });
             });
           }
         } catch (error) {
@@ -200,6 +210,7 @@ class CreateAccountPageState extends ConsumerState<CreateAccountPage>{
     });
   }
 
+  @override
   Widget build(BuildContext context){
     final double deviceWidth = MediaQuery.of(context).size.width;
     final double deviceHeight = MediaQuery.of(context).size.height;
@@ -223,11 +234,15 @@ class CreateAccountPageState extends ConsumerState<CreateAccountPage>{
                     child: SizedBox(
                       width: deviceWidth * 0.8,
                       child: TextFormField(
-                        autofocus: true,
+                        // autofocus: true,
                         textInputAction: TextInputAction.next,
                         controller: mailTextController,
                         decoration: const InputDecoration(
                           hintText: 'メールアドレス',
+                          helperStyle: TextStyle(),
+                          helperText: '作成するアカウントのメールアドレスを入力してください。',
+                          helperMaxLines: 2,
+                          contentPadding: EdgeInsets.fromLTRB(10, 20, 12, 20),
                           border: OutlineInputBorder(),
                         ),
                         onChanged: (value){

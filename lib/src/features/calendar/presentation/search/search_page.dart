@@ -22,9 +22,8 @@ class SearchPage extends ConsumerWidget{
       body: Consumer(
         builder: (context, ref, _) {
           final List<CalendarDocument> searchResults = ref.watch(searchResultsProvider);
-          final bool result = ref.watch(resultPage);
-          final bool textEditing = ref.watch(textControllerProvider);
-          Widget display = displaySearchPage(result, textEditing, searchResults);
+          final searchPageState = ref.watch(searchPageProvider);
+          Widget display = displaySearchPage(searchPageState.result!, searchPageState.editing!, searchResults);
           return GestureDetector(
             behavior: HitTestBehavior.opaque,
             onTap: (){

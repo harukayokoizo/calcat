@@ -162,15 +162,6 @@ class TopPageState extends ConsumerState{
   @override
   void initState() {
     super.initState();
-    final first = ref.read(firstAuthentication);
-    if(first){
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        showCupertinoModalPopup(
-            context: context,
-            builder: (BuildContext context) => const SetPasswordPage()
-        );
-      });
-    }
 
     // 通知をタップした時の処理
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message){

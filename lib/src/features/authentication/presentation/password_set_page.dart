@@ -29,7 +29,12 @@ class SetPasswordPageState extends ConsumerState<SetPasswordPage>{
       children: [
         Scaffold(
           appBar: AppBar(
-            // title: const Text('パスワード設定'),
+            leading: IconButton(
+              onPressed: (){
+                Navigator.pop(context);
+              },
+              icon: const Icon(Icons.close),
+            ),
           ),
           body: GestureDetector(
             onTap: focusNode.requestFocus,

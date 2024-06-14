@@ -26,10 +26,11 @@ class SearchValueList extends ConsumerWidget{
                       child: const Icon(Icons.arrow_upward, color: Colors.blue,),
                     ),
                     onTap: (){
+                      final searchState = ref.read(searchPageProvider);
+                      ref.read(searchPageProvider.notifier).saveState(searchState.copyWith(selectedText: title));
                       FocusScope.of(context).requestFocus(FocusNode());
-                      ref.read(searchValue.notifier).tapSearchValue(title);
                       ref.read(searchResultsProvider.notifier).searchCalendar(title).then((value){
-                        ref.read(resultPage.notifier).resultPage(true);
+                        ref.read(searchPageProvider.notifier).saveState(searchState.copyWith(result: true));
                       });
                     },
                     title: Text(title),
