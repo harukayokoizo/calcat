@@ -17,7 +17,7 @@ class SearchTopPage extends ConsumerWidget{
       appBar: AppBar(
         title: SearchFormDisplay(),
       ),
-      body: FollowRankingList(),
+      body: const FollowRankingList(),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.blue.shade500,
         shape: const CircleBorder(),
@@ -27,7 +27,7 @@ class SearchTopPage extends ConsumerWidget{
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const LimitedCalendar(),
+              builder: (context) => LimitedCalendarSearch(),
             ),
           );
         },

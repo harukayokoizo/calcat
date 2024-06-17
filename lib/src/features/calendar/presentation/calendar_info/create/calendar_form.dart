@@ -44,6 +44,12 @@ class CalendarFormState extends ConsumerState<CalendarForm>{
         Scaffold(
           appBar: AppBar(
             elevation: 3,
+            leading: IconButton(
+              onPressed: (){
+                Navigator.pop(context);
+              },
+              icon: const Icon(Icons.close),
+            ),
             title: const Text('カレンダー作成'),
             centerTitle: true,
             actions: [
@@ -103,7 +109,8 @@ class CalendarFormState extends ConsumerState<CalendarForm>{
                   CalendarTitleForm(calendar),
                   DescriptionForm(calendar),
                   PublicPreferenceForm(calendar),
-                  PasswordForm(calendar)
+                  PasswordForm(calendar),
+                  const SizedBox(height: 45,),
                 ]
               ),
             ),

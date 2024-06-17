@@ -20,13 +20,14 @@ class PublishedCalendarList extends ConsumerWidget{
 }
 
 class CalendarList extends StatelessWidget{
-  List<CalendarDocument> calendarList;
+  final List<CalendarDocument> calendarList;
 
-  CalendarList(this.calendarList, {super.key});
+  const CalendarList(this.calendarList, {super.key});
 
   @override
   Widget build(BuildContext context) {
     print(calendarList);
+    print('aaa');
     return ListView.builder(
         itemCount: calendarList.length,
         itemBuilder: (BuildContext context, int index){

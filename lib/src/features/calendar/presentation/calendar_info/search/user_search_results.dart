@@ -106,13 +106,15 @@ class UserSearchResultState extends ConsumerState<UserSearchResult>{
               ]
             );
           }else {
-            return const Padding(
-              padding: EdgeInsets.all(20.0),
-              child: Text(
-                '検索結果はありません。',
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20
+            return  const Padding(
+              padding: EdgeInsets.only(bottom: 50.0),
+              child: Center(
+                child: Text(
+                  '検索結果はありません。',
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20
+                  ),
                 ),
               ),
             );

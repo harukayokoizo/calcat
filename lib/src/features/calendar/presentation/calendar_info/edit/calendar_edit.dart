@@ -92,7 +92,8 @@ class CalendarEditFormState extends ConsumerState<CalendarEditForm>{
                     CalendarTitleForm(calendar),
                     DescriptionForm(calendar),
                     PublicPreferenceForm(calendar),
-                    PasswordForm(calendar)
+                    PasswordForm(calendar),
+                    const SizedBox(height: 45,),
                   ]
               ),
             ),

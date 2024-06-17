@@ -17,19 +17,17 @@ class LimitedCalendarSearchResults extends ConsumerWidget{
         appBar: AppBar(
           leading: IconButton(
             onPressed: () {
-              ref.read(resultPage.notifier).resultPage(false);
+              Navigator.pop(context);
             },
             icon: const Icon(Icons.arrow_back),
           ),
+          title: const Text('検索結果'),
         ),
-        body: Padding(
-          padding: const EdgeInsets.only(top: 10.0),
-          child: Column(
-            children: [
-              for(CalendarDocument calendarDoc in calendar)
-                SearchedCalendarContent(calendarDoc)
-            ],
-          ),
+        body: Column(
+          children: [
+            for(CalendarDocument calendarDoc in calendar)
+              SearchedCalendarContent(calendarDoc)
+          ],
         ),
       );
     }else{
@@ -37,18 +35,20 @@ class LimitedCalendarSearchResults extends ConsumerWidget{
         appBar: AppBar(
           leading: IconButton(
             onPressed: () {
-              ref.read(resultPage.notifier).resultPage(false);
+              Navigator.pop(context);
             },
             icon: const Icon(Icons.arrow_back),
           ),
         ),
         body: const Padding(
-          padding: EdgeInsets.all(20.0),
-          child: Text(
-            '検索結果はありません。',
-            style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 20
+          padding: EdgeInsets.only(bottom: 50.0),
+          child: Center(
+            child: Text(
+              '検索結果はありません。',
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20
+              ),
             ),
           ),
         ),

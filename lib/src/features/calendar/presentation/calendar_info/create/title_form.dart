@@ -31,6 +31,10 @@ class CalendarTitleForm extends ConsumerWidget{
           ),
           TextFormField(
             initialValue: initialTitle,
+            maxLength: 18,
+            buildCounter: (BuildContext context, {int? currentLength, int? maxLength, bool? isFocused}) {
+              return null; // カウンターを非表示にします
+            },
             decoration: InputDecoration(
               fillColor: const Color(0xFFE5E5E5),
               filled: true,

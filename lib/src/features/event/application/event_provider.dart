@@ -103,7 +103,7 @@ class EventFormState extends StateNotifier<Event>{
     final DateTime selectedDateTime = DateTime(selectedDate.year, selectedDate.month, selectedDate.day, selectedDate.hour, selectedDate.minute);
     final DateTime saveFromDate = DateTime(selectedDate.year, selectedDate.month, selectedDate.day, state.from!.hour, state.from!.minute);
 
-    if (state.to!.isAfter(selectedDate) || state.to!.isAtSameMomentAs(selectedDateTime)) {
+    if (state.to!.isAfter(saveFromDate) || state.to!.isAtSameMomentAs(selectedDateTime)) {
       event = state.copyWith(from: saveFromDate);
     }else{
       event = state.copyWith(from: saveFromDate, to: saveFromDate);
@@ -116,7 +116,7 @@ class EventFormState extends StateNotifier<Event>{
     final DateTime selectedDateTime = DateTime(selectedDate.year, selectedDate.month, selectedDate.day, selectedDate.hour, selectedDate.minute);
     final DateTime saveToDate = DateTime(selectedDate.year, selectedDate.month, selectedDate.day, state.to!.hour, state.to!.minute);
 
-    if(state.from!.isBefore(selectedDate) || state.from!.isAtSameMomentAs(selectedDateTime)) {
+    if(state.from!.isBefore(saveToDate) || state.from!.isAtSameMomentAs(selectedDateTime)) {
       Event event = state.copyWith(to: saveToDate);
       state = event;
     }

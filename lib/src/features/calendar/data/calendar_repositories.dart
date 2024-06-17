@@ -14,18 +14,26 @@ class CalendarRepositories {
 
   //personal_eventコレクションからイベントを取得する
   Stream<List<CalendarDocument>> getCalendarList() async*{
-    final currentUser = ref.read(currentUserProvider);
-    var calendars = FirebaseFirestore.instance
-        .collection('calendar').where('calendarOwner', arrayContainsAny: [currentUser!.uid])
-        .snapshots().map(
-            (snapshots) => snapshots.docs.map(
-                (e){
-                  var calendar = Calendar.fromJson(e.data());
-                  var calendarDoc = CalendarDocument(calendar:calendar, docId: e.id);
-                  return calendarDoc;
-                }).toList());
+    try {
+      final currentUser = ref.read(currentUserProvider);
+      var calendars = FirebaseFirestore.instance
+          .collection('calendar')
+          .where('calendarOwner', arrayContainsAny: [currentUser!.uid])
+          .orderBy('updated', descending: true)
+          .snapshots().map(
+              (snapshots) =>
+              snapshots.docs.map(
+                      (e) {
+                    var calendar = Calendar.fromJson(e.data());
+                    var calendarDoc = CalendarDocument(
+                        calendar: calendar, docId: e.id);
+                    return calendarDoc;
+                  }).toList());
 
-    yield* calendars;
+      yield* calendars;
+    }catch (e){
+      print(e.toString());
+    }
   }
 
   Stream<CalendarDocument> getCalendar(String docId) async*{

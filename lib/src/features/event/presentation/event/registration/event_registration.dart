@@ -48,6 +48,12 @@ class EventRegistration extends ConsumerWidget{
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         elevation: 5,
+        leading: IconButton(
+          onPressed: (){
+            Navigator.pop(context);
+          },
+          icon: const Icon(Icons.close),
+        ),
         titleTextStyle: const TextStyle(
           color: Colors.black,
           fontSize: 20,
