@@ -176,25 +176,13 @@ class TopPageState extends ConsumerState{
                 onSelect(TabItem.values[1]);
                 var calendar = Calendar.fromJson(snapshot.data()!);
                 var calendarDoc = CalendarDocument(docId: snapshot.id, calendar: calendar);
-                final user = ref.read(currentUserProvider);
-                print(calendar.author);
-                if(user!.uid == calendar.author) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          PublicCalendarPage(calendarDoc, true),
-                    ),
-                  );
-                }else{
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          FollowCalendarPage(calendarDoc, true),
-                    ),
-                  );
-                }
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        FollowCalendarPage(calendarDoc, true),
+                  ),
+                );
               } else {
                 number = 2;
                 onSelect(TabItem.values[2]);

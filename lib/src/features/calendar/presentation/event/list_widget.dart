@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../../../event/domain/event_document.dart';
@@ -112,7 +113,8 @@ class PublicListWidget extends StatelessWidget{
                                         );
                                       },
                                       child: EventTile(eventDoc.event!, focusedDay)
-                                  )
+                                  ),
+                              const SizedBox(height: 30,),
                             ],
                           ),
                         ),

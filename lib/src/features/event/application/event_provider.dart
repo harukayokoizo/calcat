@@ -28,7 +28,11 @@ class EventFormState extends StateNotifier<Event>{
     state = event;
   }
 
-  void changeEvent(String overview){
+  void changeEvent(String value){
+    String? overview;
+    if(value.isNotEmpty){
+      overview = value;
+    }
     final event = state.copyWith(overview: overview);
     state = event;
   }
@@ -38,12 +42,20 @@ class EventFormState extends StateNotifier<Event>{
     state = event;
   }
 
-  void changeUrl(String url){
+  void changeUrl(String value){
+    String? url;
+    if(value.isNotEmpty){
+      url = value;
+    }
     final event = state.copyWith(url: url);
     state = event;
   }
 
-  void changeLocation(String location){
+  void changeLocation(String value){
+    String? location;
+    if(value.isNotEmpty){
+      location = value;
+    }
     final event = state.copyWith(location: location);
     state = event;
   }

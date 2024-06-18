@@ -106,7 +106,8 @@ class ListWidget extends StatelessWidget{
                                         );
                                       },
                                       child: EventTile(eventDoc.event!, focusedDay)
-                                  )
+                                  ),
+                              const SizedBox(height: 30,),
                             ],
                           ),
                         ),
