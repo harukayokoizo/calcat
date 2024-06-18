@@ -17,8 +17,12 @@ import 'overview_form.dart';
 
 class EventRegistration extends ConsumerWidget{
   final DateTime focusedDay;
-  dynamic repositories;
-  String? calendarId;
+  final dynamic repositories;
+  final String? calendarId;
+  final FocusNode title = FocusNode();
+  final FocusNode overview = FocusNode();
+  final FocusNode url = FocusNode();
+  final FocusNode location = FocusNode();
   EventRegistration(this.focusedDay, this.repositories, this.calendarId, {super.key});
 
   @override
@@ -67,14 +71,32 @@ class EventRegistration extends ConsumerWidget{
           behavior: HitTestBehavior.opaque,
           onTap: (){
             FocusScope.of(context).unfocus();
+            title.unfocus();
+            overview.unfocus();
+            url.unfocus();
+            location.unfocus();
+          },
+          onHorizontalDragCancel: (){
+            FocusScope.of(context).unfocus();
+            title.unfocus();
+            overview.unfocus();
+            url.unfocus();
+            location.unfocus();
+          },
+          onHorizontalDragDown: (value){
+            FocusScope.of(context).unfocus();
+            title.unfocus();
+            overview.unfocus();
+            url.unfocus();
+            location.unfocus();
           },
           child: Column(
             children: [
-              TitleForm(event),
-              OverViewForm(event),
+              TitleForm(event, title),
+              OverViewForm(event, overview),
               DateSettingFormat(event),
-              UrlForm(event),
-              LocationForm(event),
+              UrlForm(event, url),
+              LocationForm(event, location),
               ColorForm(event),
               //NotificationForm(event),
               RepeatForm(event),

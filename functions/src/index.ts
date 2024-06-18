@@ -26,20 +26,23 @@ initializeApp();
 const db = getFirestore();
 const storage = getStorage();
 
-exports.deleteCalendarImage = onDocumentDeleted("calendar/{calendarId}", (calendar)=> {
+exports.deleteCalendar = onDocumentDeleted("calendar/{calendarId}", async (calendar)=> {
   try{
     const calendarId = calendar.params.calendarId;
     const snapshot = calendar.data;
-    logger.log(snapshot)
-    if(!snapshot){
-      console.log("No data associated with the event")
+    if(snapshot == null){
+      console.log("No data associated with the calendar")
       return;
     }
+    const path = snapshot.ref.path;
+    const docRef = db.doc(path);
+    await db.recursiveDelete(docRef);
+
     const data = snapshot.data()
     const fileName = data.fileName
     logger.log(fileName)
     if(fileName != null){
-      deleteImage(calendarId, fileName)
+      await deleteImage(calendarId, fileName)
     }
   }catch (e){
     console.log(e)

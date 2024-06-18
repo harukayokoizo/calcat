@@ -6,8 +6,9 @@ import '../../../application/event_provider.dart';
 import '../../../domain/event.dart';
 
 class LocationForm extends ConsumerWidget{
-  Event event;
-  LocationForm(this.event, {super.key});
+  final Event event;
+  final FocusNode focusNode;
+  const LocationForm(this.event, this.focusNode, {super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref){
@@ -23,6 +24,7 @@ class LocationForm extends ConsumerWidget{
         child: TextFormField(
           initialValue: initialTitle,
           //controller: titleController,
+          focusNode: focusNode,
           decoration: const InputDecoration(
               hintText: '場所',
               border: InputBorder.none
