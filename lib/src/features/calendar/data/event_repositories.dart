@@ -19,8 +19,6 @@ class PublicEventRepositories{
 
   //personal_eventコレクションからイベントを取得する
   Stream<List<EventDocument>> getEvent(String calendarMonth) async*{
-    print(calendarMonth);
-    print('stream');
     var events = FirebaseFirestore.instance
         .collection('calendar')
         .doc(calendarDocId)

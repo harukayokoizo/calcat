@@ -81,6 +81,7 @@ class CalendarRepositories {
       for (var e in sameCalendar.docs) {
         return e.id;
       }
+      return null;
     }else{
       return null;
     }

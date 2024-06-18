@@ -61,7 +61,7 @@ class CalendarState extends StateNotifier<Calendar>{
 
   Future<String?> editCalendar(String docId) async{
     final imageState = ref.read(imageStateProvider);
-    String? error = await validationCheck(null);
+    String? error = await validationCheck(docId);
     if(error != null){
       return error;
     }
