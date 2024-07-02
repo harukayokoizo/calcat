@@ -11,11 +11,15 @@ import '../../../domain/calendar_event.dart';
 import '../../calendar_info/detail/calendar_detail.dart';
 
 class FollowCalendarPage extends ConsumerWidget{
-  FollowCalendarPage(this.calendarDoc, {super.key});
+  late CalendarFormat _calendarFormat;
+  FollowCalendarPage(
+      this.calendarDoc,
+      this.fromNotification,
+      {super.key}): _calendarFormat = fromNotification ? CalendarFormat.twoWeeks : CalendarFormat.month;
   CalendarDocument calendarDoc;
+  bool fromNotification;
   GlobalKey itemKey = GlobalKey();
   late final ValueNotifier<DateTime> _focusedDayValue = ValueNotifier(DateTime.now());
-  late final CalendarFormat _calendarFormat = CalendarFormat.month;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -23,7 +27,6 @@ class FollowCalendarPage extends ConsumerWidget{
     var focusedDay = ref.watch(publicFocusedDay);
     var calendarFormat = ref.watch(publicCalendarFormat);
     const week = ['日', '月', '火', '水', '木', '金', '土'];
-    // final events = ref.watch(publicEventList(calendarDocId));
 
     Map events = {};
     var eventsList = ref.watch(publicEventStream(calendarDocId));
@@ -36,8 +39,9 @@ class FollowCalendarPage extends ConsumerWidget{
       }
     }
 
-    print(events);
-    print(events.length);
+    if(calendarFormat != null){
+      _calendarFormat = calendarFormat;
+    }
 
     return Scaffold(
       key: itemKey,
@@ -134,7 +138,7 @@ class FollowCalendarPage extends ConsumerWidget{
               headerVisible: false,
               rowHeight: constraints.maxHeight / 6.0,
               locale: 'ja_JP',
-              calendarFormat: calendarFormat,
+              calendarFormat: _calendarFormat,
               eventLoader: (date){
                 return events[date] ?? [];
               },

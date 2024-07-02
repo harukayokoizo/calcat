@@ -6,12 +6,13 @@ import '../../../application/event_provider.dart';
 import '../../../domain/event.dart';
 
 class TitleForm extends ConsumerWidget{
-  Event event;
-  TitleForm(this.event, {super.key});
+  final Event event;
+  final FocusNode focusNode;
+  const TitleForm(this.event, this.focusNode, {super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref){
-    String? initialTitle = event != null ? event!.title : '';
+    String? initialTitle = event.title ?? '';
     return Container(
       decoration: const BoxDecoration(
         border: Border(
@@ -24,6 +25,7 @@ class TitleForm extends ConsumerWidget{
         child: TextFormField(
           initialValue: initialTitle,
           //controller: titleController,
+          focusNode: focusNode,
           decoration: const InputDecoration(
               hintText: 'イベント名',
               border: InputBorder.none

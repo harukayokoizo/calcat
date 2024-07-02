@@ -20,18 +20,27 @@ class PublishedCalendarList extends ConsumerWidget{
 }
 
 class CalendarList extends StatelessWidget{
-  List<CalendarDocument> calendarList;
+  final List<CalendarDocument> calendarList;
 
-  CalendarList(this.calendarList, {super.key});
+  const CalendarList(this.calendarList, {super.key});
 
   @override
   Widget build(BuildContext context) {
-    print(calendarList);
-    return ListView.builder(
-        itemCount: calendarList.length,
-        itemBuilder: (BuildContext context, int index){
-          return PublishedCalendarContent(calendarList[index]);
-        });
+    return SingleChildScrollView(
+      physics: const AlwaysScrollableScrollPhysics(),
+      child: Column(
+        children: [
+          ListView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: calendarList.length,
+              itemBuilder: (BuildContext context, int index){
+                return PublishedCalendarContent(calendarList[index]);
+              }),
+          const SizedBox(height: 30,),
+        ],
+      ),
+    );
   }
 
 }

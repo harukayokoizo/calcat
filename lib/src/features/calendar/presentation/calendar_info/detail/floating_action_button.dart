@@ -1,10 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:share_calendar/src/features/calendar/presentation/calendar_info/search/user_search_form.dart';
 
-import '../../../../event/domain/event_document.dart';
-import '../../../../notification/presentation/action_sheet.dart';
-import '../../../../notification/presentation/notification_settings_button.dart';
 import '../../../domain/calendar_document.dart';
 import '../edit/calendar_edit.dart';
 import '../edit/delete_dialog.dart';
@@ -43,16 +41,26 @@ class CalendarFloatingButtonState extends State<CalendarFloatingButton>{
               shape: const CircleBorder(),
               backgroundColor: Colors.blue.shade50,
               onTap: () {
-                showCupertinoModalPopup(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return CalendarEditForm(calendarDoc);
-                  },
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => CalendarEditForm(calendarDoc),
+                  ),
                 ).then((value){
                   if(value != null){
                     Navigator.pop(context);
                   }
                 });
+                // showCupertinoModalPopup(
+                //   context: context,
+                //   builder: (BuildContext context) {
+                //     return CalendarEditForm(calendarDoc);
+                //   },
+                // ).then((value){
+                //   if(value != null){
+                //     Navigator.pop(context);
+                //   }
+                // });
               },
             ),
             SpeedDialChild(
@@ -71,6 +79,34 @@ class CalendarFloatingButtonState extends State<CalendarFloatingButton>{
                     Navigator.pop(context, true);
                   }
                 });
+              },
+            ),
+            SpeedDialChild(
+              label: '検索',
+              child: const Icon(Icons.search),
+              shape: const CircleBorder(),
+              backgroundColor: Colors.blue.shade50,
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => UserSearch(calendarDoc),
+                  ),
+                ).then((value){
+                  if(value != null){
+                    Navigator.pop(context);
+                  }
+                });
+                // showCupertinoModalPopup(
+                //   context: context,
+                //   builder: (BuildContext context) {
+                //     return UserSearch(calendarDoc);
+                //   },
+                // ).then((value){
+                //   if(value != null){
+                //     Navigator.pop(context);
+                //   }
+                // });
               },
             ),
           ],

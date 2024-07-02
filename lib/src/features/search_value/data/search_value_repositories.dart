@@ -91,4 +91,16 @@ class SearchValueRepositories {
       });
     }
   }
+
+  Future<void> deleteSingleSearchValue(String searchValue) async{
+    final id = await isar!.searchValues
+        .filter()
+        .searchValueEqualTo(searchValue)
+        .idProperty()
+        .findFirst();
+
+    await isar!.writeTxn(() async {
+      await isar!.searchValues.delete(id!);
+    });
+  }
 }

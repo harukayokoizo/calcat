@@ -35,35 +35,45 @@ class FollowList extends StatefulWidget{
 class FollowListState extends State<FollowList> with SingleTickerProviderStateMixin{
   @override
   Widget build(BuildContext context) {
-    return SlidableAutoCloseBehavior(
-      child: ListView.builder(
-        itemCount: widget.calendarList.length,
-        itemBuilder: (BuildContext context, int index){
-          return Slidable(
-              key: ValueKey(index),
-              endActionPane: ActionPane(
-                extentRatio: 0.25,
-                motion: const ScrollMotion(),
-                children: [
-                  SlidableAction(
-                    onPressed: (_) {
-                      showCupertinoDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return FollowCalendarDeleteDialog(widget.calendarList[index]);
-                        },
-                      );
-                    },
-                    backgroundColor: Colors.red,
-                    //foregroundColor: Colors.red,
-                    icon: Icons.delete,
-                    label: '削除',
-                  ),
-                ],
-              ),
-              child: FollowCalendar(widget.calendarList[index])
-          );
-        },
+    return SingleChildScrollView(
+      physics: const AlwaysScrollableScrollPhysics(),
+      child: Column(
+        children: [
+          SlidableAutoCloseBehavior(
+            child: ListView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: widget.calendarList.length,
+              itemBuilder: (BuildContext context, int index){
+                return Slidable(
+                    key: ValueKey(index),
+                    endActionPane: ActionPane(
+                      extentRatio: 0.25,
+                      motion: const ScrollMotion(),
+                      children: [
+                        SlidableAction(
+                          onPressed: (_) {
+                            showCupertinoDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return FollowCalendarDeleteDialog(widget.calendarList[index]);
+                              },
+                            );
+                          },
+                          backgroundColor: Colors.red,
+                          //foregroundColor: Colors.red,
+                          icon: Icons.delete,
+                          label: '削除',
+                        ),
+                      ],
+                    ),
+                    child: FollowCalendar(widget.calendarList[index])
+                );
+              },
+            ),
+          ),
+          const SizedBox(height: 30,),
+        ],
       ),
     );
   }

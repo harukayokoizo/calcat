@@ -18,6 +18,8 @@ class SelectedCalendar extends ConsumerWidget{
     final double deviceWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       body: SafeArea(
+        top: false,
+        bottom: false,
         child: Column(
             children: [
               Expanded(
@@ -33,7 +35,7 @@ class SelectedCalendar extends ConsumerWidget{
               ),
               Material(
                 elevation: 20,
-                child: Container(
+                child: SizedBox(
                   width: deviceWidth,
                   child: followButton(calendarDoc.docId!),
                 ),
@@ -48,7 +50,7 @@ class SelectedCalendar extends ConsumerWidget{
 
 Widget followButton(String docId){
   return Padding(
-    padding: const EdgeInsets.only(top: 15, bottom: 15, left: 30, right: 30),
+    padding: const EdgeInsets.only(bottom: 30, left: 30, right: 30),
     child: Consumer(
       builder: (context, ref, _) {
         final follow = ref.watch(getFollowCalendar(docId));

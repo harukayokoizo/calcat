@@ -32,7 +32,7 @@ class PersonalCalendarPageState extends ConsumerState{
   @override
   Widget build(BuildContext context) {
     var focusedDay = ref.watch(focusedDayProvider);
-    var calendarFormat = ref.watch(calendarFormatState);
+    _calendarFormat = ref.watch(calendarFormatState);
     const week = ['日', '月', '火', '水', '木', '金', '土'];
     Map events = {};
     var extraEventList = ref.watch(eventStream);
@@ -97,7 +97,7 @@ class PersonalCalendarPageState extends ConsumerState{
             //shouldFillViewport: true,
             //availableGestures: AvailableGestures.verticalSwipe,
             locale: 'ja_JP',
-            calendarFormat: calendarFormat,
+            calendarFormat: _calendarFormat,
             eventLoader: (date){
               return events[date] ?? [];
             },

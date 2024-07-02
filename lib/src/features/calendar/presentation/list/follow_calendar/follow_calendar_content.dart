@@ -19,7 +19,7 @@ class FollowCalendarContent extends StatelessWidget{
         onTap: (){
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => FollowCalendarPage(calendarDoc),
+            MaterialPageRoute(builder: (context) => FollowCalendarPage(calendarDoc, false),
             ),
           );
         },

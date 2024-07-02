@@ -6,8 +6,8 @@ import '../../../application/calendar_provider.dart';
 import '../../../domain/calendar.dart';
 
 class DescriptionForm extends ConsumerWidget{
-  Calendar calendar;
-  DescriptionForm(this.calendar, {super.key});
+  final Calendar calendar;
+  const DescriptionForm(this.calendar, {super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref){

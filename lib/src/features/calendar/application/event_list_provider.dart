@@ -10,7 +10,7 @@ import '../domain/calendar_event.dart';
 
 final calendarIdProvider = StateProvider.autoDispose.family<String?, String>((ref,calendarId) => calendarId);
 
-final publicCalendarFormat = StateProvider.autoDispose<CalendarFormat>((ref) => CalendarFormat.month);
+final publicCalendarFormat = StateProvider.autoDispose<CalendarFormat?>((ref) => null);
 
 final publicFocusedDay = StateNotifierProvider.autoDispose<PublicFocusedDay, DateTime>(
         (ref) {

@@ -61,12 +61,12 @@ class CalendarState extends StateNotifier<Calendar>{
 
   Future<String?> editCalendar(String docId) async{
     final imageState = ref.read(imageStateProvider);
-    String? error = await validationCheck(null);
+    String? error = await validationCheck(docId);
     if(error != null){
       return error;
     }
     try {
-      Map<String, dynamic> data = getCalendarState(true);
+      Map<String, dynamic> data = getCalendarState(false);
       await ref.read(calendarRepositories).editCalendar(data, docId);
       if (imageState != null) {
         await ref.read(imageStateProvider.notifier).uploadFile(docId);
@@ -105,6 +105,7 @@ class CalendarState extends StateNotifier<Calendar>{
 
   Map<String, dynamic> getCalendarState(bool create){
     List<String> searchIndex = createSearchIndex();
+    List<String> calendarOwner = [state.author!];
     String? password = state.publicPreference! ? null : state.password;
     Map<String, dynamic> data = {
       'author': state.author,
@@ -114,13 +115,16 @@ class CalendarState extends StateNotifier<Calendar>{
       'fileName': state.fileName,
       'publicPreference': state.publicPreference,
       'password': password,
-      'created': DateTime.now(),
       'updated': DateTime.now(),
       'searchIndex': searchIndex,
     };
     
     if(create){
-      data.addAll({'followsCount': 0,});
+      data.addAll({
+        'created': DateTime.now(),
+        'followsCount': 0,
+        'calendarOwner': calendarOwner,
+      });
     }
 
     return data;

@@ -26,20 +26,23 @@ initializeApp();
 const db = getFirestore();
 const storage = getStorage();
 
-exports.deleteCalendarImage = onDocumentDeleted("calendar/{calendarId}", (calendar)=> {
+exports.deleteCalendar = onDocumentDeleted("calendar/{calendarId}", async (calendar)=> {
   try{
     const calendarId = calendar.params.calendarId;
     const snapshot = calendar.data;
-    logger.log(snapshot)
-    if(!snapshot){
-      console.log("No data associated with the event")
+    if(snapshot == null){
+      console.log("No data associated with the calendar")
       return;
     }
+    const path = snapshot.ref.path;
+    const docRef = db.doc(path);
+    await db.recursiveDelete(docRef);
+
     const data = snapshot.data()
     const fileName = data.fileName
     logger.log(fileName)
     if(fileName != null){
-      deleteImage(calendarId, fileName)
+      await deleteImage(calendarId, fileName)
     }
   }catch (e){
     console.log(e)
@@ -170,7 +173,7 @@ exports.scheduledEventNotification = onSchedule("* * * * *", async () => {
   })()
 
   try{
-    const snapshots = await db.collectionGroup('event').where('notificationExist','==', true).where('from', '!=', now).get()
+    const snapshots = await db.collectionGroup('event').where('notificationExist','==', true).where('from', '==', now).get()
     if(!snapshots.empty){
       const events = snapshots.docs.map((doc: { data: () => any; id: string; }) => {
         const data = doc.data()
@@ -226,7 +229,7 @@ async function getSenderEventNotification(event: Event){
 
 async function getUserToken(uid: string){
   try{
-    const snapshots = await db.collection('user').where('uid', '==', uid).get()
+    const snapshots = await db.collection('token').where('uid', '==', uid).get()
     if(snapshots != null){
       const tokens = snapshots.docs.map((doc: { data: () => any;}) => doc.data().token)
       return tokens
@@ -242,8 +245,13 @@ function sendPushNotificationsForReminder(event: Event, token: string) {
   const notification: admin.messaging.Notification = {
     title: event.title,
   }
+  const data: admin.messaging.DataMessagePayload = {
+    calendarId: String(event.calendarId),
+    eventId: String(event.eventId)
+  }
   const message: admin.messaging.Message = {
     token: token,
+    data: data,
     notification: notification
   }
 

@@ -14,19 +14,26 @@ class CalendarRepositories {
 
   //personal_eventコレクションからイベントを取得する
   Stream<List<CalendarDocument>> getCalendarList() async*{
-    final currentUser = ref.read(currentUserProvider);
-    var calendars = FirebaseFirestore.instance
-        .collection('calendar')
-        .where('author', isEqualTo: currentUser!.uid)
-        .snapshots().map(
-            (snapshots) => snapshots.docs.map(
-                (e){
-                  var calendar = Calendar.fromJson(e.data());
-                  var calendarDoc = CalendarDocument(calendar:calendar, docId: e.id);
-                  return calendarDoc;
-                }).toList());
+    try {
+      final currentUser = ref.read(currentUserProvider);
+      var calendars = FirebaseFirestore.instance
+          .collection('calendar')
+          .where('calendarOwner', arrayContainsAny: [currentUser!.uid])
+          .orderBy('updated', descending: true)
+          .snapshots().map(
+              (snapshots) =>
+              snapshots.docs.map(
+                      (e) {
+                    var calendar = Calendar.fromJson(e.data());
+                    var calendarDoc = CalendarDocument(
+                        calendar: calendar, docId: e.id);
+                    return calendarDoc;
+                  }).toList());
 
-    yield* calendars;
+      yield* calendars;
+    }catch (e){
+      print(e.toString());
+    }
   }
 
   Stream<CalendarDocument> getCalendar(String docId) async*{
@@ -43,6 +50,25 @@ class CalendarRepositories {
     yield* calendarDoc;
   }
 
+  Future<bool> getCalendarOwner(String docId, String uid) async{
+    try {
+      final calendarDoc = await FirebaseFirestore.instance
+          .collection('calendar')
+          .doc(docId)
+          .get();
+
+      if (calendarDoc.exists) {
+        Calendar calendar = Calendar.fromJson(calendarDoc.data()!);
+        List<String> owner = calendar.calendarOwner!;
+        return owner.contains(uid);
+      } else {
+        return false;
+      }
+    }catch (e){
+      throw e.toString();
+    }
+  }
+
   Future<String?> getSameCalendar(String title, String password) async{
     final sameCalendar = await FirebaseFirestore.instance
         .collection('calendar')
@@ -55,6 +81,7 @@ class CalendarRepositories {
       for (var e in sameCalendar.docs) {
         return e.id;
       }
+      return null;
     }else{
       return null;
     }

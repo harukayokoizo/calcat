@@ -466,7 +466,6 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
   @override
   Widget build(BuildContext context) {
     var taskViewHeight = widget.rowHeight * 4;
-    //print(taskViewHeight);
     return ListView(
       physics: const NeverScrollableScrollPhysics(),
       children: [
@@ -703,7 +702,7 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
                             child: Text(
                               '${events[i].event!.title}',
                               style: TextStyle(
-                                fontSize: 13,
+                                fontSize: 12,
                                 color: isOutside ? const Color(0xFFAEAEAE) : Color(colors[events[i].event!.color!]),
                                 fontWeight: FontWeight.bold
                               ),

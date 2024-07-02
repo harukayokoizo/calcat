@@ -6,8 +6,9 @@ import '../../../application/event_provider.dart';
 import '../../../domain/event.dart';
 
 class UrlForm extends ConsumerWidget{
-  Event event;
-  UrlForm(this.event, {super.key});
+  final Event event;
+  final FocusNode focusNode;
+  const UrlForm(this.event, this.focusNode, {super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref){
@@ -23,6 +24,7 @@ class UrlForm extends ConsumerWidget{
         child: TextFormField(
           initialValue: initialTitle,
           //controller: titleController,
+          focusNode: focusNode,
           decoration: const InputDecoration(
               hintText: 'URL',
               border: InputBorder.none

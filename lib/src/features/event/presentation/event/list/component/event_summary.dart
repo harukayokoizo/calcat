@@ -10,11 +10,14 @@ Widget eventSummary(String title, String? overview, int color){
       children: [
         Flexible(
           flex: 1,
-          child: Text(title,
-            style: TextStyle(
-              color: Color(color).computeLuminance() < 0.5 ? Colors.white : Colors.black,
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
+          child: Padding(
+            padding: overview != null ? const EdgeInsets.all(0.0) : const EdgeInsets.only(top: 5.0, bottom: 5.0),
+            child: Text(title,
+              style: TextStyle(
+                color: Color(color).computeLuminance() < 0.5 ? Colors.white : Colors.black,
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
         ),

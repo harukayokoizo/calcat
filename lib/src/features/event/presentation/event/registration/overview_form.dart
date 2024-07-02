@@ -6,8 +6,9 @@ import '../../../application/event_provider.dart';
 import '../../../domain/event.dart';
 
 class OverViewForm extends ConsumerWidget{
-  Event event;
-  OverViewForm(this.event, {super.key});
+  final Event event;
+  final FocusNode focusNode;
+  const OverViewForm(this.event, this.focusNode, {super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref){
@@ -25,6 +26,7 @@ class OverViewForm extends ConsumerWidget{
           initialValue: initialOverView,
           minLines: 1,
           maxLines: 3,
+          focusNode: focusNode,
           decoration: const InputDecoration(
               hintText: 'イベント内容',
               border: InputBorder.none

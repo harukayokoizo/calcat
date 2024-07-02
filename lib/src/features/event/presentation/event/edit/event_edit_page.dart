@@ -17,9 +17,13 @@ import '../registration/url_form.dart';
 
 
 class EventEdit extends ConsumerWidget{
-  EventDocument eventDoc;
-  int value;
-  dynamic repositories;
+  final EventDocument eventDoc;
+  final int value;
+  final dynamic repositories;
+  final FocusNode title = FocusNode();
+  final FocusNode overview = FocusNode();
+  final FocusNode url = FocusNode();
+  final FocusNode location = FocusNode();
   EventEdit(this.eventDoc, this.value, this.repositories, {super.key});
 
   @override
@@ -45,7 +49,7 @@ class EventEdit extends ConsumerWidget{
             onPressed: () {
               Navigator.of(context).pop(false);
             },
-            icon: Icon(Icons.close),
+            icon: const Icon(Icons.close),
           ),
           elevation: 5,
           titleTextStyle: const TextStyle(
@@ -61,14 +65,32 @@ class EventEdit extends ConsumerWidget{
             behavior: HitTestBehavior.opaque,
             onTap: (){
               FocusScope.of(context).unfocus();
+              title.unfocus();
+              overview.unfocus();
+              url.unfocus();
+              location.unfocus();
+            },
+            onHorizontalDragCancel: (){
+              FocusScope.of(context).unfocus();
+              title.unfocus();
+              overview.unfocus();
+              url.unfocus();
+              location.unfocus();
+            },
+            onHorizontalDragDown: (value){
+              FocusScope.of(context).unfocus();
+              title.unfocus();
+              overview.unfocus();
+              url.unfocus();
+              location.unfocus();
             },
             child: Column(
               children: [
-                TitleForm(event),
-                OverViewForm(event),
+                TitleForm(event, title),
+                OverViewForm(event, overview),
                 DateSettingFormat(event),
-                UrlForm(event),
-                LocationForm(event),
+                UrlForm(event, url),
+                LocationForm(event, location),
                 ColorForm(event),
                 // NotificationForm(event),
                 Visibility(

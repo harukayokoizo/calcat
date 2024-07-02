@@ -13,9 +13,9 @@ class SearchForm extends ConsumerWidget{
 
   @override
   Widget build(BuildContext context, WidgetRef ref){
-    final initialValue = ref.watch(searchValue);
-    if(initialValue != null) {
-      controller.text = initialValue;
+    final selectedText = ref.watch(searchPageProvider.select((searchState) => searchState.selectedText));
+    if(selectedText != null && selectedText.isNotEmpty){
+      controller.text = selectedText;
     }
     return Row(
         children: [
@@ -29,9 +29,9 @@ class SearchForm extends ConsumerWidget{
                   prefixIcon: const Icon(Icons.search),
                   suffixIcon: IconButton(
                     onPressed: (){
+                      final searchState = ref.read(searchPageProvider);
                       controller.clear();
-                      ref.read(searchValue.notifier).tapSearchValue(null);
-                      ref.read(textControllerProvider.notifier).switchState(false);
+                      ref.read(searchPageProvider.notifier).saveState(searchState.copyWith(editing: false, text: null));
                     },
                     icon: const Icon(Icons.clear),
                   ),
@@ -46,30 +46,25 @@ class SearchForm extends ConsumerWidget{
                   )
               ),
               onChanged: (value){
+                final searchState = ref.read(searchPageProvider);
                 if(value.isNotEmpty){
-                  ref.read(searchValue.notifier).tapSearchValue(value);
-                  ref.read(textControllerProvider.notifier).switchState(true);
+                  ref.read(searchPageProvider.notifier).saveState(searchState.copyWith(editing: true, text: value));
                 }else{
-                  ref.read(textControllerProvider.notifier).switchState(false);
+                  ref.read(searchPageProvider.notifier).saveState(searchState.copyWith(editing: false));
                 }
               },
               onFieldSubmitted: (value){
                 if(value.isNotEmpty) {
-                  ref.read(searchResultsProvider.notifier).searchCalendar(value)
-                      .then((value) {
-                        ref.read(resultPage.notifier).resultPage(true);
-                      });
+                  final searchState = ref.read(searchPageProvider);
+                  ref.read(searchResultsProvider.notifier).searchCalendar(value).then((value) {
+                    ref.read(searchPageProvider.notifier).saveState(searchState.copyWith(result: true));
+                  });
                 }
               },
             ),
           ),
           TextButton(
               onPressed: () {
-                ref.read(resultPage.notifier).resultPage(false);
-                ref.watch(textControllerProvider.notifier).switchState(false);
-                controller.clear();
-                ref.read(searchValue.notifier).tapSearchValue(null);
-
                 Navigator.pop(context);
               },
               child: const Text(

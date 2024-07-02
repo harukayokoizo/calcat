@@ -33,7 +33,7 @@ class CalendarIconWidget extends ConsumerWidget{
     return Stack(
       children: [
         Container(
-          height: 250,
+          height: 300,
           width: deviceWidth,
           clipBehavior: Clip.hardEdge,
           decoration: const BoxDecoration(
@@ -42,15 +42,54 @@ class CalendarIconWidget extends ConsumerWidget{
           child: imagePath
         ),
         Padding(
-          padding: const EdgeInsets.only(top: 0.0),
+          padding: const EdgeInsets.only(top: 30.0, left: 5.0),
           child: IconButton(
-            icon: const Icon(Icons.arrow_back_ios),
+            icon: const CircularIcon(
+              icon: Icons.clear,
+              backgroundColor: Colors.grey,
+              iconColor: Colors.white,
+              size: 35,
+            ),
             onPressed: () {
               Navigator.of(context).pop();
             },
           ),
         ),
       ],
+    );
+  }
+}
+
+class CircularIcon extends StatelessWidget {
+  final IconData icon;
+  final Color backgroundColor;
+  final Color iconColor;
+  final double size;
+
+  const CircularIcon({
+    required this.icon,
+    required this.backgroundColor,
+    required this.iconColor,
+    this.size = 24.0,
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: size,
+      height: size,
+      decoration: BoxDecoration(
+        color: backgroundColor,
+        shape: BoxShape.circle,
+      ),
+      child: Center(
+        child: Icon(
+          icon,
+          color: iconColor,
+          size: size * 0.6, // アイコンのサイズを背景に対して調整
+        ),
+      ),
     );
   }
 }

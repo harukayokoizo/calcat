@@ -1,9 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
+import '../../../../authentication/application/user_provider.dart';
+import '../../../../notification/data/personal_event_notification_repositories.dart';
+import '../../../../notification/data/public_event_notification_repositories.dart';
 import '../../../../notification/presentation/action_sheet.dart';
 import '../../../../notification/presentation/notification_settings_button.dart';
+import '../../../data/personal_event_repositories.dart';
 import '../../../domain/event.dart';
 import '../../../domain/event_document.dart';
 import '../edit/delete_dialog.dart';
@@ -11,10 +16,11 @@ import '../edit/event_edit_page.dart';
 import 'action_sheet.dart';
 
 class EventFloatingButton extends StatefulWidget{
-  EventDocument eventDoc;
-  dynamic repositories;
-  bool public;
-  EventFloatingButton(this.eventDoc, this.repositories, this.public, {super.key});
+  final EventDocument eventDoc;
+  final dynamic repositories;
+  final bool public;
+  final bool notification;
+  const EventFloatingButton(this.eventDoc, this.repositories, this.public, this.notification, {super.key});
 
   @override
   State<EventFloatingButton> createState() => EventFloatingButtonState();
@@ -25,19 +31,22 @@ class EventFloatingButtonState extends State<EventFloatingButton>{
   late Event event;
   late dynamic repositories;
   late bool public;
-  bool notification = false;
+  late Icon notificationIcon;
+  late bool notification;
 
   @override
   void initState() {
+    super.initState();
     eventDoc = widget.eventDoc;
     repositories = widget.repositories;
-    notification = widget.eventDoc.event!.notificationExist!;
     public = widget.public;
     event = widget.eventDoc.event!;
+    notification = widget.notification;
   }
 
   @override
   Widget build(BuildContext context){
+    Icon notificationIcon = notification ? const Icon(Icons.notifications_active): const Icon(Icons.notifications_off_outlined);
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
@@ -128,7 +137,7 @@ class EventFloatingButtonState extends State<EventFloatingButton>{
               label: '通知',
               shape: const CircleBorder(),
               backgroundColor: Colors.blue.shade50,
-              child: notification ? const Icon(Icons.notifications_active) : const Icon(Icons.notifications_off_outlined),
+              child: notificationIcon,
               onTap: () async {
                 showCupertinoModalPopup(
                     context: context,

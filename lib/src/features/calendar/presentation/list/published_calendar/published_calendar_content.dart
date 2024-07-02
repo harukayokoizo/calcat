@@ -18,7 +18,7 @@ class PublishedCalendarContent extends StatelessWidget{
         onTap: (){
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => PublicCalendarPage(calendarDoc),
+            MaterialPageRoute(builder: (context) => PublicCalendarPage(calendarDoc, false),
             ),
           );
         },

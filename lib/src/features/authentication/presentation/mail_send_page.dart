@@ -26,7 +26,9 @@ class MailSendPageState extends ConsumerState{
         FocusScope.of(context).unfocus();
       },
       child: Scaffold(
-        appBar: AppBar(),
+        appBar: AppBar(
+          // title: const Text('パスワード再設定'),
+        ),
         body: SizedBox(
           width: deviceWidth,
           height: deviceHeight,

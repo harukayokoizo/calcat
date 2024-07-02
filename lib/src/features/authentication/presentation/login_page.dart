@@ -24,7 +24,6 @@ class LoginPageState extends ConsumerState<LoginPage>{
   final mailTextController = TextEditingController();
   late String mailAddress;
   late String password;
-  late String errorMessage = '';
   bool loading = false;
   @override
 
@@ -89,7 +88,7 @@ class LoginPageState extends ConsumerState<LoginPage>{
                           setState(() {
                             loading = true;
                           });
-                          ref.read(authenticateProvider).loginAndCreateUser(mailTextController.text, passTextController.text).then((message){
+                          ref.read(authenticateProvider).loginAndCreateToken(mailTextController.text, passTextController.text).then((message){
                             // setState(() {loading = false;});
                             if(message != 'success') {
                               passTextController.clear();
@@ -132,9 +131,6 @@ class LoginPageState extends ConsumerState<LoginPage>{
                           MaterialPageRoute(builder: (context) => const MailSendPage(),
                           ),
                         );
-                        setState(() {
-                          errorMessage = '';
-                        });
                       },
                       child: const Text(
                         'パスワードはお忘れですか？',
@@ -160,9 +156,6 @@ class LoginPageState extends ConsumerState<LoginPage>{
                                 MaterialPageRoute(builder: (context) => const CreateAccountPage(),
                                 ),
                               );
-                              setState(() {
-                                errorMessage = '';
-                              });
                             }
                         )
                       ]

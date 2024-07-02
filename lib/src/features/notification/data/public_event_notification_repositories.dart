@@ -52,6 +52,19 @@ class PublicEventNotificationRepositories{
     return snapshot.exists;
   }
 
+  // Stream<bool> getNotificationStream() async*{
+  //   var snapshot = await FirebaseFirestore.instance
+  //       .collection('calendar')
+  //       .doc(calendarId)
+  //       .collection('event')
+  //       .doc(eventId)
+  //       .collection('notification')
+  //       .doc(uid)
+  //       .snapshots().first;
+  //
+  //   yield* snapshot.exists;
+  // }
+
   Future<List<Notification>> getAllNotification() async{
     final List<Notification> notifications = [];
     await FirebaseFirestore.instance

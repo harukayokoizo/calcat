@@ -19,9 +19,6 @@ class DateSettingFormat extends ConsumerWidget{
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final personalEvent = ref.watch(eventFormStateProvider(event));
-    // print(personalEvent.to);
-    // print(personalEvent.from);
-
     final double deviceWidth = MediaQuery.of(context).size.width;
 
     return Container(

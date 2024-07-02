@@ -6,9 +6,9 @@ import '../../domain/calendar_document.dart';
 import '../list/published_calendar/published_calendar_content.dart';
 
 class SearchedCalendarContent extends ConsumerWidget{
-  CalendarDocument calendarDoc;
+  final CalendarDocument calendarDoc;
 
-  SearchedCalendarContent(this.calendarDoc, {super.key});
+  const SearchedCalendarContent(this.calendarDoc, {super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref){
@@ -29,11 +29,6 @@ class SearchedCalendarContent extends ConsumerWidget{
           width: deviceWidth,
           decoration: BoxDecoration(
             color: Colors.white,
-            // border: const Border(
-            //     top: BorderSide(width: 1.0, color: Color(0xFFCCCCCC)),
-            //     bottom: BorderSide(width: 1.5, color: Color(0xFFCCCCCC)),
-            //     right: BorderSide(width: 1.5, color: Color(0xFFCCCCCC))
-            // ),
             borderRadius: BorderRadius.circular(10),
             boxShadow: [
               BoxShadow(

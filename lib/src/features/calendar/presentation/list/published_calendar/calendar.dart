@@ -9,17 +9,21 @@ import '../../../domain/calendar_event.dart';
 import '../../calendar_info/detail/calendar_detail.dart';
 
 class PublicCalendarPage extends ConsumerWidget{
-  PublicCalendarPage(this.calendarDoc, {super.key});
+  late CalendarFormat _calendarFormat;
+  PublicCalendarPage(
+      this.calendarDoc,
+      this.fromNotification,
+      {super.key}) : _calendarFormat = fromNotification ? CalendarFormat.twoWeeks : CalendarFormat.month;
   CalendarDocument calendarDoc;
+  bool fromNotification;
   GlobalKey itemKey = GlobalKey();
   late final ValueNotifier<DateTime> _focusedDayValue = ValueNotifier(DateTime.now());
-  late final CalendarFormat _calendarFormat = CalendarFormat.month;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final String calendarDocId = calendarDoc.docId!;
     var focusedDay = ref.watch(publicFocusedDay);
-    var calendarFormat = ref.watch(publicCalendarFormat);
+    final calendarFormat = ref.watch(publicCalendarFormat);
     const week = ['日', '月', '火', '水', '木', '金', '土'];
 
     Map events = {};
@@ -31,6 +35,10 @@ class PublicCalendarPage extends ConsumerWidget{
           events.addAll(list);
         }
       }
+    }
+
+    if(calendarFormat != null){
+      _calendarFormat = calendarFormat;
     }
 
     return Scaffold(
@@ -126,7 +134,7 @@ class PublicCalendarPage extends ConsumerWidget{
               headerVisible: false,
               rowHeight: constraints.maxHeight / 6.0,
               locale: 'ja_JP',
-              calendarFormat: calendarFormat,
+              calendarFormat: _calendarFormat,
               eventLoader: (date){
                 return events[date] ?? [];
               },
