@@ -48,7 +48,6 @@ class MailAuth{
       return 'success';
     }catch (e){
       signOut();
-      print(e);
       return e.toString();
     }
   }

@@ -23,32 +23,29 @@ class FollowRankingList extends ConsumerWidget{
               },
               child: SingleChildScrollView(
                 physics: const AlwaysScrollableScrollPhysics(),
-                child: SizedBox(
-                  height: deviceHeight,
-                  width: deviceWidth,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Padding(
-                        padding: EdgeInsets.only(left: 20.0, top: 20.0, bottom: 10.0),
-                        child: Text(
-                          'Topカレンダー',
-                          style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                          ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.only(left: 20.0, top: 20.0, bottom: 10.0),
+                      child: Text(
+                        'Topカレンダー',
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                      ListView.builder(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: calendarList.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            CalendarDocument calendarDoc = calendarList[index];
-                            return SearchedCalendarContent(calendarDoc);
-                          }),
-                    ],
-                  ),
+                    ),
+                    ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: calendarList.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          CalendarDocument calendarDoc = calendarList[index];
+                          return SearchedCalendarContent(calendarDoc);
+                        }),
+                    const SizedBox(height: 30,),
+                  ],
                 ),
               ),
             );

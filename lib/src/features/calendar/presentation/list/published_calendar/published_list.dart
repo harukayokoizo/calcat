@@ -26,13 +26,21 @@ class CalendarList extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
-    print(calendarList);
-    print('aaa');
-    return ListView.builder(
-        itemCount: calendarList.length,
-        itemBuilder: (BuildContext context, int index){
-          return PublishedCalendarContent(calendarList[index]);
-        });
+    return SingleChildScrollView(
+      physics: const AlwaysScrollableScrollPhysics(),
+      child: Column(
+        children: [
+          ListView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: calendarList.length,
+              itemBuilder: (BuildContext context, int index){
+                return PublishedCalendarContent(calendarList[index]);
+              }),
+          const SizedBox(height: 30,),
+        ],
+      ),
+    );
   }
 
 }

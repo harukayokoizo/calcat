@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 
 Widget eventTime(bool isAllDay, DateTime from, DateTime to, DateTime focusedDay, int color){
@@ -39,27 +40,30 @@ Widget eventTime(bool isAllDay, DateTime from, DateTime to, DateTime focusedDay,
     );
   }else{
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.only(top: 8.0, bottom: 8.0, right: 16),
       child: SizedBox(
         width: 60,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(displayFrom,
-              style: TextStyle(
-                color: Color(color).computeLuminance() < 0.5 ? Colors.white : Colors.black,
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
+        child: Align(
+          alignment: Alignment.centerRight,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(displayFrom,
+                style: TextStyle(
+                  color: Color(color).computeLuminance() < 0.5 ? Colors.white : Colors.black,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-            Text(displayTo,
-              style: TextStyle(
-                color: Color(color).computeLuminance() < 0.5 ? Colors.white : Colors.black,
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
+              Text(displayTo,
+                style: TextStyle(
+                  color: Color(color).computeLuminance() < 0.5 ? Colors.white : Colors.black,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

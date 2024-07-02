@@ -15,11 +15,15 @@ class SearchResults extends ConsumerWidget{
     if(calendarList.isNotEmpty) {
       return Padding(
         padding: const EdgeInsets.only(top: 10.0),
-        child: Column(
-          children: [
-            for(CalendarDocument calendarDoc in calendarList)
-              SearchedCalendarContent(calendarDoc)
-          ],
+        child: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          child: Column(
+            children: [
+              for(CalendarDocument calendarDoc in calendarList)
+                SearchedCalendarContent(calendarDoc),
+              const SizedBox(height: 30,)
+            ],
+          ),
         ),
       );
     }else{
