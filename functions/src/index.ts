@@ -49,6 +49,43 @@ exports.deleteCalendar = onDocumentDeleted("calendar/{calendarId}", async (calen
   }
 });
 
+exports.deleteUser = onDocumentDeleted("user/{uid}", async (user)=> {
+  try{
+    const uid = user.params.uid;
+    
+    const token = await db.collection('token').where('uid','==', uid).get()
+    token.docs.map(async (doc: {ref: any;}) => {
+      await doc.ref.delete()
+    })
+
+    const event = await db.collection('event').where('uid','==', uid).get()
+    event.docs.map(async (doc: {ref: any;}) => {
+      await doc.ref.delete()
+    })
+
+    const calendar = await db.collection('calendar').where('author','==', uid).get()
+    calendar.docs.map(async (doc: {ref: any;}) => {
+      await doc.ref.delete()
+    })
+
+    const calendarUser = await db.collectionGroup('calendar_user').where('uid','==', uid).orderBy('created', 'desc').get()
+    console.log(calendarUser)
+    calendarUser.docs.map(async (doc: {ref: any;}) => {
+      console.log(doc)
+      await doc.ref.delete()
+    })
+
+    const notification = await db.collectionGroup('notification').where('uid','==', uid).orderBy('created', 'desc').get()
+    logger.log(notification)
+    notification.docs.map(async (doc: {ref: any;}) => {
+      await doc.ref.delete()
+    })
+
+  }catch (e){
+    console.log(e)
+  }
+});
+
 
 exports.updateCalendarImage = functions.region("asia-northeast1").storage.object().onFinalize(async (object: { bucket: any; name: any; contentType: any; }) => {
   const fileBucket = object.bucket; // Storage bucket containing the file.

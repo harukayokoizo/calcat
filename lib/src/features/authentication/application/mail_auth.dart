@@ -2,6 +2,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import '../../../common_widgets/application/common_provider.dart';
 import '../data/fcm_token_repositories.dart';
 import '../data/token_repositories.dart';
 import '../data/user_repositories.dart';
@@ -114,6 +115,20 @@ class MailAuth{
 
     } catch (e){
       return 'メール送信できませんでした';
+    }
+  }
+
+  Future<void> deleteAccount(String email) async{
+    final user = ref.read(currentUserProvider);
+    try {
+      await ref.read(userRepositories).deleteUser(user!.uid);
+      await user.delete();
+    }catch(e){
+      final exitUser = await ref.read(userRepositories).getUser(email);
+      if(exitUser == null){
+        await ref.read(userRepositories).createUser(email, user!.uid);
+      }
+      throw e.toString();
     }
   }
 

@@ -2,10 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../common_widgets/application/common_provider.dart';
 import '../../authentication/application/mail_auth.dart';
 import '../../authentication/application/user_provider.dart';
 import '../../authentication/data/token_repositories.dart';
 import '../../authentication/data/user_repositories.dart';
+import '../../authentication/presentation/delete_account_page.dart';
 
 class MenuModal extends ConsumerWidget{
   const MenuModal({super.key});
@@ -15,7 +17,7 @@ class MenuModal extends ConsumerWidget{
     return SafeArea(
       bottom: false,
       child: Container(
-        height: 100,
+        height: 140,
         color: Colors.white,
         child: Scaffold(
           body: ListView(
@@ -77,6 +79,26 @@ class MenuModal extends ConsumerWidget{
                 child: const ListTile(
                   leading: Icon(Icons.logout),
                   title: Text('ログアウト'),
+                ),
+              ),
+              InkWell(
+                onTap: (){
+                  final currentUser = ref.read(currentUserProvider);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      fullscreenDialog: true,
+                      builder: (context) => DeleteAccountPage(currentUser!),
+                    ),
+                  ).then((value){
+                    if(value){
+                      Navigator.pop(context);
+                    }
+                  });
+                },
+                child: const ListTile(
+                  leading: Icon(Icons.verified_user),
+                  title: Text('アカウント削除'),
                 ),
               )
             ],
