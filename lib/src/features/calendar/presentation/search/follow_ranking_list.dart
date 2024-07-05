@@ -21,36 +21,48 @@ class FollowRankingList extends ConsumerWidget{
               onRefresh: () async{
                 await ref.refresh(followRankingListProvider.future);
               },
-              child: SingleChildScrollView(
-                physics: const AlwaysScrollableScrollPhysics(),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Padding(
-                      padding: EdgeInsets.only(left: 20.0, top: 20.0, bottom: 10.0),
-                      child: Text(
-                        'Topカレンダー',
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
+              child: SizedBox(
+                height: deviceHeight,
+                width: deviceWidth,
+                child: SingleChildScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Padding(
+                        padding: EdgeInsets.only(left: 20.0, top: 20.0, bottom: 10.0),
+                        child: Text(
+                          'Topカレンダー',
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
-                    ),
-                    ListView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: calendarList.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          CalendarDocument calendarDoc = calendarList[index];
-                          return SearchedCalendarContent(calendarDoc);
-                        }),
-                    const SizedBox(height: 30,),
-                  ],
+                      ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: calendarList.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            CalendarDocument calendarDoc = calendarList[index];
+                            return SearchedCalendarContent(calendarDoc);
+                          }),
+                      const SizedBox(height: 30,),
+                    ],
+                  ),
                 ),
               ),
             );
           }else{
-            return const SizedBox();
+            return RefreshIndicator(
+                onRefresh: () async{
+                  await ref.refresh(followRankingListProvider.future);
+                },
+                child: SingleChildScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  child: SizedBox(height: deviceHeight, width: deviceWidth,),
+                ),
+            );
           }
         },
         error: (error,st) => const SizedBox(),

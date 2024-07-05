@@ -35,4 +35,11 @@ class UserRepositories{
 
     return null;
   }
+
+  Future<void> deleteUser(String uid) async{
+    await FirebaseFirestore.instance
+        .collection('user')
+        .doc(uid)
+        .delete();
+  }
 }
