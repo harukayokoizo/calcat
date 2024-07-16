@@ -45,11 +45,11 @@
 		<string>_dartobservatory._tcp</string>
 	</array>
 	<key>NSCameraUsageDescription</key>
-	<string>このアプリは写真を撮影するためにカメラへのアクセスが必要です。</string>
+	<string>アプリに表示・使用するための写真をライブラリから選択する目的でリクエストします。</string>
 	<key>NSLocalNetworkUsageDescription</key>
 	<string>App requires local network access to connect to debugger.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>このアプリは写真をアップロードするためにフォトライブラリへのアクセスが必要です。</string>
+	<string>アプリに表示・使用するための写真をライブラリから選択する目的でリクエストします。</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
