@@ -1,125 +1,281 @@
-import 'package:flutter/material.dart';
+import 'dart:convert';
+import 'dart:io';
 
-void main() {
-  runApp(const MyApp());
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_functions/cloud_functions.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:firebase_app_check/firebase_app_check.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart';
+import 'package:share_calendar/firebase_options.dart';
+import 'package:share_calendar/src/common_widgets/application/common_provider.dart';
+import 'package:share_calendar/src/features/authentication/application/user_provider.dart';
+import 'package:share_calendar/src/features/authentication/data/fcm_token_repositories.dart';
+import 'package:share_calendar/src/features/authentication/data/token_repositories.dart';
+import 'package:share_calendar/src/features/authentication/data/user_repositories.dart';
+import 'package:share_calendar/src/features/authentication/presentation/login_page.dart';
+import 'package:share_calendar/src/features/authentication/presentation/password_set_page.dart';
+import 'package:share_calendar/src/features/calendar/application/calendar_list_provider.dart';
+import 'package:share_calendar/src/features/calendar/application/event_list_provider.dart';
+import 'package:share_calendar/src/features/calendar/domain/calendar.dart';
+import 'package:share_calendar/src/features/calendar/domain/calendar_document.dart';
+import 'package:share_calendar/src/features/calendar/presentation/list/follow_calendar/calendar.dart';
+import 'package:share_calendar/src/features/calendar/presentation/list/published_calendar/calendar.dart';
+import 'package:share_calendar/src/features/event/application/event_list_provider.dart';
+import 'package:share_calendar/src/features/event/presentation/event/detail/event_detail.dart';
+import 'package:share_calendar/src/features/notification/application/push_notification.dart';
+import 'package:share_calendar/src/features/notification/domain/payload.dart';
+import 'package:share_calendar/tab_navigator.dart';
+import 'package:table_calendar/table_calendar.dart';
+
+Future<void> main() async {
+  // main()の中で非同期処理を行う際には、下記を実行しなければいけないらしい
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  // await FirebaseAppCheck.instance.activate(
+  //   androidProvider: AndroidProvider.debug,
+  //   appleProvider: AppleProvider.debug,
+  //   // androidProvider: kReleaseMode ? AndroidProvider.playIntegrity : AndroidProvider.debug,
+  //   // appleProvider: kReleaseMode ? AppleProvider.deviceCheck : AppleProvider.debug,
+  // );
+  // await FirebaseMessaging.instance.deleteToken().then((value){
+  //   FirebaseMessaging.instance.getToken();
+  // });
+
+  final messagingInstance = FirebaseMessaging.instance;
+  if (Platform.isIOS) {
+    await messagingInstance.requestPermission();
+    // iOSでフォアグランド通知を行うための設定
+    await messagingInstance.setForegroundNotificationPresentationOptions(
+      alert: true,
+      badge: true,
+      sound: true,
+    );
+  }
+
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
+      .then((_) {
+    runApp(const ProviderScope(child: MyApp()));
+  });
+  /// MyAppはルートウィジェットです。
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerStatefulWidget{
   const MyApp({super.key});
+
+  @override
+  ConsumerState createState() => MyAppState();
+}
+
+class MyAppState extends ConsumerState{
+  @override
+  void initState() {
+    super.initState();
+    ref.read(fcmTokenRepositories).connectIsar();
+
+    FirebaseMessaging.instance.onTokenRefresh.listen((fcmToken) async{
+      await ref.read(tokenRepositories).controlUser(fcmToken);
+    }).onError((err) {});
+  }
+  @override
+  Widget build(BuildContext context) {
+    //フォアグラウンドでの受信
+    // FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    //   print('Got a message whilst in the foreground!');
+    //   print('Message data: ${message.data}');
+    //
+    //   if (message.notification != null) {
+    //     print('Message also contained a notification: ${message.notification}');
+    //   }
+    // });
+
+    return const ControlPage();
+  }
+}
+
+class ControlPage extends ConsumerWidget {
+  const ControlPage({super.key});
 
   // This widget is the root of your application.
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final authState = ref.watch(authStateChangeProvider);
+
     return MaterialApp(
-      title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('ja'),
+      ],
+      title: 'calendar',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueAccent),
+        //scaffoldBackgroundColor: const Color(0xFFE5E5E5),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: authState.when(
+          data: (data) {
+            if(data != null) {
+              return const TopPage();
+            }else{
+              return const LoginPage();
+            }
+          },
+          loading: () => Container(),
+          error: (_, __) => Container()
+      ),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
+class TopPage extends ConsumerStatefulWidget{
+  const TopPage({super.key});
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  ConsumerState createState() => TopPageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+class TopPageState extends ConsumerState{
+  int number = 0;
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
+  TabItem _currentTab = TabItem.search;
+  final Map<TabItem, GlobalKey<NavigatorState>> _navigatorKeys = {
+    TabItem.search: GlobalKey<NavigatorState>(),
+    TabItem.calendar: GlobalKey<NavigatorState>(),
+    TabItem.myCalendar: GlobalKey<NavigatorState>(),
+  };
+
+  @override
+  void initState() {
+    super.initState();
+
+    // 通知をタップした時の処理
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message){
+      Payload payload = Payload.fromJson(message.data);
+      if(message.data.isNotEmpty) {
+        FirebaseFirestore.instance
+            .collection('calendar')
+            .doc(payload.calendarId)
+            .get().then((snapshot) {
+              if (snapshot.exists) {
+                number = 1;
+                onSelect(TabItem.values[1]);
+                var calendar = Calendar.fromJson(snapshot.data()!);
+                var calendarDoc = CalendarDocument(docId: snapshot.id, calendar: calendar);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        FollowCalendarPage(calendarDoc, true),
+                  ),
+                );
+              } else {
+                number = 2;
+                onSelect(TabItem.values[2]);
+                ref.read(calendarFormatState.notifier).state = CalendarFormat.twoWeeks;
+              }
+            });
+          }
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
+    final tabItems = [
+      const BottomNavigationBarItem(
+        icon: Icon(Icons.search),
+        label: 'Search',
+      ),
+      const BottomNavigationBarItem(
+        icon: Icon(Icons.star),
+        label: 'Calendar',
+      ),
+      const BottomNavigationBarItem(
+        icon: Icon(Icons.calendar_month),
+        label: 'My Calendar',
+      ),
+    ];
+
     return Scaffold(
-      appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+      body: Stack(
+        children: <Widget>[
+          _buildTabItem(
+            TabItem.search,
+            '/search',
+          ),
+          _buildTabItem(
+            TabItem.calendar,
+            '/list',
+          ),
+          _buildTabItem(
+            TabItem.myCalendar,
+            '/calendar',
+          ),
+        ],
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: number,
+        items: tabItems,
+        onTap: (index) {
+          number = index;
+          onSelect(TabItem.values[index]);
+        },
+      )
     );
   }
+
+  Widget _buildTabItem(
+      TabItem tabItem,
+      String root,
+      ) {
+    return Offstage(
+      offstage: _currentTab != tabItem,
+      child: TabNavigator(
+        navigationKey: _navigatorKeys[tabItem],
+        tabItem: tabItem,
+        routerName: root,
+      ),
+    );
+  }
+
+  void onSelect(TabItem tabItem) {
+    if (_currentTab == tabItem) {
+      _navigatorKeys[tabItem]?.currentState?.popUntil((route) => route.isFirst);
+    } else {
+      setState(() {
+        _currentTab = tabItem;
+      });
+    }
+  }
+
+  Future<bool> onWillPop() async {
+    final isFirstRouteInCurrentTab = !await _navigatorKeys[_currentTab]!.currentState!.maybePop();
+    if (isFirstRouteInCurrentTab) {
+      if (_currentTab != TabItem.myCalendar) {
+        onSelect(TabItem.myCalendar);
+        return false;
+      }
+    }
+    return isFirstRouteInCurrentTab;
+  }
+}
+
+enum TabItem{
+  search,
+  calendar,
+  myCalendar,
 }
