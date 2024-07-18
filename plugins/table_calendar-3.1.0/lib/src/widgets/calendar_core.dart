@@ -119,8 +119,8 @@ class CalendarCore extends StatelessWidget {
               decoration: BoxDecoration(
                 color: isToday ? const Color(0xFFD8D8D8) : Colors.white,
                 border: Border.all(
-                    color: day == focusedDay ? Colors.deepPurple : Colors.grey,
-                    width: day == focusedDay ? 2.0 : 1.0,
+                    color: Colors.grey, //day == focusedDay ? Colors.deepPurple : Colors.grey,
+                    width: 0.0, //day == focusedDay ? 0.0 : 0.0,
                 ),
               ),
               child: dayBuilder(context, day, baseDay),

@@ -704,7 +704,8 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
                               style: TextStyle(
                                 fontSize: 12,
                                 color: isOutside ? const Color(0xFFAEAEAE) : Color(colors[events[i].event!.color!]),
-                                fontWeight: FontWeight.bold
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'ZenMaruGothic',
                               ),
                             ),
                           ),
