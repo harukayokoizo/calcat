@@ -3,17 +3,17 @@
 <plist version="1.0">
 <dict>
 	<key>API_KEY</key>
-	<string>AIzaSyCgkFcD8t70-yVEITbcYcNrYV8TsLx6AkQ</string>
+	<string>AIzaSyA5aHWJ2-RvMX_AACnRkFzWw1PJySRNbDc</string>
 	<key>GCM_SENDER_ID</key>
-	<string>284978671535</string>
+	<string>39376996758</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.example.shareCalendar.RunnerTests</string>
+	<string>com.example.shareCalendar</string>
 	<key>PROJECT_ID</key>
-	<string>share-calendar-4f317</string>
+	<string>calcat-dev</string>
 	<key>STORAGE_BUCKET</key>
-	<string>share-calendar-4f317.appspot.com</string>
+	<string>calcat-dev.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:284978671535:ios:465514d1fb76ce77cd495a</string>
+	<string>1:39376996758:ios:acccfa522e6f8012f2f5b7</string>
 </dict>
 </plist>

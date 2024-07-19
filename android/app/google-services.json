@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "284978671535",
-    "project_id": "share-calendar-4f317",
-    "storage_bucket": "share-calendar-4f317.appspot.com"
+    "project_number": "39376996758",
+    "project_id": "calcat-dev",
+    "storage_bucket": "calcat-dev.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:284978671535:android:fd4837732b6020d5cd495a",
+        "mobilesdk_app_id": "1:39376996758:android:dcfa9b3f4008f20af2f5b7",
         "android_client_info": {
           "package_name": "com.example.share_calendar"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCYNl8-Vr6Vq_R4X1q9m2Inw1VZisuz0R8"
+          "current_key": "AIzaSyAujQtHT6G3YHWvU3VVWRqD5Bf7pNkEkGo"
         }
       ],
       "services": {

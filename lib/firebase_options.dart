@@ -27,10 +27,7 @@ class DefaultFirebaseOptions {
       case TargetPlatform.macOS:
         return macos;
       case TargetPlatform.windows:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for windows - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return windows;
       case TargetPlatform.linux:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for linux - '
@@ -44,38 +41,49 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyAcTjYxkjhwoe6qPH3Cyca0tl3Nd_U1IXo',
-    appId: '1:284978671535:web:924f07e1e9908522cd495a',
-    messagingSenderId: '284978671535',
-    projectId: 'share-calendar-4f317',
-    authDomain: 'share-calendar-4f317.firebaseapp.com',
-    storageBucket: 'share-calendar-4f317.appspot.com',
-    measurementId: 'G-YY6FR51GLB',
+    apiKey: 'AIzaSyCt9uGOcRUfsjjA56XglqnZKzR_3YjLSIc',
+    appId: '1:39376996758:web:747481a61e3b65f3f2f5b7',
+    messagingSenderId: '39376996758',
+    projectId: 'calcat-dev',
+    authDomain: 'calcat-dev.firebaseapp.com',
+    storageBucket: 'calcat-dev.appspot.com',
+    measurementId: 'G-XXSR4KGXDS',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCYNl8-Vr6Vq_R4X1q9m2Inw1VZisuz0R8',
-    appId: '1:284978671535:android:fd4837732b6020d5cd495a',
-    messagingSenderId: '284978671535',
-    projectId: 'share-calendar-4f317',
-    storageBucket: 'share-calendar-4f317.appspot.com',
+    apiKey: 'AIzaSyAujQtHT6G3YHWvU3VVWRqD5Bf7pNkEkGo',
+    appId: '1:39376996758:android:dcfa9b3f4008f20af2f5b7',
+    messagingSenderId: '39376996758',
+    projectId: 'calcat-dev',
+    storageBucket: 'calcat-dev.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyCgkFcD8t70-yVEITbcYcNrYV8TsLx6AkQ',
-    appId: '1:284978671535:ios:60c147000fe46855cd495a',
-    messagingSenderId: '284978671535',
-    projectId: 'share-calendar-4f317',
-    storageBucket: 'share-calendar-4f317.appspot.com',
-    iosBundleId: 'com.example.shareCalendar',
+    apiKey: 'AIzaSyA5aHWJ2-RvMX_AACnRkFzWw1PJySRNbDc',
+    appId: '1:39376996758:ios:3e801dc83fb272d4f2f5b7',
+    messagingSenderId: '39376996758',
+    projectId: 'calcat-dev',
+    storageBucket: 'calcat-dev.appspot.com',
+    iosBundleId: 'com.example.shareCalendar.RunnerTests',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyCgkFcD8t70-yVEITbcYcNrYV8TsLx6AkQ',
-    appId: '1:284978671535:ios:465514d1fb76ce77cd495a',
-    messagingSenderId: '284978671535',
-    projectId: 'share-calendar-4f317',
-    storageBucket: 'share-calendar-4f317.appspot.com',
-    iosBundleId: 'com.example.shareCalendar.RunnerTests',
+    apiKey: 'AIzaSyA5aHWJ2-RvMX_AACnRkFzWw1PJySRNbDc',
+    appId: '1:39376996758:ios:acccfa522e6f8012f2f5b7',
+    messagingSenderId: '39376996758',
+    projectId: 'calcat-dev',
+    storageBucket: 'calcat-dev.appspot.com',
+    iosBundleId: 'com.example.shareCalendar',
   );
+
+  static const FirebaseOptions windows = FirebaseOptions(
+    apiKey: 'AIzaSyCt9uGOcRUfsjjA56XglqnZKzR_3YjLSIc',
+    appId: '1:39376996758:web:ad9c6458ac476e51f2f5b7',
+    messagingSenderId: '39376996758',
+    projectId: 'calcat-dev',
+    authDomain: 'calcat-dev.firebaseapp.com',
+    storageBucket: 'calcat-dev.appspot.com',
+    measurementId: 'G-BP76XNJX84',
+  );
+
 }

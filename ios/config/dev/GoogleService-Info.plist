@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>API_KEY</key>
+	<string>AIzaSyA5aHWJ2-RvMX_AACnRkFzWw1PJySRNbDc</string>
+	<key>GCM_SENDER_ID</key>
+	<string>39376996758</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.harukayokomizo.banana-sharecalendar</string>
+	<key>PROJECT_ID</key>
+	<string>calcat-dev</string>
+	<key>STORAGE_BUCKET</key>
+	<string>calcat-dev.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:39376996758:ios:e692b57733a89bc5f2f5b7</string>
+</dict>
+</plist>
