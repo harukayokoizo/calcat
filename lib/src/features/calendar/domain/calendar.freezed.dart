@@ -25,7 +25,7 @@ mixin _$Calendar {
   String? get description => throw _privateConstructorUsedError;
   String? get image => throw _privateConstructorUsedError;
   String? get fileName => throw _privateConstructorUsedError;
-  bool? get publicPreference => throw _privateConstructorUsedError;
+  int? get publicPreference => throw _privateConstructorUsedError;
   String? get password => throw _privateConstructorUsedError;
   @TimestampConverter()
   DateTime? get created => throw _privateConstructorUsedError;
@@ -52,7 +52,7 @@ abstract class $CalendarCopyWith<$Res> {
       String? description,
       String? image,
       String? fileName,
-      bool? publicPreference,
+      int? publicPreference,
       String? password,
       @TimestampConverter() DateTime? created,
       @TimestampConverter() DateTime? updated,
@@ -111,7 +111,7 @@ class _$CalendarCopyWithImpl<$Res, $Val extends Calendar>
       publicPreference: freezed == publicPreference
           ? _value.publicPreference
           : publicPreference // ignore: cast_nullable_to_non_nullable
-              as bool?,
+              as int?,
       password: freezed == password
           ? _value.password
           : password // ignore: cast_nullable_to_non_nullable
@@ -154,7 +154,7 @@ abstract class _$$CalendarImplCopyWith<$Res>
       String? description,
       String? image,
       String? fileName,
-      bool? publicPreference,
+      int? publicPreference,
       String? password,
       @TimestampConverter() DateTime? created,
       @TimestampConverter() DateTime? updated,
@@ -211,7 +211,7 @@ class __$$CalendarImplCopyWithImpl<$Res>
       publicPreference: freezed == publicPreference
           ? _value.publicPreference
           : publicPreference // ignore: cast_nullable_to_non_nullable
-              as bool?,
+              as int?,
       password: freezed == password
           ? _value.password
           : password // ignore: cast_nullable_to_non_nullable
@@ -273,7 +273,7 @@ class _$CalendarImpl implements _Calendar {
   @override
   final String? fileName;
   @override
-  final bool? publicPreference;
+  final int? publicPreference;
   @override
   final String? password;
   @override
@@ -374,7 +374,7 @@ abstract class _Calendar implements Calendar {
       final String? description,
       final String? image,
       final String? fileName,
-      final bool? publicPreference,
+      final int? publicPreference,
       final String? password,
       @TimestampConverter() final DateTime? created,
       @TimestampConverter() final DateTime? updated,
@@ -396,7 +396,7 @@ abstract class _Calendar implements Calendar {
   @override
   String? get fileName;
   @override
-  bool? get publicPreference;
+  int? get publicPreference;
   @override
   String? get password;
   @override

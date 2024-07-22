@@ -15,6 +15,7 @@ class IconForm extends ConsumerWidget{
 
   @override
   Widget build(BuildContext context, WidgetRef ref){
+    final double deviceHeight = MediaQuery.of(context).size.height;
     final double deviceWidth = MediaQuery.of(context).size.width;
     final state = ref.watch(imageStateProvider);
     Widget imagePath = FittedBox(fit: BoxFit.cover, child: Image.asset('images/no_image.png'),);
@@ -48,7 +49,7 @@ class IconForm extends ConsumerWidget{
         ref.read(imageStateProvider.notifier).saveImageSource(imageSource!);
       },
       child: Container(
-        height: 200,
+        height: deviceHeight / 3.0,
         width: deviceWidth,
         clipBehavior: Clip.hardEdge,
         decoration: const BoxDecoration(

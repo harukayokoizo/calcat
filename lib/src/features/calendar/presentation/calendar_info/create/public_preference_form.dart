@@ -12,35 +12,53 @@ class PublicPreferenceForm extends ConsumerWidget{
   @override
   Widget build(BuildContext context, WidgetRef ref){
     final state = ref.read(calendarStateProvider(calendar));
-    int allUser;
-    int limitUser;
-    if(state.publicPreference!){
+    int noPublic = 0;
+    int allUser = 0;
+    int limitUser = 0;
+    if(state.publicPreference == 0){
+      noPublic = 1;
+    }else if(state.publicPreference == 1){
       allUser = 1;
-      limitUser = 0;
     }else{
-      allUser = 0;
       limitUser = 1;
     }
+
     return Padding(
       padding: const EdgeInsets.only(top: 10, right: 30, left: 30, bottom: 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            '公開設定',
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
+          const Padding(
+            padding: EdgeInsets.only(bottom: 10.0),
+            child: Text(
+              '公開設定',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
             ),
+          ),
+          RadioListTile(
+            title: const Text('公開しない'),
+            value: noPublic,
+            groupValue: 1,
+            controlAffinity: ListTileControlAffinity.trailing,
+            visualDensity: const VisualDensity(vertical: -2),
+            //contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 16.0),
+            onChanged: (value) {
+              ref.read(calendarStateProvider(calendar).notifier).savePublicPreference(0);
+            },
+
           ),
           RadioListTile(
             title: const Text('全ユーザーに公開'),
             value: allUser,
             groupValue: 1,
             controlAffinity: ListTileControlAffinity.trailing,
+            visualDensity: const VisualDensity(vertical: -2),
             //contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 16.0),
             onChanged: (value) {
-              ref.read(calendarStateProvider(calendar).notifier).savePublicPreference(true);
+              ref.read(calendarStateProvider(calendar).notifier).savePublicPreference(1);
             },
 
           ),
@@ -49,8 +67,9 @@ class PublicPreferenceForm extends ConsumerWidget{
             value: limitUser,
             groupValue: 1,
             controlAffinity: ListTileControlAffinity.trailing,
+            visualDensity: const VisualDensity(vertical: -2),
             onChanged: (value) {
-              ref.read(calendarStateProvider(calendar).notifier).savePublicPreference(false);
+              ref.read(calendarStateProvider(calendar).notifier).savePublicPreference(2);
             },
 
           ),

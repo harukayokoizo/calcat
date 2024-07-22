@@ -105,6 +105,7 @@ class FollowCalendarPage extends ConsumerWidget{
                             );
                           },
                           child: Container(
+                            height: barSize,
                             width: barSize,
                             clipBehavior: Clip.hardEdge,
                             decoration: const BoxDecoration(

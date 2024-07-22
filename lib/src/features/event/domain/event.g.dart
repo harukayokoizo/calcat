@@ -11,7 +11,7 @@ _$EventImpl _$$EventImplFromJson(Map<String, dynamic> json) => _$EventImpl(
       title: json['title'] as String?,
       overview: json['overview'] as String?,
       image: json['image'] as String?,
-      color: json['color'] as int?,
+      color: (json['color'] as num?)?.toInt(),
       url: json['url'] as String?,
       location: json['location'] as String?,
       isAllDay: json['isAllDay'] as bool?,
@@ -19,11 +19,11 @@ _$EventImpl _$$EventImplFromJson(Map<String, dynamic> json) => _$EventImpl(
           json['from'], const TimestampConverter().fromJson),
       to: _$JsonConverterFromJson<Timestamp, DateTime>(
           json['to'], const TimestampConverter().fromJson),
-      repeat: json['repeat'] as int?,
+      repeat: (json['repeat'] as num?)?.toInt(),
       endDate: _$JsonConverterFromJson<Timestamp, DateTime>(
           json['endDate'], const TimestampConverter().fromJson),
       sameEventId: json['sameEventId'] as String?,
-      number: json['number'] as int?,
+      number: (json['number'] as num?)?.toInt(),
       calendarId: json['calendarId'] as String?,
       notificationExist: json['notificationExist'] as bool?,
       calendarMonth: json['calendarMonth'] as String?,

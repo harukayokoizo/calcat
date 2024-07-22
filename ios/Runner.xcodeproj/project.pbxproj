@@ -14,6 +14,12 @@
 		97C146FC1CF9000F007C117D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FA1CF9000F007C117D /* Main.storyboard */; };
 		97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FD1CF9000F007C117D /* Assets.xcassets */; };
 		97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */; };
+		CE0915F32C4A8C5000673EB7 /* Debug-prod.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = CE0915F02C4A8C4F00673EB7 /* Debug-prod.xcconfig */; };
+		CE0915F42C4A8C5000673EB7 /* dev.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = CE0915F12C4A8C5000673EB7 /* dev.xcconfig */; };
+		CE0915F52C4A8C5000673EB7 /* Debug-dev.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = CE0915F22C4A8C5000673EB7 /* Debug-dev.xcconfig */; };
+		CE0915F92C4A8C5D00673EB7 /* Release-prod.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = CE0915F62C4A8C5D00673EB7 /* Release-prod.xcconfig */; };
+		CE0915FA2C4A8C5D00673EB7 /* Release-dev.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = CE0915F72C4A8C5D00673EB7 /* Release-dev.xcconfig */; };
+		CE0915FB2C4A8C5D00673EB7 /* Release.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = CE0915F82C4A8C5D00673EB7 /* Release.xcconfig */; };
 		DF03088BF1A15D969A37FE83 /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C0443B42EB8A3914DD0551C0 /* Pods_Runner.framework */; };
 		E3BFFC30061B493E5F799853 /* Pods_RunnerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 751C41E79F2A9984365F178B /* Pods_RunnerTests.framework */; };
 /* End PBXBuildFile section */
@@ -75,6 +81,12 @@
 		C0443B42EB8A3914DD0551C0 /* Pods_Runner.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Runner.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C679DEBD1B5053F51C15FE14 /* Pods-Runner.profile.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.profile.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.profile.xcconfig"; sourceTree = "<group>"; };
 		CD52CECC5A2385978DDD71F8 /* Pods-RunnerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunnerTests.debug.xcconfig"; path = "Target Support Files/Pods-RunnerTests/Pods-RunnerTests.debug.xcconfig"; sourceTree = "<group>"; };
+		CE0915F02C4A8C4F00673EB7 /* Debug-prod.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = "Debug-prod.xcconfig"; path = "Flutter/Debug-prod.xcconfig"; sourceTree = "<group>"; };
+		CE0915F12C4A8C5000673EB7 /* dev.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = dev.xcconfig; path = Flutter/dev.xcconfig; sourceTree = "<group>"; };
+		CE0915F22C4A8C5000673EB7 /* Debug-dev.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = "Debug-dev.xcconfig"; path = "Flutter/Debug-dev.xcconfig"; sourceTree = "<group>"; };
+		CE0915F62C4A8C5D00673EB7 /* Release-prod.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = "Release-prod.xcconfig"; path = "Flutter/Release-prod.xcconfig"; sourceTree = "<group>"; };
+		CE0915F72C4A8C5D00673EB7 /* Release-dev.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = "Release-dev.xcconfig"; path = "Flutter/Release-dev.xcconfig"; sourceTree = "<group>"; };
+		CE0915F82C4A8C5D00673EB7 /* Release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Release.xcconfig; path = Flutter/Release.xcconfig; sourceTree = "<group>"; };
 		CE3843DE2BECCC60000CF73C /* Runner.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Runner.entitlements; sourceTree = "<group>"; };
 		CE9790892C33CB4C00F5B7EC /* RunnerProfile.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RunnerProfile.entitlements; sourceTree = "<group>"; };
 		CE97908A2C33CC8E00F5B7EC /* RunnerRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RunnerRelease.entitlements; sourceTree = "<group>"; };
@@ -141,6 +153,12 @@
 		9740EEB11CF90186004384FC /* Flutter */ = {
 			isa = PBXGroup;
 			children = (
+				CE0915F72C4A8C5D00673EB7 /* Release-dev.xcconfig */,
+				CE0915F62C4A8C5D00673EB7 /* Release-prod.xcconfig */,
+				CE0915F82C4A8C5D00673EB7 /* Release.xcconfig */,
+				CE0915F22C4A8C5000673EB7 /* Debug-dev.xcconfig */,
+				CE0915F02C4A8C4F00673EB7 /* Debug-prod.xcconfig */,
+				CE0915F12C4A8C5000673EB7 /* dev.xcconfig */,
 				3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */,
 				9740EEB21CF90195004384FC /* Debug.xcconfig */,
 				7AFA3C8E1D35360C0083082E /* Release.xcconfig */,
@@ -321,10 +339,16 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE0915FA2C4A8C5D00673EB7 /* Release-dev.xcconfig in Resources */,
+				CE0915F42C4A8C5000673EB7 /* dev.xcconfig in Resources */,
 				97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */,
+				CE0915F32C4A8C5000673EB7 /* Debug-prod.xcconfig in Resources */,
+				CE0915FB2C4A8C5D00673EB7 /* Release.xcconfig in Resources */,
 				3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */,
 				97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */,
 				97C146FC1CF9000F007C117D /* Main.storyboard in Resources */,
+				CE0915F52C4A8C5000673EB7 /* Debug-dev.xcconfig in Resources */,
+				CE0915F92C4A8C5D00673EB7 /* Release-prod.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -563,7 +587,7 @@
 		};
 		249021D4217E4FDB00AE95B9 /* Profile-prod */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7AFA3C8E1D35360C0083082E /* Release.xcconfig */;
+			baseConfigurationReference = CE0915F82C4A8C5D00673EB7 /* Release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
@@ -818,7 +842,7 @@
 		};
 		97C147071CF9000F007C117D /* Release-prod */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7AFA3C8E1D35360C0083082E /* Release.xcconfig */;
+			baseConfigurationReference = CE0915F82C4A8C5D00673EB7 /* Release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
@@ -1029,7 +1053,7 @@
 		};
 		CED532012C49535D0086B1B0 /* Release-dev */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7AFA3C8E1D35360C0083082E /* Release.xcconfig */;
+			baseConfigurationReference = CE0915F82C4A8C5D00673EB7 /* Release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
@@ -1140,7 +1164,7 @@
 		};
 		CED532042C4953680086B1B0 /* Profile-dev */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7AFA3C8E1D35360C0083082E /* Release.xcconfig */;
+			baseConfigurationReference = CE0915F82C4A8C5D00673EB7 /* Release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;

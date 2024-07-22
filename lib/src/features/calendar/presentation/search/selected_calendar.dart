@@ -15,33 +15,52 @@ class SelectedCalendar extends ConsumerWidget{
 
   @override
   Widget build(BuildContext context, WidgetRef ref){
+    final double topPadding = MediaQuery.of(context).padding.top;
     final double deviceWidth = MediaQuery.of(context).size.width;
     return Scaffold(
-      body: SafeArea(
-        top: false,
-        bottom: false,
-        child: Column(
-            children: [
-              Expanded(
-                child: SingleChildScrollView(
-                  child: SizedBox(
-                      child: Column(children: [
-                        CalendarIconWidget(calendarDoc.calendar!),
-                        CalendarTitleWidget(calendarDoc.calendar!),
-                        CalendarDescriptionWidget(calendarDoc.calendar!),
-                      ],)
+      body: Column(
+        children: [
+          Expanded(
+            child: Stack(
+                children: [
+                  SingleChildScrollView(
+                    child: SafeArea(
+                      top: true,
+                      bottom: true,
+                      child: SizedBox(
+                          child: Column(children: [
+                            CalendarIconWidget(calendarDoc.calendar!),
+                            CalendarTitleWidget(calendarDoc.calendar!),
+                            CalendarDescriptionWidget(calendarDoc.calendar!),
+                          ],),
+                      ),
+                    ),
                   ),
-                ),
-              ),
-              Material(
-                elevation: 20,
-                child: SizedBox(
-                  width: deviceWidth,
-                  child: followButton(calendarDoc.docId!),
-                ),
-              )
-            ]
-        ),
+                  Padding(
+                    padding: EdgeInsets.only(top: topPadding, left: 5.0),
+                    child: IconButton(
+                      icon: const CircularIcon(
+                        icon: Icons.clear,
+                        backgroundColor: Colors.grey,
+                        iconColor: Colors.white,
+                        size: 35,
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ),
+                ]
+            ),
+          ),
+          Material(
+            elevation: 20,
+            child: SizedBox(
+              width: deviceWidth,
+              child: followButton(calendarDoc.docId!),
+            ),
+          ),
+        ],
       ),
       floatingActionButton: null
     );
@@ -50,7 +69,7 @@ class SelectedCalendar extends ConsumerWidget{
 
 Widget followButton(String docId){
   return Padding(
-    padding: const EdgeInsets.only(bottom: 30, left: 30, right: 30),
+    padding: const EdgeInsets.only(bottom: 30, left: 30, right: 30, top: 20),
     child: Consumer(
       builder: (context, ref, _) {
         final follow = ref.watch(getFollowCalendar(docId));

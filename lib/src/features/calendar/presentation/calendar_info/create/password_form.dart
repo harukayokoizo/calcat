@@ -13,7 +13,7 @@ class PasswordForm extends ConsumerWidget{
   Widget build(BuildContext context, WidgetRef ref){
     final state = ref.read(calendarStateProvider(calendar));
     final initialText = state.password ?? '';
-    if(state.publicPreference!){
+    if(state.publicPreference != 2){
       return const SizedBox();
     }else {
       return Padding(

@@ -74,7 +74,7 @@ class CalendarRepositories {
         .collection('calendar')
         .where('title', isEqualTo: title)
         .where('password', isEqualTo: password)
-        .where('publicPreference', isEqualTo: false)
+        .where('publicPreference', isEqualTo: 2)
         .get();
 
     if(sameCalendar.docs.isNotEmpty){
@@ -115,7 +115,7 @@ class CalendarRepositories {
     var calendarList = await FirebaseFirestore.instance
         .collection('calendar')
         .where('searchIndex', arrayContainsAny: [value])
-        .where('publicPreference', isEqualTo: true)
+        .where('publicPreference', isEqualTo: 1)
         .get();
 
     if(calendarList.docs.isNotEmpty){
@@ -135,7 +135,7 @@ class CalendarRepositories {
     var calendarList = await FirebaseFirestore.instance
         .collection('calendar')
         .where('searchIndex', arrayContainsAny: [value])
-        .where('publicPreference', isEqualTo: true)
+        .where('publicPreference', isEqualTo: 1)
         .orderBy('followsCount', descending: true)
         .get();
 
@@ -155,7 +155,7 @@ class CalendarRepositories {
     List<CalendarDocument> calendars = [];
     var calendarList = await FirebaseFirestore.instance
         .collection('calendar')
-        .where('publicPreference', isEqualTo: true)
+        .where('publicPreference', isEqualTo: 1)
         .orderBy('followsCount', descending: true)
         .get();
 
@@ -177,7 +177,7 @@ class CalendarRepositories {
         .collection('calendar')
         .where('title', isEqualTo: calendarTitle)
         .where('password', isEqualTo: password)
-        .where('publicPreference', isEqualTo: false)
+        .where('publicPreference', isEqualTo: 2)
         .get();
 
     if(calendarList.docs.isNotEmpty){

@@ -13,7 +13,7 @@ _$CalendarImpl _$$CalendarImplFromJson(Map<String, dynamic> json) =>
       description: json['description'] as String?,
       image: json['image'] as String?,
       fileName: json['fileName'] as String?,
-      publicPreference: json['publicPreference'] as bool?,
+      publicPreference: (json['publicPreference'] as num?)?.toInt(),
       password: json['password'] as String?,
       created: _$JsonConverterFromJson<Timestamp, DateTime>(
           json['created'], const TimestampConverter().fromJson),
@@ -25,7 +25,7 @@ _$CalendarImpl _$$CalendarImplFromJson(Map<String, dynamic> json) =>
       calendarOwner: (json['calendarOwner'] as List<dynamic>?)
           ?.map((e) => e as String)
           .toList(),
-      followCount: json['followCount'] as int?,
+      followCount: (json['followCount'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$$CalendarImplToJson(_$CalendarImpl instance) =>

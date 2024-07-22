@@ -27,7 +27,7 @@ class CalendarState extends StateNotifier<Calendar>{
     state = calendar;
   }
 
-  void savePublicPreference(bool public) {
+  void savePublicPreference(int public) {
     final calendar = state.copyWith(publicPreference: public);
     state = calendar;
   }
@@ -85,10 +85,10 @@ class CalendarState extends StateNotifier<Calendar>{
     if(state.description == null || state.description!.isEmpty){
       return '概要を入力してください。';
     }
-    if(!state.publicPreference! && (state.password == null || state.password!.isEmpty)){
+    if(state.publicPreference == 2 && (state.password == null || state.password!.isEmpty)){
       return '限定公開の場合は、パスワードを入力してください。';
     }
-    if(!state.publicPreference! && state.password != null){
+    if(state.publicPreference == 2 && state.password != null){
       String? id = await ref.read(calendarRepositories).getSameCalendar(state.title!,state.password!);
       if(docId == null){
         if(id != null){
@@ -106,7 +106,7 @@ class CalendarState extends StateNotifier<Calendar>{
   Map<String, dynamic> getCalendarState(bool create){
     List<String> searchIndex = createSearchIndex();
     List<String> calendarOwner = [state.author!];
-    String? password = state.publicPreference! ? null : state.password;
+    String? password = state.publicPreference != 2 ? null : state.password;
     Map<String, dynamic> data = {
       'author': state.author,
       'title': state.title,

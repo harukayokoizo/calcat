@@ -40,7 +40,7 @@ import 'package:table_calendar/table_calendar.dart';
 Future<void> main() async {
   // main()の中で非同期処理を行う際には、下記を実行しなければいけないらしい
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(name: 'calcat-dev', options: DefaultFirebaseOptions.currentPlatform);
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   Firebase.apps.forEach((e) {
     print(e.options.projectId);

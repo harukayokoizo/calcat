@@ -1,0 +1,4 @@
+FLUTTER_FLAVOR=dev
+PRODUCT_BUNDLE_IDENTIFIER=com.harukayokomizo.banana-sharecalendar.dev
+DISPLAY_NAME=(d)FlutterFire
+FLUTTER_TARGET=/Users/user/StudioProjects/share_calendar/lib/main.dart

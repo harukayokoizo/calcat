@@ -32,7 +32,7 @@ class CalendarFormState extends ConsumerState<CalendarForm>{
       description: null,
       image: null,
       fileName: null,
-      publicPreference: true,
+      publicPreference: 0,
       password: null,
       created: null,
       updated: null,

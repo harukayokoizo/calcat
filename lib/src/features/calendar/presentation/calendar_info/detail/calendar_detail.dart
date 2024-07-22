@@ -14,24 +14,38 @@ class CalendarDetail extends StatelessWidget{
 
   @override
   Widget build(BuildContext context){
+    final double topPadding = MediaQuery.of(context).padding.top;
     return Scaffold(
-      body: SafeArea(
-        top: false,
-        child: Column(
-            children: [
-              Expanded(
-                child: SingleChildScrollView(
-                  child: SizedBox(
-                    child: Column(children: [
-                      CalendarIconWidget(calendarDoc.calendar!),
-                      CalendarTitleWidget(calendarDoc.calendar!),
-                      CalendarDescriptionWidget(calendarDoc.calendar!),
-                    ],)
-                  ),
-                ),
+      body: Stack(
+        children: [
+          SingleChildScrollView(
+            child: SafeArea(
+              top: true,
+              bottom: false,
+              child: SizedBox(
+                child: Column(children: [
+                  CalendarIconWidget(calendarDoc.calendar!),
+                  CalendarTitleWidget(calendarDoc.calendar!),
+                  CalendarDescriptionWidget(calendarDoc.calendar!),
+                ],)
               ),
-            ]
-        ),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: topPadding, left: 5.0),
+            child: IconButton(
+              icon: const CircularIcon(
+                icon: Icons.clear,
+                backgroundColor: Colors.grey,
+                iconColor: Colors.white,
+                size: 35,
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ),
+        ],
       ),
       floatingActionButton: followCalendar ? null : CalendarFloatingButton(calendarDoc)
     );

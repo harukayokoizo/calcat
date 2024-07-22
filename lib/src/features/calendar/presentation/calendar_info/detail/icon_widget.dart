@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -14,6 +15,7 @@ class CalendarIconWidget extends ConsumerWidget{
 
   @override
   Widget build(BuildContext context, WidgetRef ref){
+    final double deviceHeight = MediaQuery.of(context).size.height;
     final double deviceWidth = MediaQuery.of(context).size.width;
     Widget imagePath = FittedBox(
       fit: BoxFit.cover,
@@ -30,32 +32,15 @@ class CalendarIconWidget extends ConsumerWidget{
         ),
       );
     }
-    return Stack(
-      children: [
-        Container(
-          height: 300,
-          width: deviceWidth,
-          clipBehavior: Clip.hardEdge,
-          decoration: const BoxDecoration(
-            color: Colors.grey,
-          ),
-          child: imagePath
-        ),
-        Padding(
-          padding: const EdgeInsets.only(top: 30.0, left: 5.0),
-          child: IconButton(
-            icon: const CircularIcon(
-              icon: Icons.clear,
-              backgroundColor: Colors.grey,
-              iconColor: Colors.white,
-              size: 35,
-            ),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
-        ),
-      ],
+    return Container(
+      height: deviceHeight / 2.2,
+      width: deviceWidth,
+      clipBehavior: Clip.hardEdge,
+      decoration: const BoxDecoration(
+        color: Colors.grey,
+        borderRadius: BorderRadius.only(topRight: Radius.circular(30), topLeft: Radius.circular(30))
+      ),
+      child: imagePath
     );
   }
 }
