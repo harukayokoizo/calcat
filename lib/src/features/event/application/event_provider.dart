@@ -157,12 +157,12 @@ class EventFormState extends StateNotifier<Event>{
   }
 
   void createEvent(dynamic repositories){
-    List<Map<String, dynamic>> events = saveDataList();
+    List<Map<String, dynamic>> events = saveDataList(true);
     repositories.createEvent(events);
   }
 
   void updateEvent(int value, EventDocument eventDoc, dynamic repositories) async{
-    List<Map<String, dynamic>> events = saveDataList();
+    List<Map<String, dynamic>> events = saveDataList(false);
     if(value == 0){
       //繰り返しがないイベント
       if(state.repeat == 0){
@@ -182,10 +182,19 @@ class EventFormState extends StateNotifier<Event>{
 
   }
 
-  List<Map<String, dynamic>> saveDataList(){
+  List<Map<String, dynamic>> saveDataList(bool firstTime){
+    DateTime createdAt;
+    DateTime updatedAt;
     DateTime from = DateTime(state.from!.year, state.from!.month, state.from!.day, state.from!.hour, state.from!.minute);
     DateTime to = DateTime(state.to!.year, state.to!.month, state.to!.day, state.to!.hour, state.to!.minute);
     String calendarMonth = '${state.from!.year}年${state.from!.month}月';
+    if(firstTime){
+      createdAt = DateTime.now();
+      updatedAt = DateTime.now();
+    }else{
+      createdAt = state.createdAt ?? DateTime.now();
+      updatedAt = DateTime.now();
+    }
     Map<String, dynamic> data = {
       'uid': state.uid,
       'title': state.title,
@@ -203,7 +212,9 @@ class EventFormState extends StateNotifier<Event>{
       'number': state.number,
       'calendarId': state.calendarId,
       'notificationExist': state.notificationExist,
-      'calendarMonth': calendarMonth
+      'calendarMonth': calendarMonth,
+      'createdAt': createdAt,
+      'updatedAt': updatedAt,
     };
 
     List<Map<String, dynamic>> events = [data];

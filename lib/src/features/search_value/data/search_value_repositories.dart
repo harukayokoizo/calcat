@@ -2,6 +2,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
 
+import '../../authentication/domain/fcm_token.dart';
+import '../../tab_value/domain/tab_value.dart';
 import '../domain/search_value.dart';
 
 final searchValueRepositories = Provider((ref) => SearchValueRepositories());
@@ -11,13 +13,14 @@ class SearchValueRepositories {
 
   Future<void> connectIsar() async{
     final dir = await getApplicationDocumentsDirectory();
-    final instance = Isar.getInstance();
-    if(instance != null){
-      isar = instance;
+    if (Isar.instanceNames.isNotEmpty) {
+      // 既存のインスタンスを取得
+      isar = Isar.getInstance();
     }else{
       isar ??= await Isar.open(
-        [SearchValueSchema],
+        [FcmTokenSchema, SearchValueSchema, TabValueSchema],
         directory: dir.path,
+        name: 'myInstance',
       );
     }
   }

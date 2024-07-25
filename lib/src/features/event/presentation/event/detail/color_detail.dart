@@ -13,6 +13,7 @@ class EventColorDetail extends ConsumerWidget{
   Widget build(BuildContext context, WidgetRef ref){
     final colors = ref.read(colorList);
     final double deviceWidth = MediaQuery.of(context).size.width;
+    final color = getColor(colors, personalEvent.color!);
 
     return Container(
       width: deviceWidth,
@@ -42,7 +43,7 @@ class EventColorDetail extends ConsumerWidget{
               width: 20,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: Color(colors[personalEvent.color!]),
+                color: color,
               ),
             ),
           ],
@@ -50,4 +51,13 @@ class EventColorDetail extends ConsumerWidget{
       ),
     );
   }
+}
+
+Color getColor(List<Map<String, int>> colorList, int key){
+  for (var map in colorList) {
+    if (map['key'] == key) {
+      return Color(map['color']!);
+    }
+  }
+  return Color(colorList[0]['color']!);
 }

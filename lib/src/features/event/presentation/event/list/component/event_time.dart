@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 
-Widget eventTime(bool isAllDay, DateTime from, DateTime to, DateTime focusedDay, int color){
+Widget eventTime(bool isAllDay, DateTime from, DateTime to, DateTime focusedDay, Color color){
   DateTime fromDate = DateTime(from.year, from.month, from.day);
   DateTime toDate = DateTime(to.year, to.month, to.day);
   DateTime focusedDate = DateTime(focusedDay.year, focusedDay.month, focusedDay.day);
@@ -30,7 +30,7 @@ Widget eventTime(bool isAllDay, DateTime from, DateTime to, DateTime focusedDay,
           child: Text(
             '終日',
             style: TextStyle(
-              color: Color(color).computeLuminance() < 0.5 ? Colors.white : Colors.black,
+              color: color.computeLuminance() < 0.5 ? Colors.white : Colors.black,
               fontWeight: FontWeight.bold,
               fontSize: 16,
             ),
@@ -50,14 +50,14 @@ Widget eventTime(bool isAllDay, DateTime from, DateTime to, DateTime focusedDay,
             children: [
               Text(displayFrom,
                 style: TextStyle(
-                  color: Color(color).computeLuminance() < 0.5 ? Colors.white : Colors.black,
+                  color: color.computeLuminance() < 0.5 ? Colors.white : Colors.black,
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               Text(displayTo,
                 style: TextStyle(
-                  color: Color(color).computeLuminance() < 0.5 ? Colors.white : Colors.black,
+                  color: color.computeLuminance() < 0.5 ? Colors.white : Colors.black,
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
                 ),

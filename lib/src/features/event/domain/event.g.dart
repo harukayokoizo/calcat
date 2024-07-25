@@ -22,6 +22,10 @@ _$EventImpl _$$EventImplFromJson(Map<String, dynamic> json) => _$EventImpl(
       repeat: (json['repeat'] as num?)?.toInt(),
       endDate: _$JsonConverterFromJson<Timestamp, DateTime>(
           json['endDate'], const TimestampConverter().fromJson),
+      createdAt: _$JsonConverterFromJson<Timestamp, DateTime>(
+          json['createdAt'], const TimestampConverter().fromJson),
+      updatedAt: _$JsonConverterFromJson<Timestamp, DateTime>(
+          json['updatedAt'], const TimestampConverter().fromJson),
       sameEventId: json['sameEventId'] as String?,
       number: (json['number'] as num?)?.toInt(),
       calendarId: json['calendarId'] as String?,
@@ -46,6 +50,10 @@ Map<String, dynamic> _$$EventImplToJson(_$EventImpl instance) =>
       'repeat': instance.repeat,
       'endDate': _$JsonConverterToJson<Timestamp, DateTime>(
           instance.endDate, const TimestampConverter().toJson),
+      'createdAt': _$JsonConverterToJson<Timestamp, DateTime>(
+          instance.createdAt, const TimestampConverter().toJson),
+      'updatedAt': _$JsonConverterToJson<Timestamp, DateTime>(
+          instance.updatedAt, const TimestampConverter().toJson),
       'sameEventId': instance.sameEventId,
       'number': instance.number,
       'calendarId': instance.calendarId,

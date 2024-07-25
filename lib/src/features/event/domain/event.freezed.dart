@@ -35,6 +35,10 @@ mixin _$Event {
   int? get repeat => throw _privateConstructorUsedError;
   @TimestampConverter()
   DateTime? get endDate => throw _privateConstructorUsedError;
+  @TimestampConverter()
+  DateTime? get createdAt => throw _privateConstructorUsedError;
+  @TimestampConverter()
+  DateTime? get updatedAt => throw _privateConstructorUsedError;
   String? get sameEventId => throw _privateConstructorUsedError;
   int? get number => throw _privateConstructorUsedError;
   String? get calendarId => throw _privateConstructorUsedError;
@@ -64,6 +68,8 @@ abstract class $EventCopyWith<$Res> {
       @TimestampConverter() DateTime? to,
       int? repeat,
       @TimestampConverter() DateTime? endDate,
+      @TimestampConverter() DateTime? createdAt,
+      @TimestampConverter() DateTime? updatedAt,
       String? sameEventId,
       int? number,
       String? calendarId,
@@ -96,6 +102,8 @@ class _$EventCopyWithImpl<$Res, $Val extends Event>
     Object? to = freezed,
     Object? repeat = freezed,
     Object? endDate = freezed,
+    Object? createdAt = freezed,
+    Object? updatedAt = freezed,
     Object? sameEventId = freezed,
     Object? number = freezed,
     Object? calendarId = freezed,
@@ -151,6 +159,14 @@ class _$EventCopyWithImpl<$Res, $Val extends Event>
           ? _value.endDate
           : endDate // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      createdAt: freezed == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      updatedAt: freezed == updatedAt
+          ? _value.updatedAt
+          : updatedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
       sameEventId: freezed == sameEventId
           ? _value.sameEventId
           : sameEventId // ignore: cast_nullable_to_non_nullable
@@ -195,6 +211,8 @@ abstract class _$$EventImplCopyWith<$Res> implements $EventCopyWith<$Res> {
       @TimestampConverter() DateTime? to,
       int? repeat,
       @TimestampConverter() DateTime? endDate,
+      @TimestampConverter() DateTime? createdAt,
+      @TimestampConverter() DateTime? updatedAt,
       String? sameEventId,
       int? number,
       String? calendarId,
@@ -225,6 +243,8 @@ class __$$EventImplCopyWithImpl<$Res>
     Object? to = freezed,
     Object? repeat = freezed,
     Object? endDate = freezed,
+    Object? createdAt = freezed,
+    Object? updatedAt = freezed,
     Object? sameEventId = freezed,
     Object? number = freezed,
     Object? calendarId = freezed,
@@ -280,6 +300,14 @@ class __$$EventImplCopyWithImpl<$Res>
           ? _value.endDate
           : endDate // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      createdAt: freezed == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      updatedAt: freezed == updatedAt
+          ? _value.updatedAt
+          : updatedAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
       sameEventId: freezed == sameEventId
           ? _value.sameEventId
           : sameEventId // ignore: cast_nullable_to_non_nullable
@@ -320,6 +348,8 @@ class _$EventImpl implements _Event {
       @TimestampConverter() this.to,
       this.repeat,
       @TimestampConverter() this.endDate,
+      @TimestampConverter() this.createdAt,
+      @TimestampConverter() this.updatedAt,
       this.sameEventId,
       this.number,
       this.calendarId,
@@ -357,6 +387,12 @@ class _$EventImpl implements _Event {
   @TimestampConverter()
   final DateTime? endDate;
   @override
+  @TimestampConverter()
+  final DateTime? createdAt;
+  @override
+  @TimestampConverter()
+  final DateTime? updatedAt;
+  @override
   final String? sameEventId;
   @override
   final int? number;
@@ -369,7 +405,7 @@ class _$EventImpl implements _Event {
 
   @override
   String toString() {
-    return 'Event(uid: $uid, title: $title, overview: $overview, image: $image, color: $color, url: $url, location: $location, isAllDay: $isAllDay, from: $from, to: $to, repeat: $repeat, endDate: $endDate, sameEventId: $sameEventId, number: $number, calendarId: $calendarId, notificationExist: $notificationExist, calendarMonth: $calendarMonth)';
+    return 'Event(uid: $uid, title: $title, overview: $overview, image: $image, color: $color, url: $url, location: $location, isAllDay: $isAllDay, from: $from, to: $to, repeat: $repeat, endDate: $endDate, createdAt: $createdAt, updatedAt: $updatedAt, sameEventId: $sameEventId, number: $number, calendarId: $calendarId, notificationExist: $notificationExist, calendarMonth: $calendarMonth)';
   }
 
   @override
@@ -392,6 +428,10 @@ class _$EventImpl implements _Event {
             (identical(other.to, to) || other.to == to) &&
             (identical(other.repeat, repeat) || other.repeat == repeat) &&
             (identical(other.endDate, endDate) || other.endDate == endDate) &&
+            (identical(other.createdAt, createdAt) ||
+                other.createdAt == createdAt) &&
+            (identical(other.updatedAt, updatedAt) ||
+                other.updatedAt == updatedAt) &&
             (identical(other.sameEventId, sameEventId) ||
                 other.sameEventId == sameEventId) &&
             (identical(other.number, number) || other.number == number) &&
@@ -405,25 +445,28 @@ class _$EventImpl implements _Event {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      uid,
-      title,
-      overview,
-      image,
-      color,
-      url,
-      location,
-      isAllDay,
-      from,
-      to,
-      repeat,
-      endDate,
-      sameEventId,
-      number,
-      calendarId,
-      notificationExist,
-      calendarMonth);
+  int get hashCode => Object.hashAll([
+        runtimeType,
+        uid,
+        title,
+        overview,
+        image,
+        color,
+        url,
+        location,
+        isAllDay,
+        from,
+        to,
+        repeat,
+        endDate,
+        createdAt,
+        updatedAt,
+        sameEventId,
+        number,
+        calendarId,
+        notificationExist,
+        calendarMonth
+      ]);
 
   @JsonKey(ignore: true)
   @override
@@ -453,6 +496,8 @@ abstract class _Event implements Event {
       @TimestampConverter() final DateTime? to,
       final int? repeat,
       @TimestampConverter() final DateTime? endDate,
+      @TimestampConverter() final DateTime? createdAt,
+      @TimestampConverter() final DateTime? updatedAt,
       final String? sameEventId,
       final int? number,
       final String? calendarId,
@@ -488,6 +533,12 @@ abstract class _Event implements Event {
   @override
   @TimestampConverter()
   DateTime? get endDate;
+  @override
+  @TimestampConverter()
+  DateTime? get createdAt;
+  @override
+  @TimestampConverter()
+  DateTime? get updatedAt;
   @override
   String? get sameEventId;
   @override

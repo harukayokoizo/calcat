@@ -22,6 +22,8 @@ abstract class Event with _$Event{
     @TimestampConverter() DateTime? to,
     int? repeat,
     @TimestampConverter() DateTime? endDate,
+    @TimestampConverter() DateTime? createdAt,
+    @TimestampConverter() DateTime? updatedAt,
     String? sameEventId,
     int? number,
     String? calendarId,

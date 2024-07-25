@@ -5,6 +5,7 @@ import 'package:share_calendar/src/features/event/application/event_list_provide
 import 'package:share_calendar/src/features/event/presentation/event/registration/repeat_form.dart';
 import 'package:share_calendar/src/features/event/presentation/event/registration/title_form.dart';
 import 'package:share_calendar/src/features/event/presentation/event/registration/url_form.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 import '../../../../../common_widgets/application/common_provider.dart';
 import '../../../application/event_provider.dart';
@@ -101,6 +102,21 @@ class EventRegistration extends ConsumerWidget{
               //NotificationForm(event),
               RepeatForm(event),
               const Expanded(child: SizedBox(),),
+            //   Container(
+            //     height: 200,
+            //     child: TableCalendar(
+            //       firstDay: DateTime.utc(2024,01,01),
+            //       lastDay: DateTime.utc(2050,12,31),
+            //       focusedDay: focusedDay,
+            //       headerVisible: false,
+            //       rowHeight: 50,
+            //       //shouldFillViewport: true,
+            //       //availableGestures: AvailableGestures.verticalSwipe,
+            //       locale: 'ja_JP',
+            //       calendarFormat: CalendarFormat.month,
+            //
+            //     ),
+            // ),
               Padding(
                 padding: const EdgeInsets.only(bottom: 10.0, right: 10.0),
                 child: Align(

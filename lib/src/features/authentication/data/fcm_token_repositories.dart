@@ -3,6 +3,7 @@ import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../../search_value/domain/search_value.dart';
+import '../../tab_value/domain/tab_value.dart';
 import '../domain/fcm_token.dart';
 
 
@@ -13,13 +14,14 @@ class FcmTokenRepositories {
 
   Future<void> connectIsar() async{
     final dir = await getApplicationDocumentsDirectory();
-    final instance = Isar.getInstance();
-    if(instance != null){
-      isar = instance;
+    if (Isar.instanceNames.isNotEmpty) {
+      // 既存のインスタンスを取得
+      isar = Isar.getInstance();
     }else {
       isar ??= await Isar.open(
-        [FcmTokenSchema, SearchValueSchema],
+        [FcmTokenSchema, SearchValueSchema, TabValueSchema],
         directory: dir.path,
+        name: 'myInstance',
       );
     }
   }

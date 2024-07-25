@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../application/color_setting_provider.dart';
 import '../../../../domain/event.dart';
+import '../../detail/color_detail.dart';
 import 'event_color.dart';
 import 'event_summary.dart';
 import 'event_time.dart';
@@ -17,13 +18,14 @@ class EventTile extends ConsumerWidget{
 
   Widget build(BuildContext context, WidgetRef ref){
     final colors = ref.read(colorList);
+    final color = getColor(colors, event.color!);
     return Padding(
       padding: const EdgeInsets.only(top: 5.0, left: 15.0, right: 15.0, bottom: 10.0),
       child: Container(
         height: 80,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: Color(colors[event.color!]),
+          color: color,
           boxShadow: [
             BoxShadow(
               color: Colors.grey.withOpacity(0.5), // 影の色
@@ -35,9 +37,9 @@ class EventTile extends ConsumerWidget{
         ),
         child: Row(
           children: [
-            eventTime(event.isAllDay!, event.from!, event.to!, focusedDay, colors[event.color!]),
+            eventTime(event.isAllDay!, event.from!, event.to!, focusedDay, color),
             Expanded(
-              child: eventSummary(event.title!, event.overview, colors[event.color!])
+              child: eventSummary(event.title!, event.overview, color)
             ),
           ],
         ),

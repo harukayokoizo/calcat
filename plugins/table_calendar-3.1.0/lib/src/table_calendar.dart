@@ -11,6 +11,7 @@ import 'package:share_calendar/src/features/calendar/presentation/event/event_li
 import 'package:share_calendar/src/features/event/application/color_setting_provider.dart';
 import 'package:share_calendar/src/features/event/domain/event_document.dart';
 import 'package:share_calendar/src/features/event/domain/event.dart';
+import 'package:share_calendar/src/features/event/presentation/event/detail/color_detail.dart';
 import 'package:share_calendar/src/features/event/presentation/event/list/event_list.dart';
 import 'package:simple_gesture_detector/simple_gesture_detector.dart';
 
@@ -686,6 +687,7 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
           if (events.isNotEmpty) {
             events.sort((a, b) => a.event!.from!.compareTo(b.event!.from!));
             events.sort((a, b) => (a.event!.isAllDay == b.event!.isAllDay ? 0 : (a.event!.isAllDay! ? -1 : 1)));
+            events.sort((a, b) => ((a.event!.isAllDay! && b.event!.isAllDay!) ? a.event!.createdAt!.compareTo(b.event!.createdAt!) : 0));
             int count = events.length > 4 ? 4 : events.length;
             markerWidget = Consumer(
               builder: (context, ref, _) {
@@ -703,7 +705,7 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
                               '${events[i].event!.title}',
                               style: TextStyle(
                                 fontSize: 12,
-                                color: isOutside ? const Color(0xFFAEAEAE) : Color(colors[events[i].event!.color!]),
+                                color: isOutside ? const Color(0xFFAEAEAE) : getColor(colors, events[i].event!.color!),
                                 fontWeight: FontWeight.bold,
                                 fontFamily: 'ZenMaruGothic',
                               ),

@@ -25,8 +25,8 @@ class SelectedCalendar extends ConsumerWidget{
                 children: [
                   SingleChildScrollView(
                     child: SafeArea(
-                      top: true,
-                      bottom: true,
+                      top: false,
+                      bottom: false,
                       child: SizedBox(
                           child: Column(children: [
                             CalendarIconWidget(calendarDoc.calendar!),

@@ -34,6 +34,9 @@ import 'package:share_calendar/src/features/event/application/event_list_provide
 import 'package:share_calendar/src/features/event/presentation/event/detail/event_detail.dart';
 import 'package:share_calendar/src/features/notification/application/push_notification.dart';
 import 'package:share_calendar/src/features/notification/domain/payload.dart';
+import 'package:share_calendar/src/features/tab_value/application/tab_value_provider.dart';
+import 'package:share_calendar/src/features/tab_value/data/tab_value_repositories.dart';
+import 'package:share_calendar/src/features/tab_value/domain/tab_value.dart';
 import 'package:share_calendar/tab_navigator.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -82,10 +85,15 @@ class MyApp extends ConsumerStatefulWidget{
 }
 
 class MyAppState extends ConsumerState{
+  late Future<TabValue?> future;
   @override
   void initState() {
     super.initState();
-    ref.read(fcmTokenRepositories).connectIsar();
+    Future(() async {
+      await ref.read(fcmTokenRepositories).connectIsar();
+    });
+
+    future = ref.read(tabValueProvider.notifier).getTabValue();
 
     FirebaseMessaging.instance.onTokenRefresh.listen((fcmToken) async{
       await ref.read(tokenRepositories).controlUser(fcmToken);
@@ -93,17 +101,15 @@ class MyAppState extends ConsumerState{
   }
   @override
   Widget build(BuildContext context) {
-    //フォアグラウンドでの受信
-    // FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-    //   print('Got a message whilst in the foreground!');
-    //   print('Message data: ${message.data}');
-    //
-    //   if (message.notification != null) {
-    //     print('Message also contained a notification: ${message.notification}');
-    //   }
-    // });
-
-    return const ControlPage();
+    return FutureBuilder(
+        future: future,
+        builder: (BuildContext context, AsyncSnapshot<TabValue?> tabValue) {
+          if(tabValue.connectionState == ConnectionState.done) {
+            return const ControlPage();
+          }else{
+            return const SizedBox();
+          }
+    });
   }
 }
 
@@ -155,9 +161,10 @@ class TopPage extends ConsumerStatefulWidget{
 }
 
 class TopPageState extends ConsumerState{
+  late final TabValue? tabValue;
   int number = 0;
-
   TabItem _currentTab = TabItem.search;
+
   final Map<TabItem, GlobalKey<NavigatorState>> _navigatorKeys = {
     TabItem.search: GlobalKey<NavigatorState>(),
     TabItem.calendar: GlobalKey<NavigatorState>(),
@@ -167,6 +174,18 @@ class TopPageState extends ConsumerState{
   @override
   void initState() {
     super.initState();
+
+    tabValue = ref.read(tabValueProvider);
+    if(tabValue != null){
+      number = tabValue!.tabIndex!;
+      if(number == 0){
+        _currentTab = TabItem.search;
+      }else if(number == 1){
+        _currentTab = TabItem.calendar;
+      }else{
+        _currentTab = TabItem.myCalendar;
+      }
+    }
 
     // 通知をタップした時の処理
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message){
@@ -235,11 +254,14 @@ class TopPageState extends ConsumerState{
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: number,
         items: tabItems,
-        onTap: (index) {
+        onTap: (index) async {
+          if (tabValue != null) {
+            await ref.read(tabValueRepositories).updateTabIndex(tabValue!, index);
+          }
           number = index;
           onSelect(TabItem.values[index]);
         },
-      )
+      ),
     );
   }
 

@@ -1,6 +1,7 @@
 // Copyright 2019 Aleksander Woźniak
 // SPDX-License-Identifier: Apache-2.0
 
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 
@@ -65,8 +66,10 @@ class CellContent extends StatelessWidget {
     //   );
     // }
 
+    final now = DateTime.now();
+    final today = (now.year == day.year && now.month == day.month && now.day == day.day) ? true : false;
     final text = '${day.day}';
-    final margin = calendarStyle.cellMargin;
+    var margin = calendarStyle.cellMargin;
     final padding = calendarStyle.cellPadding;
     final alignment = calendarStyle.cellAlignment;
     //final duration = const Duration(milliseconds: 250);
@@ -194,23 +197,37 @@ class CellContent extends StatelessWidget {
       var style = calendarStyle.defaultTextStyle;
       if(isSaturday) style = calendarStyle.isSaturdayTextStyle;
       if(isSunday) style = calendarStyle.isSundayTextStyle;
+      if(today) style = const TextStyle(color: Colors.white, fontWeight: FontWeight.bold);
+      final color = today ? Colors.black : Colors.white;
       //日にち
-      date = calendarBuilders.defaultBuilder?.call(context, day, focusedDay) ??
-          Container(
-            margin: margin,
-            padding: padding,
-            decoration: isWeekend
-                ? calendarStyle.weekendDecoration
-                : calendarStyle.defaultDecoration,
-            alignment: alignment,
-            child: Align(
-              alignment: Alignment.topLeft,
-              child: Text(
-                text,
-                style: style
-              ),
-            ),
-          );
+      date = LayoutBuilder(
+        builder: (context, constraints) {
+          return calendarBuilders.defaultBuilder?.call(context, day, focusedDay) ??
+              Container(
+                // margin: margin,
+                // padding: padding,
+                decoration: isWeekend
+                    ? calendarStyle.weekendDecoration
+                    : calendarStyle.defaultDecoration,
+                alignment: alignment,
+                child: Align(
+                  alignment: Alignment.topLeft,
+                  child: Container(
+                    margin: const EdgeInsets.only(top: 1.0, left: 1.0),
+                    //width: constraints.maxWidth / 2.5,
+                    color: color,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 2.0, right: 2.0),
+                      child: Text(
+                        text,
+                        style: style
+                      ),
+                    ),
+                  ),
+                ),
+              );
+        }
+      );
     }
 
     return Semantics(

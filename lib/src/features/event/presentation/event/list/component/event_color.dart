@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../application/color_setting_provider.dart';
 
-Widget eventColor(int color){
+Widget eventColor(Color color){
   return Padding(
     padding: const EdgeInsets.all(8.0),
     child: Consumer(
@@ -14,7 +14,7 @@ Widget eventColor(int color){
           width: 20,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: Color(colors[color]),
+            color: color,
           ),
         );
       },

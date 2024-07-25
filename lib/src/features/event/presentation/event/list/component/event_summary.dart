@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-Widget eventSummary(String title, String? overview, int color){
+Widget eventSummary(String title, String? overview, Color color){
   return Padding(
     padding: const EdgeInsets.only(top: 5.0, bottom: 5.0, right: 5.0),
     child: Column(
@@ -14,7 +14,7 @@ Widget eventSummary(String title, String? overview, int color){
             padding: overview != null ? const EdgeInsets.all(0.0) : const EdgeInsets.only(top: 5.0, bottom: 5.0),
             child: Text(title,
               style: TextStyle(
-                color: Color(color).computeLuminance() < 0.5 ? Colors.white : Colors.black,
+                color: color.computeLuminance() < 0.5 ? Colors.white : Colors.black,
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
               ),
@@ -28,7 +28,7 @@ Widget eventSummary(String title, String? overview, int color){
               padding: const EdgeInsets.only(top: 5.0),
               child: Text(overview,
                 style: TextStyle(
-                  color: Color(color).computeLuminance() < 0.5 ? Colors.white : Colors.black,
+                  color: color.computeLuminance() < 0.5 ? Colors.white : Colors.black,
                   fontSize: 14,
                   fontWeight: FontWeight.bold,
                 ),

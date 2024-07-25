@@ -20,7 +20,7 @@ class CalendarDetail extends StatelessWidget{
         children: [
           SingleChildScrollView(
             child: SafeArea(
-              top: true,
+              top: false,
               bottom: false,
               child: SizedBox(
                 child: Column(children: [

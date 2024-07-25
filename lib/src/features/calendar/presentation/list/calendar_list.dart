@@ -1,32 +1,56 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:share_calendar/src/features/calendar/presentation/list/published_calendar/published_list.dart';
+import '../../../tab_value/application/tab_value_provider.dart';
+import '../../../tab_value/data/tab_value_repositories.dart';
+import '../../../tab_value/domain/tab_value.dart';
 import 'follow_calendar/follow_list.dart';
 import '../calendar_info/create/calendar_form.dart';
 
-class AllCalendarList extends StatefulWidget{
+class AllCalendarList extends ConsumerStatefulWidget{
   const AllCalendarList({super.key});
 
   @override
-  State<AllCalendarList> createState() => AllCalendarListState();
+  ConsumerState<AllCalendarList> createState() => AllCalendarListState();
 }
 
-class AllCalendarListState extends State<AllCalendarList> with TickerProviderStateMixin{
+class AllCalendarListState extends ConsumerState<AllCalendarList> with TickerProviderStateMixin{
   late TabController tabController = TabController(length: 2, vsync: this);
-  int currentIndex = 0;
+  late final TabValue? tabValue;
+  int currentIndex = 1;
+
+  @override
+  void initState() {
+    super.initState();
+    tabValue = ref.read(tabValueProvider);
+    if(tabValue != null){
+      currentIndex = tabValue!.listTabIndex!;
+      tabController.index = currentIndex;
+    }
+  }
+
+
 
   @override
   Widget build(BuildContext context){
+    print(currentIndex);
     return GestureDetector(
       onHorizontalDragUpdate: (details) {},
-      onHorizontalDragEnd: (details){
+      onHorizontalDragEnd: (details) async {
           if(details.primaryVelocity! < 0.0){
+            if (tabValue != null) {
+              await ref.read(tabValueRepositories).updateListTabIndex(tabValue!, 1);
+            }
             setState(() {
               currentIndex = 1;
               tabController.index = 1;
             });
           }
           if(details.primaryVelocity! > 0.0){
+            if (tabValue != null) {
+              await ref.read(tabValueRepositories).updateListTabIndex(tabValue!, 0);
+            }
             setState(() {
               currentIndex = 0;
               tabController.index = 0;
@@ -42,7 +66,10 @@ class AllCalendarListState extends State<AllCalendarList> with TickerProviderSta
                 elevation: 3,
                 bottom : TabBar(
                   controller: tabController,
-                  onTap: (index) {
+                  onTap: (index) async{
+                    if (tabValue != null) {
+                      await ref.read(tabValueRepositories).updateListTabIndex(tabValue!, index);
+                    }
                     setState(() {
                       currentIndex = index;
                     });

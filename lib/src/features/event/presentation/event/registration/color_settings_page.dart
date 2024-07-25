@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../application/color_setting_provider.dart';
 import '../../../application/event_provider.dart';
 import '../../../domain/event.dart';
+import '../detail/color_detail.dart';
 
 class ColorSettingsPage extends ConsumerWidget{
   Event event;
@@ -13,7 +14,7 @@ class ColorSettingsPage extends ConsumerWidget{
   @override
   Widget build(BuildContext context, WidgetRef ref){
     final colors = ref.read(colorList);
-    final colorCode = ref.watch(colorCheck(event));
+    final colorKey = ref.watch(colorCheck(event));
     return Scaffold(
       appBar: AppBar(
         elevation: 5,
@@ -22,7 +23,7 @@ class ColorSettingsPage extends ConsumerWidget{
         actions: [
           TextButton(
             onPressed: () {
-              ref.read(eventFormStateProvider(event).notifier).changeColor(colorCode);
+              ref.read(eventFormStateProvider(event).notifier).changeColor(colorKey);
               Navigator.of(context).pop();
             },
             child: const Padding(
@@ -49,11 +50,14 @@ class ColorSettingsPage extends ConsumerWidget{
           ),
           itemCount: colors.length,
           itemBuilder: (context, index) {
+            // Color color = getColor(colors, index);
+            Map<String,int> color = colors[index];
             return Padding(
               padding: const EdgeInsets.all(10.0),
               child: GestureDetector(
                 onTap: (){
-                  ref.read(colorCheck(event).notifier).state = index;
+                  final color = colors[index];
+                  ref.read(colorCheck(event).notifier).state = color['key']!;
                 },
                 child: Stack(
                   alignment: Alignment.center,
@@ -61,10 +65,10 @@ class ColorSettingsPage extends ConsumerWidget{
                     Container(
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: Color(colors[index]),
+                        color: Color(color['color']!),
                       ),
                     ),
-                    if(index == colorCode)
+                    if(index == getColorKey(colors, colorKey))
                       const Icon(
                         Icons.check,
                         size: 30,
@@ -79,4 +83,14 @@ class ColorSettingsPage extends ConsumerWidget{
       ),
     );
   }
+}
+
+int getColorKey(List<Map<String, int>> colorList, int colorKey){
+  int index = 0;
+  colorList.asMap().forEach((key, value) {
+    if (value['key'] == colorKey) {
+      index = key;
+    }
+  });
+  return index;
 }

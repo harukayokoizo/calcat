@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../application/color_setting_provider.dart';
 import '../../../application/event_provider.dart';
 import '../../../domain/event.dart';
+import '../detail/color_detail.dart';
 import 'color_settings_page.dart';
 
 class ColorForm extends ConsumerWidget{
@@ -15,9 +16,9 @@ class ColorForm extends ConsumerWidget{
   Widget build(BuildContext context, WidgetRef ref){
     final ev = ref.read(eventFormStateProvider(event));
     final colors = ref.read(colorList);
+    // final color = getColor(colors, 8);
     final double deviceWidth = MediaQuery.of(context).size.width;
-    int color= 8;
-    color = ev.color != null ? ev.color! : 8;
+    Color color = ev.color != null ? getColor(colors, ev.color!) : getColor(colors, 8);
 
     return InkWell(
       onTap: (){
@@ -57,7 +58,7 @@ class ColorForm extends ConsumerWidget{
                 width: 20,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Color(colors[color]),
+                  color: color,
                 ),
               ),
               const Icon(Icons.arrow_forward_ios)

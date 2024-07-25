@@ -24,6 +24,7 @@ class PersonalEventList extends ConsumerWidget{
     List eventOnDate = eventList[focusedDay] ?? [];
     eventOnDate.sort((a, b) => a.event!.from!.compareTo(b.event!.from!));
     eventOnDate.sort((a, b) => (a.event!.isAllDay == b.event!.isAllDay ? 0 : (a.event!.isAllDay! ? -1 : 1)));
+    eventOnDate.sort((a, b) => ((a.event!.isAllDay! && b.event!.isAllDay!) ? a.event!.createdAt!.compareTo(b.event!.createdAt!) : 0));
 
     return ListWidget(repositories, calendarFormat, focusedDayState, date, eventOnDate, focusedDay);
   }
