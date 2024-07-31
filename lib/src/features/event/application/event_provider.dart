@@ -5,6 +5,104 @@ import '../../../common_widgets/application/common_provider.dart';
 import '../data/personal_event_repositories.dart';
 import '../domain/event_document.dart';
 import '../domain/event.dart';
+import '../domain/event_initial_time.dart';
+
+final selectedDateTimeProvider = StateNotifierProvider.autoDispose.family<SelectedDateTime, Map<String, int>, EventInitialTime>(
+        (ref, initialTime){
+          Map<String,int> time = initialTime.initialTime;
+          return SelectedDateTime(time);
+        }
+);
+
+class SelectedDateTime extends StateNotifier<Map<String, int>> {
+  final Map<String, int> time;
+  SelectedDateTime(this.time) : super(time);
+
+  void saveState(int pickedHour, int pickedMinutes, int fromOrTo){
+    int fromHour = state['fromHour']!;
+    int fromMinutes = state['fromMinutes']!;
+    int toHour = state['toHour']!;
+    int toMinutes = state['toMinutes']!;
+    print(fromOrTo);
+    if(fromOrTo == 0){
+      if(pickedHour > toHour){
+        //From to両方変更
+        saveFromTo(pickedHour, pickedMinutes);
+      }else if(pickedHour < toHour){
+        //Fromだけ変更
+        saveOnlyFrom(pickedHour, pickedMinutes, toHour, toMinutes);
+      }else{
+        if(pickedMinutes > toMinutes){
+          //From to両方変更
+          saveFromTo(pickedHour, pickedMinutes);
+        }else if(pickedMinutes < toMinutes){
+          //Fromだけ変更
+          saveOnlyFrom(pickedHour, pickedMinutes, toHour, toMinutes);
+        }else{
+          //Fromだけ変更
+          saveOnlyFrom(pickedHour, pickedMinutes, toHour, toMinutes);
+        }
+      }
+    }else{
+      if(pickedHour > fromHour){
+        //toだけ変更
+        saveOnlyTo(pickedHour, pickedMinutes, fromHour, fromMinutes);
+      }else if(pickedHour < fromHour){
+        // 何もしない
+      }else{
+        if(pickedMinutes > fromMinutes){
+          //toだけ変更
+          saveOnlyTo(pickedHour, pickedMinutes, fromHour, fromMinutes);
+        }else if(pickedMinutes < toMinutes){
+          // 何もしない
+        }else{
+          //toだけ変更
+          saveOnlyTo(pickedHour, pickedMinutes, fromHour, fromMinutes);
+        }
+      }
+    }
+  }
+
+  void saveOnlyFrom(int pickedHour, int pickedMinutes, int toHour, int toMinutes,){
+    state = {'fromHour' : pickedHour, 'fromMinutes' : pickedMinutes, 'toHour' : toHour, 'toMinutes' : toMinutes,};
+  }
+
+  void saveFromTo(int pickedHour, int pickedMinutes,){
+    state = {'fromHour' : pickedHour, 'fromMinutes' : pickedMinutes, 'toHour' : pickedHour, 'toMinutes' : pickedMinutes,};
+  }
+
+  void saveOnlyTo(int pickedHour, int pickedMinutes, int fromHour, int fromMinutes,){
+    state = {'fromHour' : fromHour, 'fromMinutes' : fromMinutes, 'toHour' : pickedHour, 'toMinutes' : pickedMinutes,};
+  }
+}
+
+
+final selectedDaysProvider = StateNotifierProvider.autoDispose.family<SelectedDays, List<DateTime>, List<DateTime>>(
+    (ref, sameEvents){
+      return SelectedDays(sameEvents);
+    }
+);
+
+class SelectedDays extends StateNotifier<List<DateTime>>{
+  final List<DateTime> sameEvents;
+  SelectedDays(this.sameEvents) : super(sameEvents);
+
+  void checkSelectedDay(DateTime date){
+    if (state.contains(date)) {
+      removeDate(date);
+    } else {
+      addDate(date);
+    }
+  }
+
+  void addDate(DateTime date) {
+    state = [...state, date];
+  }
+
+  void removeDate(DateTime date) {
+    state = state.where((dateState) => dateState.compareTo(date) != 0).toList();
+  }
+}
 
 final eventFormStateProvider = StateNotifierProvider.autoDispose.family<EventFormState, Event, Event>(
         (ref, event){
@@ -156,13 +254,15 @@ class EventFormState extends StateNotifier<Event>{
     }
   }
 
-  void createEvent(dynamic repositories){
-    List<Map<String, dynamic>> events = saveDataList(true);
+  /*予定作成画面の保存ボタンを押下時の処理*/
+  void createEvent(dynamic repositories, bool newReg, List<DateTime> sameEvents, EventInitialTime initialTime){
+    List<Map<String, dynamic>> events = saveDataList(newReg, sameEvents, initialTime);
     repositories.createEvent(events);
   }
 
-  void updateEvent(int value, EventDocument eventDoc, dynamic repositories) async{
-    List<Map<String, dynamic>> events = saveDataList(false);
+  /*予定編集画面の保存ボタンを押下時の処理*/
+  void updateEvent(int value, EventDocument eventDoc, dynamic repositories, bool newReg, List<DateTime> sameEvents, EventInitialTime initialTime) async{
+    List<Map<String, dynamic>> events = saveDataList(newReg, sameEvents, initialTime);
     if(value == 0){
       //繰り返しがないイベント
       if(state.repeat == 0){
@@ -182,62 +282,106 @@ class EventFormState extends StateNotifier<Event>{
 
   }
 
-  List<Map<String, dynamic>> saveDataList(bool firstTime){
+  List<Map<String, dynamic>> saveDataList(bool newReg, List<DateTime> sameEvents, EventInitialTime initialTime) {
     DateTime createdAt;
     DateTime updatedAt;
-    DateTime from = DateTime(state.from!.year, state.from!.month, state.from!.day, state.from!.hour, state.from!.minute);
-    DateTime to = DateTime(state.to!.year, state.to!.month, state.to!.day, state.to!.hour, state.to!.minute);
-    String calendarMonth = '${state.from!.year}年${state.from!.month}月';
-    if(firstTime){
-      createdAt = DateTime.now();
-      updatedAt = DateTime.now();
-    }else{
-      createdAt = state.createdAt ?? DateTime.now();
-      updatedAt = DateTime.now();
-    }
-    Map<String, dynamic> data = {
-      'uid': state.uid,
-      'title': state.title,
-      'overview': state.overview,
-      'image': state.image,
-      'color': state.color,
-      'url': state.url,
-      'location': state.location,
-      'isAllDay': state.isAllDay,
-      'from': state.from,
-      'to': state.to,
-      'repeat': state.repeat,
-      'endDate': state.endDate,
-      'sameEventId': state.sameEventId,
-      'number': state.number,
-      'calendarId': state.calendarId,
-      'notificationExist': state.notificationExist,
-      'calendarMonth': calendarMonth,
-      'createdAt': createdAt,
-      'updatedAt': updatedAt,
-    };
-
-    List<Map<String, dynamic>> events = [data];
-    int days = state.repeat == 1 ? 1 : state.repeat == 2 ? 7 : 0;
-
-    if(state.repeat != 0){
-      DateTime endDate = state.endDate!.add(const Duration(days: 1));
-      from = from.add(Duration(days: days));
-      to = to.add(Duration(days: days));
-
-      while(from.isBefore(endDate)){
-        Map<String, dynamic> newData = Map.of(data);
-        calendarMonth = '${from.year}年${from.month}月';
-        newData['from'] = from;
-        newData['to'] = to;
-        newData['calendarMonth'] = calendarMonth;
-        events.add(newData);
-        from = from.add(Duration(days: days));
-        to = to.add(Duration(days: days));
+    DateTime from;
+    DateTime to;
+    String calendarMonth;
+    try {
+      if (newReg) {
+        createdAt = DateTime.now();
+        updatedAt = DateTime.now();
+      } else {
+        createdAt = state.createdAt ?? DateTime.now();
+        updatedAt = DateTime.now();
       }
-    }
+      Map<String, dynamic> data = {
+        'uid': state.uid,
+        'title': state.title,
+        'overview': state.overview,
+        'image': state.image,
+        'color': state.color,
+        'url': state.url,
+        'location': state.location,
+        'isAllDay': state.isAllDay,
+        'from': null,
+        'to': null,
+        'repeat': state.repeat,
+        'endDate': state.endDate,
+        'sameEventId': state.sameEventId,
+        'number': state.number,
+        'calendarId': state.calendarId,
+        'notificationExist': state.notificationExist,
+        'calendarMonth': null,
+        'createdAt': createdAt,
+        'updatedAt': updatedAt,
+      };
 
-    return events;
+      List<Map<String, dynamic>> events = [];
+
+      if (state.repeat == 0) {
+        //通常の場合
+        from = DateTime(state.from!.year, state.from!.month, state.from!.day,
+            state.from!.hour, state.from!.minute);
+        to = DateTime(
+            state.to!.year, state.to!.month, state.to!.day, state.to!.hour,
+            state.to!.minute);
+        calendarMonth = '${state.from!.year}年${state.from!.month}月';
+        data['from'] = from;
+        data['to'] = to;
+        data['calendarMonth'] = calendarMonth;
+        events = [data];
+      } else {
+        //まとめて作成の場合
+        final selectedDays = ref.read(selectedDaysProvider(sameEvents));
+        final time = ref.read(selectedDateTimeProvider(initialTime).notifier).state;
+        print('----------');
+        print(time);
+        if (selectedDays.isNotEmpty) {
+          for (DateTime day in selectedDays) {
+            from = day;
+            to = day;
+            Map<String, dynamic> newData = Map.of(data);
+            calendarMonth = '${day.year}年${day.month}月';
+            if (!state.isAllDay!) {
+              from = DateTime(day.year, day.month, day.day, time['fromHour']!,
+                  time['fromMinutes']!);
+              to = DateTime(day.year, day.month, day.day, time['toHour']!,
+                  time['toMinutes']!);
+            }
+            newData['from'] = from;
+            newData['to'] = to;
+            newData['calendarMonth'] = calendarMonth;
+            events.add(newData);
+          }
+        }
+      }
+
+      // List<Map<String, dynamic>> events = [data];
+      // int days = state.repeat == 1 ? 1 : state.repeat == 2 ? 7 : final times = ref.watch(selectedDateTimeProvider);0;
+      //
+      // if(state.repeat != 0){
+      //   DateTime endDate = state.endDate!.add(const Duration(days: 1));
+      //   from = from.add(Duration(days: days));
+      //   to = to.add(Duration(days: days));
+      //
+      //   while(from.isBefore(endDate)){
+      //     Map<String, dynamic> newData = Map.of(data);
+      //     calendarMonth = '${from.year}年${from.month}月';
+      //     newData['from'] = from;
+      //     newData['to'] = to;
+      //     newData['calendarMonth'] = calendarMonth;
+      //     events.add(newData);
+      //     from = from.add(Duration(days: days));
+      //     to = to.add(Duration(days: days));
+      //   }
+      // }
+
+      return events;
+    }catch (e){
+      throw e.toString();
+    }
   }
 
 }

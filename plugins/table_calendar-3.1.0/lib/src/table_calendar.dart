@@ -122,6 +122,11 @@ class TableCalendar<T> extends StatefulWidget {
   ///フォローカレンダーの場合、true
   final bool followCalendar;
 
+  ///イベント作成の中のカレンダーの場合、true
+  final bool eventFormCalendar;
+
+  final bool displayWeekday;
+
   /// Used for setting the height of `TableCalendar`'s rows.
   final double rowHeight;
 
@@ -247,6 +252,8 @@ class TableCalendar<T> extends StatefulWidget {
     this.weekNumbersVisible = false,
     this.publicCalendar = false,
     this.followCalendar = false,
+    this.eventFormCalendar = false,
+    this.displayWeekday = false,
     this.rowHeight = 52.0,
     this.daysOfWeekHeight = 16.0,
     this.formatAnimationDuration = const Duration(milliseconds: 200),
@@ -513,6 +520,7 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
           tableBorder: widget.calendarStyle.tableBorder,
           tablePadding: widget.calendarStyle.tablePadding,
           dowVisible: widget.daysOfWeekVisible,
+          displayWeekday: widget.displayWeekday,
           dowHeight: widget.daysOfWeekHeight,
           rowHeight: widget.rowHeight,
           formatAnimationDuration: widget.formatAnimationDuration,
@@ -654,27 +662,51 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
         final isWeekend = _isWeekend(day, weekendDays: widget.weekendDays);
         final isSaturday = _isSaturday(day);
         final isSunday = _isSunday(day);
+        Widget content;
 
-        Widget content = CellContent(
-          key: ValueKey('CellContent-${day.year}-${day.month}-${day.day}'),
-          day: day,
-          focusedDay: focusedDay,
-          calendarStyle: widget.calendarStyle,
-          calendarBuilders: widget.calendarBuilders,
-          isTodayHighlighted: widget.calendarStyle.isTodayHighlighted,
-          isToday: isToday,
-          isSelected: widget.selectedDayPredicate?.call(day) ?? false,
-          isRangeStart: isRangeStart,
-          isRangeEnd: isRangeEnd,
-          isWithinRange: isWithinRange,
-          isOutside: isOutside,
-          isDisabled: isDisabled,
-          isWeekend: isWeekend,
-          isSaturday: isSaturday,
-          isSunday: isSunday,
-          isHoliday: widget.holidayPredicate?.call(day) ?? false,
-          locale: widget.locale,
-        );
+        if(widget.eventFormCalendar){
+          content = CellContentOriginal(
+            key: ValueKey('CellContent-${day.year}-${day.month}-${day.day}'),
+            day: day,
+            focusedDay: focusedDay,
+            calendarStyle: widget.calendarStyle,
+            calendarBuilders: widget.calendarBuilders,
+            isTodayHighlighted: widget.calendarStyle.isTodayHighlighted,
+            isToday: isToday,
+            isSelected: widget.selectedDayPredicate?.call(day) ?? false,
+            isRangeStart: isRangeStart,
+            isRangeEnd: isRangeEnd,
+            isWithinRange: isWithinRange,
+            isOutside: isOutside,
+            isDisabled: isDisabled,
+            isWeekend: isWeekend,
+            isSaturday: isSaturday,
+            isSunday: isSunday,
+            isHoliday: widget.holidayPredicate?.call(day) ?? false,
+            locale: widget.locale,
+          );
+        }else {
+          content = CellContent(
+            key: ValueKey('CellContent-${day.year}-${day.month}-${day.day}'),
+            day: day,
+            focusedDay: focusedDay,
+            calendarStyle: widget.calendarStyle,
+            calendarBuilders: widget.calendarBuilders,
+            isTodayHighlighted: widget.calendarStyle.isTodayHighlighted,
+            isToday: isToday,
+            isSelected: widget.selectedDayPredicate?.call(day) ?? false,
+            isRangeStart: isRangeStart,
+            isRangeEnd: isRangeEnd,
+            isWithinRange: isWithinRange,
+            isOutside: isOutside,
+            isDisabled: isDisabled,
+            isWeekend: isWeekend,
+            isSaturday: isSaturday,
+            isSunday: isSunday,
+            isHoliday: widget.holidayPredicate?.call(day) ?? false,
+            locale: widget.locale,
+          );
+        }
 
         children.add(content);
 
@@ -724,13 +756,19 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
           }
         }
 
-        return Column(
-          //alignment: widget.calendarStyle.markersAlignment,
-          children: children,
-          // clipBehavior: widget.calendarStyle.canMarkersOverflow
-          //     ? Clip.none
-          //     : Clip.hardEdge,
-        );
+        if(widget.eventFormCalendar) {
+          return Stack(
+            alignment: widget.calendarStyle.markersAlignment,
+            clipBehavior: widget.calendarStyle.canMarkersOverflow
+                ? Clip.none
+                : Clip.hardEdge,
+            children: children,
+          );
+        }else {
+          return Column(
+            children: children,
+          );
+        }
       },
     );
   }

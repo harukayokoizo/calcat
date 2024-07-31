@@ -19,6 +19,7 @@ class CalendarCore extends StatelessWidget {
   final FocusedDayBuilder dayBuilder;
   final bool sixWeekMonthsEnforced;
   final bool dowVisible;
+  final bool displayWeekday;
   final bool weekNumbersVisible;
   final Decoration? dowDecoration;
   final Decoration? rowDecoration;
@@ -50,6 +51,7 @@ class CalendarCore extends StatelessWidget {
     this.previousIndex,
     this.sixWeekMonthsEnforced = false,
     this.dowVisible = true,
+    this.displayWeekday = false,
     this.weekNumberBuilder,
     required this.weekNumbersVisible,
     this.dowDecoration,
@@ -62,23 +64,11 @@ class CalendarCore extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final globalKey = GlobalKey();
-    // final RenderObject? renderBox = globalKey.currentContext?.findRenderObject();
-    // final offset = renderBox?.paintBounds.top;
-    // print(offset);
-    //late Offset itemPosition = const Offset(0, 0);
     return PageView.builder(
       controller: pageController,
       physics: scrollPhysics,
       itemCount: _getPageCount(calendarFormat, firstDay, lastDay),
       itemBuilder: (context, index) {
-        // GlobalKey itemKey = GlobalKey();
-        // WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-        //   RenderBox renderBox = itemKey.currentContext!
-        //       .findRenderObject() as RenderBox;
-        //   itemPosition = renderBox.localToGlobal(Offset.zero);
-        //   print(itemPosition.dy);
-        // });
         final baseDay = _getBaseDay(calendarFormat, index);
         final visibleRange = _getVisibleRange(calendarFormat, baseDay);
         final visibleDays = _daysInRange(visibleRange.start, visibleRange.end);
@@ -98,10 +88,14 @@ class CalendarCore extends StatelessWidget {
           tableBorder: tableBorder,
           tablePadding: tablePadding,
           dowBuilder: (context, day) {
-            return const SizedBox(
-              // height: dowHeight,
-              // child: dowBuilder?.call(context, day),
-            );
+            if(displayWeekday){
+              return SizedBox(
+                height: dowHeight,
+                child: dowBuilder?.call(context, day),
+              );
+            }else{
+              return const SizedBox();
+            }
           },
           dayBuilder: (context, day) {
             DateTime baseDay;
@@ -114,28 +108,23 @@ class CalendarCore extends StatelessWidget {
                   _getFocusedDay(calendarFormat, previousFocusedDay, index);
             }
 
+            return SizedBox(
+              height: constrainedRowHeight ?? rowHeight,
+              child: dayBuilder(context, day, baseDay),
+            );
+
             return Container(
               height: constrainedRowHeight ?? rowHeight,
               decoration: BoxDecoration(
                 color: isToday ? const Color(0xFFD8D8D8) : Colors.white,
-                border: Border.all(
+                border: Border(
+                  bottom: BorderSide(
                     color: day == focusedDay ? Colors.deepPurple : Colors.grey,
-                    width: day == focusedDay ? 1.0 : 0.0,
-                ),
+                    width: day == focusedDay ? 1.0 : 0.0,)
+                )
               ),
               child: dayBuilder(context, day, baseDay),
             );
-            // else
-            //   return Visibility(
-            //     visible: true,
-            //     child: Container(
-            //       height: constrainedRowHeight ?? rowHeight,
-            //       decoration: BoxDecoration(
-            //         border: Border.all(color: Colors.grey, width: 1.0),
-            //       ),
-            //       child: dayBuilder(context, day, baseDay),
-            //     ),
-            //   );
           },
           dowHeight: dowHeight,
           weekNumberVisible: weekNumbersVisible,

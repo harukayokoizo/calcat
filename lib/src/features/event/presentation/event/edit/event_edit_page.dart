@@ -2,16 +2,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../../common_widgets/application/common_provider.dart';
 import '../../../application/event_provider.dart';
 import '../../../domain/event_document.dart';
 import '../../../domain/event.dart';
+import '../../../domain/event_initial_time.dart';
+import '../registration/calendar_form.dart';
 import '../registration/color_form.dart';
 import '../registration/date_form.dart';
+import '../registration/event_registration.dart';
 import '../registration/location_form.dart';
-import '../registration/notification_form.dart';
 import '../registration/overview_form.dart';
-import '../registration/repeat_form.dart';
 import '../registration/title_form.dart';
 import '../registration/url_form.dart';
 
@@ -24,15 +24,34 @@ class EventEdit extends ConsumerWidget{
   final FocusNode overview = FocusNode();
   final FocusNode url = FocusNode();
   final FocusNode location = FocusNode();
-  EventEdit(this.eventDoc, this.value, this.repositories, {super.key});
+  final newReg = false;
+  final List<DateTime> sameEvents;
+  EventEdit(this.eventDoc, this.value, this.repositories, this.sameEvents, {super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref){
+    final double bottomPadding = MediaQuery.of(context).padding.bottom;
     final double deviceHeight = MediaQuery.of(context).size.height;
-    bool visible = true;
     Event event = eventDoc.event!;
+    Map<String, int> time;
+    if(event.isAllDay!){
+      time = {
+        'fromHour' : 12,
+        'fromMinutes' : 00,
+        'toHour' : 12,
+        'toMinutes' : 00,
+      };
+    }else{
+      time = {
+        'fromHour' : event.from!.hour,
+        'fromMinutes' : event.from!.minute,
+        'toHour' : event.to!.hour,
+        'toMinutes' : event.to!.minute,
+      };
+    }
+    final EventInitialTime initialTime = EventInitialTime(time);
+
     if(value == 1){
-      visible = false;
       event = event.copyWith(repeat: 0, endDate: null);
       ref.watch(eventFormStateProvider(event));
     }else{
@@ -59,88 +78,73 @@ class EventEdit extends ConsumerWidget{
           ),
           title: const Text('予定編集'),
           centerTitle: true,
+          actions: [
+            SaveEventButton(eventDoc, event, value, repositories, newReg, sameEvents, initialTime),
+          ],
         ),
-        body: SafeArea(
-          child: GestureDetector(
-            behavior: HitTestBehavior.opaque,
-            onTap: (){
-              FocusScope.of(context).unfocus();
-              title.unfocus();
-              overview.unfocus();
-              url.unfocus();
-              location.unfocus();
-            },
-            onHorizontalDragCancel: (){
-              FocusScope.of(context).unfocus();
-              title.unfocus();
-              overview.unfocus();
-              url.unfocus();
-              location.unfocus();
-            },
-            onHorizontalDragDown: (value){
-              FocusScope.of(context).unfocus();
-              title.unfocus();
-              overview.unfocus();
-              url.unfocus();
-              location.unfocus();
-            },
-            child: Column(
-              children: [
-                TitleForm(event, title),
-                OverViewForm(event, overview),
-                DateSettingFormat(event),
-                UrlForm(event, url),
-                LocationForm(event, location),
-                ColorForm(event),
-                // NotificationForm(event),
-                Visibility(
-                  visible: visible,
-                    child: RepeatForm(event)
-                ),
-                const Expanded(
-                  child: SizedBox(),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 10.0, right: 20.0),
-                  child: Align(
-                    alignment: Alignment.centerRight,
-                    child: SaveEventButton(eventDoc, event, value, repositories),
+        body: LayoutBuilder(
+          builder: (context, constraint) {
+            return GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: (){
+                FocusScope.of(context).unfocus();
+                title.unfocus();
+                overview.unfocus();
+                url.unfocus();
+                location.unfocus();
+              },
+              onHorizontalDragCancel: (){
+                FocusScope.of(context).unfocus();
+                title.unfocus();
+                overview.unfocus();
+                url.unfocus();
+                location.unfocus();
+              },
+              onHorizontalDragDown: (value){
+                FocusScope.of(context).unfocus();
+                title.unfocus();
+                overview.unfocus();
+                url.unfocus();
+                location.unfocus();
+              },
+              child: Column(
+                children: [
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          TitleForm(event, title),
+                          OverViewForm(event, overview),
+                          if(event.repeat == 0)
+                            DateSettingFormat(event),
+                          UrlForm(event, url),
+                          LocationForm(event, location),
+                          ColorForm(event),
+                        ],
+                      ),
+                    ),
                   ),
-                )
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class SaveEventButton extends ConsumerWidget{
-  EventDocument eventDoc;
-  Event event;
-  int value;
-  dynamic repositories;
-  SaveEventButton(this.eventDoc, this.event, this.value, this.repositories, {super.key});
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref){
-    //PersonalEvent event = eventDoc.event!;
-    final personalEvent = ref.watch(eventFormStateProvider(event));
-    return ElevatedButton(
-      onPressed: personalEvent.title == null || personalEvent.title!.isEmpty ? null : (){
-        ref.read(eventFormStateProvider(event).notifier).updateEvent(value, eventDoc, repositories);
-        Navigator.of(context).pop(true);
-      },
-      style: ElevatedButton.styleFrom(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
-        //side: BorderSide(color: Colors.black)
-      ),
-      child: const Text(
-        "保存",
-        style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold
+                  if(event.repeat == 1)
+                    Container(
+                      height: constraint.maxHeight * 0.5,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5), // 影の色
+                            spreadRadius: 2, // スプレッド半径
+                            blurRadius: 5, // ぼかし半径
+                            offset: const Offset(0, 3), // オフセット（x, y）
+                          ),
+                        ],
+                      ),
+                      child: EventCalendarForm(event, repositories, sameEvents, initialTime),
+                    ),
+                  Container(height: bottomPadding ,color: Colors.white,)
+                ],
+              ),
+            );
+          }
         ),
       ),
     );

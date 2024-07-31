@@ -63,16 +63,20 @@ class EventFloatingButtonState extends State<EventFloatingButton>{
               child: const Icon(Icons.edit),
               backgroundColor: Colors.blue.shade50,
               onTap: () async {
+                List<DateTime> sameEvents = [];
                 if (event.repeat != 0) {
                   showCupertinoModalPopup(
                       context: context,
                       builder: (BuildContext context) => const ActionSheet()
-                  ).then((value) {
+                  ).then((value) async {
                     if (value != null) {
+                      if(value == 2){
+                        sameEvents = await repositories.getSameEventDate(event.sameEventId);
+                      }
                       showCupertinoModalPopup(
                         context: context,
                         builder: (BuildContext context) {
-                          return EventEdit(eventDoc, value, repositories);
+                          return EventEdit(eventDoc, value, repositories, sameEvents);
                         },
                       ).then((value){
                         if(value){
@@ -85,7 +89,7 @@ class EventFloatingButtonState extends State<EventFloatingButton>{
                   showCupertinoModalPopup(
                     context: context,
                     builder: (BuildContext context) {
-                      return EventEdit(eventDoc, 0, repositories);
+                      return EventEdit(eventDoc, 0, repositories, sameEvents);
                     },
                   ).then((value){
                     if(value){

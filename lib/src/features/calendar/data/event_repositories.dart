@@ -36,7 +36,6 @@ class PublicEventRepositories{
   }
 
   Future<List<dynamic>> getSameEvent(String sameEventId) async{
-    final currentUser = ref.read(currentUserProvider);
     List events = [];
     await FirebaseFirestore.instance
         .collection('calendar')
@@ -48,6 +47,26 @@ class PublicEventRepositories{
         .forEach((element) {
           for(var event in element.docs){
             events.add(event.id);
+          }
+        });
+
+    return events;
+  }
+
+  Future<List<DateTime>> getSameEventDate(String sameEventId) async{
+    List<DateTime> events = [];
+    await FirebaseFirestore.instance
+        .collection('calendar')
+        .doc(calendarDocId)
+        .collection('event')
+        .where('sameEventId', isEqualTo: sameEventId)
+        .get()
+        .asStream()
+        .forEach((element) {
+          for(var event in element.docs){
+            Event eventDoc = Event.fromJson(event.data());
+            DateTime from = DateTime.utc(eventDoc.from!.year,eventDoc.from!.month, eventDoc.from!.day);
+            events.add(from);
           }
         });
 

@@ -13,8 +13,6 @@ import '../../../event/presentation/event/detail/notification_detail.dart';
 import '../../../event/presentation/event/detail/overview_detail.dart';
 import '../../../event/presentation/event/detail/repeat_detail.dart';
 import '../../../event/presentation/event/detail/url_detail.dart';
-import '../../../event/presentation/event/edit/delete_action_button.dart';
-import '../../../event/presentation/event/edit/edit_action_button.dart';
 import '../../../notification/data/public_event_notification_repositories.dart';
 import '../../../notification/presentation/notification_settings_button.dart';
 

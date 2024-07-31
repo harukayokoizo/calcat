@@ -52,6 +52,25 @@ class EventRepositories{
     return events;
   }
 
+  Future<List<DateTime>> getSameEventDate(String sameEventId) async{
+    final currentUser = ref.read(currentUserProvider);
+    List<DateTime> events = [];
+    await FirebaseFirestore.instance
+        .collection('event')
+        .where('uid', isEqualTo: currentUser!.uid)
+        .where('sameEventId', isEqualTo: sameEventId)
+        .get()
+        .asStream()
+        .forEach((element) {
+          for(var event in element.docs){
+            Event eventDoc = Event.fromJson(event.data());
+            events.add(eventDoc.from!);
+          }
+    });
+
+    return events;
+  }
+
   Future<void> createEvent(List events) async{
     WriteBatch batch = FirebaseFirestore.instance.batch();
     final docId = FirebaseFirestore.instance.collection('event').doc().id;

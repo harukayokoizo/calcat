@@ -49,6 +49,8 @@ class CalendarStyle {
   /// Margin of each individual day cell.
   final EdgeInsets cellMargin;
 
+  final EdgeInsets cellMarginOriginal;
+
   /// Padding of each individual day cell.
   final EdgeInsets cellPadding;
 
@@ -169,6 +171,7 @@ class CalendarStyle {
     this.markersAlignment = Alignment.bottomCenter,
     this.markersMaxCount = 4,
     this.cellMargin = const EdgeInsets.only(top: 3.0, left: 3.0),
+    this.cellMarginOriginal = const EdgeInsets.all(4.0),
     this.cellPadding = const EdgeInsets.all(0),
     this.cellAlignment = Alignment.center,
     this.markersOffset = const PositionedOffset(),
