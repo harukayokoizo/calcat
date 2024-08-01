@@ -20,6 +20,7 @@ class TableCalendarBase extends StatefulWidget {
   final bool sixWeekMonthsEnforced;
   final bool dowVisible;
   final bool weekNumbersVisible;
+  final bool eventFormCalendar;
   final bool displayWeekday;
   final Decoration? dowDecoration;
   final Decoration? rowDecoration;
@@ -52,6 +53,7 @@ class TableCalendarBase extends StatefulWidget {
     this.dowVisible = true,
     this.weekNumberBuilder,
     this.weekNumbersVisible = false,
+    this.eventFormCalendar = false,
     this.displayWeekday = false,
     this.dowDecoration,
     this.rowDecoration,
@@ -225,6 +227,7 @@ class _TableCalendarBaseState extends State<TableCalendarBase> {
               focusedDay: _focusedDay,
               sixWeekMonthsEnforced: widget.sixWeekMonthsEnforced,
               dowVisible: widget.dowVisible,
+              eventFormCalendar: widget.eventFormCalendar,
               displayWeekday: widget.displayWeekday,
               dowHeight: widget.dowHeight,
               rowHeight: widget.rowHeight,

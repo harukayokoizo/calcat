@@ -64,7 +64,8 @@ class EventRepositories{
         .forEach((element) {
           for(var event in element.docs){
             Event eventDoc = Event.fromJson(event.data());
-            events.add(eventDoc.from!);
+            DateTime from = DateTime.utc(eventDoc.from!.year,eventDoc.from!.month, eventDoc.from!.day);
+            events.add(from);
           }
     });
 

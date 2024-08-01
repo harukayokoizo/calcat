@@ -54,14 +54,38 @@ class FollowRankingList extends ConsumerWidget{
               ),
             );
           }else{
-            return RefreshIndicator(
-                onRefresh: () async{
-                  await ref.refresh(followRankingListProvider.future);
-                },
-                child: SingleChildScrollView(
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  child: SizedBox(height: deviceHeight, width: deviceWidth,),
+            return Center(
+              child: SizedBox(
+                height: deviceWidth / 1.5,
+                width: deviceWidth / 1.5,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      width: deviceWidth / 3,
+                      height: deviceWidth / 3,
+                      'images/calcat.png',
+                      fit: BoxFit.cover,
+                    ),
+                    RichText(
+                      textAlign: TextAlign.center,
+                      text: const TextSpan(
+                        style: TextStyle(color: Colors.black),
+                        children: [
+                          TextSpan(
+                            text: 'まだ何もありません\n',
+                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                          ),
+                          TextSpan(
+                            text: '公開されているカレンダーがここに表示されます。',
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
+              ),
             );
           }
         },

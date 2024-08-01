@@ -256,28 +256,37 @@ class EventFormState extends StateNotifier<Event>{
 
   /*予定作成画面の保存ボタンを押下時の処理*/
   void createEvent(dynamic repositories, bool newReg, List<DateTime> sameEvents, EventInitialTime initialTime){
-    List<Map<String, dynamic>> events = saveDataList(newReg, sameEvents, initialTime);
-    repositories.createEvent(events);
+    try {
+      List<Map<String, dynamic>> events = saveDataList(
+          newReg, sameEvents, initialTime);
+      repositories.createEvent(events);
+    }catch (e){
+      throw e.toString();
+    }
   }
 
   /*予定編集画面の保存ボタンを押下時の処理*/
   void updateEvent(int value, EventDocument eventDoc, dynamic repositories, bool newReg, List<DateTime> sameEvents, EventInitialTime initialTime) async{
-    List<Map<String, dynamic>> events = saveDataList(newReg, sameEvents, initialTime);
-    if(value == 0){
-      //繰り返しがないイベント
-      if(state.repeat == 0){
+    try {
+      List<Map<String, dynamic>> events = saveDataList(newReg, sameEvents, initialTime);
+      if (value == 0) {
+        //繰り返しがないイベント
+        if (state.repeat == 0) {
+          repositories.updateEvent(events.first, eventDoc.docId!);
+        } else {
+          repositories.deleteAndUpdateEvent([eventDoc.docId!], events);
+        }
+      } else if (value == 1) {
+        //繰り返しはあるが、特定の予定のみを更新する場合
         repositories.updateEvent(events.first, eventDoc.docId!);
-      }else{
-        repositories.deleteAndUpdateEvent([eventDoc.docId!], events);
+      } else if (value == 2) {
+        //繰り返しがあり、かつ定期的な予定を更新する場合
+        //sameEventIdが同じのイベントをすべて取得する
+        List deleteEvents = await repositories.getSameEvent(state.sameEventId!);
+        repositories.deleteAndUpdateEvent(deleteEvents, events);
       }
-    }else if(value == 1){
-      //繰り返しはあるが、特定の予定のみを更新する場合
-      repositories.updateEvent(events.first, eventDoc.docId!);
-    }else if(value == 2){
-      //繰り返しがあり、かつ定期的な予定を更新する場合
-      //sameEventIdが同じのイベントをすべて取得する
-      List deleteEvents = await repositories.getSameEvent(state.sameEventId!);
-      repositories.deleteAndUpdateEvent(deleteEvents, events);
+    }catch (e){
+      throw e.toString();
     }
 
   }
@@ -336,8 +345,6 @@ class EventFormState extends StateNotifier<Event>{
         //まとめて作成の場合
         final selectedDays = ref.read(selectedDaysProvider(sameEvents));
         final time = ref.read(selectedDateTimeProvider(initialTime).notifier).state;
-        print('----------');
-        print(time);
         if (selectedDays.isNotEmpty) {
           for (DateTime day in selectedDays) {
             from = day;
@@ -355,6 +362,8 @@ class EventFormState extends StateNotifier<Event>{
             newData['calendarMonth'] = calendarMonth;
             events.add(newData);
           }
+        }else{
+          throw '一つ以上日付を選択してください';
         }
       }
 

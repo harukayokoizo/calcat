@@ -39,7 +39,6 @@ class EventCalendarFormState extends ConsumerState<EventCalendarForm>{
   @override
   Widget build(BuildContext context) {
     final selectedDays = ref.watch(selectedDaysProvider(sameEvents));
-    print(selectedDays);
     return LayoutBuilder(
       builder: (context,  constraint) {
         return Column(

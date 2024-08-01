@@ -3,6 +3,7 @@
 
 import 'dart:math';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -520,6 +521,7 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
           tableBorder: widget.calendarStyle.tableBorder,
           tablePadding: widget.calendarStyle.tablePadding,
           dowVisible: widget.daysOfWeekVisible,
+          eventFormCalendar: widget.eventFormCalendar,
           displayWeekday: widget.displayWeekday,
           dowHeight: widget.daysOfWeekHeight,
           rowHeight: widget.rowHeight,
@@ -721,31 +723,46 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
             events.sort((a, b) => (a.event!.isAllDay == b.event!.isAllDay ? 0 : (a.event!.isAllDay! ? -1 : 1)));
             events.sort((a, b) => ((a.event!.isAllDay! && b.event!.isAllDay!) ? a.event!.createdAt!.compareTo(b.event!.createdAt!) : 0));
             int count = events.length > 4 ? 4 : events.length;
-            markerWidget = Consumer(
-              builder: (context, ref, _) {
-                final colors = ref.read(colorList);
-                return Column(
-                  children: [
-                    for(var i = 0; i < count; i++)
-                      Padding(
-                        padding: const EdgeInsets.only(left: 2.0),
-                        child: SizedBox(
-                          height: 16,
-                          child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              '${events[i].event!.title}',
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: isOutside ? const Color(0xFFAEAEAE) : getColor(colors, events[i].event!.color!),
-                                fontWeight: FontWeight.bold,
-                                fontFamily: 'ZenMaruGothic',
+            markerWidget = LayoutBuilder(
+              builder: (context, constraint) {
+                return Consumer(
+                  builder: (context, ref, _) {
+                    final colors = ref.read(colorList);
+                    return Column(
+                      children: [
+                        for(var i = 0; i < count; i++)
+                          Padding(
+                            padding: events[i].event!.isAllDay! ? const EdgeInsets.all(1.5) : const EdgeInsets.all(0),
+                            child: Container(
+                              height: 16,
+                              width: constraint.maxWidth,
+                              decoration: events[i].event!.isAllDay! ? BoxDecoration(
+                                borderRadius: const BorderRadius.all(Radius.circular(3)),
+                                color: getColor(colors, events[i].event!.color!),
+                              ) : null,
+                              child: Padding(
+                                padding: events[i].event!.isAllDay! ? const EdgeInsets.only(left: 2.0, right: 2.0) : const EdgeInsets.all(0.0),
+                                child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    '${events[i].event!.title}',
+                                    textAlign: TextAlign.left,
+                                    maxLines: 1,
+                                    style: TextStyle(
+                                      fontSize: 11,
+                                      height: 1.0,
+                                      color: isOutside ? const Color(0xFFAEAEAE) : events[i].event!.isAllDay! ? Colors.white : getColor(colors, events[i].event!.color!),
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: 'ZenMaruGothic',
+                                    ),
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
-                        ),
-                      )
-                  ],
+                          )
+                      ],
+                    );
+                  }
                 );
               }
             );

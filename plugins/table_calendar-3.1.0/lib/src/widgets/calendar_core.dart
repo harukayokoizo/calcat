@@ -19,6 +19,7 @@ class CalendarCore extends StatelessWidget {
   final FocusedDayBuilder dayBuilder;
   final bool sixWeekMonthsEnforced;
   final bool dowVisible;
+  final bool eventFormCalendar;
   final bool displayWeekday;
   final bool weekNumbersVisible;
   final Decoration? dowDecoration;
@@ -51,6 +52,7 @@ class CalendarCore extends StatelessWidget {
     this.previousIndex,
     this.sixWeekMonthsEnforced = false,
     this.dowVisible = true,
+    this.eventFormCalendar = false,
     this.displayWeekday = false,
     this.weekNumberBuilder,
     required this.weekNumbersVisible,
@@ -108,20 +110,21 @@ class CalendarCore extends StatelessWidget {
                   _getFocusedDay(calendarFormat, previousFocusedDay, index);
             }
 
-            return SizedBox(
-              height: constrainedRowHeight ?? rowHeight,
-              child: dayBuilder(context, day, baseDay),
-            );
+            // return SizedBox(
+            //   height: constrainedRowHeight ?? rowHeight,
+            //   child: dayBuilder(context, day, baseDay),
+            // );
+
+            print(eventFormCalendar);
 
             return Container(
               height: constrainedRowHeight ?? rowHeight,
-              decoration: BoxDecoration(
+              decoration: eventFormCalendar ? null : BoxDecoration(
                 color: isToday ? const Color(0xFFD8D8D8) : Colors.white,
-                border: Border(
-                  bottom: BorderSide(
-                    color: day == focusedDay ? Colors.deepPurple : Colors.grey,
-                    width: day == focusedDay ? 1.0 : 0.0,)
-                )
+                border: day == focusedDay ? Border.all(
+                  color: day == focusedDay ? Colors.deepPurple : Colors.grey,
+                  width: day == focusedDay ? 1.5 : 0.0,
+                ) : null,
               ),
               child: dayBuilder(context, day, baseDay),
             );

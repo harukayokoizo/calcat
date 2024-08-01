@@ -230,7 +230,18 @@ class SaveEventButton extends ConsumerWidget{
             }
             Navigator.of(context).pop(true);
           }catch (e){
-            print(e.toString());
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                backgroundColor: Colors.red,
+                content: Text(
+                  e.toString(),
+                  style: const TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            );
           }
         },
         child: Text(
