@@ -47,11 +47,8 @@ import 'package:table_calendar/table_calendar.dart';
 import 'firebase_options_prod.dart';
 
 Future<void> main() async {
-  const flavor = String.fromEnvironment('FLAVOR');
-  print(flavor);
-  // main()の中で非同期処理を行う際には、下記を実行しなければいけないらしい
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await Firebase.initializeApp(options: DefaultFirebaseOptionsProd.currentPlatform);
 
   // パッケージ情報の取得
   PackageInfo packageInfo = await PackageInfo.fromPlatform();
@@ -61,10 +58,6 @@ Future<void> main() async {
     fetchTimeout: const Duration(minutes: 1),
     minimumFetchInterval: const Duration(minutes: 5),
   ));
-
-  for (var e in Firebase.apps) {
-    print(e.options.projectId);
-  }
 
   // await FirebaseAppCheck.instance.activate(
   //   androidProvider: AndroidProvider.debug,
@@ -179,7 +172,7 @@ class MaterialAppClass extends ConsumerWidget {
       ],
       title: 'calendar',
       theme: ThemeData(
-        // fontFamily: 'ZenMaruGothic',
+        fontFamily: 'NotoSansJP',
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueAccent),
         //scaffoldBackgroundColor: const Color(0xFFE5E5E5),
         useMaterial3: true,

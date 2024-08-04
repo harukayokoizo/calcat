@@ -117,10 +117,10 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-    - family: Quicksand
+    - family: NotoSansJP
       fonts:
-        - asset: assets/fonts/Quicksand-Regular.ttf
-        - asset: assets/fonts/Quicksand-SemiBold.ttf
+        - asset: assets/fonts/NotoSansJP-Regular.ttf
+        - asset: assets/fonts/NotoSansJP-SemiBold.ttf
           weight: 700
     - family: ZenMaruGothic
       fonts:
