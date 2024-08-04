@@ -19,7 +19,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:share_calendar/firebase_options.dart';
+import 'package:share_calendar/firebase_options_dev.dart';
 import 'package:share_calendar/src/common_widgets/application/common_provider.dart';
 import 'package:share_calendar/src/common_widgets/presentation/app_update_dialog.dart';
 import 'package:share_calendar/src/features/authentication/application/user_provider.dart';
@@ -44,8 +44,11 @@ import 'package:share_calendar/src/features/tab_value/data/tab_value_repositorie
 import 'package:share_calendar/src/features/tab_value/domain/tab_value.dart';
 import 'package:share_calendar/tab_navigator.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'firebase_options_prod.dart';
 
 Future<void> main() async {
+  const flavor = String.fromEnvironment('FLAVOR');
+  print(flavor);
   // main()の中で非同期処理を行う際には、下記を実行しなければいけないらしい
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
@@ -59,9 +62,9 @@ Future<void> main() async {
     minimumFetchInterval: const Duration(minutes: 5),
   ));
 
-  Firebase.apps.forEach((e) {
+  for (var e in Firebase.apps) {
     print(e.options.projectId);
-  });
+  }
 
   // await FirebaseAppCheck.instance.activate(
   //   androidProvider: AndroidProvider.debug,
