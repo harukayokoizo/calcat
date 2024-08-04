@@ -8,16 +8,20 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:share_calendar/firebase_options.dart';
 import 'package:share_calendar/src/common_widgets/application/common_provider.dart';
+import 'package:share_calendar/src/common_widgets/presentation/app_update_dialog.dart';
 import 'package:share_calendar/src/features/authentication/application/user_provider.dart';
 import 'package:share_calendar/src/features/authentication/data/fcm_token_repositories.dart';
 import 'package:share_calendar/src/features/authentication/data/token_repositories.dart';
@@ -31,6 +35,7 @@ import 'package:share_calendar/src/features/calendar/domain/calendar_document.da
 import 'package:share_calendar/src/features/calendar/presentation/list/follow_calendar/calendar.dart';
 import 'package:share_calendar/src/features/calendar/presentation/list/published_calendar/calendar.dart';
 import 'package:share_calendar/src/features/event/application/event_list_provider.dart';
+import 'package:share_calendar/src/features/event/presentation/event/detail/action_sheet.dart';
 import 'package:share_calendar/src/features/event/presentation/event/detail/event_detail.dart';
 import 'package:share_calendar/src/features/notification/application/push_notification.dart';
 import 'package:share_calendar/src/features/notification/domain/payload.dart';
@@ -44,6 +49,15 @@ Future<void> main() async {
   // main()の中で非同期処理を行う際には、下記を実行しなければいけないらしい
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  // パッケージ情報の取得
+  PackageInfo packageInfo = await PackageInfo.fromPlatform();
+
+  // Firebase Remote Confingの設定
+  await FirebaseRemoteConfig.instance.setConfigSettings(RemoteConfigSettings(
+    fetchTimeout: const Duration(minutes: 1),
+    minimumFetchInterval: const Duration(minutes: 5),
+  ));
 
   Firebase.apps.forEach((e) {
     print(e.options.projectId);
@@ -70,9 +84,16 @@ Future<void> main() async {
     );
   }
 
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
-      .then((_) {
-    runApp(const ProviderScope(child: MyApp()));
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]).then((_) {
+    runApp(
+        ProviderScope(
+          overrides: [
+            // 初期化したinstanceで上書き
+            packageInfoProvider.overrideWith((ref) => packageInfo)
+          ],
+          child: MyApp(),
+        )
+    );
   });
   /// MyAppはルートウィジェットです。
 }
@@ -105,7 +126,7 @@ class MyAppState extends ConsumerState{
         future: future,
         builder: (BuildContext context, AsyncSnapshot<TabValue?> tabValue) {
           if(tabValue.connectionState == ConnectionState.done) {
-            return const ControlPage();
+            return const MaterialAppClass();
           }else{
             return const SizedBox();
           }
@@ -113,14 +134,36 @@ class MyAppState extends ConsumerState{
   }
 }
 
-class ControlPage extends ConsumerWidget {
-  const ControlPage({super.key});
+// 強制アップデートを促すダイアログ
+void _showDialog(BuildContext context) {
+  showCupertinoModalPopup(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) => const AppUpdateDialog()
+  );
+}
+
+// 強制アップデートが必要かどうかのチェック
+bool checkForceUpdate(String pkgVer) {
+  try {
+    final remoteConfig = FirebaseRemoteConfig.instance;
+    const updateVersionKey = "update_version";
+    final confVer = remoteConfig.getString(updateVersionKey);
+    if (confVer.isEmpty) return false;
+
+    final result = pkgVer.compareTo(confVer) < 0;
+    return result;
+  } catch (error) {
+    return false;
+  }
+}
+
+class MaterialAppClass extends ConsumerWidget {
+  const MaterialAppClass({super.key});
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final authState = ref.watch(authStateChangeProvider);
-
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       localizationsDelegates: const [
@@ -138,17 +181,63 @@ class ControlPage extends ConsumerWidget {
         //scaffoldBackgroundColor: const Color(0xFFE5E5E5),
         useMaterial3: true,
       ),
-      home: authState.when(
-          data: (data) {
-            if(data != null) {
-              return const TopPage();
-            }else{
-              return const LoginPage();
-            }
-          },
-          loading: () => Container(),
-          error: (_, __) => Container()
-      ),
+      home: const ControlPage(),
+    );
+  }
+}
+
+class ControlPage extends ConsumerStatefulWidget{
+  const ControlPage({super.key});
+
+  @override
+  ConsumerState<ControlPage> createState() => ControlPageState();
+}
+
+class ControlPageState extends ConsumerState<ControlPage>{
+  @override
+  void initState() {
+    super.initState();
+    final packageInfo = ref.read(packageInfoProvider);
+    final remoteConfig = FirebaseRemoteConfig.instance;
+    // リアルタイムで変更を監視
+    remoteConfig.onConfigUpdated.listen((event) async {
+      try {
+        await remoteConfig.activate();
+        bool update = checkForceUpdate(packageInfo!.version);
+
+        if(update) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            _showDialog(context);
+          });
+        }
+      } catch (error) {
+        // エラーが発生したら、なにもしない
+      }
+    });
+
+    remoteConfig.fetch();
+    bool update = checkForceUpdate(packageInfo!.version);
+
+    if(update) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _showDialog(context);
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context){
+    final authState = ref.watch(authStateChangeProvider);
+    return authState.when(
+        data: (data) {
+          if(data != null) {
+            return const TopPage();
+          }else{
+            return const LoginPage();
+          }
+        },
+        loading: () => Container(),
+        error: (_, __) => Container()
     );
   }
 }

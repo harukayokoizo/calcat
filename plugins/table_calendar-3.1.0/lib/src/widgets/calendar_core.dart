@@ -115,8 +115,6 @@ class CalendarCore extends StatelessWidget {
             //   child: dayBuilder(context, day, baseDay),
             // );
 
-            print(eventFormCalendar);
-
             return Container(
               height: constrainedRowHeight ?? rowHeight,
               decoration: eventFormCalendar ? null : BoxDecoration(

@@ -738,7 +738,8 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
                               width: constraint.maxWidth,
                               decoration: events[i].event!.isAllDay! ? BoxDecoration(
                                 borderRadius: const BorderRadius.all(Radius.circular(3)),
-                                color: getColor(colors, events[i].event!.color!),
+                                border: isOutside ? Border.all(color: const Color(0xFFAEAEAE)) : null,
+                                color: isOutside ? Colors.white : getColor(colors, events[i].event!.color!),
                               ) : null,
                               child: Padding(
                                 padding: events[i].event!.isAllDay! ? const EdgeInsets.only(left: 2.0, right: 2.0) : const EdgeInsets.all(0.0),

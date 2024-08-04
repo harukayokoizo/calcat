@@ -44,7 +44,12 @@ class LoginPageState extends ConsumerState<LoginPage>{
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Spacer(flex: 3,),
+                  const Spacer(flex: 2,),
+                  Image.asset(
+                    'images/app_name.png',
+                    fit: BoxFit.contain,
+                  ),
+                  const Spacer(flex: 1,),
                   Padding(
                     padding: const EdgeInsets.only(bottom: 20.0),
                     child: SizedBox(
