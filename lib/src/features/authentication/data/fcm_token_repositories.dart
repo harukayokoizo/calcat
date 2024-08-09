@@ -16,7 +16,7 @@ class FcmTokenRepositories {
     final dir = await getApplicationDocumentsDirectory();
     if (Isar.instanceNames.isNotEmpty) {
       // 既存のインスタンスを取得
-      isar = Isar.getInstance();
+      isar = Isar.getInstance('myInstance');
     }else {
       isar ??= await Isar.open(
         [FcmTokenSchema, SearchValueSchema, TabValueSchema],

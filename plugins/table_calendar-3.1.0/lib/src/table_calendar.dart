@@ -128,6 +128,7 @@ class TableCalendar<T> extends StatefulWidget {
 
   final bool displayWeekday;
 
+  final double dayHeight;
   /// Used for setting the height of `TableCalendar`'s rows.
   final double rowHeight;
 
@@ -255,6 +256,7 @@ class TableCalendar<T> extends StatefulWidget {
     this.followCalendar = false,
     this.eventFormCalendar = false,
     this.displayWeekday = false,
+    this.dayHeight = 52.0,
     this.rowHeight = 52.0,
     this.daysOfWeekHeight = 16.0,
     this.formatAnimationDuration = const Duration(milliseconds: 200),
@@ -525,6 +527,7 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
           displayWeekday: widget.displayWeekday,
           dowHeight: widget.daysOfWeekHeight,
           rowHeight: widget.rowHeight,
+          dayHeight: widget.dayHeight,
           formatAnimationDuration: widget.formatAnimationDuration,
           formatAnimationCurve: widget.formatAnimationCurve,
           pageAnimationEnabled: widget.pageAnimationEnabled,
@@ -595,18 +598,39 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
           PhysicalModel(
             color: Colors.white,
             elevation: 30.0,
-            child: SizedBox(
+            child: Container(
               height: taskViewHeight,
-              child: PersonalEventList(widget.focusedDay)
+              decoration: BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.7), // 影の色
+                    spreadRadius: 1, // スプレッド半径
+                    blurRadius: 1, // ぼかし半径
+                    offset: const Offset(0, 1), // オフセット（x, y）
+                  ),
+                ],
+              ),
+              child: PersonalEventList(widget.focusedDay),
             ),
           ),
         if(widget.calendarFormat == CalendarFormat.twoWeeks && widget.publicCalendar)
           PhysicalModel(
             color: Colors.white,
             elevation: 30.0,
-            child: SizedBox(
-                height: taskViewHeight,
-                child: PublicEventList(widget.focusedDay, widget.calendarDocId!, widget.followCalendar)
+            child: Container(
+              height: taskViewHeight,
+              decoration: BoxDecoration(
+                // border: Border(top: BorderSide(width: 0.5, color: Color(0xFFCCCCCC))),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.7), // 影の色
+                    spreadRadius: 1, // スプレッド半径
+                    blurRadius: 1, // ぼかし半径
+                    offset: const Offset(0, 1), // オフセット（x, y）
+                  ),
+                ],
+              ),
+              child: PublicEventList(widget.focusedDay, widget.calendarDocId!, widget.followCalendar),
             ),
           )
       ],
@@ -714,15 +738,21 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
 
         if (!isDisabled) {
           final events = widget.eventLoader?.call(day) ?? [];
-          // print(day);
-          // print(events);
           Widget? markerWidget;
+          int count;
 
           if (events.isNotEmpty) {
             events.sort((a, b) => a.event!.from!.compareTo(b.event!.from!));
             events.sort((a, b) => (a.event!.isAllDay == b.event!.isAllDay ? 0 : (a.event!.isAllDay! ? -1 : 1)));
             events.sort((a, b) => ((a.event!.isAllDay! && b.event!.isAllDay!) ? a.event!.createdAt!.compareTo(b.event!.createdAt!) : 0));
-            int count = events.length > 4 ? 4 : events.length;
+
+            int numberHeight = 30;
+            double eventHeight = 16;
+            double eventDisplayArea = widget.rowHeight - numberHeight;
+            count = eventDisplayArea ~/ eventHeight;
+
+            count = events.length < count ? events.length : count;
+
             markerWidget = LayoutBuilder(
               builder: (context, constraint) {
                 return Consumer(
@@ -734,7 +764,7 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
                           Padding(
                             padding: events[i].event!.isAllDay! ? const EdgeInsets.all(1.5) : const EdgeInsets.all(0),
                             child: Container(
-                              height: 16,
+                              height: eventHeight,
                               width: constraint.maxWidth,
                               decoration: events[i].event!.isAllDay! ? BoxDecoration(
                                 borderRadius: const BorderRadius.all(Radius.circular(3)),

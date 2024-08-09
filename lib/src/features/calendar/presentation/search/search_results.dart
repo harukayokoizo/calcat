@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../application/search_provider.dart';
@@ -33,12 +34,33 @@ class SearchResults extends ConsumerWidget{
         ),
       );
     }else{
-      return const Center(
-        child: Text(
-          '検索結果はありません。',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 20
+      return Center(
+        child: SizedBox(
+          height: deviceWidth / 1.5,
+          width: deviceWidth / 1.5,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Image.asset(
+                width: deviceWidth / 3,
+                height: deviceWidth / 3,
+                'images/calcat.png',
+                fit: BoxFit.cover,
+              ),
+              RichText(
+                textAlign: TextAlign.center,
+                text: const TextSpan(
+                  style: TextStyle(color: Colors.black),
+                  children: [
+                    TextSpan(
+                      text: '検索結果はありません。\n',
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
         ),
       );

@@ -40,11 +40,11 @@ class EventCalendarFormState extends ConsumerState<EventCalendarForm>{
   Widget build(BuildContext context) {
     final selectedDays = ref.watch(selectedDaysProvider(sameEvents));
     return LayoutBuilder(
-      builder: (context,  constraint) {
+      builder: (context,  constraints) {
         return Column(
           children: [
             SizedBox(
-              height: constraint.maxHeight * 0.8,
+              height: constraints.maxHeight * 0.8,
               child: TableCalendar(
                 firstDay: DateTime.utc(2024, 01, 01),
                 lastDay: DateTime.utc(2050, 12, 31),
@@ -53,7 +53,8 @@ class EventCalendarFormState extends ConsumerState<EventCalendarForm>{
                 eventFormCalendar: true,
                 displayWeekday: true,
                 // daysOfWeekHeight: 10,
-                rowHeight: constraint.maxHeight * 0.8 / 7.0,
+                dayHeight : constraints.maxHeight,
+                rowHeight: constraints.maxHeight * 0.8 / 7.0,
                 //shouldFillViewport: true,
                 //availableGestures: AvailableGestures.verticalSwipe,
                 locale: 'ja_JP',

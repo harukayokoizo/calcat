@@ -28,6 +28,7 @@ class CalendarCore extends StatelessWidget {
   final EdgeInsets? tablePadding;
   final double? dowHeight;
   final double? rowHeight;
+  final double? dayHeight;
   final BoxConstraints constraints;
   final int? previousIndex;
   final StartingDayOfWeek startingDayOfWeek;
@@ -45,6 +46,7 @@ class CalendarCore extends StatelessWidget {
     required this.constraints,
     this.dowHeight,
     this.rowHeight,
+    this.dayHeight,
     this.startingDayOfWeek = StartingDayOfWeek.sunday,
     this.calendarFormat = CalendarFormat.month,
     this.pageController,
@@ -76,10 +78,13 @@ class CalendarCore extends StatelessWidget {
         final visibleDays = _daysInRange(visibleRange.start, visibleRange.end);
 
         final actualDowHeight = dowVisible ? dowHeight! : 0.0;
-        final constrainedRowHeight = constraints.hasBoundedHeight
-            ? (constraints.maxHeight - actualDowHeight) /
-                _getRowCount(calendarFormat, baseDay)
-            : null;
+
+        final constrainedRowHeight = eventFormCalendar ? rowHeight : (dayHeight! - actualDowHeight) /
+            _getRowCount(calendarFormat, baseDay);
+        // final constrainedRowHeight = !constraints.hasBoundedHeight
+        //     ? (constraints.maxHeight - actualDowHeight) /
+        //         _getRowCount(calendarFormat, baseDay)
+        //     : null;
 
         return CalendarPage(
           //key: itemKey,
@@ -114,11 +119,10 @@ class CalendarCore extends StatelessWidget {
             //   height: constrainedRowHeight ?? rowHeight,
             //   child: dayBuilder(context, day, baseDay),
             // );
-
             return Container(
               height: constrainedRowHeight ?? rowHeight,
               decoration: eventFormCalendar ? null : BoxDecoration(
-                color: isToday ? const Color(0xFFD8D8D8) : Colors.white,
+                color: isToday ? const Color(0xFFD8D8D8) : null,
                 border: day == focusedDay ? Border.all(
                   color: day == focusedDay ? Colors.deepPurple : Colors.grey,
                   width: day == focusedDay ? 1.5 : 0.0,
@@ -307,7 +311,7 @@ class CalendarCore extends StatelessWidget {
 
   int _getRowCount(CalendarFormat format, DateTime focusedDay) {
     if (format == CalendarFormat.twoWeeks) {
-      return 2;
+      return 6;
     } else if (format == CalendarFormat.week) {
       return 1;
     } else if (sixWeekMonthsEnforced) {

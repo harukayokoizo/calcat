@@ -34,7 +34,6 @@ class AllCalendarListState extends ConsumerState<AllCalendarList> with TickerPro
 
   @override
   Widget build(BuildContext context){
-    print(currentIndex);
     return GestureDetector(
       onHorizontalDragUpdate: (details) {},
       onHorizontalDragEnd: (details) async {

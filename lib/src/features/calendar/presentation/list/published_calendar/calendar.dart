@@ -44,8 +44,10 @@ class PublicCalendarPage extends ConsumerWidget{
     return Scaffold(
       key: itemKey,
       appBar: AppBar(
-        elevation: 2.0,
+        elevation: 20,
         centerTitle: true,
+        // backgroundColor: Colors.white.withOpacity(0.5),
+        shape: const Border(bottom: BorderSide(width: 0.5, color: Color(0xFFCCCCCC))),
         title: ValueListenableBuilder<DateTime>(
             valueListenable: _focusedDayValue,
             builder: (context, value, _) {
@@ -132,7 +134,8 @@ class PublicCalendarPage extends ConsumerWidget{
               lastDay: DateTime.utc(2050,12,31),
               focusedDay: focusedDay,
               headerVisible: false,
-              rowHeight: constraints.maxHeight / 6.0,
+              dayHeight : constraints.maxHeight,
+              rowHeight: constraints.maxHeight / 6,
               locale: 'ja_JP',
               calendarFormat: _calendarFormat,
               eventLoader: (date){

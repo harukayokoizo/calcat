@@ -173,8 +173,16 @@ class MaterialAppClass extends ConsumerWidget {
       title: 'calendar',
       theme: ThemeData(
         fontFamily: 'NotoSansJP',
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueAccent),
-        //scaffoldBackgroundColor: const Color(0xFFE5E5E5),
+        // brightness: Brightness.light,
+        colorScheme: ColorScheme.fromSeed(
+          // brightness: Brightness.light,
+          seedColor: Colors.blueAccent,
+        ),
+        appBarTheme: const AppBarTheme(
+          surfaceTintColor: Colors.transparent,
+          backgroundColor: Colors.white,
+        ),
+        // scaffoldBackgroundColor: Colors.white,
         useMaterial3: true,
       ),
       home: const ControlPage(),
@@ -337,6 +345,8 @@ class TopPageState extends ConsumerState{
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
+        elevation: 40,
+        backgroundColor: Colors.white,
         currentIndex: number,
         items: tabItems,
         onTap: (index) async {

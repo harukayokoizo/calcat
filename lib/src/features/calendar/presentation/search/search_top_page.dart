@@ -12,7 +12,7 @@ class SearchTopPage extends ConsumerWidget{
 
   @override
   Widget build(BuildContext context, WidgetRef ref){
-    ref.read(searchValueRepositories).connectIsar();
+    final searchValue = ref.read(searchValueRepositories).connectIsar();
     return Scaffold(
       appBar: AppBar(
         title: SearchFormDisplay(),

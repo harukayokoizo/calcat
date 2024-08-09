@@ -48,6 +48,7 @@ class FollowCalendarPage extends ConsumerWidget{
       appBar: AppBar(
         elevation: 2.0,
         centerTitle: true,
+        shape: const Border(bottom: BorderSide(width: 0.5, color: Color(0xFFCCCCCC))),
         title: ValueListenableBuilder<DateTime>(
             valueListenable: _focusedDayValue,
             builder: (context, value, _) {
@@ -137,7 +138,8 @@ class FollowCalendarPage extends ConsumerWidget{
               lastDay: DateTime.utc(2050,12,31),
               focusedDay: focusedDay,
               headerVisible: false,
-              rowHeight: constraints.maxHeight / 6.0,
+              dayHeight : constraints.maxHeight,
+              rowHeight: constraints.maxHeight / 6,
               locale: 'ja_JP',
               calendarFormat: _calendarFormat,
               eventLoader: (date){

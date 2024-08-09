@@ -12,23 +12,27 @@ class SearchValueRepositories {
   Isar? isar;
 
   Future<void> connectIsar() async{
-    final dir = await getApplicationDocumentsDirectory();
-    if (Isar.instanceNames.isNotEmpty) {
-      // 既存のインスタンスを取得
-      isar = Isar.getInstance();
-    }else{
-      isar ??= await Isar.open(
-        [FcmTokenSchema, SearchValueSchema, TabValueSchema],
-        directory: dir.path,
-        name: 'myInstance',
-      );
+    try {
+      final dir = await getApplicationDocumentsDirectory();
+      if (Isar.instanceNames.isNotEmpty) {
+        // 既存のインスタンスを取得
+        isar = Isar.getInstance('myInstance');
+      } else {
+        isar ??= await Isar.open(
+          [FcmTokenSchema, SearchValueSchema, TabValueSchema],
+          directory: dir.path,
+          name: 'myInstance',
+        );
+      }
+    }catch (e){
+      print(e.toString());
+      throw e.toString();
     }
   }
 
   Future<void> operateCollection(String value) async{
-    if(isar == null) {
-      await connectIsar();
-    }
+    await connectIsar();
+    print(isar);
     final searchCollection = await getSingleSearchValue(value);
     if(searchCollection != null){
       await updateSearchValue(searchCollection);

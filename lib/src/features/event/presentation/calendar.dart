@@ -50,7 +50,7 @@ class PersonalCalendarPageState extends ConsumerState{
       appBar: AppBar(
         elevation: 2.0,
         centerTitle: true,
-        // toolbarHeight: 40.0,
+        shape: const Border(bottom: BorderSide(width: 0.5, color: Color(0xFFCCCCCC))),
         title: ValueListenableBuilder<DateTime>(
           valueListenable: _focusedDayValue,
           builder: (context, value, _) {
@@ -93,9 +93,8 @@ class PersonalCalendarPageState extends ConsumerState{
             lastDay: DateTime.utc(2050,12,31),
             focusedDay: focusedDay,
             headerVisible: false,
-            rowHeight: constraints.maxHeight / 6.0,
-            //shouldFillViewport: true,
-            //availableGestures: AvailableGestures.verticalSwipe,
+            dayHeight : constraints.maxHeight,
+            rowHeight: constraints.maxHeight / 6,
             locale: 'ja_JP',
             calendarFormat: _calendarFormat,
             eventLoader: (date){
