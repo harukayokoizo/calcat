@@ -10,13 +10,11 @@ import '../../../domain/calendar.dart';
 
 
 class CalendarIconWidget extends ConsumerWidget{
-  Calendar calendar;
-  CalendarIconWidget(this.calendar, {super.key});
+  final Calendar calendar;
+  const CalendarIconWidget(this.calendar, {super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref){
-    final double deviceHeight = MediaQuery.of(context).size.height;
-    final double deviceWidth = MediaQuery.of(context).size.width;
     Widget imagePath = FittedBox(
       fit: BoxFit.cover,
       child: Image.asset('images/no_image.png',),
@@ -33,12 +31,9 @@ class CalendarIconWidget extends ConsumerWidget{
       );
     }
     return Container(
-      height: deviceHeight / 2.2,
-      width: deviceWidth,
       clipBehavior: Clip.hardEdge,
       decoration: const BoxDecoration(
         color: Colors.grey,
-        borderRadius: BorderRadius.only(topRight: Radius.circular(30), topLeft: Radius.circular(30))
       ),
       child: imagePath
     );

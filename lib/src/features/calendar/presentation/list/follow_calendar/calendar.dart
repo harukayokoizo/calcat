@@ -23,6 +23,8 @@ class FollowCalendarPage extends ConsumerWidget{
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final deviceHeight = MediaQuery.of(context).size.height;
+    final safeArea = MediaQuery.of(context).padding.top;
     final String calendarDocId = calendarDoc.docId!;
     var focusedDay = ref.watch(publicFocusedDay);
     var calendarFormat = ref.watch(publicCalendarFormat);
@@ -101,7 +103,10 @@ class FollowCalendarPage extends ConsumerWidget{
                             showCupertinoModalPopup(
                               context: context,
                               builder: (BuildContext context) {
-                                return CalendarDetail(true, value);
+                                return SizedBox(
+                                  height: deviceHeight - safeArea,
+                                  child: CalendarDetail(true, value),
+                                );
                               },
                             );
                           },

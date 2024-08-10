@@ -21,6 +21,8 @@ class PublicCalendarPage extends ConsumerWidget{
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final deviceHeight = MediaQuery.of(context).size.height;
+    final safeArea = MediaQuery.of(context).padding.top;
     final String calendarDocId = calendarDoc.docId!;
     var focusedDay = ref.watch(publicFocusedDay);
     final calendarFormat = ref.watch(publicCalendarFormat);
@@ -81,7 +83,10 @@ class PublicCalendarPage extends ConsumerWidget{
                           showCupertinoModalPopup(
                             context: context,
                             builder: (BuildContext context) {
-                              return CalendarDetail(false, value);
+                              return SizedBox(
+                                height: deviceHeight - safeArea,
+                                child: CalendarDetail(false, value),
+                              );
                             },
                           ).then((value){
                             if(value != null){
