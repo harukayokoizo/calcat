@@ -748,7 +748,8 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
 
             int numberHeight = 30;
             double eventHeight = 16;
-            double eventDisplayArea = widget.rowHeight - numberHeight;
+            int rowCount = _getRowCount(widget.calendarFormat, widget.focusedDay);
+            double eventDisplayArea = (widget.dayHeight / rowCount) - numberHeight;
             count = eventDisplayArea ~/ eventHeight;
 
             count = events.length < count ? events.length : count;
@@ -916,5 +917,36 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
         List<int> weekendDays = const [DateTime.sunday],
       }) {
     return weekendDays.contains(day.weekday);
+  }
+
+  int _getRowCount(CalendarFormat format, DateTime focusedDay) {
+    if (format == CalendarFormat.twoWeeks) {
+      return 6;
+    }
+
+    final first = _firstDayOfMonth(focusedDay);
+    final daysBefore = _getDaysBefore(first);
+    final firstToDisplay = first.subtract(Duration(days: daysBefore));
+
+    final last = _lastDayOfMonth(focusedDay);
+    final daysAfter = _getDaysAfter(last);
+    final lastToDisplay = last.add(Duration(days: daysAfter));
+
+    return (lastToDisplay.difference(firstToDisplay).inDays + 1) ~/ 7;
+  }
+
+  int _getDaysBefore(DateTime firstDay) {
+    return (firstDay.weekday + 7 - getWeekdayNumber(widget.startingDayOfWeek)) % 7;
+  }
+
+  int _getDaysAfter(DateTime lastDay) {
+    int invertedStartingWeekday = 8 - getWeekdayNumber(widget.startingDayOfWeek);
+
+    int daysAfter = 7 - ((lastDay.weekday + invertedStartingWeekday) % 7);
+    if (daysAfter == 7) {
+      daysAfter = 0;
+    }
+
+    return daysAfter;
   }
 }
