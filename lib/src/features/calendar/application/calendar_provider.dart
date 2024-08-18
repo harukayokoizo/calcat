@@ -37,6 +37,83 @@ class CalendarState extends StateNotifier<Calendar>{
     state = calendar;
   }
 
+  bool controlCalendarLink(Map<String, String>? previousLink, Map<String, String> saveLink){
+    final calendarLink = state.calendarLink;
+    try{
+      if(previousLink != null){
+        if(previousLink['name'] == saveLink['name']){
+          saveCalendarLink(saveLink);
+        }else{
+          if(calendarLink!.isNotEmpty){
+            bool exists = calendarLink.any((map) => map['name'] == saveLink['name']);
+            if(exists){
+              return false;
+            }
+          }
+          editCalendarLink(saveLink, previousLink['name']!);
+        }
+      }else{
+        if(calendarLink != null) {
+          if (calendarLink.isNotEmpty) {
+            bool exists = calendarLink.any((map) =>
+            map['name'] == saveLink['name']);
+            if (exists) {
+              return false;
+            }
+          }
+        }
+        saveCalendarLink(saveLink);
+      }
+      return true;
+    }catch (e){
+      return false;
+    }
+  }
+
+  void saveCalendarLink(Map<String, String> link) {
+    List<Map<String, String>>? calendarLink = state.calendarLink;
+
+    if(calendarLink == null){
+      calendarLink = [link];
+    }else{
+      bool exists = calendarLink.any((map) => map['name'] == link['name']);
+      if (exists) {
+        return;
+      }
+      calendarLink = [...calendarLink, link];
+    }
+
+    final calendar = state.copyWith(calendarLink: calendarLink);
+    state = calendar;
+  }
+
+  void editCalendarLink(Map<String, String> saveLink, String previousName) {
+    List<Map<String, String>>? calendarLink = state.calendarLink;
+    //同じnameがなければ追加
+    if(calendarLink != null){
+      calendarLink.forEach((link) {
+        if(link['name'] == previousName){
+          link['name'] = saveLink['name']!;
+          link['url'] = saveLink['url']!;
+        }
+      });
+      calendarLink = [...calendarLink];
+    }
+    final calendar = state.copyWith(calendarLink: calendarLink);
+    state = calendar;
+  }
+
+  void deleteCalendarLink(String previousName) {
+    List<Map<String, String>>? calendarLink = state.calendarLink;
+    //同じnameがなければ追加
+    if(calendarLink != null){
+      final newLink = calendarLink.where((map) => map['name'] != previousName).toList();
+      calendarLink = [...newLink];
+    }
+    final calendar = state.copyWith(calendarLink: calendarLink);
+    state = calendar;
+  }
+
   Future<String?> createCalendar() async{
     String? calendarId;
     String? error = await validationCheck(null);
@@ -117,6 +194,7 @@ class CalendarState extends StateNotifier<Calendar>{
       'password': password,
       'updated': DateTime.now(),
       'searchIndex': searchIndex,
+      'calendarLink': state.calendarLink,
     };
     
     if(create){

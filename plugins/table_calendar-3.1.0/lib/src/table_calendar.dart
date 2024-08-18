@@ -128,6 +128,7 @@ class TableCalendar<T> extends StatefulWidget {
 
   final bool displayWeekday;
 
+  final double dayHeight;
   /// Used for setting the height of `TableCalendar`'s rows.
   final double rowHeight;
 
@@ -255,6 +256,7 @@ class TableCalendar<T> extends StatefulWidget {
     this.followCalendar = false,
     this.eventFormCalendar = false,
     this.displayWeekday = false,
+    this.dayHeight = 52.0,
     this.rowHeight = 52.0,
     this.daysOfWeekHeight = 16.0,
     this.formatAnimationDuration = const Duration(milliseconds: 200),
@@ -525,6 +527,7 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
           displayWeekday: widget.displayWeekday,
           dowHeight: widget.daysOfWeekHeight,
           rowHeight: widget.rowHeight,
+          dayHeight: widget.dayHeight,
           formatAnimationDuration: widget.formatAnimationDuration,
           formatAnimationCurve: widget.formatAnimationCurve,
           pageAnimationEnabled: widget.pageAnimationEnabled,
@@ -595,18 +598,39 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
           PhysicalModel(
             color: Colors.white,
             elevation: 30.0,
-            child: SizedBox(
+            child: Container(
               height: taskViewHeight,
-              child: PersonalEventList(widget.focusedDay)
+              decoration: BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.7), // 影の色
+                    spreadRadius: 1, // スプレッド半径
+                    blurRadius: 1, // ぼかし半径
+                    offset: const Offset(0, 1), // オフセット（x, y）
+                  ),
+                ],
+              ),
+              child: PersonalEventList(widget.focusedDay),
             ),
           ),
         if(widget.calendarFormat == CalendarFormat.twoWeeks && widget.publicCalendar)
           PhysicalModel(
             color: Colors.white,
             elevation: 30.0,
-            child: SizedBox(
-                height: taskViewHeight,
-                child: PublicEventList(widget.focusedDay, widget.calendarDocId!, widget.followCalendar)
+            child: Container(
+              height: taskViewHeight,
+              decoration: BoxDecoration(
+                // border: Border(top: BorderSide(width: 0.5, color: Color(0xFFCCCCCC))),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.7), // 影の色
+                    spreadRadius: 1, // スプレッド半径
+                    blurRadius: 1, // ぼかし半径
+                    offset: const Offset(0, 1), // オフセット（x, y）
+                  ),
+                ],
+              ),
+              child: PublicEventList(widget.focusedDay, widget.calendarDocId!, widget.followCalendar),
             ),
           )
       ],
@@ -714,15 +738,22 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
 
         if (!isDisabled) {
           final events = widget.eventLoader?.call(day) ?? [];
-          // print(day);
-          // print(events);
           Widget? markerWidget;
+          int count;
 
           if (events.isNotEmpty) {
             events.sort((a, b) => a.event!.from!.compareTo(b.event!.from!));
             events.sort((a, b) => (a.event!.isAllDay == b.event!.isAllDay ? 0 : (a.event!.isAllDay! ? -1 : 1)));
             events.sort((a, b) => ((a.event!.isAllDay! && b.event!.isAllDay!) ? a.event!.createdAt!.compareTo(b.event!.createdAt!) : 0));
-            int count = events.length > 4 ? 4 : events.length;
+
+            int numberHeight = 30;
+            double eventHeight = 16;
+            int rowCount = _getRowCount(widget.calendarFormat, widget.focusedDay);
+            double eventDisplayArea = (widget.dayHeight / rowCount) - numberHeight;
+            count = eventDisplayArea ~/ eventHeight;
+
+            count = events.length < count ? events.length : count;
+
             markerWidget = LayoutBuilder(
               builder: (context, constraint) {
                 return Consumer(
@@ -732,9 +763,9 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
                       children: [
                         for(var i = 0; i < count; i++)
                           Padding(
-                            padding: events[i].event!.isAllDay! ? const EdgeInsets.all(1.5) : const EdgeInsets.all(0),
+                            padding: events[i].event!.isAllDay! ? const EdgeInsets.all(1.5) : const EdgeInsets.all(0.0),
                             child: Container(
-                              height: 16,
+                              height: eventHeight,
                               width: constraint.maxWidth,
                               decoration: events[i].event!.isAllDay! ? BoxDecoration(
                                 borderRadius: const BorderRadius.all(Radius.circular(3)),
@@ -742,7 +773,7 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
                                 color: isOutside ? Colors.white : getColor(colors, events[i].event!.color!),
                               ) : null,
                               child: Padding(
-                                padding: events[i].event!.isAllDay! ? const EdgeInsets.only(left: 2.0, right: 2.0) : const EdgeInsets.all(0.0),
+                                padding: const EdgeInsets.only(left: 2.0, right: 2.0),
                                 child: Align(
                                   alignment: Alignment.centerLeft,
                                   child: Text(
@@ -886,5 +917,36 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
         List<int> weekendDays = const [DateTime.sunday],
       }) {
     return weekendDays.contains(day.weekday);
+  }
+
+  int _getRowCount(CalendarFormat format, DateTime focusedDay) {
+    if (format == CalendarFormat.twoWeeks) {
+      return 6;
+    }
+
+    final first = _firstDayOfMonth(focusedDay);
+    final daysBefore = _getDaysBefore(first);
+    final firstToDisplay = first.subtract(Duration(days: daysBefore));
+
+    final last = _lastDayOfMonth(focusedDay);
+    final daysAfter = _getDaysAfter(last);
+    final lastToDisplay = last.add(Duration(days: daysAfter));
+
+    return (lastToDisplay.difference(firstToDisplay).inDays + 1) ~/ 7;
+  }
+
+  int _getDaysBefore(DateTime firstDay) {
+    return (firstDay.weekday + 7 - getWeekdayNumber(widget.startingDayOfWeek)) % 7;
+  }
+
+  int _getDaysAfter(DateTime lastDay) {
+    int invertedStartingWeekday = 8 - getWeekdayNumber(widget.startingDayOfWeek);
+
+    int daysAfter = 7 - ((lastDay.weekday + invertedStartingWeekday) % 7);
+    if (daysAfter == 7) {
+      daysAfter = 0;
+    }
+
+    return daysAfter;
   }
 }

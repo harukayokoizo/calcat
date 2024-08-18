@@ -23,6 +23,8 @@ class FollowCalendarPage extends ConsumerWidget{
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final deviceHeight = MediaQuery.of(context).size.height;
+    final safeArea = MediaQuery.of(context).padding.top;
     final String calendarDocId = calendarDoc.docId!;
     var focusedDay = ref.watch(publicFocusedDay);
     var calendarFormat = ref.watch(publicCalendarFormat);
@@ -48,6 +50,7 @@ class FollowCalendarPage extends ConsumerWidget{
       appBar: AppBar(
         elevation: 2.0,
         centerTitle: true,
+        shape: const Border(bottom: BorderSide(width: 0.5, color: Color(0xFFCCCCCC))),
         title: ValueListenableBuilder<DateTime>(
             valueListenable: _focusedDayValue,
             builder: (context, value, _) {
@@ -100,7 +103,10 @@ class FollowCalendarPage extends ConsumerWidget{
                             showCupertinoModalPopup(
                               context: context,
                               builder: (BuildContext context) {
-                                return CalendarDetail(true, value);
+                                return SizedBox(
+                                  height: deviceHeight - safeArea,
+                                  child: CalendarDetail(true, value),
+                                );
                               },
                             );
                           },
@@ -137,7 +143,8 @@ class FollowCalendarPage extends ConsumerWidget{
               lastDay: DateTime.utc(2050,12,31),
               focusedDay: focusedDay,
               headerVisible: false,
-              rowHeight: constraints.maxHeight / 6.0,
+              dayHeight : constraints.maxHeight,
+              rowHeight: constraints.maxHeight / 6,
               locale: 'ja_JP',
               calendarFormat: _calendarFormat,
               eventLoader: (date){

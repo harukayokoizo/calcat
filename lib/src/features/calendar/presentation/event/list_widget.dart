@@ -34,6 +34,7 @@ class PublicListWidget extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
+    final deviceWidth = MediaQuery.of(context).size.width;
     return GestureDetector(
       onHorizontalDragUpdate: (details) {},
       onHorizontalDragEnd: (details){
@@ -47,79 +48,104 @@ class PublicListWidget extends StatelessWidget{
         }
       },
       child: Scaffold(
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        body: Stack(
           children: [
-            Flexible(
-              flex: 1,
-              child: Padding(
-                padding: const EdgeInsets.only(top: 10.0, left: 20.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      date,
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    IconButton(
-                      onPressed: (){
-                        calendarFormat.state = CalendarFormat.month;
-                      },
-                      icon: const Icon(
-                          Icons.clear
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Flexible(
-              flex: 6,
-              child: Align(
-                alignment: Alignment.topCenter,
-                child: LayoutBuilder(
-                    builder: (context, constraint) {
-                      return SizedBox(
-                        height: constraint.maxHeight,
-                        width: constraint.maxWidth,
-                        child: SingleChildScrollView(
-                          child: Column(
-                            children: [
-                              if(eventOnDate.isEmpty)
-                                SizedBox(
-                                  height: constraint.maxHeight,
-                                  width: constraint.maxWidth,
-                                  child: const Padding(
-                                    padding: EdgeInsets.only(left: 20.0),
-                                    child: Text(
-                                      '予定はありません。',
-                                      style: TextStyle(fontWeight: FontWeight.bold),
-                                    ),
-                                  ),
-                                ),
-                              if(eventOnDate.isNotEmpty)
-                                for(EventDocument eventDoc in eventOnDate)
-                                  InkWell(
-                                      onTap: (){
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            fullscreenDialog: true,
-                                            builder: (context) => PublicEventDetail(eventDoc, repositories, followCalendar),
-                                          ),
-                                        );
-                                      },
-                                      child: EventTile(eventDoc.event!, focusedDay)
-                                  ),
-                              const SizedBox(height: 30,),
-                            ],
+            Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Flexible(
+                  flex: 1,
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 10.0, left: 20.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          date,
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
-                      );
-                    }
+                        IconButton(
+                          onPressed: (){
+                            calendarFormat.state = CalendarFormat.month;
+                          },
+                          icon: const Icon(
+                              Icons.clear
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Flexible(
+                  flex: 6,
+                  child: Align(
+                    alignment: Alignment.topCenter,
+                    child: LayoutBuilder(
+                        builder: (context, constraint) {
+                          return SizedBox(
+                            height: constraint.maxHeight,
+                            width: constraint.maxWidth,
+                            child: SingleChildScrollView(
+                              child: Column(
+                                children: [
+                                  if(eventOnDate.isEmpty)
+                                    SizedBox(
+                                      height: constraint.maxHeight,
+                                      width: constraint.maxWidth,
+                                      child: const Padding(
+                                        padding: EdgeInsets.only(left: 20.0),
+                                        child: Text(
+                                          '予定はありません。',
+                                          style: TextStyle(fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                    ),
+                                  if(eventOnDate.isNotEmpty)
+                                    for(EventDocument eventDoc in eventOnDate)
+                                      InkWell(
+                                          onTap: (){
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                fullscreenDialog: true,
+                                                builder: (context) => PublicEventDetail(eventDoc, repositories, followCalendar),
+                                              ),
+                                            );
+                                          },
+                                          child: EventTile(eventDoc.event!, focusedDay)
+                                      ),
+                                  const SizedBox(height: 30,),
+                                ],
+                              ),
+                            ),
+                          );
+                        }
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            GestureDetector(
+              onVerticalDragDown: (details) {
+                calendarFormat.state = CalendarFormat.month;
+              },
+              child: AbsorbPointer(
+                child: SizedBox(
+                  height: 20,
+                  width: deviceWidth,
+                  child: Center(
+                    child: Container(
+                      height: 5,
+                      width: 50,
+                      decoration: const BoxDecoration(
+                          color: Color(0xFFD8D8D8),
+                          borderRadius: BorderRadius.all(Radius.circular(30))
+                      ),
+                    ),
+                  ),
                 ),
               ),
             ),

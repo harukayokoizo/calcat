@@ -17,6 +17,7 @@ class TableCalendarBase extends StatefulWidget {
   final FocusedDayBuilder dayBuilder;
   final double? dowHeight;
   final double rowHeight;
+  final double dayHeight;
   final bool sixWeekMonthsEnforced;
   final bool dowVisible;
   final bool weekNumbersVisible;
@@ -49,6 +50,7 @@ class TableCalendarBase extends StatefulWidget {
     required this.dayBuilder,
     this.dowHeight,
     required this.rowHeight,
+    required this.dayHeight,
     this.sixWeekMonthsEnforced = false,
     this.dowVisible = true,
     this.weekNumberBuilder,
@@ -231,6 +233,7 @@ class _TableCalendarBaseState extends State<TableCalendarBase> {
               displayWeekday: widget.displayWeekday,
               dowHeight: widget.dowHeight,
               rowHeight: widget.rowHeight,
+              dayHeight: widget.dayHeight,
               weekNumbersVisible: widget.weekNumbersVisible,
               weekNumberBuilder: widget.weekNumberBuilder,
               dowDecoration: widget.dowDecoration,
@@ -271,7 +274,7 @@ class _TableCalendarBaseState extends State<TableCalendarBase> {
   double _getPageHeight(int rowCount) {
     final tablePaddingHeight = widget.tablePadding?.vertical ?? 0.0;
     final dowHeight = widget.dowVisible ? widget.dowHeight! : 0.0;
-    return dowHeight + rowCount * widget.rowHeight + tablePaddingHeight;
+    return dowHeight + rowCount * widget.dayHeight + tablePaddingHeight;
   }
 
   int _calculateFocusedPage(

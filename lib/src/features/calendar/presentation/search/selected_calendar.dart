@@ -7,6 +7,7 @@ import '../../application/search_provider.dart';
 import '../../data/calendar_user_repositories.dart';
 import '../calendar_info/detail/description_widget.dart';
 import '../calendar_info/detail/icon_widget.dart';
+import '../calendar_info/detail/link_widget.dart';
 import '../calendar_info/detail/title_widget.dart';
 
 class SelectedCalendar extends ConsumerWidget{
@@ -15,61 +16,74 @@ class SelectedCalendar extends ConsumerWidget{
 
   @override
   Widget build(BuildContext context, WidgetRef ref){
-    final double topPadding = MediaQuery.of(context).padding.top;
+    final double deviceHeight = MediaQuery.of(context).size.height;
     final double deviceWidth = MediaQuery.of(context).size.width;
-    return Scaffold(
-      body: Column(
-        children: [
-          Expanded(
-            child: Stack(
-                children: [
-                  SingleChildScrollView(
-                    child: SafeArea(
-                      top: false,
-                      bottom: false,
-                      child: SizedBox(
-                          child: Column(children: [
-                            CalendarIconWidget(calendarDoc.calendar!),
-                            CalendarTitleWidget(calendarDoc.calendar!),
-                            CalendarDescriptionWidget(calendarDoc.calendar!),
-                          ],),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(top: topPadding, left: 5.0),
-                    child: IconButton(
-                      icon: const CircularIcon(
-                        icon: Icons.clear,
-                        backgroundColor: Colors.grey,
-                        iconColor: Colors.white,
-                        size: 35,
-                      ),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                  ),
-                ]
-            ),
-          ),
-          Material(
-            elevation: 20,
-            child: SizedBox(
-              width: deviceWidth,
-              child: followButton(calendarDoc.docId!),
-            ),
-          ),
-        ],
+    final safeArea = MediaQuery.of(context).padding.top;
+    return ClipRRect(
+      borderRadius: const BorderRadius.vertical(
+        top: Radius.circular(20.0),
       ),
-      floatingActionButton: null
+      child: Material(
+        color: const Color(0xFFF5F5F5),
+        child: Stack(
+          children: [
+            CustomScrollView(
+              slivers: <Widget>[
+                SliverAppBar(
+                  pinned: true,
+                  stretch: true,
+                  expandedHeight: deviceHeight / 3.0,
+                  automaticallyImplyLeading: false,
+                  flexibleSpace: FlexibleSpaceBar(
+                    // title: const Text('test'),
+                      background: CalendarIconWidget(calendarDoc.calendar!)
+                  ),
+                ),
+                SliverList(
+                    delegate: SliverChildListDelegate([
+                      Column(children: [
+                        CalendarTitleWidget(calendarDoc.calendar!),
+                        CalendarDescriptionWidget(calendarDoc.calendar!),
+                        CalendarLinkWidget(calendarDoc.calendar!),
+                      ],)
+                    ]
+                    ))
+              ],
+            ),
+            Padding(
+              padding: EdgeInsets.only(top: safeArea),
+              child: IconButton(
+                icon: const CircularIcon(
+                  icon: Icons.clear,
+                  backgroundColor: Colors.grey,
+                  iconColor: Colors.white,
+                  size: 35,
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Material(
+                elevation: 20,
+                child: SizedBox(
+                  width: deviceWidth,
+                  child: followButton(calendarDoc.docId!),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
 
 Widget followButton(String docId){
   return Padding(
-    padding: const EdgeInsets.only(bottom: 30, left: 30, right: 30, top: 20),
+    padding: const EdgeInsets.only(bottom: 30, left: 40, right: 40, top: 20),
     child: Consumer(
       builder: (context, ref, _) {
         final follow = ref.watch(getFollowCalendar(docId));
@@ -83,7 +97,7 @@ Widget followButton(String docId){
                   },
                   style: TextButton.styleFrom(
                       backgroundColor: Colors.purple,
-                      fixedSize: const Size(0,50),
+                      fixedSize: const Size(0,45),
                   ),
                   child: const Text(
                     'フォローする',
@@ -102,7 +116,7 @@ Widget followButton(String docId){
                   },
                   style: TextButton.styleFrom(
                       backgroundColor: Colors.purple,
-                      fixedSize: const Size(0,50),
+                      fixedSize: const Size(0,45),
                   ),
                   child: const Text(
                     'フォロー解除',

@@ -78,6 +78,7 @@ class EventRegistrationState extends ConsumerState<EventRegistration> with Ticke
     );
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
           elevation: 5,
           leading: IconButton(
@@ -88,7 +89,7 @@ class EventRegistrationState extends ConsumerState<EventRegistration> with Ticke
           ),
           titleTextStyle: const TextStyle(
             color: Colors.black,
-            fontSize: 20,
+            fontSize: 18,
             //fontWeight: FontWeight.bold,
           ),
           title: const Text('予定作成'),

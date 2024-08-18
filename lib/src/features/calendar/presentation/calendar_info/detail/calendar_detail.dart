@@ -6,6 +6,7 @@ import 'package:share_calendar/src/features/calendar/presentation/calendar_info/
 
 import '../../../domain/calendar_document.dart';
 import 'floating_action_button.dart';
+import 'link_widget.dart';
 
 class CalendarDetail extends StatelessWidget{
   final bool followCalendar;
@@ -14,26 +15,40 @@ class CalendarDetail extends StatelessWidget{
 
   @override
   Widget build(BuildContext context){
-    final double topPadding = MediaQuery.of(context).padding.top;
-    return Scaffold(
-      body: Stack(
-        children: [
-          SingleChildScrollView(
-            child: SafeArea(
-              top: false,
-              bottom: false,
-              child: SizedBox(
-                child: Column(children: [
-                  CalendarIconWidget(calendarDoc.calendar!),
-                  CalendarTitleWidget(calendarDoc.calendar!),
-                  CalendarDescriptionWidget(calendarDoc.calendar!),
-                ],)
-              ),
+    final double deviceHeight = MediaQuery.of(context).size.height;
+    final double bottomPadding = MediaQuery.of(context).padding.bottom;
+    return ClipRRect(
+      borderRadius: const BorderRadius.vertical(
+        top: Radius.circular(20.0),
+      ),
+      child: Material(
+        color: const Color(0xFFF5F5F5),
+        child: Stack(
+          children: [
+            CustomScrollView(
+              slivers: <Widget>[
+                SliverAppBar(
+                  pinned: true,
+                  stretch: true,
+                  expandedHeight: deviceHeight / 3.0,
+                  automaticallyImplyLeading: false,
+                  flexibleSpace: FlexibleSpaceBar(
+                    // title: const Text('test'),
+                    background: CalendarIconWidget(calendarDoc.calendar!),
+                  ),
+                ),
+                SliverList(
+                  delegate: SliverChildListDelegate([
+                    Column(children: [
+                      CalendarTitleWidget(calendarDoc.calendar!),
+                      CalendarDescriptionWidget(calendarDoc.calendar!),
+                      CalendarLinkWidget(calendarDoc.calendar!),
+                    ],)
+                  ]
+                ))
+              ],
             ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: topPadding, left: 5.0),
-            child: IconButton(
+            IconButton(
               icon: const CircularIcon(
                 icon: Icons.clear,
                 backgroundColor: Colors.grey,
@@ -44,10 +59,17 @@ class CalendarDetail extends StatelessWidget{
                 Navigator.of(context).pop();
               },
             ),
-          ),
-        ],
+            if(!followCalendar)
+              Padding(
+                padding: EdgeInsets.only(bottom: bottomPadding, right: 20),
+                child: Align(
+                  alignment: Alignment.bottomRight,
+                  child: CalendarFloatingButton(calendarDoc),
+                ),
+              ),
+          ],
+        ),
       ),
-      floatingActionButton: followCalendar ? null : CalendarFloatingButton(calendarDoc)
     );
   }
 }

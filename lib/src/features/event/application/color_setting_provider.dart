@@ -5,8 +5,20 @@ import '../domain/event.dart';
 
 final colorList = StateProvider<List<Map<String, int>>>(
         (ref) => [
+          {'key': 13, 'color' : 0xFFE8B696},//くすみオレンジ
+          {'key': 14, 'color' : 0xFFD49D9D},//くすみ黄緑
+          {'key': 15, 'color' : 0xFFB3DBA9},//くすみ緑
+          {'key': 16, 'color' : 0xFF95C8AB},//くすみ濃緑
+          {'key': 17, 'color' : 0xFF95BCBF},//くすみ緑
+          {'key': 18, 'color' : 0xFF9DCFD6},//くすみ水色
+          {'key': 19, 'color' : 0xFF8DB1CF},//くすみ青色
+          {'key': 20, 'color' : 0xFF839FB6},//くすみ青色
+          {'key': 21, 'color' : 0xFFE1B6CF},//くすみ紫色
+          {'key': 22, 'color' : 0xFFD69DD5},//くすみ紫色
+          {'key': 23, 'color' : 0xFFAD9FBD},//くすみ紫色
+          {'key': 24, 'color' : 0xFFA7AFAF},//くすみ灰色
           {'key': 0, 'color' : 0xFFFF8000},//オレンジ
-          {'key': 1, 'color' : 0xFFFF0000},//赤
+          // {'key': 1, 'color' : 0xFFFF0000},//赤
           {'key': 2, 'color' : 0xFFdc143c},//濃赤
           {'key': 3, 'color' : 0xFF32CD32},//緑
           {'key': 4, 'color' : 0xFF008000},//濃緑
@@ -18,7 +30,6 @@ final colorList = StateProvider<List<Map<String, int>>>(
           {'key': 10, 'color' : 0xFFb300ff},//紫色
           {'key': 11, 'color' : 0xFF800080},//紫色
           {'key': 12, 'color' : 0xFF808080},//灰色
-          {'key': 13, 'color' : 0xFF000000},//黒
         ]
 );
 

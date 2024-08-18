@@ -22,15 +22,15 @@ Widget eventTime(bool isAllDay, DateTime from, DateTime to, DateTime focusedDay,
   }
 
   if(isAllDay){
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
+    return const Padding(
+      padding: EdgeInsets.all(8.0),
       child: SizedBox(
         width: 60,
         child: Center(
           child: Text(
             '終日',
             style: TextStyle(
-              color: color.computeLuminance() < 0.5 ? Colors.white : Colors.black,
+              color: Colors.white, //color.computeLuminance() < 0.5 ? Colors.white : Colors.black,
               fontWeight: FontWeight.bold,
               fontSize: 16,
             ),
@@ -49,15 +49,15 @@ Widget eventTime(bool isAllDay, DateTime from, DateTime to, DateTime focusedDay,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(displayFrom,
-                style: TextStyle(
-                  color: color.computeLuminance() < 0.5 ? Colors.white : Colors.black,
+                style: const TextStyle(
+                  color: Colors.white, //color.computeLuminance() < 0.5 ? Colors.white : Colors.black,
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               Text(displayTo,
-                style: TextStyle(
-                  color: color.computeLuminance() < 0.5 ? Colors.white : Colors.black,
+                style: const TextStyle(
+                  color: Colors.white, //color.computeLuminance() < 0.5 ? Colors.white : Colors.black,
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
                 ),

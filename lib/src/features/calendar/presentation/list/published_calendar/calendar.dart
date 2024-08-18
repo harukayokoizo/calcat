@@ -21,6 +21,8 @@ class PublicCalendarPage extends ConsumerWidget{
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final deviceHeight = MediaQuery.of(context).size.height;
+    final safeArea = MediaQuery.of(context).padding.top;
     final String calendarDocId = calendarDoc.docId!;
     var focusedDay = ref.watch(publicFocusedDay);
     final calendarFormat = ref.watch(publicCalendarFormat);
@@ -44,8 +46,10 @@ class PublicCalendarPage extends ConsumerWidget{
     return Scaffold(
       key: itemKey,
       appBar: AppBar(
-        elevation: 2.0,
+        elevation: 20,
         centerTitle: true,
+        // backgroundColor: Colors.white.withOpacity(0.5),
+        shape: const Border(bottom: BorderSide(width: 0.5, color: Color(0xFFCCCCCC))),
         title: ValueListenableBuilder<DateTime>(
             valueListenable: _focusedDayValue,
             builder: (context, value, _) {
@@ -79,7 +83,10 @@ class PublicCalendarPage extends ConsumerWidget{
                           showCupertinoModalPopup(
                             context: context,
                             builder: (BuildContext context) {
-                              return CalendarDetail(false, value);
+                              return SizedBox(
+                                height: deviceHeight - safeArea,
+                                child: CalendarDetail(false, value),
+                              );
                             },
                           ).then((value){
                             if(value != null){
@@ -132,7 +139,8 @@ class PublicCalendarPage extends ConsumerWidget{
               lastDay: DateTime.utc(2050,12,31),
               focusedDay: focusedDay,
               headerVisible: false,
-              rowHeight: constraints.maxHeight / 6.0,
+              dayHeight : constraints.maxHeight,
+              rowHeight: constraints.maxHeight / 6,
               locale: 'ja_JP',
               calendarFormat: _calendarFormat,
               eventLoader: (date){
