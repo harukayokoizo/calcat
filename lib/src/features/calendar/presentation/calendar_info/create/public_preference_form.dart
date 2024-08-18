@@ -6,8 +6,8 @@ import '../../../application/calendar_provider.dart';
 import '../../../domain/calendar.dart';
 
 class PublicPreferenceForm extends ConsumerWidget{
-  Calendar calendar;
-  PublicPreferenceForm(this.calendar, {super.key});
+  final Calendar calendar;
+  const PublicPreferenceForm(this.calendar, {super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref){
@@ -33,17 +33,17 @@ class PublicPreferenceForm extends ConsumerWidget{
             child: Text(
               '公開設定',
               style: TextStyle(
-                fontSize: 16,
+                fontSize: 15,
                 fontWeight: FontWeight.bold,
               ),
             ),
           ),
           RadioListTile(
-            title: const Text('公開しない'),
+            title: const Text('公開しない', style: TextStyle(fontSize: 14),),
             value: noPublic,
             groupValue: 1,
             controlAffinity: ListTileControlAffinity.trailing,
-            visualDensity: const VisualDensity(vertical: -2),
+            visualDensity: const VisualDensity(vertical: -4),
             //contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 16.0),
             onChanged: (value) {
               ref.read(calendarStateProvider(calendar).notifier).savePublicPreference(0);
@@ -51,11 +51,11 @@ class PublicPreferenceForm extends ConsumerWidget{
 
           ),
           RadioListTile(
-            title: const Text('全ユーザーに公開'),
+            title: const Text('全ユーザーに公開', style: TextStyle(fontSize: 14),),
             value: allUser,
             groupValue: 1,
             controlAffinity: ListTileControlAffinity.trailing,
-            visualDensity: const VisualDensity(vertical: -2),
+            visualDensity: const VisualDensity(vertical: -4),
             //contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 16.0),
             onChanged: (value) {
               ref.read(calendarStateProvider(calendar).notifier).savePublicPreference(1);
@@ -63,11 +63,11 @@ class PublicPreferenceForm extends ConsumerWidget{
 
           ),
           RadioListTile(
-            title: const Text('限定公開'),
+            title: const Text('限定公開', style: TextStyle(fontSize: 14),),
             value: limitUser,
             groupValue: 1,
             controlAffinity: ListTileControlAffinity.trailing,
-            visualDensity: const VisualDensity(vertical: -2),
+            visualDensity: const VisualDensity(vertical: -4),
             onChanged: (value) {
               ref.read(calendarStateProvider(calendar).notifier).savePublicPreference(2);
             },

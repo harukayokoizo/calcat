@@ -12,6 +12,7 @@ class SearchedCalendarContent extends ConsumerWidget{
 
   @override
   Widget build(BuildContext context, WidgetRef ref){
+    final double deviceHeight = MediaQuery.of(context).size.height;
     final double deviceWidth = MediaQuery.of(context).size.width;
     return Padding(
       padding: const EdgeInsets.only(left: 20, top: 15.0, right: 20.0),
@@ -20,7 +21,11 @@ class SearchedCalendarContent extends ConsumerWidget{
           showCupertinoModalPopup(
             context: context,
             builder: (BuildContext context) {
-              return SelectedCalendar(calendarDoc);
+              return SafeArea(
+                top: true,
+                bottom: false,
+                child: SelectedCalendar(calendarDoc),
+              );
             },
           );
         },

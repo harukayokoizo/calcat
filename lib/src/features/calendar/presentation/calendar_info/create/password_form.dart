@@ -17,7 +17,7 @@ class PasswordForm extends ConsumerWidget{
       return const SizedBox();
     }else {
       return Padding(
-        padding: const EdgeInsets.only(top: 10, right: 30, left: 30, bottom: 30),
+        padding: const EdgeInsets.only(top: 10, right: 30, left: 30, bottom: 10),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -27,21 +27,25 @@ class PasswordForm extends ConsumerWidget{
               child: Text(
                 'パスワード',
                 style: TextStyle(
-                  fontSize: 16,
+                  fontSize: 15,
                   fontWeight: FontWeight.bold,
                 ),
               ),
             ),
             TextFormField(
+              style: const TextStyle(
+                fontSize: 15,
+              ),
+              cursorHeight: 18,
               initialValue: initialText,
               decoration: InputDecoration(
-                  fillColor: const Color(0xFFE5E5E5),
+                  fillColor: Colors.white,
                   filled: true,
                   border:OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
                       borderSide: BorderSide.none
                   ),
-                  contentPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10)
+                  contentPadding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10)
               ),
               onChanged: (value) {
                 ref.read(calendarStateProvider(calendar).notifier).savePassword(

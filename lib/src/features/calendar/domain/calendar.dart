@@ -21,6 +21,7 @@ abstract class Calendar with _$Calendar{
     @TimestampConverter() DateTime? updated,
     List<String>? searchIndex,
     List<String>? calendarOwner,
+    List<Map<String, String>>?  calendarLink,
     int? followCount,
   }) = _Calendar;
 

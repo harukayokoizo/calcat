@@ -73,7 +73,7 @@ class EventEdit extends ConsumerWidget{
           elevation: 5,
           titleTextStyle: const TextStyle(
             color: Colors.black,
-            fontSize: 20,
+            fontSize: 18,
             //fontWeight: FontWeight.bold,
           ),
           title: const Text('予定編集'),

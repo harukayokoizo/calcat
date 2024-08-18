@@ -763,7 +763,7 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
                       children: [
                         for(var i = 0; i < count; i++)
                           Padding(
-                            padding: events[i].event!.isAllDay! ? const EdgeInsets.all(1.5) : const EdgeInsets.all(0),
+                            padding: events[i].event!.isAllDay! ? const EdgeInsets.all(1.5) : const EdgeInsets.all(0.0),
                             child: Container(
                               height: eventHeight,
                               width: constraint.maxWidth,
@@ -773,7 +773,7 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
                                 color: isOutside ? Colors.white : getColor(colors, events[i].event!.color!),
                               ) : null,
                               child: Padding(
-                                padding: events[i].event!.isAllDay! ? const EdgeInsets.only(left: 2.0, right: 2.0) : const EdgeInsets.all(0.0),
+                                padding: const EdgeInsets.only(left: 2.0, right: 2.0),
                                 child: Align(
                                   alignment: Alignment.centerLeft,
                                   child: Text(

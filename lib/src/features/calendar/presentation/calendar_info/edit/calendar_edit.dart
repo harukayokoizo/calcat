@@ -8,12 +8,13 @@ import '../../../domain/calendar.dart';
 import '../../../domain/calendar_document.dart';
 import '../create/description_form.dart';
 import '../create/icon_form.dart';
+import '../create/link_form.dart';
 import '../create/public_preference_form.dart';
 import '../create/title_form.dart';
 
 class CalendarEditForm extends ConsumerStatefulWidget{
-  CalendarDocument calendarDoc;
-  CalendarEditForm(this.calendarDoc, {super.key});
+  final CalendarDocument calendarDoc;
+  const CalendarEditForm(this.calendarDoc, {super.key});
 
   @override
   CalendarEditFormState createState() => CalendarEditFormState();
@@ -32,9 +33,13 @@ class CalendarEditFormState extends ConsumerState<CalendarEditForm>{
     return Stack(
       children: [
         Scaffold(
+          backgroundColor: const Color(0xFFF5F5F5),
           appBar: AppBar(
             elevation: 3,
-            title: const Text('カレンダー編集'),
+            title: const Text(
+              'カレンダー編集',
+              style: TextStyle(fontSize: 18),
+            ),
             centerTitle: true,
             actions: [
               Padding(
@@ -91,6 +96,7 @@ class CalendarEditFormState extends ConsumerState<CalendarEditForm>{
                     IconForm(calendar),
                     CalendarTitleForm(calendar),
                     DescriptionForm(calendar),
+                    CalendarLinkForm(calendar),
                     PublicPreferenceForm(calendar),
                     PasswordForm(calendar),
                     const SizedBox(height: 45,),

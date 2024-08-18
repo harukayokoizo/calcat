@@ -25,6 +25,9 @@ _$CalendarImpl _$$CalendarImplFromJson(Map<String, dynamic> json) =>
       calendarOwner: (json['calendarOwner'] as List<dynamic>?)
           ?.map((e) => e as String)
           .toList(),
+      calendarLink: (json['calendarLink'] as List<dynamic>?)
+          ?.map((e) => Map<String, String>.from(e as Map))
+          .toList(),
       followCount: (json['followCount'] as num?)?.toInt(),
     );
 
@@ -43,6 +46,7 @@ Map<String, dynamic> _$$CalendarImplToJson(_$CalendarImpl instance) =>
           instance.updated, const TimestampConverter().toJson),
       'searchIndex': instance.searchIndex,
       'calendarOwner': instance.calendarOwner,
+      'calendarLink': instance.calendarLink,
       'followCount': instance.followCount,
     };
 

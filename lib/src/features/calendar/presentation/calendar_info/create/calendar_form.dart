@@ -10,6 +10,7 @@ import '../../../../../common_widgets/application/common_provider.dart';
 import '../../../application/calendar_provider.dart';
 import '../../../domain/calendar.dart';
 import 'description_form.dart';
+import 'link_form.dart';
 
 class CalendarForm extends ConsumerStatefulWidget{
   const CalendarForm({super.key});
@@ -33,6 +34,7 @@ class CalendarFormState extends ConsumerState<CalendarForm>{
       image: null,
       fileName: null,
       publicPreference: 0,
+      calendarLink: [],
       password: null,
       created: null,
       updated: null,
@@ -42,6 +44,7 @@ class CalendarFormState extends ConsumerState<CalendarForm>{
     return Stack(
       children: [
         Scaffold(
+          backgroundColor: const Color(0xFFF5F5F5),
           appBar: AppBar(
             elevation: 3,
             leading: IconButton(
@@ -50,7 +53,10 @@ class CalendarFormState extends ConsumerState<CalendarForm>{
               },
               icon: const Icon(Icons.close),
             ),
-            title: const Text('カレンダー作成'),
+            title: const Text(
+              'カレンダー作成',
+              style: TextStyle(fontSize: 18),
+            ),
             centerTitle: true,
             actions: [
               Padding(
@@ -108,6 +114,7 @@ class CalendarFormState extends ConsumerState<CalendarForm>{
                   IconForm(calendar),
                   CalendarTitleForm(calendar),
                   DescriptionForm(calendar),
+                  CalendarLinkForm(calendar),
                   PublicPreferenceForm(calendar),
                   PasswordForm(calendar),
                   const SizedBox(height: 45,),

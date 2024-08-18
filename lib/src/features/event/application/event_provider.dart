@@ -23,7 +23,6 @@ class SelectedDateTime extends StateNotifier<Map<String, int>> {
     int fromMinutes = state['fromMinutes']!;
     int toHour = state['toHour']!;
     int toMinutes = state['toMinutes']!;
-    print(fromOrTo);
     if(fromOrTo == 0){
       if(pickedHour > toHour){
         //From to両方変更
