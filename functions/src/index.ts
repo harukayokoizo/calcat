@@ -9,6 +9,8 @@ import {
 
 import * as admin from 'firebase-admin'
 import { TokenMessage } from "firebase-admin/lib/messaging/messaging-api";
+import * as nodemailer from 'nodemailer';
+
 
 /*
 import {
@@ -18,13 +20,69 @@ import {
 const { initializeApp } = require('firebase-admin/app');
 const { getFirestore, FieldValue, Timestamp } = require('firebase-admin/firestore');
 const { getStorage, getDownloadURL } = require("firebase-admin/storage");
+const { getAuth } = require("firebase-admin/auth");
 const { onSchedule } = require("firebase-functions/v2/scheduler");
+const { onRequest } = require("firebase-functions/v2/https");
 const { logger } = require("firebase-functions");
 const functions = require("firebase-functions");
 
 initializeApp();
 const db = getFirestore();
 const storage = getStorage();
+const auth = getAuth();
+
+exports.sendAuthenticationMail = onRequest({timeoutSeconds: 60}, async (req: { body: any;}, res: any) => {
+  try{
+  
+    console.log(req.body);
+    //ActionCodeSettings
+    const acs = {
+      url: 'https://sharecalendar.page.link',
+      // This must be true for email link sign-in.
+      handleCodeInApp: true,
+      iOS: {
+        bundleId: 'com.harukayokomizo.banana-sharecalendar',
+      },
+      // FDL custom domain.
+      dynamicLinkDomain: 'sharecalendar.page.link',
+    };
+    //メールを送信
+    const userEmail = req.body.data;
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: 'calcatservice@gmail.com',
+        pass: 'bmzbugwqubqhkcgc'
+      }
+    });
+    const link = await auth.generateSignInWithEmailLink(userEmail, acs);
+
+    const mailOptions = {
+      from: 'CalCat@share-calendar-4f317.firebaseapp.com',
+      to: userEmail,
+      subject: 'CalCatへのログイン',
+      html: `<p>お客様</p>
+             <p>${userEmail}のアカウントでログインするには、こちらのリンクをクリックしてください。</p>
+             <a href="${link}">ログイン</a>
+             <p>このリンクをリクエストしていない場合は、このメールを無視してください。</p>
+             <p></p>
+             <p>よろしくお願いいたします。</p>
+             <p>CalCatチーム</p>`
+    };
+
+    transporter.sendMail(mailOptions)
+    .then((info) => {
+      return res.status(200);
+    })
+    .catch((error) => {
+      return res.status(500);
+    });
+
+  }catch (e){
+    console.log(e);
+    return;
+  }
+});
 
 exports.deleteCalendar = onDocumentDeleted("calendar/{calendarId}", async (calendar)=> {
   try{
