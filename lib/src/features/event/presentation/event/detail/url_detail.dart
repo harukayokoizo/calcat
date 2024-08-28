@@ -16,15 +16,10 @@ class UrlDetail extends StatelessWidget{
     final Uri url = Uri.parse(event.url!);
     final double deviceWidth = MediaQuery.of(context).size.width;
 
-    return Container(
-      width: deviceWidth,
-      decoration: const BoxDecoration(
-        border: Border(
-            bottom: BorderSide(color: Colors.grey, width: 1.0)
-        ),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(10.0),
+    return Padding(
+      padding: const EdgeInsets.only(top: 30.0, left: 20, right: 10.0),
+      child: SizedBox(
+        width: deviceWidth,
         child: GestureDetector(
           onTap: () async{
             if(await canLaunchUrl(url)){
@@ -33,11 +28,19 @@ class UrlDetail extends StatelessWidget{
               print('Could not Launch');
             }
           },
-          child: Text(
-            event.url!,
-            style: const TextStyle(
-              fontSize: 18,
-              color: Colors.blue,
+          child: RichText(
+            text: TextSpan(
+              style: const TextStyle(color: Colors.black),
+              children: [
+                const TextSpan(
+                  text: 'URL：',
+                  style: TextStyle(fontSize: 18),
+                ),
+                TextSpan(
+                  text: event.url!,
+                  style: const TextStyle(color: Colors.blue, fontSize: 18),
+                ),
+              ],
             ),
           ),
         ),

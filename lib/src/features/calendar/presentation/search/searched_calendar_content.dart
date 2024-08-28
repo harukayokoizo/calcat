@@ -44,11 +44,23 @@ class SearchedCalendarContent extends ConsumerWidget{
               ),
             ],
           ),
-          child: Row(
-            children: [
-              calendarIcon(calendarDoc.calendar!.image),
-              calendarSummary(calendarDoc.calendar!.title!, calendarDoc.calendar!.description!),
-            ],
+          child: LayoutBuilder(
+              builder: (context, constraints) {
+                return Row(
+                  children: [
+                    SizedBox(
+                      height: 100,
+                      width: 100,
+                      child: calendarIcon(calendarDoc.calendar!.image),
+                    ),
+                    SizedBox(
+                      height: 100,
+                      width: constraints.maxWidth - 100,
+                      child: calendarSummaryWidthCount(calendarDoc.calendar!.title!, calendarDoc.calendar!.description!, calendarDoc.calendar!.followsCount!),
+                    ),
+                  ],
+                );
+              }
           ),
         ),
       ),

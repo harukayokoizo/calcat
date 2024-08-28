@@ -1,13 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 import '../../../domain/calendar_document.dart';
 import 'calendar.dart';
 
 class PublishedCalendarContent extends StatelessWidget{
-  CalendarDocument calendarDoc;
+  final CalendarDocument calendarDoc;
 
-  PublishedCalendarContent(this.calendarDoc, {super.key});
+  const PublishedCalendarContent(this.calendarDoc, {super.key});
 
   @override
   Widget build(BuildContext context){
@@ -42,11 +43,30 @@ class PublishedCalendarContent extends StatelessWidget{
               ),
             ],
           ),
-          child: Row(
-            children: [
-              calendarIcon(calendarDoc.calendar!.image),
-              calendarSummary(calendarDoc.calendar!.title!, calendarDoc.calendar!.description!),
-            ],
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              return Row(
+                children: [
+                  SizedBox(
+                    height: 100,
+                    width: 100,
+                    child: calendarIcon(calendarDoc.calendar!.image),
+                  ),
+                  if(calendarDoc.calendar!.publicPreference == 0)
+                    SizedBox(
+                      height: 100,
+                      width: constraints.maxWidth - 100,
+                      child: calendarSummary(calendarDoc.calendar!.title!, calendarDoc.calendar!.description!),
+                    ),
+                  if(calendarDoc.calendar!.publicPreference != 0)
+                    SizedBox(
+                      height: 100,
+                      width: constraints.maxWidth - 100,
+                      child: calendarSummaryWidthCount(calendarDoc.calendar!.title!, calendarDoc.calendar!.description!, calendarDoc.calendar!.followsCount!),
+                    ),
+                ],
+              );
+            }
           ),
         ),
       ),
@@ -81,39 +101,105 @@ Widget calendarIcon(String? image){
 }
 
 Widget calendarSummary(String title, String description){
-  return Expanded(
-    child: Padding(
-      padding: const EdgeInsets.only(left: 10.0, right: 10.0, top: 5.0, bottom: 5.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Flexible(
-            flex: 1,
-            child: Text(title,
-              style: const TextStyle(
-                color: Colors.black,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
+  return Padding(
+    padding: const EdgeInsets.only(left: 10.0, right: 10.0, top: 5.0, bottom: 5.0),
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Flexible(
+          flex: 1,
+          child: Text(title,
+            style: const TextStyle(
+              color: Colors.black,
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
             ),
           ),
-          Flexible(
-            flex: 2,
-            child: Padding(
-              padding: const EdgeInsets.only(top: 2.0),
-              child: Text(description,
+        ),
+        Flexible(
+          flex: 2,
+          child: Text(
+            description,
+            style: const TextStyle(
+              color: Colors.black,
+              fontSize: 14,
+              //fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
+Widget calendarSummaryWidthCount(String title, String description, int followsCount){
+  return Padding(
+    padding: const EdgeInsets.only(left: 10.0, right: 10.0, top: 5.0, bottom: 5.0),
+    child: LayoutBuilder(
+      builder: (context, constraints) {
+        final maxHeight = constraints.maxHeight;
+        final maxWidth = constraints.maxWidth;
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              height: maxHeight * 0.3,
+              child: Text(title,
                 style: const TextStyle(
                   color: Colors.black,
-                  fontSize: 13,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            SizedBox(
+              height: maxHeight * 0.5,
+              child: Text(
+                description,
+                maxLines: 2,
+                overflow: TextOverflow.clip,
+                style: const TextStyle(
+                  color: Colors.black,
+                  fontSize: 14,
                   //fontWeight: FontWeight.bold,
                 ),
               ),
             ),
-          ), 
-        ],
-      ),
+            SizedBox(
+              height: maxHeight * 0.2,
+              width: maxWidth,
+              child: calendarFollowCount(followsCount),
+            ),
+          ],
+        );
+      }
     ),
+  );
+}
+
+Widget calendarFollowCount(int followsCount){
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.end,
+    children: [
+      RichText(
+        text: TextSpan(
+          children: [
+            WidgetSpan(
+              child: Icon(Icons.star, size: 16, color: Colors.yellow[800],),
+            ),
+            TextSpan(
+              text: followsCount.toString(),
+              style: const TextStyle(
+                fontSize: 12,
+                color: Colors.black
+              ),
+            ),
+          ],
+        ),
+      ),
+    ],
   );
 }
 

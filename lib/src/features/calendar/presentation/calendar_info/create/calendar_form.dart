@@ -40,7 +40,6 @@ class CalendarFormState extends ConsumerState<CalendarForm>{
       updated: null,
     );
     Calendar calendarState = ref.watch(calendarStateProvider(calendar));
-
     return Stack(
       children: [
         Scaffold(

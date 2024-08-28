@@ -13,40 +13,38 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 
 
 class EventDateDetail extends ConsumerWidget{
-  Event personalEvent;
-  EventDateDetail(this.personalEvent,{super.key});
+  final Event personalEvent;
+  const EventDateDetail(this.personalEvent,{super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final double deviceWidth = MediaQuery.of(context).size.width;
 
-    return Container(
-        width: deviceWidth,
-        decoration: const BoxDecoration(
-          border: Border(
-            //top: BorderSide(color: Colors.grey, width: 1.0),
-            bottom: BorderSide(color: Colors.grey, width: 1.0),
-          ),
-        ),
-        child: Row(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0, bottom: 10.0),
-              child: dateFormFormat(context, ref, personalEvent, 0),
-            ),
-            const Padding(
-              padding: EdgeInsets.only(top: 20.0),
-              child: Icon(
-                Icons.arrow_forward_ios,
-                size: 15,
+    return Padding(
+      padding: const EdgeInsets.only(top: 10.0),
+      child: SizedBox(
+          width: deviceWidth,
+          // decoration: const BoxDecoration(
+          //   border: Border(
+          //     //top: BorderSide(color: Colors.grey, width: 1.0),
+          //     bottom: BorderSide(color: Colors.grey, width: 1.0),
+          //   ),
+          // ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              dateFormFormat(context, ref, personalEvent, 0),
+              const Padding(
+                padding: EdgeInsets.only(top: 10.0, right: 20, left: 20),
+                child: Icon(
+                  Icons.arrow_forward_ios,
+                  size: 15,
+                ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0, bottom: 10.0),
-              child: dateFormFormat(context, ref, personalEvent, 1),
-            ),
-          ],
-        )
+              dateFormFormat(context, ref, personalEvent, 1),
+            ],
+          )
+      ),
     );
   }
 }
@@ -69,7 +67,7 @@ Widget dateFormFormat(BuildContext context, WidgetRef ref, Event event, int from
   if(event.isAllDay!){
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.start,
+      // crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           '$weekday曜日',
@@ -90,7 +88,7 @@ Widget dateFormFormat(BuildContext context, WidgetRef ref, Event event, int from
   }else{
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.start,
+      // crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           '${dateFormat.month}月${dateFormat.day}日($weekday曜日)',

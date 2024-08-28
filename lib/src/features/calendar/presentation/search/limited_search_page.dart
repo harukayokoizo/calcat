@@ -19,7 +19,12 @@ class LimitedCalendarSearch extends ConsumerWidget{
     final double deviceWidth = MediaQuery.of(context).size.width;
     final double deviceHeight = MediaQuery.of(context).size.height;
     return Scaffold(
-      appBar: AppBar(title: const Text('限定公開カレンダーの検索'),),
+      appBar: AppBar(
+        title: const Text(
+          '限定公開カレンダーの検索',
+          style: TextStyle(fontSize: 18),
+        ),
+      ),
       body: Focus(
         focusNode: focusNode,
         child: SizedBox(
@@ -29,9 +34,8 @@ class LimitedCalendarSearch extends ConsumerWidget{
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Spacer(flex: 1,),
               Padding(
-                padding: const EdgeInsets.only(bottom: 20.0),
+                padding: const EdgeInsets.only(top: 20.0, bottom: 20.0),
                 child: SizedBox(
                   width: deviceWidth * 0.8,
                   child: TextFormField(
@@ -44,16 +48,13 @@ class LimitedCalendarSearch extends ConsumerWidget{
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 20.0),
-                child: SizedBox(
-                  width: deviceWidth * 0.8,
-                  child: TextFormField(
-                    controller: passwordController,
-                    decoration: const InputDecoration(
-                      hintText: 'パスワード',
-                      border: OutlineInputBorder(),
-                    ),
+              SizedBox(
+                width: deviceWidth * 0.8,
+                child: TextFormField(
+                  controller: passwordController,
+                  decoration: const InputDecoration(
+                    hintText: 'パスワード',
+                    border: OutlineInputBorder(),
                   ),
                 ),
               ),

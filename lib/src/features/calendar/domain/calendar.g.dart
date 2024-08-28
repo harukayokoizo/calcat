@@ -28,7 +28,7 @@ _$CalendarImpl _$$CalendarImplFromJson(Map<String, dynamic> json) =>
       calendarLink: (json['calendarLink'] as List<dynamic>?)
           ?.map((e) => Map<String, String>.from(e as Map))
           .toList(),
-      followCount: (json['followCount'] as num?)?.toInt(),
+      followsCount: (json['followsCount'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$$CalendarImplToJson(_$CalendarImpl instance) =>
@@ -47,7 +47,7 @@ Map<String, dynamic> _$$CalendarImplToJson(_$CalendarImpl instance) =>
       'searchIndex': instance.searchIndex,
       'calendarOwner': instance.calendarOwner,
       'calendarLink': instance.calendarLink,
-      'followCount': instance.followCount,
+      'followsCount': instance.followsCount,
     };
 
 Value? _$JsonConverterFromJson<Json, Value>(

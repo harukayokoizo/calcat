@@ -6,13 +6,28 @@ import '../../../application/notification_setting_provider.dart';
 import '../../../domain/event.dart';
 
 class OverViewDetail extends StatelessWidget{
-  Event event;
-  OverViewDetail(this.event, {super.key});
+  final Event event;
+  const OverViewDetail(this.event, {super.key});
 
   @override
 
   Widget build(BuildContext context){
     final double deviceWidth = MediaQuery.of(context).size.width;
+
+    return Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: SizedBox(
+        width: deviceWidth,
+        child: Center(
+          child: Text(
+            event.overview!,
+            style: const TextStyle(
+                fontSize: 16
+            ),
+          ),
+        ),
+      ),
+    );
 
     return Container(
       width: deviceWidth,

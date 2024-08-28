@@ -28,6 +28,9 @@ class ListWidget extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     final deviceWidth = MediaQuery.of(context).size.width;
+    final deviceHeight = MediaQuery.of(context).size.height;
+    // final safeArea = MediaQuery.of(context).;
+    // print(safeArea);
     return GestureDetector(
       onHorizontalDragUpdate: (details) {},
       onHorizontalDragEnd: (details){
@@ -100,13 +103,23 @@ class ListWidget extends StatelessWidget{
                                     for(EventDocument eventDoc in eventOnDate)
                                       InkWell(
                                           onTap: (){
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                fullscreenDialog: true,
-                                                builder: (context) => EventDetail(eventDoc, repositories),
-                                              ),
+                                            showCupertinoModalPopup(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return SafeArea(
+                                                  top: true,
+                                                  bottom: false,
+                                                  child: EventDetail(eventDoc, repositories),
+                                                );
+                                              },
                                             );
+                                            // Navigator.push(
+                                            //   context,
+                                            //   MaterialPageRoute(
+                                            //     fullscreenDialog: true,
+                                            //     builder: (context) => EventDetail(eventDoc, repositories),
+                                            //   ),
+                                            // );
                                           },
                                           child: EventTile(eventDoc.event!, focusedDay)
                                       ),

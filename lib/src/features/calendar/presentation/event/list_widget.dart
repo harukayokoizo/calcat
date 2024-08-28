@@ -107,13 +107,23 @@ class PublicListWidget extends StatelessWidget{
                                     for(EventDocument eventDoc in eventOnDate)
                                       InkWell(
                                           onTap: (){
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                fullscreenDialog: true,
-                                                builder: (context) => PublicEventDetail(eventDoc, repositories, followCalendar),
-                                              ),
+                                            showCupertinoModalPopup(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return SafeArea(
+                                                  top: true,
+                                                  bottom: false,
+                                                  child: PublicEventDetail(eventDoc, repositories, followCalendar),
+                                                );
+                                              },
                                             );
+                                            // Navigator.push(
+                                            //   context,
+                                            //   MaterialPageRoute(
+                                            //     fullscreenDialog: true,
+                                            //     builder: (context) => PublicEventDetail(eventDoc, repositories, followCalendar),
+                                            //   ),
+                                            // );
                                           },
                                           child: EventTile(eventDoc.event!, focusedDay)
                                       ),

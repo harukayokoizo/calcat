@@ -35,7 +35,7 @@ mixin _$Calendar {
   List<String>? get calendarOwner => throw _privateConstructorUsedError;
   List<Map<String, String>>? get calendarLink =>
       throw _privateConstructorUsedError;
-  int? get followCount => throw _privateConstructorUsedError;
+  int? get followsCount => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -61,7 +61,7 @@ abstract class $CalendarCopyWith<$Res> {
       List<String>? searchIndex,
       List<String>? calendarOwner,
       List<Map<String, String>>? calendarLink,
-      int? followCount});
+      int? followsCount});
 }
 
 /// @nodoc
@@ -89,7 +89,7 @@ class _$CalendarCopyWithImpl<$Res, $Val extends Calendar>
     Object? searchIndex = freezed,
     Object? calendarOwner = freezed,
     Object? calendarLink = freezed,
-    Object? followCount = freezed,
+    Object? followsCount = freezed,
   }) {
     return _then(_value.copyWith(
       author: freezed == author
@@ -140,9 +140,9 @@ class _$CalendarCopyWithImpl<$Res, $Val extends Calendar>
           ? _value.calendarLink
           : calendarLink // ignore: cast_nullable_to_non_nullable
               as List<Map<String, String>>?,
-      followCount: freezed == followCount
-          ? _value.followCount
-          : followCount // ignore: cast_nullable_to_non_nullable
+      followsCount: freezed == followsCount
+          ? _value.followsCount
+          : followsCount // ignore: cast_nullable_to_non_nullable
               as int?,
     ) as $Val);
   }
@@ -169,7 +169,7 @@ abstract class _$$CalendarImplCopyWith<$Res>
       List<String>? searchIndex,
       List<String>? calendarOwner,
       List<Map<String, String>>? calendarLink,
-      int? followCount});
+      int? followsCount});
 }
 
 /// @nodoc
@@ -195,7 +195,7 @@ class __$$CalendarImplCopyWithImpl<$Res>
     Object? searchIndex = freezed,
     Object? calendarOwner = freezed,
     Object? calendarLink = freezed,
-    Object? followCount = freezed,
+    Object? followsCount = freezed,
   }) {
     return _then(_$CalendarImpl(
       author: freezed == author
@@ -246,9 +246,9 @@ class __$$CalendarImplCopyWithImpl<$Res>
           ? _value._calendarLink
           : calendarLink // ignore: cast_nullable_to_non_nullable
               as List<Map<String, String>>?,
-      followCount: freezed == followCount
-          ? _value.followCount
-          : followCount // ignore: cast_nullable_to_non_nullable
+      followsCount: freezed == followsCount
+          ? _value.followsCount
+          : followsCount // ignore: cast_nullable_to_non_nullable
               as int?,
     ));
   }
@@ -270,7 +270,7 @@ class _$CalendarImpl implements _Calendar {
       final List<String>? searchIndex,
       final List<String>? calendarOwner,
       final List<Map<String, String>>? calendarLink,
-      this.followCount})
+      this.followsCount})
       : _searchIndex = searchIndex,
         _calendarOwner = calendarOwner,
         _calendarLink = calendarLink;
@@ -329,11 +329,11 @@ class _$CalendarImpl implements _Calendar {
   }
 
   @override
-  final int? followCount;
+  final int? followsCount;
 
   @override
   String toString() {
-    return 'Calendar(author: $author, title: $title, description: $description, image: $image, fileName: $fileName, publicPreference: $publicPreference, password: $password, created: $created, updated: $updated, searchIndex: $searchIndex, calendarOwner: $calendarOwner, calendarLink: $calendarLink, followCount: $followCount)';
+    return 'Calendar(author: $author, title: $title, description: $description, image: $image, fileName: $fileName, publicPreference: $publicPreference, password: $password, created: $created, updated: $updated, searchIndex: $searchIndex, calendarOwner: $calendarOwner, calendarLink: $calendarLink, followsCount: $followsCount)';
   }
 
   @override
@@ -360,8 +360,8 @@ class _$CalendarImpl implements _Calendar {
                 .equals(other._calendarOwner, _calendarOwner) &&
             const DeepCollectionEquality()
                 .equals(other._calendarLink, _calendarLink) &&
-            (identical(other.followCount, followCount) ||
-                other.followCount == followCount));
+            (identical(other.followsCount, followsCount) ||
+                other.followsCount == followsCount));
   }
 
   @JsonKey(ignore: true)
@@ -380,7 +380,7 @@ class _$CalendarImpl implements _Calendar {
       const DeepCollectionEquality().hash(_searchIndex),
       const DeepCollectionEquality().hash(_calendarOwner),
       const DeepCollectionEquality().hash(_calendarLink),
-      followCount);
+      followsCount);
 
   @JsonKey(ignore: true)
   @override
@@ -410,7 +410,7 @@ abstract class _Calendar implements Calendar {
       final List<String>? searchIndex,
       final List<String>? calendarOwner,
       final List<Map<String, String>>? calendarLink,
-      final int? followCount}) = _$CalendarImpl;
+      final int? followsCount}) = _$CalendarImpl;
 
   factory _Calendar.fromJson(Map<String, dynamic> json) =
       _$CalendarImpl.fromJson;
@@ -442,7 +442,7 @@ abstract class _Calendar implements Calendar {
   @override
   List<Map<String, String>>? get calendarLink;
   @override
-  int? get followCount;
+  int? get followsCount;
   @override
   @JsonKey(ignore: true)
   _$$CalendarImplCopyWith<_$CalendarImpl> get copyWith =>

@@ -23,7 +23,7 @@ class CalendarLinkSettingForm extends ConsumerWidget {
     final calendarLink = ref.watch(calendarLinkProvider(link));
     String? url = calendarLink['url'];
     String? name = calendarLink['name'];
-    print(calendarLink);
+
     return GestureDetector(
       onTap: (){
         FocusScope.of(context).unfocus();

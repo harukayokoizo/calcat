@@ -29,6 +29,7 @@ class CalendarEditFormState extends ConsumerState<CalendarEditForm>{
     final double deviceHeight = MediaQuery.of(context).size.height;
     Calendar calendar = widget.calendarDoc.calendar!;
     Calendar calendarState = ref.watch(calendarStateProvider(calendar));
+    print(calendarState);
 
     return Stack(
       children: [

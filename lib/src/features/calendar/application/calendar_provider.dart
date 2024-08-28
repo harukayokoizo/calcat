@@ -40,9 +40,10 @@ class CalendarState extends StateNotifier<Calendar>{
   bool controlCalendarLink(Map<String, String>? previousLink, Map<String, String> saveLink){
     final calendarLink = state.calendarLink;
     try{
+      //既に保存されているリンクが存在する場合
       if(previousLink != null){
         if(previousLink['name'] == saveLink['name']){
-          saveCalendarLink(saveLink);
+          editCalendarLink(saveLink, previousLink['name']!);
         }else{
           if(calendarLink!.isNotEmpty){
             bool exists = calendarLink.any((map) => map['name'] == saveLink['name']);
@@ -53,6 +54,7 @@ class CalendarState extends StateNotifier<Calendar>{
           editCalendarLink(saveLink, previousLink['name']!);
         }
       }else{
+        //リンクが存在しない場合
         if(calendarLink != null) {
           if (calendarLink.isNotEmpty) {
             bool exists = calendarLink.any((map) =>

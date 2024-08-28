@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -100,21 +103,38 @@ class MailAuth{
   //アカウント作成（メールリンク）
   Future<String?> createAccountMailLink(String emailAddress) async{
     try {
-      var acs = ActionCodeSettings(
-        url: 'https://sharecalendar.page.link',
-        handleCodeInApp: true,
-        iOSBundleId: 'com.harukayokomizo.banana-sharecalendar',
-          // androidPackageName: 'com.example.android',
-          // androidInstallApp: true,
-          // androidMinimumVersion: '12'
+      // var acs = ActionCodeSettings(
+      //   url: 'https://sharecalendar.page.link',
+      //   handleCodeInApp: true,
+      //   iOSBundleId: 'com.harukayokomizo.banana-sharecalendar',
+      //     // androidPackageName: 'com.example.android',
+      //     // androidInstallApp: true,
+      //     // androidMinimumVersion: '12'
+      // );
+
+      final url = Uri.parse('https://us-central1-share-calendar-4f317.cloudfunctions.net/sendAuthenticationMail');
+
+      // 引数を含むPOSTリクエストを作成します。
+      final response = await http.post(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: json.encode({'data': emailAddress}),
       );
 
-      await FirebaseAuth.instance.sendSignInLinkToEmail(email: emailAddress, actionCodeSettings: acs);
+      print(response.statusCode);
 
-      return null;
+      //リクエストが成功した場合
+      if (response.statusCode == 200) {
+        return null;
+      }
 
-    } catch (e){
       return 'メール送信できませんでした';
+
+      // await FirebaseAuth.instance.sendSignInLinkToEmail(email: emailAddress, actionCodeSettings: acs);
+    } catch (e){
+      throw 'メール送信できませんでした';
     }
   }
 
