@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:share_calendar/src/features/calendar/domain/calendar_document.dart';
 import '../../application/favorite_provider.dart';
 import '../../application/search_provider.dart';
+import '../../data/calendar_repositories.dart';
 import '../../data/calendar_user_repositories.dart';
 import '../calendar_info/detail/description_widget.dart';
 import '../calendar_info/detail/icon_widget.dart';
@@ -92,7 +93,11 @@ Widget followButton(String docId){
               if(!value){
                 return TextButton(
                   onPressed: (){
-                    ref.read(calendarUserRepositories).createCalendarUser(docId);
+                    ref.read(calendarRepositories).getCalendarPublicPreference(docId).then((value){
+                      if(value){
+                        ref.read(calendarUserRepositories).createCalendarUser(docId);
+                      }
+                    });
                     ref.refresh(getFollowCalendar(docId).future);
                   },
                   style: TextButton.styleFrom(

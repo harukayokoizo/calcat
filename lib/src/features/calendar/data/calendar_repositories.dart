@@ -69,6 +69,24 @@ class CalendarRepositories {
     }
   }
 
+  Future<bool> getCalendarPublicPreference(String docId) async{
+    try {
+      final calendarDoc = await FirebaseFirestore.instance
+          .collection('calendar')
+          .doc(docId)
+          .get();
+
+      if (calendarDoc.exists) {
+        Calendar calendar = Calendar.fromJson(calendarDoc.data()!);
+        return calendar.publicPreference == 0 ? false : true;
+      } else {
+        return false;
+      }
+    }catch (e){
+      return false;
+    }
+  }
+
   Future<String?> getSameCalendar(String title, String password) async{
     final sameCalendar = await FirebaseFirestore.instance
         .collection('calendar')
