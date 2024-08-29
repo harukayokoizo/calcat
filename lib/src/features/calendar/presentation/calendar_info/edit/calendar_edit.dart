@@ -11,6 +11,7 @@ import '../create/icon_form.dart';
 import '../create/link_form.dart';
 import '../create/public_preference_form.dart';
 import '../create/title_form.dart';
+import 'confirm_dialog.dart';
 
 class CalendarEditForm extends ConsumerStatefulWidget{
   final CalendarDocument calendarDoc;
@@ -47,30 +48,46 @@ class CalendarEditFormState extends ConsumerState<CalendarEditForm>{
                 padding: const EdgeInsets.only(right: 20.0),
                 child: GestureDetector(
                   onTap: calendarState.title == null || calendarState.title!.isEmpty
-                      || calendarState.description == null || calendarState.description!.isEmpty ? null : (){
-                    setState(() {loading = true;});
-                    try{
-                      ref.read(calendarStateProvider(calendar).notifier).editCalendar(widget.calendarDoc.docId!).then((value){
-                        setState(() {loading = false;});
-                        if(value != null){
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              backgroundColor: Colors.red,
-                              content: Text(
-                                value,
-                                style: const TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold,
+                      || calendarState.description == null || calendarState.description!.isEmpty ? null : ()async{
+                    bool edit = true;
+                    if(calendar.publicPreference != 0 && calendarState.publicPreference == 0){
+                      await showCupertinoDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return CalendarEditConfirmDialog(widget.calendarDoc);
+                        },
+                      ).then((value){
+                        edit = value;
+                      });
+                    }
+
+                    if(edit) {
+                      setState(() {loading = true;});
+                      try {
+                        ref.read(calendarStateProvider(calendar).notifier).editCalendar(widget.calendarDoc.docId!).then((value) {
+                          setState(() {
+                            loading = false;
+                          });
+                          if (value != null) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                backgroundColor: Colors.red,
+                                content: Text(
+                                  value,
+                                  style: const TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
-                            ),
-                          );
-                        }else{
-                          Navigator.of(context).pop(true);
-                        }
-                      });
-                    }catch (e){
-                      setState(() {loading = false;});
+                            );
+                          } else {
+                            Navigator.of(context).pop(true);
+                          }
+                        });
+                      } catch (e) {
+                        setState(() {loading = false;});
+                      }
                     }
                   },
                   child: Text(

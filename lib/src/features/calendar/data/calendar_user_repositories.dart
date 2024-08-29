@@ -87,4 +87,18 @@ class CalendarUserRepositories {
     final currentUser = ref.read(currentUserProvider);
     await calendarReference.collection('calendar_user').doc(currentUser!.uid).delete();
   }
+
+  Future<void> deleteAllFollowCalendar(String calendarId) async{
+    final calendarUser = await FirebaseFirestore.instance
+        .collection('calendar')
+        .doc(calendarId)
+        .collection('calendar_user')
+        .get();
+
+    if(calendarUser.docs.isNotEmpty){
+      for (var doc in calendarUser.docs) {
+        await doc.reference.delete();
+      }
+    }
+  }
 }

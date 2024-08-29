@@ -33,8 +33,6 @@ const auth = getAuth();
 
 exports.sendAuthenticationMail = onRequest({timeoutSeconds: 60}, async (req: { body: any;}, res: any) => {
   try{
-  
-    console.log(req.body);
     //ActionCodeSettings
     const acs = {
       url: 'https://sharecalendar.page.link',
@@ -52,7 +50,7 @@ exports.sendAuthenticationMail = onRequest({timeoutSeconds: 60}, async (req: { b
       service: 'gmail',
       auth: {
         user: 'calcatservice@gmail.com',
-        pass: 'bmzbugwqubqhkcgc'
+        pass: 'baiuykqqxiwgaqoe'
       }
     });
     const link = await auth.generateSignInWithEmailLink(userEmail, acs);
@@ -72,15 +70,15 @@ exports.sendAuthenticationMail = onRequest({timeoutSeconds: 60}, async (req: { b
 
     transporter.sendMail(mailOptions)
     .then((info) => {
-      return res.status(200);
+      return res.status(200).send('success');
     })
     .catch((error) => {
-      return res.status(500);
+      return res.status(500).send('error');
     });
 
   }catch (e){
     console.log(e);
-    return;
+    return res.status(500).send('error');
   }
 });
 

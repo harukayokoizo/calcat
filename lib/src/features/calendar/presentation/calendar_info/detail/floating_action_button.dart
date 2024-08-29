@@ -20,6 +20,7 @@ class CalendarFloatingButtonState extends State<CalendarFloatingButton>{
 
   @override
   void initState() {
+    super.initState();
     calendarDoc = widget.calendarDoc;
   }
 
