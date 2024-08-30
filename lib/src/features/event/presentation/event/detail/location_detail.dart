@@ -7,8 +7,8 @@ import '../../../application/notification_setting_provider.dart';
 import '../../../domain/event.dart';
 
 class LocationDetail extends StatelessWidget{
-  Event event;
-  LocationDetail(this.event, {super.key});
+  final Event event;
+  const LocationDetail(this.event, {super.key});
 
   @override
 
@@ -18,10 +18,16 @@ class LocationDetail extends StatelessWidget{
     final appleMapAppUrl   = Uri.parse('https://maps.apple.com/?q=$location');
     final double deviceWidth = MediaQuery.of(context).size.width;
 
-    return Padding(
-      padding: const EdgeInsets.only(top: 10.0, left: 20.0, right: 10.0),
-      child: SizedBox(
-        width: deviceWidth,
+    return Container(
+      width: deviceWidth,
+      decoration: const BoxDecoration(
+        border: Border(
+          top: BorderSide(color: Color(0xFFA7AFAF), width: 0.1),
+          bottom: BorderSide(color: Color(0xFFA7AFAF), width: 0.2),
+        ),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.only(top: 12.0, bottom: 12.0, right: 8.0, left: 8.0),
         child: GestureDetector(
           onTap: () async{
             if (await canLaunchUrl(googleMapAppUrl)) { // GoogleMapアプリは立ち上げられるか
@@ -40,11 +46,11 @@ class LocationDetail extends StatelessWidget{
               children: [
                 const TextSpan(
                   text: '場所：',
-                  style: TextStyle(fontSize: 18),
+                  style: TextStyle(fontSize: 16),
                 ),
                 TextSpan(
                   text: event.location!,
-                  style: const TextStyle(color: Colors.blue, fontSize: 18),
+                  style: const TextStyle(color: Colors.blue, fontSize: 16),
                 ),
               ],
             ),

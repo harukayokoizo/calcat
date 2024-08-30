@@ -7,8 +7,8 @@ import '../../../application/notification_setting_provider.dart';
 import '../../../domain/event.dart';
 
 class UrlDetail extends StatelessWidget{
-  Event event;
-  UrlDetail(this.event, {super.key});
+  final Event event;
+  const UrlDetail(this.event, {super.key});
 
   @override
 
@@ -17,30 +17,39 @@ class UrlDetail extends StatelessWidget{
     final double deviceWidth = MediaQuery.of(context).size.width;
 
     return Padding(
-      padding: const EdgeInsets.only(top: 30.0, left: 20, right: 10.0),
-      child: SizedBox(
+      padding: const EdgeInsets.only(top: 30.0),
+      child: Container(
         width: deviceWidth,
-        child: GestureDetector(
-          onTap: () async{
-            if(await canLaunchUrl(url)){
-              await launchUrl(url);
-            }else{
-              print('Could not Launch');
-            }
-          },
-          child: RichText(
-            text: TextSpan(
-              style: const TextStyle(color: Colors.black),
-              children: [
-                const TextSpan(
-                  text: 'URL：',
-                  style: TextStyle(fontSize: 18),
-                ),
-                TextSpan(
-                  text: event.url!,
-                  style: const TextStyle(color: Colors.blue, fontSize: 18),
-                ),
-              ],
+        decoration: const BoxDecoration(
+          border: Border(
+            top: BorderSide(color: Color(0xFFA7AFAF), width: 0.2),
+            // bottom: BorderSide(color: Colors.grey, width: 1.0),
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.only(top: 12.0, bottom: 12.0, right: 8.0, left: 8.0),
+          child: GestureDetector(
+            onTap: () async{
+              if(await canLaunchUrl(url)){
+                await launchUrl(url);
+              }else{
+                print('Could not Launch');
+              }
+            },
+            child: RichText(
+              text: TextSpan(
+                style: const TextStyle(color: Colors.black),
+                children: [
+                  const TextSpan(
+                    text: 'URL：',
+                    style: TextStyle(fontSize: 16),
+                  ),
+                  TextSpan(
+                    text: event.url!,
+                    style: const TextStyle(color: Colors.blue, fontSize: 16),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
