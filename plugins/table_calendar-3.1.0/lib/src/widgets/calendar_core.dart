@@ -79,7 +79,7 @@ class CalendarCore extends StatelessWidget {
 
         final actualDowHeight = dowVisible ? dowHeight! : 0.0;
 
-        final constrainedRowHeight = eventFormCalendar ? rowHeight : (dayHeight! - actualDowHeight) /
+        final constrainedRowHeight = eventFormCalendar ? rowHeight : dayHeight! /
             _getRowCount(calendarFormat, baseDay);
         // final constrainedRowHeight = !constraints.hasBoundedHeight
         //     ? (constraints.maxHeight - actualDowHeight) /

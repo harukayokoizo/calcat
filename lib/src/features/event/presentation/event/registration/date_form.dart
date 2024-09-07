@@ -26,7 +26,7 @@ class DateSettingFormat extends ConsumerWidget{
         decoration: const BoxDecoration(
           border: Border(
             //top: BorderSide(color: Colors.grey, width: 1.0),
-            bottom: BorderSide(color: Colors.grey, width: 1.0),
+            bottom: BorderSide(color: Colors.grey, width: 0.5),
           ),
         ),
         child: Row(

@@ -36,7 +36,7 @@ class CalendarTimeSettingFormat extends ConsumerWidget{
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Transform.scale(
-                    scale: 0.8,
+                    scale: 0.9,
                     child: CupertinoSwitch(
                       // This bool value toggles the switch.
                       value: personalEvent.isAllDay!,
@@ -49,8 +49,8 @@ class CalendarTimeSettingFormat extends ConsumerWidget{
                   const Text(
                     '終日 オン',
                     style: TextStyle(
-                        fontSize: 8,
-                        fontWeight: FontWeight.w800
+                        fontSize: 10,
+                        // fontWeight: FontWeight.w800
                     ),
                   )
                 ],

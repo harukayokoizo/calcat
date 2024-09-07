@@ -16,7 +16,7 @@ class LocationForm extends ConsumerWidget{
     return Container(
       decoration: const BoxDecoration(
         border: Border(
-            bottom: BorderSide(color: Colors.grey, width: 1.0)
+            bottom: BorderSide(color: Colors.grey, width: 0.5)
         ),
       ),
       child: Padding(

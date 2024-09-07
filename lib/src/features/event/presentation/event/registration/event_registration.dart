@@ -183,7 +183,7 @@ class NormalEventRegistration extends ConsumerWidget{
               ),
               if(eventState.repeat == 1)
                 Container(
-                  height: constraint.maxHeight * 0.5,
+                  height: constraint.maxHeight * 0.52,
                   decoration: BoxDecoration(
                     color: Colors.white,
                     boxShadow: [

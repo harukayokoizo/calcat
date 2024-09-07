@@ -16,8 +16,8 @@ class TitleForm extends ConsumerWidget{
     return Container(
       decoration: const BoxDecoration(
         border: Border(
-            top: BorderSide(color: Colors.grey, width: 1.0),
-            bottom: BorderSide(color: Colors.grey, width: 1.0)
+            top: BorderSide(color: Colors.grey, width: 0.5),
+            bottom: BorderSide(color: Colors.grey, width: 0.5)
         ),
       ),
       child: Padding(
