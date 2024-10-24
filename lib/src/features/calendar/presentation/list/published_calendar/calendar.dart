@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table_calendar/table_calendar.dart';
+import '../../../../todo/presentation/list/calendar_todo_list.dart';
 import '../../../application/calendar_list_provider.dart';
 import '../../../application/event_list_provider.dart';
 import '../../../domain/calendar_document.dart';
@@ -172,6 +173,19 @@ class PublicCalendarPage extends ConsumerWidget{
               },
             );
           }
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => CalendarTodoList(),
+            ),
+          );
+        },
+        backgroundColor: Colors.blue.shade500,
+        shape: const CircleBorder(),
+        child: const Icon(Icons.calendar_today_outlined, color: Colors.white),
       ),
     );
   }
