@@ -15,6 +15,7 @@ abstract class Todo with _$Todo{
     bool? pin,
     bool? complete,
     @TimestampConverter() DateTime? updated,
+    String? calendarId,
   }) = _Todo;
 
   factory Todo.fromJson(Map<String,dynamic> json) => _$TodoFromJson(json);

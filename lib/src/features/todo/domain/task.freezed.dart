@@ -28,6 +28,7 @@ mixin _$Task {
   @TimestampConverter()
   DateTime? get updated => throw _privateConstructorUsedError;
   String? get todoId => throw _privateConstructorUsedError;
+  String? get calendarId => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -45,7 +46,8 @@ abstract class $TaskCopyWith<$Res> {
       bool? check,
       @TimestampConverter() DateTime? created,
       @TimestampConverter() DateTime? updated,
-      String? todoId});
+      String? todoId,
+      String? calendarId});
 }
 
 /// @nodoc
@@ -67,6 +69,7 @@ class _$TaskCopyWithImpl<$Res, $Val extends Task>
     Object? created = freezed,
     Object? updated = freezed,
     Object? todoId = freezed,
+    Object? calendarId = freezed,
   }) {
     return _then(_value.copyWith(
       task: freezed == task
@@ -93,6 +96,10 @@ class _$TaskCopyWithImpl<$Res, $Val extends Task>
           ? _value.todoId
           : todoId // ignore: cast_nullable_to_non_nullable
               as String?,
+      calendarId: freezed == calendarId
+          ? _value.calendarId
+          : calendarId // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -110,7 +117,8 @@ abstract class _$$TaskImplCopyWith<$Res> implements $TaskCopyWith<$Res> {
       bool? check,
       @TimestampConverter() DateTime? created,
       @TimestampConverter() DateTime? updated,
-      String? todoId});
+      String? todoId,
+      String? calendarId});
 }
 
 /// @nodoc
@@ -129,6 +137,7 @@ class __$$TaskImplCopyWithImpl<$Res>
     Object? created = freezed,
     Object? updated = freezed,
     Object? todoId = freezed,
+    Object? calendarId = freezed,
   }) {
     return _then(_$TaskImpl(
       task: freezed == task
@@ -155,6 +164,10 @@ class __$$TaskImplCopyWithImpl<$Res>
           ? _value.todoId
           : todoId // ignore: cast_nullable_to_non_nullable
               as String?,
+      calendarId: freezed == calendarId
+          ? _value.calendarId
+          : calendarId // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -168,7 +181,8 @@ class _$TaskImpl implements _Task {
       this.check,
       @TimestampConverter() this.created,
       @TimestampConverter() this.updated,
-      this.todoId});
+      this.todoId,
+      this.calendarId});
 
   factory _$TaskImpl.fromJson(Map<String, dynamic> json) =>
       _$$TaskImplFromJson(json);
@@ -187,10 +201,12 @@ class _$TaskImpl implements _Task {
   final DateTime? updated;
   @override
   final String? todoId;
+  @override
+  final String? calendarId;
 
   @override
   String toString() {
-    return 'Task(task: $task, user: $user, check: $check, created: $created, updated: $updated, todoId: $todoId)';
+    return 'Task(task: $task, user: $user, check: $check, created: $created, updated: $updated, todoId: $todoId, calendarId: $calendarId)';
   }
 
   @override
@@ -203,13 +219,15 @@ class _$TaskImpl implements _Task {
             (identical(other.check, check) || other.check == check) &&
             (identical(other.created, created) || other.created == created) &&
             (identical(other.updated, updated) || other.updated == updated) &&
-            (identical(other.todoId, todoId) || other.todoId == todoId));
+            (identical(other.todoId, todoId) || other.todoId == todoId) &&
+            (identical(other.calendarId, calendarId) ||
+                other.calendarId == calendarId));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, task, user, check, created, updated, todoId);
+  int get hashCode => Object.hash(
+      runtimeType, task, user, check, created, updated, todoId, calendarId);
 
   @JsonKey(ignore: true)
   @override
@@ -232,7 +250,8 @@ abstract class _Task implements Task {
       final bool? check,
       @TimestampConverter() final DateTime? created,
       @TimestampConverter() final DateTime? updated,
-      final String? todoId}) = _$TaskImpl;
+      final String? todoId,
+      final String? calendarId}) = _$TaskImpl;
 
   factory _Task.fromJson(Map<String, dynamic> json) = _$TaskImpl.fromJson;
 
@@ -250,6 +269,8 @@ abstract class _Task implements Task {
   DateTime? get updated;
   @override
   String? get todoId;
+  @override
+  String? get calendarId;
   @override
   @JsonKey(ignore: true)
   _$$TaskImplCopyWith<_$TaskImpl> get copyWith =>

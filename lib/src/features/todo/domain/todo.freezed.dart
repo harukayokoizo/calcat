@@ -26,6 +26,7 @@ mixin _$Todo {
   bool? get complete => throw _privateConstructorUsedError;
   @TimestampConverter()
   DateTime? get updated => throw _privateConstructorUsedError;
+  String? get calendarId => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -42,7 +43,8 @@ abstract class $TodoCopyWith<$Res> {
       String? title,
       bool? pin,
       bool? complete,
-      @TimestampConverter() DateTime? updated});
+      @TimestampConverter() DateTime? updated,
+      String? calendarId});
 }
 
 /// @nodoc
@@ -63,6 +65,7 @@ class _$TodoCopyWithImpl<$Res, $Val extends Todo>
     Object? pin = freezed,
     Object? complete = freezed,
     Object? updated = freezed,
+    Object? calendarId = freezed,
   }) {
     return _then(_value.copyWith(
       author: freezed == author
@@ -85,6 +88,10 @@ class _$TodoCopyWithImpl<$Res, $Val extends Todo>
           ? _value.updated
           : updated // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      calendarId: freezed == calendarId
+          ? _value.calendarId
+          : calendarId // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -101,7 +108,8 @@ abstract class _$$TodoImplCopyWith<$Res> implements $TodoCopyWith<$Res> {
       String? title,
       bool? pin,
       bool? complete,
-      @TimestampConverter() DateTime? updated});
+      @TimestampConverter() DateTime? updated,
+      String? calendarId});
 }
 
 /// @nodoc
@@ -119,6 +127,7 @@ class __$$TodoImplCopyWithImpl<$Res>
     Object? pin = freezed,
     Object? complete = freezed,
     Object? updated = freezed,
+    Object? calendarId = freezed,
   }) {
     return _then(_$TodoImpl(
       author: freezed == author
@@ -141,6 +150,10 @@ class __$$TodoImplCopyWithImpl<$Res>
           ? _value.updated
           : updated // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      calendarId: freezed == calendarId
+          ? _value.calendarId
+          : calendarId // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -153,7 +166,8 @@ class _$TodoImpl implements _Todo {
       this.title,
       this.pin,
       this.complete,
-      @TimestampConverter() this.updated});
+      @TimestampConverter() this.updated,
+      this.calendarId});
 
   factory _$TodoImpl.fromJson(Map<String, dynamic> json) =>
       _$$TodoImplFromJson(json);
@@ -169,10 +183,12 @@ class _$TodoImpl implements _Todo {
   @override
   @TimestampConverter()
   final DateTime? updated;
+  @override
+  final String? calendarId;
 
   @override
   String toString() {
-    return 'Todo(author: $author, title: $title, pin: $pin, complete: $complete, updated: $updated)';
+    return 'Todo(author: $author, title: $title, pin: $pin, complete: $complete, updated: $updated, calendarId: $calendarId)';
   }
 
   @override
@@ -185,13 +201,15 @@ class _$TodoImpl implements _Todo {
             (identical(other.pin, pin) || other.pin == pin) &&
             (identical(other.complete, complete) ||
                 other.complete == complete) &&
-            (identical(other.updated, updated) || other.updated == updated));
+            (identical(other.updated, updated) || other.updated == updated) &&
+            (identical(other.calendarId, calendarId) ||
+                other.calendarId == calendarId));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, author, title, pin, complete, updated);
+  int get hashCode => Object.hash(
+      runtimeType, author, title, pin, complete, updated, calendarId);
 
   @JsonKey(ignore: true)
   @override
@@ -213,7 +231,8 @@ abstract class _Todo implements Todo {
       final String? title,
       final bool? pin,
       final bool? complete,
-      @TimestampConverter() final DateTime? updated}) = _$TodoImpl;
+      @TimestampConverter() final DateTime? updated,
+      final String? calendarId}) = _$TodoImpl;
 
   factory _Todo.fromJson(Map<String, dynamic> json) = _$TodoImpl.fromJson;
 
@@ -228,6 +247,8 @@ abstract class _Todo implements Todo {
   @override
   @TimestampConverter()
   DateTime? get updated;
+  @override
+  String? get calendarId;
   @override
   @JsonKey(ignore: true)
   _$$TodoImplCopyWith<_$TodoImpl> get copyWith =>

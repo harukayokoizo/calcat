@@ -13,6 +13,7 @@ _$TodoImpl _$$TodoImplFromJson(Map<String, dynamic> json) => _$TodoImpl(
       complete: json['complete'] as bool?,
       updated: _$JsonConverterFromJson<Timestamp, DateTime>(
           json['updated'], const TimestampConverter().fromJson),
+      calendarId: json['calendarId'] as String?,
     );
 
 Map<String, dynamic> _$$TodoImplToJson(_$TodoImpl instance) =>
@@ -23,6 +24,7 @@ Map<String, dynamic> _$$TodoImplToJson(_$TodoImpl instance) =>
       'complete': instance.complete,
       'updated': _$JsonConverterToJson<Timestamp, DateTime>(
           instance.updated, const TimestampConverter().toJson),
+      'calendarId': instance.calendarId,
     };
 
 Value? _$JsonConverterFromJson<Json, Value>(

@@ -15,6 +15,7 @@ _$TaskImpl _$$TaskImplFromJson(Map<String, dynamic> json) => _$TaskImpl(
       updated: _$JsonConverterFromJson<Timestamp, DateTime>(
           json['updated'], const TimestampConverter().fromJson),
       todoId: json['todoId'] as String?,
+      calendarId: json['calendarId'] as String?,
     );
 
 Map<String, dynamic> _$$TaskImplToJson(_$TaskImpl instance) =>
@@ -27,6 +28,7 @@ Map<String, dynamic> _$$TaskImplToJson(_$TaskImpl instance) =>
       'updated': _$JsonConverterToJson<Timestamp, DateTime>(
           instance.updated, const TimestampConverter().toJson),
       'todoId': instance.todoId,
+      'calendarId': instance.calendarId,
     };
 
 Value? _$JsonConverterFromJson<Json, Value>(

@@ -18,7 +18,7 @@ class TodoRepositories {
       final todos = FirebaseFirestore.instance
           .collection('calendar')
           .doc(calendarId)
-          .collection('calendar')
+          .collection('todo')
           .orderBy('updated', descending: true)
           .snapshots()
           .map((snapshots) =>
@@ -35,7 +35,7 @@ class TodoRepositories {
   }
 
   //Todoの作成処理
-  Future<void> createCalendar(String calendarId) async{
+  Future<void> createTodo(String calendarId) async{
     try {
       final user = ref.read(currentUserProvider);
       DateTime date = DateTime.now();
@@ -45,6 +45,7 @@ class TodoRepositories {
         'pin': false,
         'complete': false,
         'updated': date,
+        'calendarId': calendarId,
       };
 
       await FirebaseFirestore.instance

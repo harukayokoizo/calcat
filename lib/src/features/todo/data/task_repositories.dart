@@ -13,7 +13,7 @@ class TaskRepositories {
   TaskRepositories(this.ref);
 
   //Taskのリアルタイム取得
-  Stream<List<TaskDocument>> getTodoList(String calendarId, String todoId) async*{
+  Stream<List<TaskDocument>> getTaskList(String calendarId, String todoId) async*{
     try {
       final tasks = FirebaseFirestore.instance
           .collection('calendar')
@@ -37,7 +37,7 @@ class TaskRepositories {
   }
 
   //Todoの作成処理
-  Future<void> createCalendar(String calendarId, String todoId) async{
+  Future<void> createTask(String calendarId, String todoId) async{
     try {
       final user = ref.read(currentUserProvider);
       DateTime date = DateTime.now();
@@ -45,9 +45,10 @@ class TaskRepositories {
         'task': '',
         'user': user!.uid,
         'check': false,
-        'created': false,
+        'created': date,
         'updated': date,
         'todoId': todoId,
+        'calendarId': calendarId,
       };
 
       await FirebaseFirestore.instance

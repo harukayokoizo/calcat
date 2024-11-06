@@ -179,7 +179,7 @@ class PublicCalendarPage extends ConsumerWidget{
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => CalendarTodoList(),
+              builder: (context) => CalendarTodoList(calendarDoc),
             ),
           );
         },

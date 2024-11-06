@@ -16,6 +16,7 @@ abstract class Task with _$Task{
     @TimestampConverter() DateTime? created,
     @TimestampConverter() DateTime? updated,
     String? todoId,
+    String? calendarId,
   }) = _Task;
 
   factory Task.fromJson(Map<String,dynamic> json) => _$TaskFromJson(json);
