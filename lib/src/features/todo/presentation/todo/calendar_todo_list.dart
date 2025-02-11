@@ -3,7 +3,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:share_calendar/src/features/calendar/domain/calendar_document.dart';
 import 'package:share_calendar/src/features/todo/domain/todo_document.dart';
-import 'package:share_calendar/src/features/todo/presentation/list/todo_list_widget.dart';
+import 'package:share_calendar/src/features/todo/presentation/todo/todo_list_widget.dart';
 
 import '../../../calendar/domain/calendar.dart';
 import '../../application/todo_provider.dart';
@@ -16,16 +16,22 @@ class CalendarTodoList extends ConsumerWidget{
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    Calendar calendar = calendarDocument.calendar!;
     String calendarId = calendarDocument.docId!;
     final todoList = ref.watch(todoListProvider(calendarId));
     return Scaffold(
-      appBar: AppBar(title: const Text('メモ'),),
+      appBar: AppBar(
+        title: const Text(
+          'Todoリスト',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        backgroundColor: const Color(0xFFACC5DB),
+      ),
       body: todoList.when(
         error: (err, _) => const SizedBox(), //エラー時
         loading: () => const SizedBox(), //読み込み時
         data: (todos){
-          print(todos);
           if(todos.isNotEmpty) {
             return CustomScrollView(
               slivers: [

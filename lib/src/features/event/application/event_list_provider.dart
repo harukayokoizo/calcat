@@ -110,7 +110,16 @@ final eventStream = StateNotifierProvider<EventStream, List<dynamic>>(
         (ref) {
           DateTime today = DateTime.now();
           String month = '${today.year}年${today.month}月';
-          String nextMonth = '${today.year}年${today.month + 1}月';
+          int todayYear = today.year;
+          int todayMonth = today.month;
+          if(today.month == 12){
+            todayYear = todayYear + 1;
+            todayMonth = 1;
+          }else{
+            todayMonth = todayMonth + 1;
+          }
+          String nextMonth = '$todayYear年$todayMonth月';
+          print(nextMonth);
           return EventStream([personalEventList(month), personalEventList(nextMonth)]);
     }
 );

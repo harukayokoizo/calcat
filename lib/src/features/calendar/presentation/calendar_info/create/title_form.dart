@@ -40,6 +40,7 @@ class CalendarTitleForm extends ConsumerWidget{
               return null; // カウンターを非表示にします
             },
             decoration: const InputDecoration(
+              hintText: 'カレンダー名',
               fillColor: Colors.white,
               filled: true,
               border:OutlineInputBorder(

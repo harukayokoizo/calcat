@@ -4,6 +4,7 @@ import 'package:share_calendar/src/features/todo/domain/task.dart';
 
 import '../../../common_widgets/application/common_provider.dart';
 import '../domain/task_document.dart';
+import '../domain/todo_document.dart';
 
 final taskRepositories = Provider.autoDispose((ref) => TaskRepositories(ref));
 
@@ -21,7 +22,7 @@ class TaskRepositories {
           .collection('todo')
           .doc(todoId)
           .collection('task')
-          .orderBy('updated', descending: true)
+          .orderBy('created', descending: false)
           .snapshots()
           .map((snapshots) =>
           snapshots.docs.map((e) {
@@ -65,16 +66,17 @@ class TaskRepositories {
   }
 
   //Todoの更新処理 (Todo詳細画面から更新する)
-  Future<void> getCalendarOwner(TaskDocument task, Map<String, dynamic> data) async{
+  Future<void> updateTask(TaskDocument taskDocument, Map<String, dynamic> data) async{
     try {
-      // await FirebaseFirestore.instance
-      //     .collection('calendar')
-      //     .doc(calendarId)
-      //     .collection('todo')
-      //     .doc(todoId)
-      //     .collection('task')
-      //     .doc(taskId)
-      //     .update(data);
+      final task = taskDocument.task;
+      await FirebaseFirestore.instance
+          .collection('calendar')
+          .doc(task!.calendarId)
+          .collection('todo')
+          .doc(task.todoId)
+          .collection('task')
+          .doc(taskDocument.docId)
+          .update(data);
 
     }catch (e){
       throw e.toString();
@@ -82,14 +84,50 @@ class TaskRepositories {
   }
 
   //Todoの削除処理
-  Future<void> deleteCalendar(String todoId) async{
-    // await FirebaseFirestore.instance
-    //     .collection('calendar')
-    //     .doc(calendarId)
-    //     .collection('todo')
-    //     .doc(todoId)
-    //     .collection('task')
-    //     .doc(taskId)
-    //     .delete();
+  Future<void> deleteTask(TaskDocument taskDocument) async{
+    final task = taskDocument.task;
+    await FirebaseFirestore.instance
+        .collection('calendar')
+        .doc(task!.calendarId)
+        .collection('todo')
+        .doc(task.todoId)
+        .collection('task')
+        .doc(taskDocument.docId)
+        .delete();
+  }
+
+  Future<void> deleteNoneTitleTask(TodoDocument todoDocument) async{
+    final todo = todoDocument.todo;
+    final tasks = await FirebaseFirestore.instance
+        .collection('calendar')
+        .doc(todo!.calendarId)
+        .collection('todo')
+        .doc(todoDocument.docId)
+        .collection('task')
+        .where('task', isEqualTo: "")
+        .get();
+
+    if(tasks.docs.isNotEmpty){
+      for (var doc in tasks.docs) {
+        await doc.reference.delete();
+      }
+    }
+  }
+
+  Future<void> deleteAllTask(TodoDocument todoDocument) async{
+    final todo = todoDocument.todo;
+    final tasks = await FirebaseFirestore.instance
+        .collection('calendar')
+        .doc(todo!.calendarId)
+        .collection('todo')
+        .doc(todoDocument.docId)
+        .collection('task')
+        .get();
+
+    if(tasks.docs.isNotEmpty){
+      for (var doc in tasks.docs) {
+        await doc.reference.delete();
+      }
+    }
   }
 }

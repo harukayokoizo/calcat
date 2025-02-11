@@ -9,7 +9,7 @@ final taskListProvider = StreamProvider.autoDispose.family<List<TaskDocument>, T
       (ref, todoDocument) {
         final todoId = todoDocument.docId!;
         final calendarId = todoDocument.todo!.calendarId!;
-        var calendarDoc = ref.read(taskRepositories).getTaskList(calendarId, todoId);
+        var calendarDoc = ref.watch(taskRepositories).getTaskList(calendarId, todoId);
         return calendarDoc;
       },
 );

@@ -5,7 +5,14 @@ import '../domain/todo_document.dart';
 
 final todoListProvider = StreamProvider.autoDispose.family<List<TodoDocument>, String>(
       (ref, calendarId) {
-        var calendarDoc = ref.read(todoRepositories).getTodoList(calendarId);
-        return calendarDoc;
+        var todoList = ref.read(todoRepositories).getTodoList(calendarId);
+        return todoList;
+        },
+);
+
+final todoProvider = StreamProvider.autoDispose.family<TodoDocument, TodoDocument>(
+            (ref, todoDocument) {
+                var todoDoc = ref.read(todoRepositories).getTodo(todoDocument);
+                return todoDoc;
         },
 );

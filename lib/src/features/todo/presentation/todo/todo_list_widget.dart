@@ -1,17 +1,20 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../event/application/datetime_format.dart';
+import '../../data/task_repositories.dart';
 import '../../domain/todo.dart';
 import '../../domain/todo_document.dart';
-import '../detail/todo_detail.dart';
+import 'todo_detail.dart';
 
-class TodoListWidget extends StatelessWidget{
+class TodoListWidget extends ConsumerWidget{
   final TodoDocument todoDocument;
   const TodoListWidget(this.todoDocument, {super.key});
 
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context, WidgetRef ref){
     Todo todo = todoDocument.todo!;
     String todoId = todoDocument.docId!;
     final double deviceWidth = MediaQuery.of(context).size.width;
@@ -22,7 +25,9 @@ class TodoListWidget extends StatelessWidget{
           MaterialPageRoute(
             builder: (context) => TodoDetail(todoDocument),
           ),
-        );
+        ).then((value){
+          ref.read(taskRepositories).deleteNoneTitleTask(todoDocument);
+        });
       },
       child: Container(
         height: 80,
@@ -30,19 +35,17 @@ class TodoListWidget extends StatelessWidget{
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(10),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.7), // 影の色
-              spreadRadius: 1, // スプレッド半径
-              blurRadius: 2, // ぼかし半径
-              offset: const Offset(0, 1), // オフセット（x, y）
-            ),
-          ],
+          border: const Border(
+            top: BorderSide(color: Color(0xFFDCDCDC), width: 1.0),
+            right: BorderSide(color: Color(0xFFDCDCDC), width: 1.0),
+            bottom: BorderSide(color: Color(0xFFDCDCDC), width: 1.0),
+            left: BorderSide(color: Color(0xFFDCDCDC), width: 1.0),
+          ),
         ),
         child: LayoutBuilder(
             builder: (context, constraints) {
               return SizedBox(
-                height: 80,
+                height: 100,
                 width: 100,
                 child: Padding(
                   padding: const EdgeInsets.only(left: 16.0, top: 12.0, right: 16.0, bottom: 12.0),
@@ -50,8 +53,14 @@ class TodoListWidget extends StatelessWidget{
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      todoTitle(todo.title!),
-                      todoUpdated(todo.updated!),
+                      Flexible(
+                        flex: 2,
+                        child: todoTitle(todo.title!),
+                      ),
+                      Flexible(
+                        flex: 1,
+                        child: todoUpdated(todo.updated!),
+                      ),
                     ],
                   ),
                 ),
@@ -64,11 +73,11 @@ class TodoListWidget extends StatelessWidget{
 }
 
 Widget todoTitle(String title){
-  final text = title.isEmpty ? '新規メモ' : title;
+  final text = title.isEmpty ? '新規Todo' : title;
   return Text(
     text,
     style: const TextStyle(
-      fontSize: 18
+      fontSize: 20
     ),
   );
 }
