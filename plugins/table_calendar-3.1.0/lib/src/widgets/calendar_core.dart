@@ -126,7 +126,10 @@ class CalendarCore extends StatelessWidget {
                 border: day == focusedDay ? Border.all(
                   color: day == focusedDay ? Colors.deepPurple : Colors.grey,
                   width: day == focusedDay ? 1.5 : 0.0,
-                ) : null,
+                ) : const Border(
+                  top: BorderSide(color: Colors.grey, width: 0.2),
+                  bottom: BorderSide(color: Colors.grey, width: 0.2),
+                ),
               ),
               child: dayBuilder(context, day, baseDay),
             );

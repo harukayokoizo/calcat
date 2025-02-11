@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -79,27 +80,18 @@ class FollowCalendarPage extends ConsumerWidget{
                 final calendar = ref.watch(calendarDocumentProvider(calendarDoc.docId!));
                 return calendar.when(
                     data: (value){
-                      Image imagePath = Image.asset('images/no_image.png',fit: BoxFit.cover,);
-                      if(value.calendar!.image != null) {
-                        imagePath = Image.network(
-                          value.calendar!.image!,
-                          errorBuilder:(c,o,s) {
-                            return Container(color: Colors.grey);
-                          },
-                        );
-                      }
+                      final imagePath = value.calendar!.image ?? '';
+                      Image noImage = Image.asset('images/no_image.png', fit: BoxFit.cover,);
+                      CachedNetworkImage imageWidget = CachedNetworkImage(
+                        imageUrl: imagePath,
+                        errorWidget: (context, url, error) => Container(color: const Color(0xFFDCDCDC)),
+                      );
                       var barSize = AppBar().preferredSize.height;
 
                       return Padding(
                         padding: const EdgeInsets.only(right: 12.0),
                         child: GestureDetector(
                           onTap: (){
-                            // Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(
-                            //     builder: (context) => CalendarDetail(true, value),
-                            //   ),
-                            // );
                             showCupertinoModalPopup(
                               context: context,
                               builder: (BuildContext context) {
@@ -120,7 +112,7 @@ class FollowCalendarPage extends ConsumerWidget{
                             ),
                             child: FittedBox(
                                 fit: BoxFit.cover,
-                                child: imagePath
+                                child: value.calendar!.image == null ? noImage : imageWidget
                             ),
                           ),
                         ),

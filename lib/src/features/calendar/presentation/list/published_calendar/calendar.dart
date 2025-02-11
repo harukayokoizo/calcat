@@ -1,7 +1,9 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:table_calendar/table_calendar.dart';
+import '../../../../todo/presentation/todo/calendar_todo_list.dart';
 import '../../../application/calendar_list_provider.dart';
 import '../../../application/event_list_provider.dart';
 import '../../../domain/calendar_document.dart';
@@ -65,15 +67,12 @@ class PublicCalendarPage extends ConsumerWidget{
               final calendar = ref.watch(calendarDocumentProvider(calendarDoc.docId!));
               return calendar.when(
                   data: (value){
-                    Image imagePath = Image.asset('images/no_image.png',fit: BoxFit.cover,);
-                    if(value.calendar!.image != null) {
-                      imagePath = Image.network(
-                        value.calendar!.image!,
-                        errorBuilder:(c,o,s) {
-                          return Container(color: Colors.grey);
-                        },
-                      );
-                    }
+                    final imagePath = value.calendar!.image ?? '';
+                    Image noImage = Image.asset('images/no_image.png', fit: BoxFit.cover,);
+                    CachedNetworkImage imageWidget = CachedNetworkImage(
+                      imageUrl: imagePath,
+                      errorWidget: (context, url, error) => Container(color: const Color(0xFFDCDCDC)),
+                    );
                     var barSize = AppBar().preferredSize.height;
 
                     return Padding(
@@ -104,7 +103,7 @@ class PublicCalendarPage extends ConsumerWidget{
                           ),
                           child: FittedBox(
                               fit: BoxFit.cover,
-                              child: imagePath
+                              child: value.calendar!.image == null ? noImage : imageWidget
                           ),
                         ),
                       ),
@@ -173,6 +172,19 @@ class PublicCalendarPage extends ConsumerWidget{
             );
           }
       ),
+      floatingActionButton: _calendarFormat == CalendarFormat.month ? FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => CalendarTodoList(calendarDoc),
+            ),
+          );
+        },
+        backgroundColor: Colors.blue.shade500,
+        shape: const CircleBorder(),
+        child: const Icon(Icons.calendar_today_outlined, color: Colors.white),
+      ) : null,
     );
   }
 }

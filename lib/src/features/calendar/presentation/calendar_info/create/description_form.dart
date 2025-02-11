@@ -26,6 +26,7 @@ class DescriptionForm extends ConsumerWidget{
             keyboardType: TextInputType.multiline,
             maxLines: null,
             decoration: const InputDecoration(
+              hintText: '概要',
               fillColor: Colors.white,
               filled: true,
               border:OutlineInputBorder(

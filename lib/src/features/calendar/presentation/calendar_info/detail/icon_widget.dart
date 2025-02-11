@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
@@ -15,27 +16,22 @@ class CalendarIconWidget extends ConsumerWidget{
 
   @override
   Widget build(BuildContext context, WidgetRef ref){
-    Widget imagePath = FittedBox(
-      fit: BoxFit.cover,
-      child: Image.asset('images/no_image.png',),
+    final imagePath = calendar.image ?? '';
+    Image noImage = Image.asset('images/no_image.png', fit: BoxFit.cover,);
+    CachedNetworkImage imageWidget = CachedNetworkImage(
+      imageUrl: imagePath,
+      errorWidget: (context, url, error) => Container(color: const Color(0xFFDCDCDC)),
     );
-    if(calendar.image != null) {
-      imagePath = FittedBox(
-        fit: BoxFit.cover,
-        child: Image.network(
-          calendar.image!,
-          errorBuilder:(c,o,s) {
-            return Container(color: Colors.grey);
-          },
-        ),
-      );
-    }
+
     return Container(
       clipBehavior: Clip.hardEdge,
       decoration: const BoxDecoration(
         color: Colors.grey,
       ),
-      child: imagePath
+      child: FittedBox(
+          fit: BoxFit.cover,
+          child: calendar.image == null ? noImage : imageWidget
+      ),
     );
   }
 }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 import '../../../domain/calendar_document.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'calendar.dart';
 
 class PublishedCalendarContent extends StatelessWidget{
@@ -76,26 +77,24 @@ class PublishedCalendarContent extends StatelessWidget{
 }
 
 Widget calendarIcon(String? image){
-  Image imagePath = Image.asset('images/no_image.png',fit: BoxFit.cover,);
-  if(image != null) {
-    imagePath = Image.network(
-      image,
-      errorBuilder:(c,o,s) {
-        return Container(color: Colors.grey);
-      },
-    );
-  }
+  final imagePath = image ?? '';
+  Image noImage = Image.asset('images/no_image.png', fit: BoxFit.cover,);
+  CachedNetworkImage imageWidget = CachedNetworkImage(
+    imageUrl: imagePath,
+    errorWidget: (context, url, error) => Container(color: const Color(0xFFDCDCDC)),
+  );
+
   return Container(
     height: 100,
     width: 100,
     clipBehavior: Clip.hardEdge,
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(10),
-      color: Colors.grey,
+      color: const Color(0xFFDCDCDC),
     ),
     child: FittedBox(
         fit: BoxFit.cover,
-        child: imagePath
+        child: image == null ? noImage : imageWidget
     ),
   );
 }

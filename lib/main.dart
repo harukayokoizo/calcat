@@ -48,7 +48,7 @@ import 'firebase_options_prod.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptionsProd.currentPlatform);
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   // パッケージ情報の取得
   PackageInfo packageInfo = await PackageInfo.fromPlatform();

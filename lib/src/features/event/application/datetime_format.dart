@@ -41,6 +41,14 @@ class DateTimeFormat{
     return '$year年$month月$day日(${weekday[weekdayNum]})';
   }
 
+  String dateNormalFormat(){
+    final year = this.year;
+    final month = this.month;
+    final day = this.day;
+
+    return '$year/$month/$day';
+  }
+
   String getCalendarMonth(){
     final year = this.year;
     final month = this.month;
