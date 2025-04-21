@@ -164,7 +164,7 @@ class CreateAccountPageState extends ConsumerState<CreateAccountPage>{
                       ),
                     ),
                   ),
-                  const Spacer(flex: 2,),
+                  const Spacer(flex: 1,),
                 ],
               ),
             ),

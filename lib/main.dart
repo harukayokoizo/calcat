@@ -48,7 +48,7 @@ import 'firebase_options_prod.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await Firebase.initializeApp(options: DefaultFirebaseOptionsProd.currentPlatform);
 
   // パッケージ情報の取得
   PackageInfo packageInfo = await PackageInfo.fromPlatform();
@@ -204,16 +204,16 @@ class ControlPageState extends ConsumerState<ControlPage>{
 
     //現在のFCMトークンが正常に保存されているかチェックする。
     //トークンがなければ、作成する。
-    Future(() async {
-      final user = ref.read(currentUserProvider);
-      final fcmToken = await FirebaseMessaging.instance.getToken();
-      if(user != null) {
-        bool noExits = await ref.read(tokenRepositories).getUser(user.uid, fcmToken!);
-        if(noExits){
-          await ref.read(tokenRepositories).controlUser(fcmToken);
-        }
-      }
-    });
+    // Future(() async {
+    //   final user = ref.read(currentUserProvider);
+    //   final fcmToken = await FirebaseMessaging.instance.getToken();
+    //   if(user != null) {
+    //     bool noExits = await ref.read(tokenRepositories).getUser(user.uid, fcmToken!);
+    //     if(noExits){
+    //       await ref.read(tokenRepositories).controlUser(fcmToken);
+    //     }
+    //   }
+    // });
 
 
     final packageInfo = ref.read(packageInfoProvider);
@@ -249,11 +249,7 @@ class ControlPageState extends ConsumerState<ControlPage>{
     final authState = ref.watch(authStateChangeProvider);
     return authState.when(
         data: (data) {
-          if(data != null) {
-            return const TopPage();
-          }else{
-            return const LoginPage();
-          }
+          return const TopPage();
         },
         loading: () => Container(),
         error: (_, __) => Container()

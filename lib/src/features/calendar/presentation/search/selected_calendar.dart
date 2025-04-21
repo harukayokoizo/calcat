@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:share_calendar/src/features/calendar/domain/calendar_document.dart';
+import '../../../../common_widgets/application/common_provider.dart';
+import '../../../authentication/presentation/create_account_popup.dart';
 import '../../application/favorite_provider.dart';
 import '../../application/search_provider.dart';
 import '../../data/calendar_repositories.dart';
@@ -93,12 +95,22 @@ Widget followButton(String docId){
               if(!value){
                 return TextButton(
                   onPressed: (){
-                    ref.read(calendarRepositories).getCalendarPublicPreference(docId).then((value){
-                      if(value){
-                        ref.read(calendarUserRepositories).createCalendarUser(docId);
-                      }
-                    });
-                    ref.refresh(getFollowCalendar(docId).future);
+                    final currentUser = ref.read(currentUserProvider);
+                    if(currentUser != null){
+                      ref.read(calendarRepositories).getCalendarPublicPreference(docId).then((value){
+                        if(value){
+                          ref.read(calendarUserRepositories).createCalendarUser(docId);
+                        }
+                      });
+                      ref.refresh(getFollowCalendar(docId).future);
+                    }else{
+                      showDialog<String>(
+                          context: context,
+                          barrierDismissible: false,
+                          builder: (_) {
+                            return const CreateAccountPopup();
+                          });
+                    }
                   },
                   style: TextButton.styleFrom(
                       backgroundColor: Colors.purple,

@@ -76,6 +76,7 @@ Widget todoTitle(String title){
   final text = title.isEmpty ? '新規Todo' : title;
   return Text(
     text,
+    maxLines: 1,
     style: const TextStyle(
       fontSize: 20
     ),

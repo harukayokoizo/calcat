@@ -137,24 +137,25 @@ class EventFloatingButtonState extends State<EventFloatingButton>{
                 }
               },
             ),
-            SpeedDialChild(
-              label: '通知',
-              shape: const CircleBorder(),
-              backgroundColor: Colors.blue.shade50,
-              child: notificationIcon,
-              onTap: () async {
-                showCupertinoModalPopup(
-                    context: context,
-                    builder: (BuildContext context) => NotificationActionSheet(eventDoc, public)
-                ).then((value) {
-                  if(value != null){
-                    setState(() {
-                      notification = value;
-                    });
-                  }
-                });
-              },
-            ),
+            if(public)
+              SpeedDialChild(
+                label: '通知',
+                shape: const CircleBorder(),
+                backgroundColor: Colors.blue.shade50,
+                child: notificationIcon,
+                onTap: () async {
+                  showCupertinoModalPopup(
+                      context: context,
+                      builder: (BuildContext context) => NotificationActionSheet(eventDoc, public)
+                  ).then((value) {
+                    if(value != null){
+                      setState(() {
+                        notification = value;
+                      });
+                    }
+                  });
+                },
+              ),
           ],
         ),
       ],

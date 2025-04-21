@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -11,11 +12,12 @@ import '../published_calendar/published_calendar_content.dart';
 import 'follow_calendar_content.dart';
 
 class FollowCalendarList extends ConsumerWidget{
-  const FollowCalendarList({super.key});
+  User? user;
+  FollowCalendarList(this.user, {super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref){
-    var calendar = ref.watch(followCalendarList);
+    var calendar = ref.watch(followCalendarList(user));
     return calendar.when(
       error: (err, _) => const SizedBox(), //エラー時
       loading: () => const SizedBox(), //読み込み時

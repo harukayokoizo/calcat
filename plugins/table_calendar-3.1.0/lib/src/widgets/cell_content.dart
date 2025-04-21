@@ -104,7 +104,7 @@ class CellContent extends StatelessWidget {
                 child: Align(
                   alignment: Alignment.topLeft,
                   child: Container(
-                    margin: const EdgeInsets.only(top: 1.0, left: 1.0),
+                    margin: const EdgeInsets.only(top: 0.0, left: 1.0),
                     //width: constraints.maxWidth / 2.5,
                     color: color,
                     child: Padding(

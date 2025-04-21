@@ -9,11 +9,11 @@ import 'package:share_calendar/src/features/authentication/presentation/password
 
 import '../../../common_widgets/application/common_provider.dart';
 import '../application/mail_auth.dart';
+import '../application/user_provider.dart';
 import '../data/user_repositories.dart';
 
 class DeleteAccountPage extends ConsumerStatefulWidget{
-  final User user;
-  const DeleteAccountPage(this.user, {super.key});
+  const DeleteAccountPage({super.key});
 
   @override
   DeleteAccountPageState createState() => DeleteAccountPageState();
@@ -33,7 +33,8 @@ class DeleteAccountPageState extends ConsumerState<DeleteAccountPage>{
 
   @override
   Widget build(BuildContext context){
-    final email = widget.user.email.toString() ?? '';
+    final user = ref.read(firebaseAuthProvider).currentUser;
+    final email = user?.email.toString() ?? '';
     final double deviceWidth = MediaQuery.of(context).size.width;
     final double deviceHeight = MediaQuery.of(context).size.height;
     return Stack(
@@ -71,7 +72,7 @@ class DeleteAccountPageState extends ConsumerState<DeleteAccountPage>{
                           const Padding(
                             padding: EdgeInsets.all(8.0),
                             child: Text(
-                              'アカウントを削除すると、こちらのアカウントで作成したカレンダー、イベントは全て削除されます。',
+                              'アカウントを削除すると、こちらのアカウントで作成したカレンダーは全て削除されます。',
                               style: TextStyle(
                                 fontSize: 12
                               ),

@@ -1072,7 +1072,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0.5;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.harukayokomizo.banana-sharecalendar.dev";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.harukayokomizo.banana-sharecalendar";
 				PRODUCT_NAME = "CalCat-dev";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = CalCatProvisioningProfile;
@@ -1183,7 +1183,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0.5;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.harukayokomizo.banana-sharecalendar.dev";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.harukayokomizo.banana-sharecalendar";
 				PRODUCT_NAME = "CalCat-dev";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = CalCatProvisioningProfile;

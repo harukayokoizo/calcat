@@ -1,8 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:share_calendar/src/features/calendar/domain/calendar.dart';
+import 'package:share_calendar/src/features/event/domain/local_event.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+import '../data/event_local_repositories.dart';
 import '../data/personal_event_repositories.dart';
 import '../domain/event_document.dart';
 import '../domain/event.dart';
@@ -28,7 +31,8 @@ class FocusedDayState extends StateNotifier<DateTime>{
 final personalEvents = StreamProvider.autoDispose.family<List<EventDocument>, String>(
         (ref, calendarMonth) {
           //final month = ref.watch(calendarMonth);
-          var personalEvents = ref.read(eventRepositories).getEvent(calendarMonth);
+          var personalEvents = ref.read(eventLocalRepositories).getEvent(calendarMonth);
+          // var personalEvents = ref.read(eventRepositories).getEvent(calendarMonth);
           return personalEvents;
         });
 
@@ -60,37 +64,43 @@ class PersonalEventListController extends StateNotifier<Map<dynamic, dynamic>>{
     //   DateTime.utc(2024, 2, 22): ['firstEvent', 'secondEvent'],
     //   DateTime.utc(2024, 2, 23): ['thirdEvent', 'fourthEvent']
     // };
-    final Map<DateTime, List<EventDocument>> eventList = {};
-    for(final EventDocument eventDoc in events){
-      Event event = eventDoc.event!;
-      List keyDate = [];
-      DateTime? from = event.from;
-      DateTime? to = event.to;
-      from = DateTime.utc(from!.year, from.month, from.day);
-      to = DateTime.utc(to!.year, to.month, to.day);
-      if(from == to){
-        //イベントの開始日と終了日が同じの場合
-        keyDate = [from];
-      }else{
-        for(int i = 0;i <= to.difference(from).inDays;i++){
-          keyDate.add(from.add(Duration(days: i)));
-        }
-      }
-
-      //eventListにMap<DateTime, List<PersonalEvent>>を追加する
-      for(var date in keyDate){
-        //eventListにdateのkeyが存在するかチェックする
-        var containDate = eventList.containsKey(date);
-        if(containDate){
-          List<EventDocument> value = eventList[date]!;
-          value.add(eventDoc);
-          eventList[date] = value;
+    try{
+      final Map<DateTime, List<EventDocument>> eventList = {};
+      for(final EventDocument eventDoc in events){
+        Event event = eventDoc.event!;
+        List keyDate = [];
+        DateTime? from = event.from;
+        DateTime? to = event.to;
+        from = DateTime.utc(from!.year, from.month, from.day);
+        to = DateTime.utc(to!.year, to.month, to.day);
+        if(from == to){
+          //イベントの開始日と終了日が同じの場合
+          keyDate = [from];
         }else{
-          eventList.addAll({date : [eventDoc]});
+          for(int i = 0;i <= to.difference(from).inDays;i++){
+            keyDate.add(from.add(Duration(days: i)));
+          }
+        }
+
+        //eventListにMap<DateTime, List<PersonalEvent>>を追加する
+        for(var date in keyDate){
+          //eventListにdateのkeyが存在するかチェックする
+          var containDate = eventList.containsKey(date);
+          if(containDate){
+            List<EventDocument> value = eventList[date]!;
+            value.add(eventDoc);
+            eventList[date] = value;
+          }else{
+            eventList.addAll({date : [eventDoc]});
+          }
         }
       }
+      return eventList;
+
+    }catch (e){
+      throw e.toString();
     }
-    return eventList;
+
   }
 
   Map<DateTime, List<EventDocument>> sortEventList(Map<DateTime, List<EventDocument>> eventMap){

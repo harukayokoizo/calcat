@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../common_widgets/application/common_provider.dart';
@@ -13,12 +14,15 @@ class CalendarRepositories {
   CalendarRepositories(this.ref);
 
   //personal_eventコレクションからイベントを取得する
-  Stream<List<CalendarDocument>> getCalendarList() async*{
+  Stream<List<CalendarDocument>> getCalendarList(User? user) async*{
     try {
-      final currentUser = ref.read(currentUserProvider);
+      // final currentUser = ref.read(currentUserProvider);
+      if (user == null) {
+        yield* const Stream.empty();
+      }
       var calendars = FirebaseFirestore.instance
           .collection('calendar')
-          .where('calendarOwner', arrayContainsAny: [currentUser!.uid])
+          .where('calendarOwner', arrayContainsAny: [user?.uid])
           .orderBy('updated', descending: true)
           .snapshots().map(
               (snapshots) =>

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../application/datetime_format.dart';
 import '../../../application/event_list_provider.dart';
+import '../../../data/event_local_repositories.dart';
 import '../../../data/personal_event_repositories.dart';
 import 'component/list_widget.dart';
 
@@ -12,7 +13,8 @@ class PersonalEventList extends ConsumerWidget{
 
   @override
   Widget build(BuildContext context, WidgetRef ref){
-    final repositories = ref.read(eventRepositories);
+    final repositories = ref.read(eventLocalRepositories);
+    // final repositories = ref.read(eventRepositories);
     final calendarFormat = ref.read(calendarFormatState.notifier);
     final focusedDayState = ref.read(focusedDayProvider.notifier);
 

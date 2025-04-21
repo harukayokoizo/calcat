@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
 
+import '../../event/domain/local_event.dart';
 import '../../search_value/domain/search_value.dart';
 import '../../tab_value/domain/tab_value.dart';
 import '../domain/fcm_token.dart';
@@ -19,7 +20,7 @@ class FcmTokenRepositories {
       isar = Isar.getInstance('myInstance');
     }else {
       isar ??= await Isar.open(
-        [FcmTokenSchema, SearchValueSchema, TabValueSchema],
+        [FcmTokenSchema, SearchValueSchema, TabValueSchema, LocalEventSchema],
         directory: dir.path,
         name: 'myInstance',
       );

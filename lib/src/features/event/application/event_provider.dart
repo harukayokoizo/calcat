@@ -273,7 +273,7 @@ class EventFormState extends StateNotifier<Event>{
         if (state.repeat == 0) {
           repositories.updateEvent(events.first, eventDoc.docId!);
         } else {
-          repositories.deleteAndUpdateEvent([eventDoc.docId!], events);
+          // repositories.deleteAndUpdateEvent([eventDoc.docId!], events);
         }
       } else if (value == 1) {
         //繰り返しはあるが、特定の予定のみを更新する場合

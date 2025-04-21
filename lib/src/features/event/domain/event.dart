@@ -32,4 +32,25 @@ abstract class Event with _$Event{
   }) = _Event;
 
   factory Event.fromJson(Map<String,dynamic> json) => _$EventFromJson(json);
+
+  factory Event.fromLocalEventJson(Map<String,dynamic> json) {
+    return Event(
+      title: json['title'],
+      overview: json['overview'],
+      color: json['color'],
+      url: json['url'],
+      location: json['location'],
+      isAllDay: json['isAllDay'],
+      from: json['from'],
+      to: json['to'],
+      repeat: json['repeat'],
+      endDate: json['endDate'],
+      createdAt: json['createdAt'],
+      updatedAt: json['updatedAt'],
+      sameEventId: json['sameEventId'],
+      number: json['number'],
+      notificationExist: json['notificationExist'],
+      calendarMonth: json['calendarMonth'],
+    );
+  }
 }

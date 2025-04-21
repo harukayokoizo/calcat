@@ -9,6 +9,7 @@ import 'package:share_calendar/src/features/event/presentation/event/detail/url_
 import '../../../../calendar/presentation/calendar_info/detail/icon_widget.dart';
 import '../../../../notification/data/personal_event_notification_repositories.dart';
 import '../../../../notification/data/public_event_notification_repositories.dart';
+import '../../../data/event_local_repositories.dart';
 import '../../../data/personal_event_repositories.dart';
 import '../../../domain/event_document.dart';
 import '../../../domain/event.dart';
@@ -45,22 +46,12 @@ class EventDetailState extends ConsumerState<EventDetail>{
   Widget build(BuildContext context) {
     bool public = false;
     Event event = eventDoc.event!;
-    Future<bool> getNotification = ref.read(eventRepositories).getSingleEvent(eventDoc.docId!);
+    // Future<bool> getNotification = ref.read(eventLocalRepositories).getSingleEvent(eventDoc.docId!);
     return ClipRRect(
       borderRadius: const BorderRadius.vertical(
         top: Radius.circular(20.0),
       ),
       child: Scaffold(
-        // appBar: AppBar(
-        //   elevation: 5,
-        //   titleTextStyle: const TextStyle(
-        //     color: Colors.black,
-        //     fontSize: 18,
-        //     //fontWeight: FontWeight.bold,
-        //   ),
-        //   // title: const Text('詳細'),
-        //   // centerTitle: true,
-        // ),
         body: Stack(
           children: [
             SingleChildScrollView(
@@ -94,20 +85,21 @@ class EventDetailState extends ConsumerState<EventDetail>{
             ),
           ],
         ),
-        floatingActionButton: FutureBuilder(
-            future: getNotification,
-            builder: (BuildContext context, AsyncSnapshot<bool> notification) {
-              if(notification.connectionState == ConnectionState.done){
-                if(notification.connectionState == ConnectionState.done){
-                  return EventFloatingButton(eventDoc, repositories, public, notification.data!);
-                }else{
-                  return const SizedBox();
-                }
-              }else{
-                return const SizedBox();
-              }
-            }
-        ),
+        floatingActionButton: EventFloatingButton(eventDoc, repositories, public, false)
+        // FutureBuilder(
+        //     future: getNotification,
+        //     builder: (BuildContext context, AsyncSnapshot<bool> notification) {
+        //       if(notification.connectionState == ConnectionState.done){
+        //         if(notification.connectionState == ConnectionState.done){
+        //           return EventFloatingButton(eventDoc, repositories, public, notification.data!);
+        //         }else{
+        //           return const SizedBox();
+        //         }
+        //       }else{
+        //         return const SizedBox();
+        //       }
+        //     }
+        // ),
       ),
     );
   }

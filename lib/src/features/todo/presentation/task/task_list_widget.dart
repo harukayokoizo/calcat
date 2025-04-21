@@ -5,6 +5,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 
 import '../../../event/application/datetime_format.dart';
 import '../../data/task_repositories.dart';
+import '../../data/todo_repositories.dart';
 import '../../domain/task.dart';
 import '../../domain/task_document.dart';
 import '../../domain/todo.dart';
@@ -12,10 +13,11 @@ import '../../domain/todo_document.dart';
 import '../todo/todo_detail.dart';
 
 class TaskListFormWidget extends ConsumerStatefulWidget{
+  final TodoDocument todoDocument;
   final TaskDocument taskDocument;
   final int index;
   final int length;
-  const TaskListFormWidget(this.taskDocument, this.index, this.length, {super.key});
+  const TaskListFormWidget(this.todoDocument, this.taskDocument, this.index, this.length, {super.key});
 
   @override
   ConsumerState<TaskListFormWidget> createState() => TaskListFormWidgetState();
@@ -31,8 +33,10 @@ class TaskListFormWidgetState extends ConsumerState<TaskListFormWidget>{
     focusNode.addListener(() {
       if (!focusNode.hasFocus) {
         DateTime date = DateTime.now();
-        Map<String, dynamic> data = {'task': controller.value.text, 'updated': date};
-        ref.read(taskRepositories).updateTask(widget.taskDocument, data);
+        Map<String, dynamic> task = {'task': controller.value.text, 'updated': date};
+        Map<String, dynamic> todo = {'updated': date};
+        ref.read(taskRepositories).updateTask(widget.taskDocument, task);
+        ref.read(todoRepositories).updateTodo(widget.todoDocument, todo);
       }
     });
   }
@@ -109,8 +113,10 @@ class TaskListFormWidgetState extends ConsumerState<TaskListFormWidget>{
                       },
                       onFieldSubmitted: (value){
                         DateTime date = DateTime.now();
-                        Map<String, dynamic> data = {'task': value, 'updated': date};
-                        ref.read(taskRepositories).updateTask(widget.taskDocument, data);
+                        Map<String, dynamic> task = {'task': value, 'updated': date};
+                        Map<String, dynamic> todo = {'updated': date};
+                        ref.read(taskRepositories).updateTask(widget.taskDocument, task);
+                        ref.read(todoRepositories).updateTodo(widget.todoDocument, todo);
                       },
                     ),
                   ),

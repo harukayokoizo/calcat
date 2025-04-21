@@ -1,16 +1,19 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../authentication/application/user_provider.dart';
 import '../../../application/calendar_list_provider.dart';
 import '../../../domain/calendar_document.dart';
 import 'published_calendar_content.dart';
 
 class PublishedCalendarList extends ConsumerWidget{
-  const PublishedCalendarList({super.key});
+  User? user;
+  PublishedCalendarList(this.user, {super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final calendar = ref.watch(calendarList);
+    final calendar = ref.watch(calendarList(user));
     return calendar.when(
       error: (err, _) => const SizedBox(), //エラー時
       loading: () => const SizedBox(), //読み込み時

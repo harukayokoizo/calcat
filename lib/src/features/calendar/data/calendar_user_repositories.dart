@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../common_widgets/application/common_provider.dart';
@@ -14,11 +15,14 @@ class CalendarUserRepositories {
   CalendarUserRepositories(this.ref);
 
   //personal_eventコレクションからイベントを取得する
-  Stream<List<CalendarUser>> getAllFollowCalendar() async*{
-    final currentUser = ref.read(currentUserProvider);
+  Stream<List<CalendarUser>> getAllFollowCalendar(User? user) async*{
+    // final currentUser = ref.read(currentUserProvider);
+    if (user == null) {
+      yield* const Stream.empty();
+    }
     var calendars = FirebaseFirestore.instance
         .collectionGroup('calendar_user')
-        .where('uid', isEqualTo: currentUser!.uid)
+        .where('uid', isEqualTo: user!.uid)
         .orderBy('created', descending: true)
         .snapshots().map(
             (snapshots) => snapshots.docs.map(
@@ -41,15 +45,17 @@ class CalendarUserRepositories {
   Future<bool> getFollowCalendar(String docId) async{
     bool follow = false;
     final currentUser = ref.read(currentUserProvider);
-    var calendar = await FirebaseFirestore.instance
-        .collection('calendar')
-        .doc(docId)
-        .collection('calendar_user')
-        .doc(currentUser!.uid)
-        .get();
+    if(currentUser != null){
+      var calendar = await FirebaseFirestore.instance
+          .collection('calendar')
+          .doc(docId)
+          .collection('calendar_user')
+          .doc(currentUser.uid)
+          .get();
 
-    if(calendar.exists){
-      follow = true;
+      if(calendar.exists){
+        follow = true;
+      }
     }
 
     return follow;

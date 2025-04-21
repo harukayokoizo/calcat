@@ -41,7 +41,7 @@ class TaskList extends ConsumerWidget{
               SliverList(
                 delegate: SliverChildBuilderDelegate((BuildContext context, int index) {
                     if(tasks.isNotEmpty) {
-                      return TaskListForm(tasks[index], index, tasks.length, ref);
+                      return TaskListForm(todoDocument, tasks[index], index, tasks.length, ref);
                     }else{
                       return const SizedBox();
                     }
@@ -59,11 +59,12 @@ class TaskList extends ConsumerWidget{
 
 
 class TaskListForm extends StatefulWidget{
+  final TodoDocument todoDocument;
   final TaskDocument taskDocument;
   final int index;
   final int length;
   final WidgetRef ref;
-  const TaskListForm(this.taskDocument, this.index, this.length, this.ref, {super.key});
+  const TaskListForm(this.todoDocument, this.taskDocument, this.index, this.length, this.ref, {super.key});
 
   @override
   State<TaskListForm> createState() => TaskListFormState();
@@ -90,7 +91,7 @@ class TaskListFormState extends State<TaskListForm> with SingleTickerProviderSta
               ),
             ],
           ),
-          child: TaskListFormWidget(widget.taskDocument, widget.index, widget.length)),
+          child: TaskListFormWidget(widget.todoDocument, widget.taskDocument, widget.index, widget.length)),
     );
   }
 }

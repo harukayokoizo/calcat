@@ -3,6 +3,7 @@ import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../../authentication/domain/fcm_token.dart';
+import '../../event/domain/local_event.dart';
 import '../../tab_value/domain/tab_value.dart';
 import '../domain/search_value.dart';
 
@@ -19,7 +20,7 @@ class SearchValueRepositories {
         isar = Isar.getInstance('myInstance');
       } else {
         isar ??= await Isar.open(
-          [FcmTokenSchema, SearchValueSchema, TabValueSchema],
+          [FcmTokenSchema, SearchValueSchema, TabValueSchema, LocalEventSchema],
           directory: dir.path,
           name: 'myInstance',
         );
