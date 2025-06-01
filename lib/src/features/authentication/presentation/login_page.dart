@@ -26,6 +26,10 @@ class LoginPageState extends ConsumerState<LoginPage>{
       children: [
         Scaffold(
           appBar: AppBar(
+            title: const Text(
+              'ログイン',
+              style: TextStyle(fontSize: 20),
+            ),
             leading: IconButton(
               onPressed: (){
                 Navigator.pop(context);
@@ -33,115 +37,119 @@ class LoginPageState extends ConsumerState<LoginPage>{
               icon: const Icon(Icons.close),
             ),
           ),
-          body: SizedBox(
-            width: deviceWidth,
-            height: deviceHeight,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 15.0),
-                  child: SizedBox(
-                    width: deviceWidth * 0.8,
-                    child: TextFormField(
-                      controller: mailTextController,
-                      decoration: const InputDecoration(
-                        hintText: 'メールアドレス',
-                        border: OutlineInputBorder(),
+          body: Padding(
+            padding: const EdgeInsets.only(top: 20.0),
+            child: SizedBox(
+              width: deviceWidth,
+              height: deviceHeight,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 15.0),
+                    child: SizedBox(
+                      width: deviceWidth * 0.8,
+                      child: TextFormField(
+                        controller: mailTextController,
+                        decoration: const InputDecoration(
+                          hintText: 'メールアドレス',
+                          border: OutlineInputBorder(),
+                        ),
+                        onChanged: (value){
+                          setState(() {});
+                        },
                       ),
-                      onChanged: (value){
-                        setState(() {});
-                      },
                     ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 20.0),
-                  child: SizedBox(
-                    width: deviceWidth * 0.8,
-                    child: TextFormField(
-                      controller: passTextController,
-                      decoration: const InputDecoration(
-                        hintText: 'パスワード',
-                        border: OutlineInputBorder(),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 20.0),
+                    child: SizedBox(
+                      width: deviceWidth * 0.8,
+                      child: TextFormField(
+                        obscureText: true,
+                        controller: passTextController,
+                        decoration: const InputDecoration(
+                          hintText: 'パスワード',
+                          border: OutlineInputBorder(),
+                        ),
+                        onChanged: (value){
+                          setState(() {});
+                        },
                       ),
-                      onChanged: (value){
-                        setState(() {});
-                      },
                     ),
                   ),
-                ),
-                Align(
-                  alignment: Alignment.center,
-                  child: SizedBox(
-                    child: GestureDetector(
-                      onTap: () async{
-                        await Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => const MailSendPage(),
+                  Align(
+                    alignment: Alignment.center,
+                    child: SizedBox(
+                      child: GestureDetector(
+                        onTap: () async{
+                          await Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const MailSendPage(),
+                            ),
+                          );
+                        },
+                        child: const Text(
+                          'パスワードはお忘れですか？',
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: Colors.blueAccent
                           ),
-                        );
-                      },
-                      child: const Text(
-                        'パスワードはお忘れですか？',
-                        style: TextStyle(
-                          fontSize: 15,
-                          color: Colors.blueAccent
                         ),
                       ),
                     ),
                   ),
-                ),
-                const Spacer(flex: 10,),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 20.0),
-                  child: SizedBox(
-                    width: deviceWidth * 0.8,
-                    height: 50,
-                    child: ElevatedButton(
-                      onPressed: mailTextController.text.isEmpty || passTextController.text.isEmpty ? null : () {
-                        FocusScope.of(context).unfocus();
-                        setState(() {
-                          loading = true;
-                        });
-                        ref.read(authenticateProvider).loginAndCreateToken(mailTextController.text, passTextController.text).then((message){
-                          if(message != 'success') {
-                            passTextController.clear();
-                            setState(() {loading = false;});
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                backgroundColor: Colors.red,
-                                content: Text(
-                                  message,
-                                  style: const TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold
+                  const Spacer(flex: 10,),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 20.0),
+                    child: SizedBox(
+                      width: deviceWidth * 0.8,
+                      height: 50,
+                      child: ElevatedButton(
+                        onPressed: mailTextController.text.isEmpty || passTextController.text.isEmpty ? null : () {
+                          FocusScope.of(context).unfocus();
+                          setState(() {
+                            loading = true;
+                          });
+                          ref.read(authenticateProvider).loginAndCreateToken(mailTextController.text, passTextController.text).then((message){
+                            if(message != 'success') {
+                              passTextController.clear();
+                              setState(() {loading = false;});
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  backgroundColor: Colors.red,
+                                  content: Text(
+                                    message,
+                                    style: const TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold
+                                    ),
                                   ),
                                 ),
-                              ),
-                            );
-                          }else{
-                            setState(() {loading = false;});
-                            Navigator.pop(context, true);
-                          }
-                        });
-                      },
-                      style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
-                        //side: BorderSide(color: Colors.black)
-                      ),
-                      child: const Text(
-                        "ログイン",
-                        style: TextStyle(
-                            fontSize: 20
+                              );
+                            }else{
+                              setState(() {loading = false;});
+                              Navigator.pop(context, true);
+                            }
+                          });
+                        },
+                        style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
+                          //side: BorderSide(color: Colors.black)
                         ),
-                      ),
+                        child: const Text(
+                          "ログイン",
+                          style: TextStyle(
+                              fontSize: 20
+                          ),
+                        ),
 
+                      ),
                     ),
                   ),
-                ),
-                const Spacer(flex: 1,),
-              ],
+                  const Spacer(flex: 1,),
+                ],
+              ),
             ),
           ),
         ),

@@ -20,10 +20,21 @@ class CalendarTodoList extends ConsumerWidget{
     final todoList = ref.watch(todoListProvider(calendarId));
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
+        leading: IconButton(
+          onPressed: (){
+            Navigator.pop(context);
+          },
+          icon: Icon(
+            Icons.arrow_back_ios,
+            size: 26,
+            color: Colors.black.withOpacity(0.5),
+          ),
+        ),
+        title: Text(
           'Todoリスト',
           style: TextStyle(
             fontWeight: FontWeight.bold,
+            color: Colors.black.withOpacity(0.5),
           ),
         ),
         backgroundColor: const Color(0xFFACC5DB),

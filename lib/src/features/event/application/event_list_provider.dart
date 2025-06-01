@@ -9,6 +9,8 @@ import '../data/event_local_repositories.dart';
 import '../data/personal_event_repositories.dart';
 import '../domain/event_document.dart';
 import '../domain/event.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 final calendarFormatState = StateProvider<CalendarFormat>((ref) => CalendarFormat.month);
 
@@ -17,6 +19,7 @@ final focusedDayProvider = StateNotifierProvider<FocusedDayState, DateTime>(
           return FocusedDayState();
         }
 );
+
 class FocusedDayState extends StateNotifier<DateTime>{
   FocusedDayState() : super(DateTime.now());
 
@@ -30,9 +33,7 @@ class FocusedDayState extends StateNotifier<DateTime>{
 // 該当月のイベント情報のStreamを提供する
 final personalEvents = StreamProvider.autoDispose.family<List<EventDocument>, String>(
         (ref, calendarMonth) {
-          //final month = ref.watch(calendarMonth);
           var personalEvents = ref.read(eventLocalRepositories).getEvent(calendarMonth);
-          // var personalEvents = ref.read(eventRepositories).getEvent(calendarMonth);
           return personalEvents;
         });
 
@@ -51,7 +52,6 @@ class PersonalEventListController extends StateNotifier<Map<dynamic, dynamic>>{
 
   PersonalEventListController(this.ref, this.events, this.calendarMonth) : super({}){
     Map<DateTime, List<EventDocument>> eventsDisplay = {};
-    // final events = ref.watch(personalEvents(calendarMonth));
     events.whenData((value){
       eventsDisplay = changeFormat(value);
       eventsDisplay = sortEventList(eventsDisplay);
@@ -113,6 +113,31 @@ class PersonalEventListController extends StateNotifier<Map<dynamic, dynamic>>{
     return sortEventMap;
   }
 
+  Future<Map<DateTime, List<EventDocument>>> getJapaneseHolidays() async{
+    final Map<DateTime, List<EventDocument>> eventList = {};
+    final response = await http.get(
+      Uri.parse('https://holidays-jp.github.io/api/v1/date.json'),
+    );
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> data = json.decode(response.body);
+      print(data);
+      data.forEach((date, title) {
+        final holiday = {
+          'title': title,
+          'color': 2,
+        };
+        final Event event = Event.fromLocalEventJson(holiday);
+        final EventDocument eventDocument = EventDocument(event: event, docId: 'holiday');
+        eventList.addAll({DateTime.parse(date): [eventDocument]});
+      });
+
+      return eventList;
+    } else {
+      return eventList;
+    }
+  }
+
 }
 
 // 閲覧した月の「personalEventList:イベント取得用クラス」のプロバイダーを格納するクラスを提供する
@@ -129,7 +154,6 @@ final eventStream = StateNotifierProvider<EventStream, List<dynamic>>(
             todayMonth = todayMonth + 1;
           }
           String nextMonth = '$todayYear年$todayMonth月';
-          print(nextMonth);
           return EventStream([personalEventList(month), personalEventList(nextMonth)]);
     }
 );

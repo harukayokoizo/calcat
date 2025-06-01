@@ -17,73 +17,79 @@ class NoAccountPage extends StatelessWidget{
       children: [
         Scaffold(
           appBar: AppBar(
-            // title: const Text('アカウント削除'),
+            title: const Text(
+              'アカウント',
+              style: TextStyle(fontSize: 20),
+            ),
           ),
-          body: GestureDetector(
-            child: SizedBox(
-              width: deviceWidth,
-              height: deviceHeight,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 15.0),
-                    child: SizedBox(
-                      width: deviceWidth * 0.8,
-                      height: 50,
-                      child: ElevatedButton(
-                        onPressed: (){
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => const CreateAccountPage(),
-                            ),
-                          );
-                        },
-                        style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
-                          //side: BorderSide(color: Colors.black)
-                        ),
-                        child: const Text(
-                          "アカウント作成",
-                          style: TextStyle(
-                            fontSize: 20,
-                            color: Colors.red,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 20.0),
-                    child: SizedBox(
-                      width: deviceWidth * 0.8,
-                      height: 50,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          showCupertinoModalPopup(
-                              context: context,
-                              builder: (BuildContext context) => SizedBox(
-                                height: deviceHeight,
-                                child: const LoginPage(),
+          body: Padding(
+            padding: const EdgeInsets.only(top: 20.0),
+            child: GestureDetector(
+              child: SizedBox(
+                width: deviceWidth,
+                height: deviceHeight,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 15.0),
+                      child: SizedBox(
+                        width: deviceWidth * 0.8,
+                        height: 50,
+                        child: ElevatedButton(
+                          onPressed: (){
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => const CreateAccountPage(),
                               ),
-                          );
-                        },
-                        style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
-                          //side: BorderSide(color: Colors.black)
-                        ),
-                        child: const Text(
-                          "ログイン",
-                          style: TextStyle(
-                            fontSize: 20,
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
+                            //side: BorderSide(color: Colors.black)
+                          ),
+                          child: const Text(
+                            "アカウント作成",
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: Colors.red,
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                  const Spacer(flex: 1,),
-                ],
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 20.0),
+                      child: SizedBox(
+                        width: deviceWidth * 0.8,
+                        height: 50,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            showCupertinoModalPopup(
+                                context: context,
+                                builder: (BuildContext context) => SizedBox(
+                                  height: deviceHeight,
+                                  child: const LoginPage(),
+                                ),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
+                            //side: BorderSide(color: Colors.black)
+                          ),
+                          child: const Text(
+                            "ログイン",
+                            style: TextStyle(
+                              fontSize: 20,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const Spacer(flex: 1,),
+                  ],
+                ),
               ),
             ),
           ),

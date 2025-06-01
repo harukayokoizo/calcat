@@ -93,20 +93,6 @@ class EventEdit extends ConsumerWidget{
                 url.unfocus();
                 location.unfocus();
               },
-              onHorizontalDragCancel: (){
-                FocusScope.of(context).unfocus();
-                title.unfocus();
-                overview.unfocus();
-                url.unfocus();
-                location.unfocus();
-              },
-              onHorizontalDragDown: (value){
-                FocusScope.of(context).unfocus();
-                title.unfocus();
-                overview.unfocus();
-                url.unfocus();
-                location.unfocus();
-              },
               child: Column(
                 children: [
                   Expanded(
@@ -138,7 +124,7 @@ class EventEdit extends ConsumerWidget{
                           ),
                         ],
                       ),
-                      child: EventCalendarForm(event, repositories, sameEvents, initialTime),
+                      child: EventCalendarForm(event, repositories, sameEvents, initialTime, event.from!),
                     ),
                   Container(height: bottomPadding ,color: Colors.white,)
                 ],

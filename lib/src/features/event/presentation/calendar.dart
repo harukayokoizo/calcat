@@ -54,7 +54,9 @@ class PersonalCalendarPageState extends ConsumerState{
         title: ValueListenableBuilder<DateTime>(
           valueListenable: _focusedDayValue,
           builder: (context, value, _) {
-            String title = '${value.year}年${value.month}月';
+            int year = focusedDay.year;
+            int month = focusedDay.month;
+            String title = '$year年$month月';
             return Text(title,
               style: const TextStyle(
                 fontWeight: FontWeight.bold
@@ -113,9 +115,15 @@ class PersonalCalendarPageState extends ConsumerState{
               _focusedDayValue.value = value;
               ref.read(focusedDayProvider.notifier).saveState(focusedDay: value);
               if(focusedDay.isBefore(value)){
+                int year = value.year;
+                int month = value.month + 1;
+                if(value.month == 12){
+                  year = value.year + 1;
+                  month = 1;
+                }
                 //次月に移動
-                String month = '${value.year}年${value.month + 1}月';
-                ref.read(eventStream.notifier).addStream(personalEventList(month));
+                String nextMonth = '$year年$month月';
+                ref.read(eventStream.notifier).addStream(personalEventList(nextMonth));
               }else{
                 //前月に移動
                 String month = '${value.year}年${value.month}月';

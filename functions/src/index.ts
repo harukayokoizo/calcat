@@ -47,25 +47,32 @@ exports.sendAuthenticationMail = onRequest({timeoutSeconds: 60}, async (req: { b
     //メールを送信
     const userEmail = req.body.data;
     const transporter = nodemailer.createTransport({
-      service: 'gmail',
+      host: 'smtp.zeptomail.jp',
+      port: 465,
+      secure: true,
       auth: {
-        user: 'calcatservice@gmail.com',
-        pass: 'baiuykqqxiwgaqoe'
+        user: 'emailapikey',
+        pass: 'BKhVP7BB9UYS8zzbcpmArUZzD084OTQjKC5q+K1HaPqDW0K2l2SUlwWjTrGEDRBvmaKgZIgZAaXZGLFaTAxNjbdHs9waq8v8grAybVg2AM2hVBc7e75XibuxTZufPrs0KjwOutY8z8wT/Q=='
       }
     });
     const link = await auth.generateSignInWithEmailLink(userEmail, acs);
 
     const mailOptions = {
-      from: 'CalCat@share-calendar-4f317.firebaseapp.com',
+      from: 'info@getcalcat.com',
       to: userEmail,
-      subject: 'CalCatへのログイン',
-      html: `<p>お客様</p>
-             <p>${userEmail}のアカウントでログインするには、こちらのリンクをクリックしてください。</p>
-             <a href="${link}">ログイン</a>
-             <p>このリンクをリクエストしていない場合は、このメールを無視してください。</p>
-             <p></p>
-             <p>よろしくお願いいたします。</p>
-             <p>CalCatチーム</p>`
+      subject: '【CalCat】ログイン用リンクのご案内',
+      html: `
+        <p>${userEmail} 様</p>
+        <p>CalCatへのログインをご希望いただきありがとうございます。</p>
+        <p>以下のリンクをクリックしてログインを完了してください。</p>
+        <p><a href="${link}">▶ ログインリンクはこちら</a></p>
+        <p>※このリンクは一定時間で無効になります。お早めにアクセスしてください。</p>
+        <hr>
+        <p>このメールに心当たりがない場合は、リンクをクリックせず削除してください。</p>
+        <br>
+        <p>今後ともCalCatをよろしくお願いいたします。</p>
+        <p style="color:gray;">CalCat サポートチーム</p>
+      `
     };
 
     transporter.sendMail(mailOptions)
@@ -73,7 +80,8 @@ exports.sendAuthenticationMail = onRequest({timeoutSeconds: 60}, async (req: { b
       return res.status(200).send('success');
     })
     .catch((error) => {
-      return res.status(500).send('error');
+      console.log(error)
+      return res.status(500).send(error);
     });
 
   }catch (e){

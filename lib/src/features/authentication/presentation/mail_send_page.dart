@@ -27,7 +27,9 @@ class MailSendPageState extends ConsumerState{
       },
       child: Scaffold(
         appBar: AppBar(
-          // title: const Text('パスワード再設定'),
+          title: const Text(
+            'パスワード再設定',
+            style: TextStyle(fontSize: 20),),
         ),
         body: SizedBox(
           width: deviceWidth,
@@ -63,12 +65,15 @@ class MailSendPageState extends ConsumerState{
               children: [
                 // const Spacer(flex: 1,),
                 Padding(
-                  padding: const EdgeInsets.only(bottom: 20.0),
+                  padding: const EdgeInsets.only(top: 20.0),
                   child: SizedBox(
                     width: deviceWidth * 0.8,
                     child: TextFormField(
                       decoration: const InputDecoration(
                         hintText: 'メールアドレス',
+                        helperStyle: TextStyle(),
+                        helperText: 'パスワードを再設定するアカウントのメールアドレスを入力してください。',
+                        helperMaxLines: 2,
                         border: OutlineInputBorder(),
                       ),
                       onChanged: (value){
@@ -123,7 +128,7 @@ class MailSendPageState extends ConsumerState{
                     ),
                   ),
                 ),
-                const Spacer(flex: 2,),
+                const Spacer(flex: 1,),
               ],
             ),
           ),

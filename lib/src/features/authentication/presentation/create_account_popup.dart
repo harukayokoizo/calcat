@@ -62,7 +62,11 @@ class CreateAccountPopup extends StatelessWidget{
                   context,
                   MaterialPageRoute(builder: (context) => const CreateAccountPage(),
                   ),
-                );
+                ).then((create){
+                  if(create){
+                    Navigator.pop(context);
+                  }
+                });
               },
               style: TextButton.styleFrom(
                 backgroundColor: Colors.purple,

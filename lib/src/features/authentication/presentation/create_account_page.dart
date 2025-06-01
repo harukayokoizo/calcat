@@ -39,10 +39,12 @@ class CreateAccountPageState extends ConsumerState<CreateAccountPage>{
           final UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailLink(email: email, emailLink: deepLink).catchError((onError){
             throw '認証に失敗しました。';
           });
+          if(!userCredential.additionalUserInfo!.isNewUser){
+            await ref.read(authenticateProvider).signOut();
+            throw 'このメールアドレスは既に登録されています。';
+          }
           if(userCredential.user != null){
             await ref.read(authenticateProvider).loginAndCreateUser(email, userCredential.user!).then((value){
-              // ref.read(firstAuthentication.notifier).state = true;
-              // Navigator.pop(context);
               setState(() {
                 loading = false;
               });
@@ -50,7 +52,7 @@ class CreateAccountPageState extends ConsumerState<CreateAccountPage>{
                   context: context,
                   builder: (BuildContext context) => const SetPasswordPage()
               ).then((value){
-                Navigator.pop(context);
+                Navigator.pop(context,true);
               });
             });
           }
@@ -83,89 +85,95 @@ class CreateAccountPageState extends ConsumerState<CreateAccountPage>{
       children: [
         Scaffold(
           appBar: AppBar(
-            // title: const Text('アカウント作成'),
+            title: const Text(
+              'アカウント作成',
+              style: TextStyle(fontSize: 20),
+            ),
           ),
-          body: GestureDetector(
-            onTap: focusNode.requestFocus,
-            child: SizedBox(
-              width: deviceWidth,
-              height: deviceHeight,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 20.0),
-                    child: SizedBox(
-                      width: deviceWidth * 0.8,
-                      child: TextFormField(
-                        // autofocus: true,
-                        textInputAction: TextInputAction.next,
-                        controller: mailTextController,
-                        decoration: const InputDecoration(
-                          hintText: 'メールアドレス',
-                          helperStyle: TextStyle(),
-                          helperText: '作成するアカウントのメールアドレスを入力してください。',
-                          helperMaxLines: 2,
-                          contentPadding: EdgeInsets.fromLTRB(10, 20, 12, 20),
-                          border: OutlineInputBorder(),
+          body: Padding(
+            padding: const EdgeInsets.only(top: 20.0),
+            child: GestureDetector(
+              onTap: focusNode.requestFocus,
+              child: SizedBox(
+                width: deviceWidth,
+                height: deviceHeight,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 20.0),
+                      child: SizedBox(
+                        width: deviceWidth * 0.8,
+                        child: TextFormField(
+                          // autofocus: true,
+                          textInputAction: TextInputAction.next,
+                          controller: mailTextController,
+                          decoration: const InputDecoration(
+                            hintText: 'メールアドレス',
+                            helperStyle: TextStyle(),
+                            helperText: '作成するアカウントのメールアドレスを入力してください。',
+                            helperMaxLines: 2,
+                            contentPadding: EdgeInsets.fromLTRB(10, 20, 12, 20),
+                            border: OutlineInputBorder(),
+                          ),
+                          onChanged: (value){
+                            setState(() {
+                              // mailAddress = value;
+                            });
+                          },
                         ),
-                        onChanged: (value){
-                          setState(() {
-                            // mailAddress = value;
-                          });
-                        },
                       ),
                     ),
-                  ),
-                  const Spacer(flex: 10,),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 20.0),
-                    child: SizedBox(
-                      width: deviceWidth * 0.8,
-                      height: 50,
-                      child: ElevatedButton(
-                        onPressed: mailTextController.text.isEmpty ? null : (){
-                          FocusScope.of(context).unfocus();
-                          setState(() {
-                            loading = true;
-                          });
-                          ref.read(authenticateProvider).createAccountMailLink(mailTextController.text).then((value){
-                            final color = value == null ? Colors.green : Colors.red;
-                            final message = value ?? 'メール送信しました。';
-                            setState((){
-                              loading = false;
+                    const Spacer(flex: 10,),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 20.0),
+                      child: SizedBox(
+                        width: deviceWidth * 0.8,
+                        height: 50,
+                        child: ElevatedButton(
+                          onPressed: mailTextController.text.isEmpty ? null : (){
+                            FocusScope.of(context).unfocus();
+                            setState(() {
+                              loading = true;
                             });
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    backgroundColor: color,
-                                    content: Text(
-                                      message,
-                                      style: const TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.bold
+                            ref.read(authenticateProvider).createAccountMailLink(mailTextController.text).then((value){
+                              final color = value == null ? Colors.green : Colors.red;
+                              final message = value ?? 'メール送信しました。';
+                              setState((){
+                                loading = false;
+                              });
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      backgroundColor: color,
+                                      content: Text(
+                                        message,
+                                        style: const TextStyle(
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.bold
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                );
-                          });
-                        },
-                        style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
-                          //side: BorderSide(color: Colors.black)
-                        ),
-                        child: const Text(
-                          "メール送信",
-                          style: TextStyle(
-                              fontSize: 20
+                                  );
+                            });
+                          },
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
+                            //side: BorderSide(color: Colors.black)
                           ),
-                        ),
+                          child: const Text(
+                            "メール送信",
+                            style: TextStyle(
+                                fontSize: 20
+                            ),
+                          ),
 
+                        ),
                       ),
                     ),
-                  ),
-                  const Spacer(flex: 1,),
-                ],
+                    const Spacer(flex: 1,),
+                  ],
+                ),
               ),
             ),
           ),

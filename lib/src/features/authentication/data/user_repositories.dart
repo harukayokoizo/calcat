@@ -19,6 +19,7 @@ class UserRepositories{
             'mailAddress': mailAddress,
           });
     }catch (e){
+      print(e);
       throw 'ログインに失敗しました。';
     }
   }

@@ -15,7 +15,8 @@ class EventCalendarForm extends ConsumerStatefulWidget{
   final dynamic repositories;
   final List<DateTime> sameEvents;
   final EventInitialTime initialTime;
-  const EventCalendarForm(this.event, this.repositories, this.sameEvents, this.initialTime, {super.key});
+  final DateTime focusedDay;
+  const EventCalendarForm(this.event, this.repositories, this.sameEvents, this.initialTime, this.focusedDay, {super.key});
 
   @override
   ConsumerState<EventCalendarForm> createState() => EventCalendarFormState();
@@ -35,68 +36,71 @@ class EventCalendarFormState extends ConsumerState<EventCalendarForm>{
     repositories = widget.repositories;
     sameEvents = widget.sameEvents;
     initialTime = widget.initialTime;
+    focusedDay = widget.focusedDay;
   }
   @override
   Widget build(BuildContext context) {
     final selectedDays = ref.watch(selectedDaysProvider(sameEvents));
-    return LayoutBuilder(
-      builder: (context,  constraints) {
-        return Column(
-          children: [
-            SizedBox(
-              height: constraints.maxHeight * 0.8,
-              child: TableCalendar(
-                firstDay: DateTime.utc(2024, 01, 01),
-                lastDay: DateTime.utc(2050, 12, 31),
-                focusedDay: focusedDay,
-                headerVisible: true,
-                eventFormCalendar: true,
-                displayWeekday: true,
-                // daysOfWeekHeight: 10,
-                daysOfWeekHeight: 20,
-                dayHeight : constraints.maxHeight,
-                rowHeight: constraints.maxHeight * 0.8 / 7.1,
-                //shouldFillViewport: true,
-                //availableGestures: AvailableGestures.verticalSwipe,
-                locale: 'ja_JP',
-                calendarFormat: CalendarFormat.month,
-                availableCalendarFormats: const {
-                  CalendarFormat.month: 'Month',
-                },
-                calendarStyle : const CalendarStyle( // 週末の日付の色 (土曜と日曜の列)
-                  weekendTextStyle : TextStyle(color : Color(0xFF4169e1)), // 今日のハイライト色
-                  todayDecoration : BoxDecoration(
-                    color : Colors.grey,
-                    shape : BoxShape.circle,
-                  ), // 選択した日のハイライト色
-                  selectedDecoration : BoxDecoration(
-                    color : Color(0xFF4169e1),
-                    shape : BoxShape.circle,
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Flexible(
+          fit: FlexFit.tight,
+          child: LayoutBuilder(
+              builder: (context,  constraints) {
+              return SizedBox(
+                // height: constraints.maxHeight * 0.8,
+                child: TableCalendar(
+                  firstDay: DateTime.utc(2024, 01, 01),
+                  lastDay: DateTime.utc(2050, 12, 31),
+                  focusedDay: focusedDay,
+                  headerVisible: true,
+                  headerStyle: const HeaderStyle(),
+                  eventFormCalendar: true,
+                  displayWeekday: true,
+                  // daysOfWeekHeight: 10,
+                  daysOfWeekHeight: 20,
+                  dayHeight : constraints.maxHeight - 85,
+                  // rowHeight: constraints.maxHeight / 8.0,
+                  //shouldFillViewport: true,
+                  //availableGestures: AvailableGestures.verticalSwipe,
+                  locale: 'ja_JP',
+                  calendarFormat: CalendarFormat.month,
+                  availableCalendarFormats: const {
+                    CalendarFormat.month: 'Month',
+                  },
+                  calendarStyle : const CalendarStyle( // 週末の日付の色 (土曜と日曜の列)
+                    weekendTextStyle : TextStyle(color : Color(0xFF4169e1)), // 今日のハイライト色
+                    todayDecoration : BoxDecoration(
+                      color : Colors.grey,
+                      shape : BoxShape.circle,
+                    ), // 選択した日のハイライト色
+                    selectedDecoration : BoxDecoration(
+                      color : Color(0xFF4169e1),
+                      shape : BoxShape.circle,
+                    ),
                   ),
+                  selectedDayPredicate: (day) => selectedDays.contains(day),
+                  //カレンダーがタップするたびにコールされる
+                  onDaySelected: (selectedDay, focusedDay) {
+                    ref.read(selectedDaysProvider(sameEvents).notifier).checkSelectedDay(selectedDay);
+                  },
+                  onPageChanged: (value) {
+                    setState(() {
+                      focusedDay = value;
+                    });
+                  },
                 ),
-                selectedDayPredicate: (day) => selectedDays.contains(day),
-                //カレンダーがタップするたびにコールされる
-                onDaySelected: (selectedDay, focusedDay) {
-                  ref.read(selectedDaysProvider(sameEvents).notifier).checkSelectedDay(selectedDay);
-                },
-                onPageChanged: (value) {
-                  setState(() {
-                    focusedDay = value;
-                  });
-                },
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 10.0),
-              child: SizedBox(
-                  // height: constraint.maxHeight * 0.1,
-                  child: CalendarTimeSettingFormat(event, initialTime),
-              ),
-            ),
-            // SizedBox(height: 30,)
-          ],
-        );
-      }
+              );
+            }
+          ),
+        ),
+        SizedBox(
+            // height: constraints.maxHeight * 0.2,
+            child: CalendarTimeSettingFormat(event, initialTime),
+        ),
+        // SizedBox(height: 30,)
+      ],
     );
   }
 }

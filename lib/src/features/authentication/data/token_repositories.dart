@@ -39,6 +39,7 @@ class TokenRepositories{
             'uid': uid,
           });
     }catch (e){
+      print(e);
       throw 'ログインに失敗しました。';
     }
   }

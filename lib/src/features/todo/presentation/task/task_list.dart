@@ -26,7 +26,7 @@ class TaskList extends ConsumerWidget{
       loading: () => const SizedBox(), //読み込み時
       data: (tasks){
         return Padding(
-          padding: const EdgeInsets.only(left: 20, top: 0.0, right: 20.0, bottom: 0.0),
+          padding: const EdgeInsets.only(left: 20.0, top: 0.0, right: 20.0, bottom: 20.0),
           child: CustomScrollView(
             slivers: [
               SliverToBoxAdapter(

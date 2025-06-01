@@ -1,2 +1,3 @@
 #include "Debug.xcconfig"
 #include "dev.xcconfig"
+FLUTTER_BUILD_MODE=debug

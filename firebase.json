@@ -1,1 +1,79 @@
-{"functions":[{"source":"functions","codebase":"default","ignore":["node_modules",".git","firebase-debug.log","firebase-debug.*.log"],"predeploy":["npm --prefix \"$RESOURCE_DIR\" run build"]}],"emulators":{"functions":{"port":5001},"ui":{"enabled":true},"singleProjectMode":true},"hosting":{"public":"public","ignore":["firebase.json","**/.*","**/node_modules/**"],"rewrites":[{"source":"**","destination":"/index.html"}]},"flutter":{"platforms":{"android":{"default":{"projectId":"calcat-dev","appId":"1:39376996758:android:dcfa9b3f4008f20af2f5b7","fileOutput":"android/app/google-services.json"}},"ios":{"default":{"projectId":"calcat-dev","appId":"1:39376996758:ios:3e801dc83fb272d4f2f5b7","uploadDebugSymbols":false,"fileOutput":"ios/Runner/GoogleService-Info.plist"}},"macos":{"default":{"projectId":"calcat-dev","appId":"1:39376996758:ios:acccfa522e6f8012f2f5b7","uploadDebugSymbols":false,"fileOutput":"macos/Runner/GoogleService-Info.plist"}},"dart":{"lib/firebase_options.dart":{"projectId":"calcat-dev","configurations":{"android":"1:39376996758:android:dcfa9b3f4008f20af2f5b7","ios":"1:39376996758:ios:3e801dc83fb272d4f2f5b7","macos":"1:39376996758:ios:acccfa522e6f8012f2f5b7","web":"1:39376996758:web:747481a61e3b65f3f2f5b7","windows":"1:39376996758:web:ad9c6458ac476e51f2f5b7"}}}}}}
+{
+  "functions": [
+    {
+      "source": "functions",
+      "codebase": "default",
+      "ignore": [
+        "node_modules",
+        ".git",
+        "firebase-debug.log",
+        "firebase-debug.*.log"
+      ],
+      "predeploy": [
+        "npm --prefix \"$RESOURCE_DIR\" run build"
+      ]
+    }
+  ],
+  "emulators": {
+    "functions": {
+      "port": 5001
+    },
+    "ui": {
+      "enabled": true
+    },
+    "singleProjectMode": true
+  },
+  "hosting": {
+    "public": "public",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  },
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "calcat-dev",
+          "appId": "1:39376996758:android:dcfa9b3f4008f20af2f5b7",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "ios": {
+        "default": {
+          "projectId": "calcat-dev",
+          "appId": "1:39376996758:ios:3e801dc83fb272d4f2f5b7",
+          "uploadDebugSymbols": false,
+          "fileOutput": "ios/Runner/GoogleService-Info.plist"
+        }
+      },
+      "macos": {
+        "default": {
+          "projectId": "calcat-dev",
+          "appId": "1:39376996758:ios:acccfa522e6f8012f2f5b7",
+          "uploadDebugSymbols": false,
+          "fileOutput": "macos/Runner/GoogleService-Info.plist"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "calcat-dev",
+          "configurations": {
+            "android": "1:39376996758:android:dcfa9b3f4008f20af2f5b7",
+            "ios": "1:39376996758:ios:3e801dc83fb272d4f2f5b7",
+            "macos": "1:39376996758:ios:acccfa522e6f8012f2f5b7",
+            "web": "1:39376996758:web:747481a61e3b65f3f2f5b7",
+            "windows": "1:39376996758:web:ad9c6458ac476e51f2f5b7"
+          }
+        }
+      }
+    }
+  }
+}

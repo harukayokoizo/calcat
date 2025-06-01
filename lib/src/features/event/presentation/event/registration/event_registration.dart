@@ -58,7 +58,7 @@ class EventRegistrationState extends ConsumerState<EventRegistration> with Ticke
     Widget page;
     final user = ref.read(currentUserProvider);
     Event event = Event(
-      uid: user!.uid,
+      uid: user?.uid,
       title: null,
       overview: null,
       image: null,
@@ -151,20 +151,6 @@ class NormalEventRegistration extends ConsumerWidget{
             url.unfocus();
             location.unfocus();
           },
-          onHorizontalDragCancel: (){
-            FocusScope.of(context).unfocus();
-            title.unfocus();
-            overview.unfocus();
-            url.unfocus();
-            location.unfocus();
-          },
-          onHorizontalDragDown: (value){
-            FocusScope.of(context).unfocus();
-            title.unfocus();
-            overview.unfocus();
-            url.unfocus();
-            location.unfocus();
-          },
           child: Column(
             children: [
               Expanded(
@@ -195,7 +181,7 @@ class NormalEventRegistration extends ConsumerWidget{
                       ),
                     ],
                   ),
-                  child: EventCalendarForm(event, repositories, sameEvents, initialTime),
+                  child: EventCalendarForm(event, repositories, sameEvents, initialTime, focusedDay),
                 ),
               Container(height: bottomPadding ,color: Colors.white,)
             ],

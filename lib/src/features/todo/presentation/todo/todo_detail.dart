@@ -58,7 +58,7 @@ class TodoDetailState extends ConsumerState<TodoDetail>{
                       child: Icon(
                         Icons.arrow_back_ios,
                         size: 20,
-                        color: tap ? Colors.black.withOpacity(0.5) : Colors.black,
+                        color: Colors.black.withOpacity(0.5),
                       ),
                     ),
                     TextSpan(
@@ -66,7 +66,7 @@ class TodoDetailState extends ConsumerState<TodoDetail>{
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 18,
-                        color: tap ? Colors.black.withOpacity(0.5) : Colors.black,
+                        color: Colors.black.withOpacity(0.5),
                       ),
                     ),
                   ],

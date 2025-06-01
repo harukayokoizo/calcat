@@ -1,2 +1,3 @@
 #include "Debug.xcconfig"
 #include "prod.xcconfig"
+FLUTTER_BUILD_MODE=prod
