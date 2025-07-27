@@ -4,7 +4,7 @@
     "details": [
       {
         "appID": "R42UR9FPBJ.com.harukayokomizo.banana-sharecalendar",
-        "paths": [ "*" ]
+        "paths": [ "/auth-link/*"]
       }
     ]
   }

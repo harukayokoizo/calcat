@@ -7,6 +7,7 @@
 	<key>com.apple.developer.associated-domains</key>
 	<array>
 		<string>applinks:sharecalendar.page.link?mode=developer</string>
+		<string>applinks:app.getcalcat.com?mode=developer</string>
 	</array>
 </dict>
 </plist>

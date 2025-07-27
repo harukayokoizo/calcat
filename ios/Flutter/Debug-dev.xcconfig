@@ -1,3 +1,4 @@
 #include "Debug.xcconfig"
 #include "dev.xcconfig"
+#include? "Pods/Target Support Files/Pods-Runner/Pods-Runner.debug-dev.xcconfig"
 FLUTTER_BUILD_MODE=debug

@@ -1,3 +1,4 @@
+import 'package:app_links/app_links.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/cupertino.dart';
@@ -19,6 +20,7 @@ class CreateAccountPage extends ConsumerStatefulWidget{
 }
 
 class CreateAccountPageState extends ConsumerState<CreateAccountPage>{
+  final appLinks = AppLinks();
   final passTextController = TextEditingController();
   final mailTextController = TextEditingController();
   final focusNode = FocusNode();
@@ -28,15 +30,16 @@ class CreateAccountPageState extends ConsumerState<CreateAccountPage>{
   @override
   void initState() {
     super.initState();
-    FirebaseDynamicLinks.instance.onLink.listen((pendingDynamicLinkData) async{
-      final email = mailTextController.text;
-      final String deepLink = pendingDynamicLinkData.link.toString();
-      if (FirebaseAuth.instance.isSignInWithEmailLink(deepLink)) {
+
+    appLinks.uriLinkStream.listen((Uri uri)  async{
+      final link = uri.toString();
+      if (FirebaseAuth.instance.isSignInWithEmailLink(link)) {
+        final email = mailTextController.text;
         try {
           setState(() {
             loading = true;
           });
-          final UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailLink(email: email, emailLink: deepLink).catchError((onError){
+          final UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailLink(email: email, emailLink: link).catchError((onError){
             throw '認証に失敗しました。';
           });
           if(!userCredential.additionalUserInfo!.isNewUser){

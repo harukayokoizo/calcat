@@ -40,14 +40,14 @@ class MailAuth{
   Future<String> loginAndCreateToken(String emailAddress, String password) async{
     try{
       final User user = await signInAccount(emailAddress, password);
-      // final fcmToken = await FirebaseMessaging.instance.getToken();
-      //
-      // await ref.read(tokenRepositories).createUser(user.uid, fcmToken!);
-      //
-      // String? oldToken = await ref.read(fcmTokenRepositories).operateCollection(user.uid, fcmToken);
-      // if(oldToken != null && oldToken != fcmToken){
-      //   await ref.read(tokenRepositories).deleteUserHasOldToken(oldToken);
-      // }
+      final fcmToken = await FirebaseMessaging.instance.getToken();
+
+      await ref.read(tokenRepositories).createUser(user.uid, fcmToken!);
+
+      String? oldToken = await ref.read(fcmTokenRepositories).operateCollection(user.uid, fcmToken);
+      if(oldToken != null && oldToken != fcmToken){
+        await ref.read(tokenRepositories).deleteUserHasOldToken(oldToken);
+      }
 
       return 'success';
     }catch (e){
@@ -103,15 +103,6 @@ class MailAuth{
   //アカウント作成（メールリンク）
   Future<String?> createAccountMailLink(String emailAddress) async{
     try {
-      // var acs = ActionCodeSettings(
-      //   url: 'https://sharecalendar.page.link',
-      //   handleCodeInApp: true,
-      //   iOSBundleId: 'com.harukayokomizo.banana-sharecalendar',
-      //     // androidPackageName: 'com.example.android',
-      //     // androidInstallApp: true,
-      //     // androidMinimumVersion: '12'
-      // );
-
       final url = Uri.parse('https://us-central1-share-calendar-4f317.cloudfunctions.net/sendAuthenticationMail');
 
       // 引数を含むPOSTリクエストを作成します。
@@ -132,7 +123,6 @@ class MailAuth{
 
       return 'メール送信できませんでした';
 
-      // await FirebaseAuth.instance.sendSignInLinkToEmail(email: emailAddress, actionCodeSettings: acs);
     } catch (e){
       throw 'メール送信できませんでした';
     }

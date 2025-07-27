@@ -33,17 +33,24 @@ const auth = getAuth();
 
 exports.sendAuthenticationMail = onRequest({timeoutSeconds: 60}, async (req: { body: any;}, res: any) => {
   try{
-    //ActionCodeSettings
+    // const acs = {
+    //   url: 'https://sharecalendar.page.link',
+    //   // This must be true for email link sign-in.
+    //   handleCodeInApp: true,
+    //   iOS: {
+    //     bundleId: 'com.harukayokomizo.banana-sharecalendar',
+    //   },
+    //   // FDL custom domain.
+    //   dynamicLinkDomain: 'sharecalendar.page.link',
+    // };
+
     const acs = {
-      url: 'https://sharecalendar.page.link',
-      // This must be true for email link sign-in.
+      url: 'https://app.getcalcat.com/auth-link',
+      // This must be true
       handleCodeInApp: true,
-      iOS: {
-        bundleId: 'com.harukayokomizo.banana-sharecalendar',
-      },
-      // FDL custom domain.
-      dynamicLinkDomain: 'sharecalendar.page.link',
-    };
+      iOSBundleId: 'com.harukayokomizo.banana-sharecalendar'
+    }
+
     //メールを送信
     const userEmail = req.body.data;
     const transporter = nodemailer.createTransport({
@@ -56,6 +63,7 @@ exports.sendAuthenticationMail = onRequest({timeoutSeconds: 60}, async (req: { b
       }
     });
     const link = await auth.generateSignInWithEmailLink(userEmail, acs);
+    // const link = await sendSignInLinkToEmail(userEmail, acs);
 
     const mailOptions = {
       from: 'info@getcalcat.com',

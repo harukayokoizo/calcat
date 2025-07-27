@@ -204,16 +204,16 @@ class ControlPageState extends ConsumerState<ControlPage>{
 
     //現在のFCMトークンが正常に保存されているかチェックする。
     //トークンがなければ、作成する。
-    // Future(() async {
-    //   final user = ref.read(currentUserProvider);
-    //   final fcmToken = await FirebaseMessaging.instance.getToken();
-    //   if(user != null) {
-    //     bool noExits = await ref.read(tokenRepositories).getUser(user.uid, fcmToken!);
-    //     if(noExits){
-    //       await ref.read(tokenRepositories).controlUser(fcmToken);
-    //     }
-    //   }
-    // });
+    Future(() async {
+      final user = ref.read(currentUserProvider);
+      final fcmToken = await FirebaseMessaging.instance.getToken();
+      if(user != null) {
+        bool noExits = await ref.read(tokenRepositories).getUser(user.uid, fcmToken!);
+        if(noExits){
+          await ref.read(tokenRepositories).controlUser(fcmToken);
+        }
+      }
+    });
 
 
     final packageInfo = ref.read(packageInfoProvider);

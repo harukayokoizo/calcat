@@ -94,29 +94,26 @@ class MenuModal extends ConsumerWidget{
                                             "ログアウト",
                                           ),
                                           onPressed: (){
-                                            ref.read(authenticateProvider).signOut().then((value){
-                                              Navigator.pop(context, false);
-                                            });
-                                            // ref.read(tokenRepositories).deleteUser().then(
-                                            //   (value){
-                                            //     if(value == null){
-                                            //       ref.read(authenticateProvider).signOut().then((value){
-                                            //         Navigator.pop(context, false);
-                                            //       });
-                                            //     }else{
-                                            //       SnackBar(
-                                            //         backgroundColor: Colors.red,
-                                            //         content: Text(
-                                            //           value,
-                                            //           style: const TextStyle(
-                                            //               fontSize: 15,
-                                            //               fontWeight: FontWeight.bold
-                                            //           ),
-                                            //         ),
-                                            //       );
-                                            //     }
-                                            //   }
-                                            // );
+                                            ref.read(tokenRepositories).deleteUser().then(
+                                              (value){
+                                                if(value == null){
+                                                  ref.read(authenticateProvider).signOut().then((value){
+                                                    Navigator.pop(context, false);
+                                                  });
+                                                }else{
+                                                  SnackBar(
+                                                    backgroundColor: Colors.red,
+                                                    content: Text(
+                                                      value,
+                                                      style: const TextStyle(
+                                                          fontSize: 15,
+                                                          fontWeight: FontWeight.bold
+                                                      ),
+                                                    ),
+                                                  );
+                                                }
+                                              }
+                                            );
                                           }
                                       ),
                                     ],
