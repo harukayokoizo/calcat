@@ -7,10 +7,11 @@ import {
 //   onObjectFinalized,
 // } from "firebase-functions/v2/storage";
 
-import * as admin from 'firebase-admin'
-import { TokenMessage } from "firebase-admin/lib/messaging/messaging-api";
-import * as nodemailer from 'nodemailer';
-
+// import { TokenMessage } from "firebase-admin/lib/messaging/messaging-api";
+import { getMessaging, Message, Notification } from "firebase-admin/messaging";
+// import * as nodemailer from 'nodemailer';
+import { defineSecret } from "firebase-functions/params";
+import { Resend } from 'resend';
 
 /*
 import {
@@ -23,8 +24,10 @@ const { getStorage, getDownloadURL } = require("firebase-admin/storage");
 const { getAuth } = require("firebase-admin/auth");
 const { onSchedule } = require("firebase-functions/v2/scheduler");
 const { onRequest } = require("firebase-functions/v2/https");
-const { logger } = require("firebase-functions");
-const functions = require("firebase-functions");
+const { logger } = require("firebase-functions/v1");
+const functions = require("firebase-functions/v1");
+const resendApiKey = defineSecret("RESEND_API_KEY");
+const resend = new Resend(resendApiKey.value());
 
 initializeApp();
 const db = getFirestore();
@@ -53,15 +56,15 @@ exports.sendAuthenticationMail = onRequest({timeoutSeconds: 60}, async (req: { b
 
     //メールを送信
     const userEmail = req.body.data;
-    const transporter = nodemailer.createTransport({
-      host: 'smtp.zeptomail.jp',
-      port: 465,
-      secure: true,
-      auth: {
-        user: 'emailapikey',
-        pass: 'BKhVP7BB9UYS8zzbcpmArUZzD084OTQjKC5q+K1HaPqDW0K2l2SUlwWjTrGEDRBvmaKgZIgZAaXZGLFaTAxNjbdHs9waq8v8grAybVg2AM2hVBc7e75XibuxTZufPrs0KjwOutY8z8wT/Q=='
-      }
-    });
+    // const transporter = nodemailer.createTransport({
+    //   host: 'smtp.zeptomail.jp',
+    //   port: 465,
+    //   secure: true,
+    //   auth: {
+    //     user: 'emailapikey',
+    //     pass: 'BKhVP7BB9UYS8zzbcpmArUZzD084OTQjKC5q+K1HaPqDW0K2l2SUlwWjTrGEDRBvmaKgZIgZAaXZGLFaTAxNjbdHs9waq8v8grAybVg2AM2hVBc7e75XibuxTZufPrs0KjwOutY8z8wT/Q=='
+    //   }
+    // });
     const link = await auth.generateSignInWithEmailLink(userEmail, acs);
     // const link = await sendSignInLinkToEmail(userEmail, acs);
 
@@ -83,7 +86,8 @@ exports.sendAuthenticationMail = onRequest({timeoutSeconds: 60}, async (req: { b
       `
     };
 
-    transporter.sendMail(mailOptions)
+    // transporter.sendMail(mailOptions)
+    resend.emails.send(mailOptions)
     .then((info) => {
       return res.status(200).send('success');
     })
@@ -304,7 +308,7 @@ exports.scheduledEventNotification = onSchedule("* * * * *", async () => {
 
 
 async function getSenderEventNotification(event: Event){
-  const message: TokenMessage[] = []
+  const message: Message[] = []
   try{
     if(event.calendarId != null){
       const snapshots = await db.collection('calendar').doc(event.calendarId).collection('event').doc(event.eventId).collection('notification').get()
@@ -351,14 +355,14 @@ async function getUserToken(uid: string){
 
 
 function sendPushNotificationsForReminder(event: Event, token: string) {
-  const notification: admin.messaging.Notification = {
+  const notification: Notification = {
     title: event.title,
   }
-  const data: admin.messaging.DataMessagePayload = {
+  const data: Record<string, string> = {
     calendarId: String(event.calendarId),
     eventId: String(event.eventId)
   }
-  const message: admin.messaging.Message = {
+  const message: Message = {
     token: token,
     data: data,
     notification: notification
@@ -367,9 +371,9 @@ function sendPushNotificationsForReminder(event: Event, token: string) {
   return message
 }
 
-async function sendAll(messages: admin.messaging.Message[]) {
+async function sendAll(messages: Message[]) {
   // 500件ずつに分割する(500件以上は、sendAllメソッド側でエラーになるため)
-  const msgs = messages.reduce((acc: admin.messaging.Message[][], val) => {
+  const msgs = messages.reduce((acc: Message[][], val) => {
     const MAX_BATCH_SIZE = 500
     const last = acc[acc.length - 1]
     if (last.length === MAX_BATCH_SIZE) {
@@ -383,7 +387,7 @@ async function sendAll(messages: admin.messaging.Message[]) {
   logger.log(msgs)
   // Promise.allで分割して配信
   const promises = msgs
-    .map((ms) => admin.messaging()
+    .map((ms) => getMessaging()
       .sendEach(ms)
       .then((batchResponse: { responses: any[]; }) => {
         batchResponse.responses.forEach((res: { error: any; }) => {
